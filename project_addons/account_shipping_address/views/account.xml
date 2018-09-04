@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- © 2018 Comunitea
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="account_move_line_form_add_partner_shipping" model="ir.ui.view">
+        <field name="name">account.move.line.form</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="partner_shipping_id" attrs="{'readonly': [('parent_state', '=', 'posted')]}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="account_move_line_tree_add_partner_shipping" model="ir.ui.view">
+        <field name="name">account.move.line.tree</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="partner_shipping_id"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="account_move_form_add_partner_shipping" model="ir.ui.view">
+        <field name="name">account.move.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="partner_shipping_id"/>
+            </field>
+        </field>
+    </record>
+
+
+    <record id="view_account_invoice_report_search_inherit" model="ir.ui.view">
+        <field name="name">account.invoice.report.search.inherit</field>
+        <field name="model">account.invoice.report</field>
+        <field name="inherit_id" ref="account.view_account_invoice_report_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group/filter[@name='user']" position="after">
+                <filter string="Delivery Address" domain="[]" context="{'group_by':'partner_shipping_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
