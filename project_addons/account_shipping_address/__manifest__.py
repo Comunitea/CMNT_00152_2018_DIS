@@ -12,7 +12,8 @@
     'application': False,
     'installable': True,
     'depends': [
-        'sale'
+        'sale',
+        'account_banking_mandate'
     ],
     'data': [
         'views/account.xml'

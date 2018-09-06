@@ -46,4 +46,28 @@
             </xpath>
         </field>
     </record>
+
+    <record id="partner_view_buttons_address" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account_payment_mode.partner_view_buttons"/>
+        <field name="arch" type="xml">
+            <group name="banks" position="attributes">
+                <attribute name="attrs">{'invisible': [('parent_id', '!=', False), ('type', '!=', 'delivery')]}</attribute>
+            </group>
+
+        </field>
+    </record>
+
+
+    <record id="account_analytic_line_form_add_partner_shipping" model="ir.ui.view">
+        <field name="name">account.analytic.line.form</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_line_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="partner_shipping_id"/>
+            </field>
+        </field>
+    </record>
 </odoo>
