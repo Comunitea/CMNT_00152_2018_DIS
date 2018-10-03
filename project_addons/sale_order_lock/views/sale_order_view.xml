@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="sale_order_form_locked" model="ir.ui.view" >
+        <field name="name">sale.order.form.locked</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add the locked text -->
+            <xpath expr="//div[hasclass('oe_title')]/h1" position="after">
+                <h1 style="color:red;" attrs="{'invisible': ['|', ('locked', '=', False), ('force_unlock', '=', True)]}">
+                    LOCKED
+                </h1>
+            </xpath>
+
+            <!-- Add locks page -->
+            <notebook position="inside">
+                <page string="Locks">
+                    <group>
+                        <group string="Lock Control">
+                            <field name="locked"/>
+                            <field name="lock_allow_edit" invisible="0"/>
+                            <field name="force_unlock" attrs="{'readonly': [('lock_allow_edit', '=', False)]}"/>
+                        </group>
+                        <group string="Lock Reasons">
+                            <field name="risk_lock"/>
+                            <field name="margin_lock"/>
+                            <field name="shipping_lock"/>
+                        </group>
+                    </group>
+                </page> 
+            </notebook>
+        </field>
+    </record>
+
+    <!-- Add the locked checkbox to the quotation view list-->
+    <record id="view_quotation_tree_locked" model="ir.ui.view" >
+        <field name="name">sale.quotation.tree.locked</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <field name="state" position="after">
+                <field name="locked"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Add the locked checkbox to the order view list-->
+    <record id="view_order_tree_locked" model="ir.ui.view" >
+        <field name="name">sale.order.tree.locked</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <!-- Add the locked checkbox -->
+            <field name="state" position="after">
+                <field name="locked"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Add cutom lock filters-->
+    <record id="view_sales_order_filter_locked" model="ir.ui.view" >
+        <field name="name">sale.order.filter.locked</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <!-- Add the locked checkbox -->
+            <filter name="my_sale_orders_filter" position="after">
+                <separator/>
+                <filter string="Locked" name="locked" domain="[('locked','=',True)]"/>
+                <separator/>
+                <filter string="Locked by risk" name="locked_by_risk" domain="[('risk_lock','=',True)]"/>
+                <filter string="Locked by margin" name="locked_by_margin" domain="[('margin_lock','=',True)]"/>
+                <filter string="Locked by shipping" name="locked_by_shipping" domain="[('shipping_lock','=',True)]"/>
+            </filter>
+        </field>
+    </record>
+
+</odoo>
+
