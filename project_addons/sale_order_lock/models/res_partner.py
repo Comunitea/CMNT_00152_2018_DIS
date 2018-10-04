@@ -25,7 +25,7 @@ class ResPartner(models.Model):
         """
         for partner in self:
             domain = [
-                ('partner_id.commercial_partner_id', '=',
+                ('partner_id.commercial_partner_id', 'child_of',
                  partner.commercial_partner_id.id),
                 ('state', 'not in', ['done, cancel'])
             ]
