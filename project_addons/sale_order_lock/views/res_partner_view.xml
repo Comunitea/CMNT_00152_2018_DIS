@@ -1,14 +1,20 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <record id="view_partner_form_add_check_lock" model="ir.ui.view" >
-        <field name="name">view.partner.form.add.check.lock</field>
+    <record id="res_partner_view_risk_add_check_lock" model="ir.ui.view" >
+        <field name="name">res.partner.view.risk.add.check.lock</field>
         <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="inherit_id" ref="partner_financial_risk.res_partner_view_risk"/>
         <field name="arch" type="xml">
-            <field name="category_id" position="after">
-                <field name="avoid_locks"/>
-            </field>
+            <group name="risk_general" position="before">
+                <group>
+                    <group string="Locking" col="2">
+                        <field name="avoid_locks"/>
+                        <field name="lock_orders"/>
+                        <field name="shipping_limit"/>
+                    </group>
+                </group>
+            </group>
         </field>
     </record>
 

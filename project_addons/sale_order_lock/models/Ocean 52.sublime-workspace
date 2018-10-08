@@ -1,0 +1,271 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"model",
+				"models"
+			],
+			[
+				"S",
+				"StockPicking"
+			],
+			[
+				"prin",
+				"invoice_print"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/opt/odoo/buildouts/ocean_52"
+	],
+	"file_history":
+	[
+		"/opt/odoo/buildouts/dismac/odoo-repos/account-financial-tools/account_invoice_currency/models/account_invoice.py",
+		"/opt/odoo/buildouts/dismac/odoo-repos/partner-contact/partner_financial_risk/data/partner_financial_risk_data.xml",
+		"/opt/odoo/buildouts/dismac/odoo-repos/partner-contact/partner_financial_risk/views/res_config_view.xml",
+		"/opt/odoo/buildouts/dismac/odoo-repos/partner-contact/partner_sale_risk/views/res_partner_view.xml",
+		"/opt/odoo/buildouts/dismac/odoo-repos/partner-contact/partner_sale_risk/views/sale_view.xml",
+		"/opt/odoo/buildouts/dismac/odoo-repos/partner-contact/partner_risk_insurance/__manifest__.py",
+		"/opt/odoo/buildouts/dismac/odoo-repos/partner-contact/partner_sale_risk/models/res_partner.py",
+		"/opt/odoo/buildouts/dismac/odoo-repos/partner-contact/partner_financial_risk/models/res_partner.py",
+		"/opt/odoo/buildouts/dismac/odoo-repos/partner-contact/partner_sale_risk/__manifest__.py",
+		"/opt/odoo/buildouts/dismac/odoo-repos/partner-contact/partner_financial_risk/tests/test_partner_financial_risk.py",
+		"/opt/odoo/buildouts/dismac/project_addons/sale_order_lock/models/res_partner.py",
+		"/opt/odoo/buildouts/dismac/project_addons/sale_order_lock/models/__init__.py",
+		"/opt/odoo/buildouts/dismac/project_addons/sale_order_lock/README.rst",
+		"/opt/odoo/buildouts/alfa90/base-odoo-pgcontrib.cfg",
+		"/opt/odoo/buildouts/las_rias/base-odoo-pgcontrib.cfg",
+		"/opt/odoo/buildouts/dismac/project_addons/sale_order_lock/__manifest__.py",
+		"/opt/odoo/buildouts/dismac/project_addons/sale_order_lock/views/res_partner_view.xml",
+		"/opt/odoo/buildouts/dismac/odoo-repos/partner-contact/partner_financial_risk/models/res_config.py",
+		"/opt/odoo/buildouts/dismac/odoo-repos/partner-contact/partner_financial_risk/__manifest__.py",
+		"/opt/odoo/buildouts/dismac/base-odoo-pgcontrib.cfg",
+		"/opt/odoo/buildouts/dismac/odoo-repos/external/partner_paydays/__manifest__.py",
+		"/opt/odoo/buildouts/dismac/odoo-repos/external/partner_paydays/models/partner_paydays.py",
+		"/opt/odoo/buildouts/dismac/odoo-repos/external/sale_margin_percentage/__manifest__.py",
+		"/opt/odoo/buildouts/dismac/odoo-repos/external/sale_margin_percentage/models/sale.py",
+		"/opt/odoo/buildouts/dismac/odoo-repos/partner-contact/partner_financial_risk/views/res_partner_view.xml",
+		"/opt/odoo/buildouts/dismac/odoo-repos/partner-contact/partner_financial_risk/i18n/es.po",
+		"/opt/odoo/buildouts/dismac/odoo-repos/account-financial-tools/account_chart_update/views/account_config_settings_view.xml",
+		"/opt/odoo/buildouts/dismac/odoo-repos/account-financial-tools/account_check_deposit/views/res_config_settings_views.xml",
+		"/opt/odoo/buildouts/dismac/odoo-repos/account-financial-tools/account_credit_control/views/res_config_settings_view.xml",
+		"/opt/odoo/buildouts/dismac/odoo-repos/stock-logistics-barcode/stock_scanner/data/ir_cron.xml",
+		"/opt/odoo/buildouts/dismac/devel_odoo.cfg",
+		"/opt/odoo/buildouts/dismac/devel_buildout.cfg",
+		"/opt/odoo/buildouts/dismac/odoo.cfg",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_document_management/wizard/print_final_expedient.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_document_management/wizard/expedient_invoices_view.xml",
+		"/opt/odoo/buildouts/alfa90/project-addons/product_classification/views/product_view.xml",
+		"/opt/odoo/buildouts/alfa90/project-addons/product_classification/views/product_classification_view.xml",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_document_management/models/stock.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_document_management/models/sale.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/auto_attach/views/auto_attach_view.xml",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_document_management/models/account_invoice.py",
+		"/opt/odoo/buildouts/alfa90/parts/odoo/addons/point_of_sale/models/pos_session.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_document_management/wizard/delete_invoice_expedient_view.xml",
+		"/opt/odoo/buildouts/alfa90/parts/odoo/addons/account/wizard/account_validate_move_view.xml",
+		"/opt/odoo/buildouts/alfa90/parts/odoo/addons/marketing_campaign/models/marketing_campaign.py",
+		"/opt/odoo/buildouts/alfa90/parts/odoo/addons/report/models/report.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_reports/models/account_invoice.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_reports/__manifest__.py",
+		"/opt/odoo/buildouts/alfa90/parts/odoo/addons/stock/models/stock_picking.py",
+		"/opt/odoo/buildouts/alfa90/parts/odoo/addons/stock/views/stock_picking_views.xml",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_reports/models/sale_order.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_reports/__init__.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_reports/models/__init__.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_reports/models/purchase_order.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_reports/models/stock_picking.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_document_management/models/profiler.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_reports/a90_reports.xml",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_reports/views/stock_view.xml",
+		"/opt/odoo/buildouts/alfa90/parts/odoo/addons/account/models/account_invoice.py",
+		"/opt/odoo/buildouts/alfa90/parts/odoo/addons/account/wizard/account_invoice_state_view.xml",
+		"/opt/odoo/buildouts/alfa90/parts/odoo/addons/stock_picking_wave/wizard/stock_picking_to_wave_views.xml",
+		"/opt/odoo/buildouts/alfa90/parts/odoo/addons/website_crm_partner_assign/wizard/crm_forward_to_partner_view.xml",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_document_management/wizard/print_final_expedient.xml",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_document_management/__manifest__.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_document_management/views/document_management_board.xml",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_document_management/wizard/delete_invoice_expedient.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_document_management/wizard/expedient_invoices.py",
+		"/opt/odoo/buildouts/alfa90/project-addons/a90_document_management/wizard/process_expedient_view.xml",
+		"/opt/odoo/buildouts/alfa90/project-addons/task_service_order/models/project.py",
+		"/opt/odoo/a90/server/alfa90/install/openerp-server.conf",
+		"/home/javier/.cache/kioexec/krun/11740_0/queue.py",
+		"/opt/odoo/a90/git/a90_comunitea/a90_document_management/profiler.py",
+		"/home/javier/.config/sublime-text-3/Packages/Python Flake8 Lint/Flake8Lint.sublime-settings",
+		"/home/javier/.config/sublime-text-3/Packages/User/Flake8Lint.sublime-settings",
+		"/home/javier/.config/sublime-text-3/Packages/User/ipdb.sublime-snippet"
+	],
+	"find":
+	{
+		"height": 40.0
+	},
+	"find_in_files":
+	{
+		"height": 101.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 39.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.mdpopups":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "Ocean 52.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/Sublime Projects/las_rias.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 397.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
