@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_alternative_product_ids" model="ir.ui.view">
+            <field name="name">view_product_alternative</field>
+            <field name="model">product.alternative.wzd</field>
+            <field name="arch" type="xml">
+                <form string="Product">
+                    <h2>
+                        <field name="product_id"  readonly="1"/>
+                    </h2>
+
+                    <div>
+                        <group>
+                            <group>
+                                 <field name="image_medium" widget="image" class="oe_avatar" nolabel="1"/>
+                            </group>
+                            <group>
+                                <field name="qty_available" readonly="1" class="oe_inline"/>
+                                <field name="virtual_available" readonly="1" class="oe_inline"/>
+                                <field name="lst_price" readonly="1" class="oe_inline"/>
+                            </group>
+                        </group>
+                    </div>
+
+                    <group>
+                        <field name="alternative_product_ids" readonly="1" mode="kanban" nolabel="1" options="{'no_create': True}">
+                            <kanban create="0" delete="0">
+                                <field name="id"/>
+                                <field name="p_id"/>
+                                <field name="display_name"/>
+                                <field name="lst_price"/>
+                                <field name="selected"/>
+                                <field name="default_code"/>
+                                <field name="currency_id"/>
+                                <field name="product_id"/>
+                                <field name="image_small"/>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                      <div class="oe_module_vignette">
+                                        <t t-set="selected" t-value="record.selected.raw_value"/>
+                                        <div class="o_kanban_image">
+                                            <img t-att-src="'/web/image/product.product/' + record.p_id.raw_value + '/image_small'" />
+                                            <!--img t-att-src="kanban_image('product.product', 'image_small', record.p_id)"/-->
+                                        </div>
+                                        <div class="oe_module_desc" t-att-title="record.default_code.value">
+                                          <h4 class="o_kanban_record_title">
+                                              <field name="default_code"/>
+                                              <field name="qty_available"/>
+                                          </h4>
+
+                                          <p class="oe_module_name">
+                                             <t t-if="record.display_name.raw_value">
+                                                 <field name="display_name"/>
+                                                 <br/>
+                                             </t>
+                                          </p>
+                                          <div class="oe_module_action">
+                                            <field name="lst_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                                            <button t-if="!selected" type="object" class="btn btn-primary pull-right btn-sm" name="set_as_selected"
+                                            context="{'new_product_id': product_id}"
+                                            >Select</button>
+                                            <span t-if="selected" class="pull-right text-muted mr8">Selected</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        </field>
+                    </group>
+
+
+                    <footer>
+
+                    <button class="oe_link"
+                            special="cancel"
+                            string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
+
