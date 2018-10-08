@@ -10,7 +10,7 @@ class ResPartner(models.Model):
 
     avoid_locks = fields.Boolean('Avoid locks')
     lock_orders = fields.Boolean('Lock Orders', compute='_compute_locks')
-    shipping_limit = fields.Float('Shipping Cost Limit')
+    min_no_shipping = fields.Float('Min No Shipping Cost')
 
     @api.multi
     def _compute_locks(self):
@@ -25,7 +25,7 @@ class ResPartner(models.Model):
         """
         for partner in self:
             domain = [
-                ('partner_id.commercial_partner_id', 'child_of',
+                ('partner_id', 'child_of',
                  partner.commercial_partner_id.id),
                 ('state', 'not in', ['done, cancel'])
             ]
@@ -39,6 +39,6 @@ class ResPartner(models.Model):
         related_sale_orders
         """
         res = super(ResPartner, self).write(vals)
-        if 'avoid_locks' in vals or 'shipping_limit' in vals:
+        if 'avoid_locks' in vals or 'min_no_shipping' in vals:
             self.recompute_sale_order_locks()
         return res

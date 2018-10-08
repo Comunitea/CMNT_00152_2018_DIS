@@ -25,6 +25,7 @@
                         </group>
                         <group string="Lock Reasons">
                             <field name="risk_lock"/>
+                            <field name="unpaid_lock"/>
                             <field name="margin_lock"/>
                             <field name="shipping_lock"/>
                         </group>
@@ -71,6 +72,7 @@
                 <filter string="Locked" name="locked" domain="[('locked','=',True)]"/>
                 <separator/>
                 <filter string="Locked by risk" name="locked_by_risk" domain="[('risk_lock','=',True)]"/>
+                <filter string="Locked by unpaid" name="locked_by_unpaid" domain="[('unpaid_lock','=',True)]"/>
                 <filter string="Locked by margin" name="locked_by_margin" domain="[('margin_lock','=',True)]"/>
                 <filter string="Locked by shipping" name="locked_by_shipping" domain="[('shipping_lock','=',True)]"/>
             </filter>

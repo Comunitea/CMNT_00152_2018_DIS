@@ -5,6 +5,22 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
+class SaleOrderType(models.Model):
+
+    _inherit = 'sale.order.type'
+
+    @api.multi
+    def write(self, vals):
+        """
+        When update the operating unit, recompute sale orders
+        """
+        res = super(SaleOrderType, self).write(vals)
+        if 'operating_unit_id' in vals:
+            op_units = self.mapped('operating_unit_id')
+            op_units.recompute_sale_order_locks()
+        return res
+
+
 class SaleOrder(models.Model):
 
     _inherit = 'sale.order'
@@ -15,6 +31,7 @@ class SaleOrder(models.Model):
 
     # Lock Checkboxes
     risk_lock = fields.Boolean('Locked by risk', readonly=True)
+    unpaid_lock = fields.Boolean('Locked by unpaid', readonly=True)
     margin_lock = fields.Boolean('Locked by margin', readonly=True)
     shipping_lock = fields.Boolean('Locked by shipping costs', readonly=True)
     locked = fields.Boolean('Locked', readonly=True)
@@ -35,6 +52,23 @@ class SaleOrder(models.Model):
         res = False
         if self.partner_id.avoid_locks:
             return False
+
+        if self.partner_id.risk_invoice_unpaid_include <= \
+                self.partner_id.risk_invoice_unpaid_limit and \
+                self.partner_id.risk_exception:
+            res = True
+        return res
+
+    @api.multi
+    def check_unpaid_lock(self):
+        self.ensure_one()
+        res = False
+        if self.partner_id.avoid_locks:
+            return False
+
+        if self.partner_id.risk_invoice_unpaid_include > \
+                self.partner_id.risk_invoice_unpaid_limit:
+            res = True
         return res
 
     @api.multi
@@ -44,8 +78,8 @@ class SaleOrder(models.Model):
         if self.partner_id.avoid_locks:
             return False
 
-        if self.team_id and self.team_id.operating_unit_id:
-            min_margin = self.team_id.operating_unit_id.min_margin
+        if self.type_id and self.type_id.operating_unit_id:
+            min_margin = self.type_id.operating_unit_id.min_margin
             if min_margin and self.margin < min_margin:
                 res = True
         return res
@@ -57,11 +91,8 @@ class SaleOrder(models.Model):
         if self.partner_id.avoid_locks:
             return False
 
-        delivery_cost = 0
-        for line in self.order_line.filtered('is_delivery'):
-            delivery_cost += line.price_subtotal
-
-        if delivery_cost > self.partner_id.shipping_limit:
+        if self.partner_id.min_no_shipping and \
+                self.amount_total < self.partner_id.min_no_shipping:
             res = True
         return res
 
@@ -79,14 +110,16 @@ class SaleOrder(models.Model):
         for order in self:
             # Check if order have any lock
             risk_lock = order.check_risk_lock()
+            unpaid_lock = order.check_unpaid_lock()
             margin_lock = order.check_margin_lock()
             shipping_lock = order.check_shipping_lock()
 
-            locked = any([risk_lock, margin_lock, shipping_lock])
+            locked = any([risk_lock, margin_lock, shipping_lock, unpaid_lock])
 
             # Writing the value of locking checks
             vals = {
                 'risk_lock': risk_lock,
+                'unpaid_lock': unpaid_lock,
                 'margin_lock': margin_lock,
                 'shipping_lock': shipping_lock,
                 'locked': locked,
@@ -94,8 +127,6 @@ class SaleOrder(models.Model):
             ctx = self._context.copy()
             ctx.update(skip_check_locks=True)
             order.with_context(ctx).write(vals)
-
-
 
     @api.model
     def create(self, vals):
@@ -119,6 +150,16 @@ class SaleOrder(models.Model):
                 print("TODO SEND NOTIFICATION OF LOCK, QUIZÁ EN CHECK LOCK PARA \
                     QUE SE MANDE SIEMPRE??")
         return res
+
+    @api.model
+    def check_unlock_sale_orders(self):
+        domain = [
+            ('locked', '=', True),
+            ('state', 'not in', ['done, cancel'])
+        ]
+        sale_objs = self.search(domain)
+        sale_objs.check_locks()
+        return True
 
     @api.multi
     def action_draft(self):

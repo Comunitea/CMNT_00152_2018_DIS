@@ -11,7 +11,7 @@
                     <group string="Locking" col="2">
                         <field name="avoid_locks"/>
                         <field name="lock_orders"/>
-                        <field name="shipping_limit"/>
+                        <field name="min_no_shipping"/>
                     </group>
                 </group>
             </group>
