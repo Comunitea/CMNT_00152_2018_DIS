@@ -10,8 +10,9 @@
                 <group>
                     <group string="Locking" col="2">
                         <field name="avoid_locks"/>
-                        <field name="lock_orders"/>
+                        <!-- <field name="lock_orders"/> -->
                         <field name="min_no_shipping"/>
+                        <field name="min_amount_order"/>
                         <button name="recompute_sale_order_locks" class="oe_link" type="object" string="Recompute locks"/>
                     </group>
                 </group>
