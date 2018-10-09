@@ -1,0 +1,224 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_order_lock
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-10-09 11:31+0000\n"
+"PO-Revision-Date: 2018-10-09 11:31+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_order_lock
+#: model:ir.model.fields,field_description:sale_order_lock.field_res_partner_avoid_locks
+#: model:ir.model.fields,field_description:sale_order_lock.field_res_users_avoid_locks
+msgid "Avoid locks"
+msgstr "Evitar bloqueos"
+
+#. module: sale_order_lock
+#: model:ir.model.fields,field_description:sale_order_lock.field_sale_order_lock_allow_edit
+msgid "Can i unlock?"
+msgstr "Puedo forzar desbloqueo?"
+
+#. module: sale_order_lock
+#: model:ir.actions.server,name:sale_order_lock.ir_cron_unlock_sale_oorder_ir_actions_server
+#: model:ir.cron,cron_name:sale_order_lock.ir_cron_unlock_sale_oorder
+#: model:ir.cron,name:sale_order_lock.ir_cron_unlock_sale_oorder
+msgid "Check to Unlock Sale Orders"
+msgstr "Comprobar desbloqueos en pedidos de venta"
+
+#. module: sale_order_lock
+#: model:ir.model,name:sale_order_lock.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: sale_order_lock
+#: model:ir.model.fields,field_description:sale_order_lock.field_sale_order_force_unlock
+msgid "Force Unlock"
+msgstr "Forzar desbloqueo"
+
+#. module: sale_order_lock
+#: model:ir.model.fields,help:sale_order_lock.field_operating_unit_min_margin
+msgid "If Margin of sale order         is below the min_margin the order will be locked"
+msgstr "Si el margen del pedido de venta está por debajo del margen mínimo el pedido será bloqueado"
+
+#. module: sale_order_lock
+#: model:ir.ui.view,arch_db:sale_order_lock.sale_order_form_locked
+msgid "LOCKED"
+msgstr "BLOQUEADO"
+
+#. module: sale_order_lock
+#: model:ir.ui.view,arch_db:sale_order_lock.sale_order_form_locked
+msgid "Lock Control"
+msgstr "Control bloqueo"
+
+#. module: sale_order_lock
+#: model:ir.model.fields,field_description:sale_order_lock.field_res_partner_lock_orders
+#: model:ir.model.fields,field_description:sale_order_lock.field_res_users_lock_orders
+msgid "Lock Orders"
+msgstr "Bloquear Pedidos"
+
+#. module: sale_order_lock
+#: model:ir.ui.view,arch_db:sale_order_lock.sale_order_form_locked
+msgid "Lock Reasons"
+msgstr "Motivos Bloqueo
+
+#. module: sale_order_lock
+#: model:ir.model.fields,field_description:sale_order_lock.field_sale_order_locked
+#: model:ir.ui.view,arch_db:sale_order_lock.view_sales_order_filter_locked
+msgid "Locked"
+msgstr "Bloqueado"
+
+#. module: sale_order_lock
+#: model:ir.model.fields,field_description:sale_order_lock.field_sale_order_margin_lock
+#: model:ir.ui.view,arch_db:sale_order_lock.view_sales_order_filter_locked
+msgid "Locked by margin"
+msgstr "Bloqueado por margen"
+
+#. module: sale_order_lock
+#: model:ir.model.fields,field_description:sale_order_lock.field_sale_order_risk_lock
+#: model:ir.ui.view,arch_db:sale_order_lock.view_sales_order_filter_locked
+msgid "Locked by risk"
+msgstr "Bloqueado por riesgo"
+
+#. module: sale_order_lock
+#: model:ir.ui.view,arch_db:sale_order_lock.view_sales_order_filter_locked
+msgid "Locked by shipping"
+msgstr "Bloqueado por no llegar a portes"
+
+#. module: sale_order_lock
+#: model:ir.model.fields,field_description:sale_order_lock.field_sale_order_shipping_lock
+msgid "Locked by shipping costs"
+msgstr "Bloqueado por no llegar a portes"
+
+#. module: sale_order_lock
+#: model:ir.model.fields,field_description:sale_order_lock.field_sale_order_unpaid_lock
+#: model:ir.ui.view,arch_db:sale_order_lock.view_sales_order_filter_locked
+msgid "Locked by unpaid"
+msgstr "Bloqueasdo por inpago"
+
+#. module: sale_order_lock
+#: model:ir.ui.view,arch_db:sale_order_lock.res_partner_view_risk_add_check_lock
+msgid "Locking"
+msgstr "Bloqueos"
+
+#. module: sale_order_lock
+#: model:ir.ui.view,arch_db:sale_order_lock.sale_order_form_locked
+msgid "Locks"
+msgstr "Bloqueos"
+
+#. module: sale_order_lock
+#: model:res.groups,name:sale_order_lock.group_lock_manager
+msgid "Manage Locks in Sales Orders"
+msgstr "Manegar bloqueos en pedidos de venta"
+
+#. module: sale_order_lock
+#: code:addons/sale_order_lock/models/sale_order.py:151
+#, python-format
+msgid "Margin"
+msgstr "MAregen"
+
+#. module: sale_order_lock
+#: model:ir.model.fields,field_description:sale_order_lock.field_operating_unit_min_margin
+msgid "Min Margin"
+msgstr "MArgen mínimo"
+
+#. module: sale_order_lock
+#: model:ir.model.fields,field_description:sale_order_lock.field_res_partner_min_no_shipping
+#: model:ir.model.fields,field_description:sale_order_lock.field_res_users_min_no_shipping
+msgid "Min No Shipping Cost"
+msgstr "Mínimo sin portes"
+
+#. module: sale_order_lock
+#: code:addons/sale_order_lock/models/sale_order.py:153
+#, python-format
+msgid "No reach shipping min"
+msgstr "No se alcanzó el mínimo sin portes"
+
+#. module: sale_order_lock
+#: model:ir.model,name:sale_order_lock.model_operating_unit
+msgid "Operating Unit"
+msgstr "Unidad operacional"
+
+#. module: sale_order_lock
+#: code:addons/sale_order_lock/models/sale_order.py:156
+#, python-format
+msgid "Order %s has been locked because of: %s"
+msgstr "El pedido %s ha sido bloqueado a causa de: %s"
+
+#. module: sale_order_lock
+#: code:addons/sale_order_lock/models/sale_order.py:161
+#, python-format
+msgid "Order %s has been unlocked"
+msgstr "EL pedido %s ha sido desbloqueado"
+
+#. module: sale_order_lock
+#: model:ir.model,name:sale_order_lock.model_sale_order
+msgid "Quotation"
+msgstr "Presupuesto"
+
+#. module: sale_order_lock
+#: model:ir.ui.view,arch_db:sale_order_lock.res_partner_view_risk_add_check_lock
+#: model:ir.ui.view,arch_db:sale_order_lock.sale_order_form_locked
+msgid "Recompute locks"
+msgstr "Recompute locks"
+
+#. module: sale_order_lock
+#: code:addons/sale_order_lock/models/sale_order.py:147
+#, python-format
+msgid "Risk"
+msgstr "Risk"
+
+#. module: sale_order_lock
+#: code:addons/sale_order_lock/models/sale_order.py:202
+#, python-format
+msgid "This order can not be cancelled becaused is locked"
+msgstr "This order can not be cancelled becaused is locked"
+
+#. module: sale_order_lock
+#: code:addons/sale_order_lock/models/sale_order.py:211
+#, python-format
+msgid "This order can not be confirmed becaused is locked"
+msgstr "This order can not be confirmed becaused is locked"
+
+#. module: sale_order_lock
+#: code:addons/sale_order_lock/models/sale_order.py:220
+#, python-format
+msgid "This order can not be finished becaused is locked"
+msgstr "This order can not be finished becaused is locked"
+
+#. module: sale_order_lock
+#: code:addons/sale_order_lock/models/sale_order.py:193
+#, python-format
+msgid "This order can not be in draft becaused is locked"
+msgstr "This order can not be in draft becaused is locked"
+
+#. module: sale_order_lock
+#: code:addons/sale_order_lock/models/sale_order.py:238
+#, python-format
+msgid "This order can not be invoiced becaused is locked"
+msgstr "This order can not be invoiced becaused is locked"
+
+#. module: sale_order_lock
+#: code:addons/sale_order_lock/models/sale_order.py:229
+#, python-format
+msgid "This order can not be unlocked becaused is locked"
+msgstr "This order can not be unlocked becaused is locked"
+
+#. module: sale_order_lock
+#: model:ir.model,name:sale_order_lock.model_sale_order_type
+msgid "Type of sale order"
+msgstr "Tipo de pedido de venta"
+
+#. module: sale_order_lock
+#: code:addons/sale_order_lock/models/sale_order.py:149
+#, python-format
+msgid "Unpaid"
+msgstr "Unpaid"
+

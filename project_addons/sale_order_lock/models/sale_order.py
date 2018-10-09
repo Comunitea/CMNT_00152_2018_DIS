@@ -158,7 +158,7 @@ class SaleOrder(models.Model):
 
             # Send message of order was unlocked
             elif order_was_locked and not locked:
-                body = _("Order %s has been unlocked by:" % order.name)
+                body = _("Order %s has been unlocked" % order.name)
                 order.sudo().message_post(body=body,
                                           partner_ids=[(4, pids[0])],
                                           subtype='mail.mt_note')
