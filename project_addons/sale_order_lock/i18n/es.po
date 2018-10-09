@@ -22,6 +22,11 @@ msgid "Avoid locks"
 msgstr "Evitar bloqueos"
 
 #. module: sale_order_lock
+#: model:ir.model.fields,field_description:sale_order_lock.field_sale_order_lock_allow_edit
+msgid "Can i unlock?"
+msgstr "¿Puedo forzar desbloqueo?"
+
+#. module: sale_order_lock
 #: model:ir.actions.server,name:sale_order_lock.ir_cron_unlock_sale_oorder_ir_actions_server
 #: model:ir.cron,cron_name:sale_order_lock.ir_cron_unlock_sale_oorder
 #: model:ir.cron,name:sale_order_lock.ir_cron_unlock_sale_oorder
@@ -57,6 +62,12 @@ msgstr "BLOQUEADO"
 #: model:ir.ui.view,arch_db:sale_order_lock.sale_order_form_locked
 msgid "Lock Control"
 msgstr "Control bloqueo"
+
+#. module: sale_order_lock
+#: model:ir.model.fields,field_description:sale_order_lock.field_res_partner_lock_orders
+#: model:ir.model.fields,field_description:sale_order_lock.field_res_users_lock_orders
+msgid "Lock Orders"
+msgstr "Bloquear Pedidos"
 
 #. module: sale_order_lock
 #: model:ir.ui.view,arch_db:sale_order_lock.sale_order_form_locked
@@ -105,7 +116,7 @@ msgstr "Bloqueado por no llegar a portes"
 #: model:ir.model.fields,field_description:sale_order_lock.field_sale_order_unpaid_lock
 #: model:ir.ui.view,arch_db:sale_order_lock.view_sales_order_filter_locked
 msgid "Locked by unpaid"
-msgstr "Bloqueasdo por inpago"
+msgstr "Bloqueado por impago"
 
 #. module: sale_order_lock
 #: model:ir.ui.view,arch_db:sale_order_lock.res_partner_view_risk_add_check_lock
@@ -133,6 +144,7 @@ msgstr "Margen"
 #: model:ir.model.fields,field_description:sale_order_lock.field_res_users_min_amount_order
 msgid "Min Amount Order"
 msgstr "Importe mínimo pedido"
+msgstr "Margen"
 
 #. module: sale_order_lock
 #: model:ir.model.fields,field_description:sale_order_lock.field_operating_unit_min_margin
@@ -177,7 +189,7 @@ msgstr "El pedido %s ha sido bloqueado a causa de: %s"
 #: code:addons/sale_order_lock/models/sale_order.py:181
 #, python-format
 msgid "Order %s has been unlocked"
-msgstr "EL pedido %s ha sido desbloqueado"
+msgstr "El pedido %s ha sido desbloqueado"
 
 #. module: sale_order_lock
 #: model:ir.model,name:sale_order_lock.model_sale_order
