@@ -23,13 +23,15 @@ class ResPartner(models.Model):
         """
         Get orders to recompute the lock checkboxes
         """
+        sale_objs = self.env['sale.order']
         for partner in self:
             domain = [
                 ('partner_id', 'child_of',
                  partner.commercial_partner_id.id),
                 ('state', 'not in', ['done, cancel'])
             ]
-            sale_objs = self.env['sale.order'].search(domain)
+            sale_objs += self.env['sale.order'].search(domain)
+        if sale_objs:
             sale_objs.check_locks()
 
     @api.multi

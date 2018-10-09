@@ -48,25 +48,33 @@ class SaleOrder(models.Model):
 
     @api.multi
     def check_risk_lock(self):
+        """
+        Check if risk, but no because of any unpaid
+        """
         self.ensure_one()
         res = False
         if self.partner_id.avoid_locks:
             return False
 
-        if self.partner_id.risk_invoice_unpaid_include <= \
-                self.partner_id.risk_invoice_unpaid_limit and \
+        if (not self.partner_id.risk_invoice_unpaid_include or
+                self.partner_id.risk_invoice_unpaid <=
+                self.partner_id.risk_invoice_unpaid_limit) and \
                 self.partner_id.risk_exception:
             res = True
         return res
 
     @api.multi
     def check_unpaid_lock(self):
+        """
+        Check only if customer have unpaids
+        """
         self.ensure_one()
         res = False
         if self.partner_id.avoid_locks:
             return False
 
-        if self.partner_id.risk_invoice_unpaid_include > \
+        if self.partner_id.risk_invoice_unpaid_include \
+                and self.partner_id.risk_invoice_unpaid > \
                 self.partner_id.risk_invoice_unpaid_limit:
             res = True
         return res
@@ -108,6 +116,7 @@ class SaleOrder(models.Model):
             return
 
         for order in self:
+            order_was_locked = order.locked
             # Check if order have any lock
             risk_lock = order.check_risk_lock()
             unpaid_lock = order.check_unpaid_lock()
@@ -128,27 +137,43 @@ class SaleOrder(models.Model):
             ctx.update(skip_check_locks=True)
             order.with_context(ctx).write(vals)
 
+            # SEND NOTIFICATION IF ANY CHANGE IN LOCK STATUS
+            pids = [order.env.user.partner_id.id]
+
+            # Send message of order was locked
+            if not order_was_locked and locked:
+                reason_list = []
+                if risk_lock:
+                    reason_list += _('Risk')
+                if unpaid_lock:
+                    reason_list += _('Unpaid')
+                if margin_lock:
+                    reason_list += _('Margin')
+                if shipping_lock:
+                    reason_list += _('No reach shipping min')
+
+                reasons = ','.join(reason_list)
+                body = _("Order %s has been locked because of: %s" %
+                         order.name, reasons)
+
+            # Send message of order was unlocked
+            elif order_was_locked and not locked:
+                body = _("Order %s has been unlocked by:" % order.name)
+                order.sudo().message_post(body=body,
+                                          partner_ids=[(4, pids[0])],
+                                          subtype='mail.mt_note')
+
+
     @api.model
     def create(self, vals):
         res = super(SaleOrder, self).create(vals)
         res.check_locks()
-
-        # Send message of lock and reason
-        if res.locked:  # and not notificated
-            print("TODO SEND NOTIFICATION OF LOCK, QUIZÁ EN CHECK LOCK PARA \
-                QUE SE MANDE SIEMPRE??")
         return res
 
     @api.multi
     def write(self, vals):
         res = super(SaleOrder, self).write(vals)
         self.check_locks()
-
-        for order in self:
-            # Send message of lock and reason
-            if order.locked:  # and not notificated
-                print("TODO SEND NOTIFICATION OF LOCK, QUIZÁ EN CHECK LOCK PARA \
-                    QUE SE MANDE SIEMPRE??")
         return res
 
     @api.model

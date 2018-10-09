@@ -22,6 +22,7 @@
                             <field name="locked"/>
                             <field name="lock_allow_edit" invisible="0"/>
                             <field name="force_unlock" attrs="{'readonly': [('lock_allow_edit', '=', False)]}"/>
+                            <button name="check_locks" class="oe_link" type="object" string="Recompute locks"/>
                         </group>
                         <group string="Lock Reasons">
                             <field name="risk_lock"/>
