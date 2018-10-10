@@ -20,7 +20,7 @@ class OperatingUnit(models.Model):
         """
         for op in self:
             domain = [
-                ('team_id.operating_unit_id', '=', op.id),
+                ('type_id.operating_unit_id', '=', op.id),
                 ('state', 'not in', ['done, cancel'])
             ]
             sale_objs = self.env['sale.order'].search(domain)
