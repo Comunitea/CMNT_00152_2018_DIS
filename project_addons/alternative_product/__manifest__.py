@@ -12,8 +12,8 @@
     'application': False,
     'installable': True,
     'depends': [
-        'website_sale'
-
+        'website_sale',
+        'product_catalogue_ref'
     ],
     'data': [
         'views/sale_order.xml',
