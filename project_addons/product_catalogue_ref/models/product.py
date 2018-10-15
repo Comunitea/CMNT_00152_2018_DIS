@@ -60,11 +60,11 @@ class ProductProduct(models.Model):
     catalogue_code = fields.Char('Catalogue Reference', index=True)
     ean13_str = fields.Char('Ean13 char', compute="_get_ean13_char", store=True)
 
-    @api.model
-    def name_search(self, name='', args=None, operator='ilike', limit=100):
-        if not args:
-            args = []
-
-        if name and operator in ['=', 'ilike', '=ilike', 'like', '=like']:
-            args = args + ['|', ('catalogue_code', '=', name), ('ean13_ids.name', 'in', name)]
-        return super(ProductProduct, self).name_search(name=name, args=args, operator=operator, limit=limit)
+    # @api.model
+    # def name_search(self, name='', args=None, operator='ilike', limit=100):
+    #     if not args:
+    #         args = []
+    #
+    #     if name and operator in ['=', 'ilike', '=ilike', 'like', '=like']:
+    #         args = args + ['|', ('catalogue_code', '=', name), ('ean13_ids.name', 'in', name)]
+    #     return super(ProductProduct, self).name_search(name=name, args=args, operator=operator, limit=limit)
