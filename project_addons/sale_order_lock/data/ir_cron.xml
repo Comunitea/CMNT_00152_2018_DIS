@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <record id="ir_cron_unlock_sale_oorder" model="ir.cron">
+            <field name="name">Check to Unlock Sale Orders</field>
+            <field name="interval_number">24</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="code">model.check_unlock_sale_orders()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="priority">1</field>
+        </record>
+</odoo>

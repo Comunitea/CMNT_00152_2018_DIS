@@ -9,7 +9,7 @@ class PurchaseOrder(models.Model):
 
     @api.multi
     def _get_destination_location(self):
-        import ipdb; ipdb.set_trace()
+
         res = super(PurchaseOrder, self)._get_destination_location()
         destination_location = self._context.get('destination_location', False)
         if destination_location and not self.dest_address_id and \

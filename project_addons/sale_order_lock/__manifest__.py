@@ -17,6 +17,7 @@
         'sale_margin',
         'sale_order_margin_percent',
         'operating_unit',
+        'sale_order_type_operating_unit',
         'delivery'
     ],
     'data': [
@@ -24,5 +25,6 @@
         'views/res_partner_view.xml',
         'views/sale_order_view.xml',
         'views/operating_unit_view.xml',
+        'data/ir_cron.xml',
     ],
 }

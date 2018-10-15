@@ -7,11 +7,24 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
 
+          <!--   <header position="inside">
+                <button name="check_locks" icon="fa-search" type="object" string="Recompute locks"/>
+                <button name="force_unlock_btn" icon="fa-lock" type="object" string="Force unlock" groups="sale_order_lock.group_lock_manager" attrs="{'invisible': [('force_unlock', '=', True)]}"/>
+                <button name="unforce_unlock_btn" icon="fa-unlock" type="object" string="No force unlock" groups="sale_order_lock.group_lock_manager" attrs="{'invisible': [('force_unlock', '=', False)]}"/>
+            </header>
+ -->
+
             <!-- Add the locked text -->
             <xpath expr="//div[hasclass('oe_title')]/h1" position="after">
                 <h1 style="color:red;" attrs="{'invisible': ['|', ('locked', '=', False), ('force_unlock', '=', True)]}">
                     LOCKED
                 </h1>
+                <h1 style="color:blue;" attrs="{'invisible': ['|', ('locked', '=', False), ('force_unlock', '=', False)]}">
+                    UNLOCKED FORCED
+                </h1>
+                <button name="check_locks" icon="fa-search" type="object" string="Recompute locks"/>
+                <button name="force_unlock_btn" icon="fa-unlock" type="object" string="Force unlock" groups="sale_order_lock.group_lock_manager" attrs="{'invisible': [('force_unlock', '=', True)]}"/>
+                <button name="unforce_unlock_btn" icon="fa-lock" type="object" string="No force unlock" groups="sale_order_lock.group_lock_manager" attrs="{'invisible': [('force_unlock', '=', False)]}"/>
             </xpath>
 
             <!-- Add locks page -->
@@ -20,13 +33,16 @@
                     <group>
                         <group string="Lock Control">
                             <field name="locked"/>
-                            <field name="lock_allow_edit" invisible="0"/>
-                            <field name="force_unlock" attrs="{'readonly': [('lock_allow_edit', '=', False)]}"/>
+<!--                             <field name="lock_allow_edit" invisible="0"/>
+ -->                            <field name="force_unlock"/>
+                            
                         </group>
                         <group string="Lock Reasons">
                             <field name="risk_lock"/>
+                            <field name="unpaid_lock"/>
                             <field name="margin_lock"/>
                             <field name="shipping_lock"/>
+                            <field name="amount_lock"/>
                         </group>
                     </group>
                 </page> 
@@ -71,8 +87,10 @@
                 <filter string="Locked" name="locked" domain="[('locked','=',True)]"/>
                 <separator/>
                 <filter string="Locked by risk" name="locked_by_risk" domain="[('risk_lock','=',True)]"/>
+                <filter string="Locked by unpaid" name="locked_by_unpaid" domain="[('unpaid_lock','=',True)]"/>
                 <filter string="Locked by margin" name="locked_by_margin" domain="[('margin_lock','=',True)]"/>
                 <filter string="Locked by shipping" name="locked_by_shipping" domain="[('shipping_lock','=',True)]"/>
+                <filter string="Locked by minimum amount" name="locked_by_amount" domain="[('amount_lock','=',True)]"/>
             </filter>
         </field>
     </record>

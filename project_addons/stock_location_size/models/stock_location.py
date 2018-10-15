@@ -13,7 +13,7 @@ class StockLocation(models.Model):
 
     @api.multi
     def _get_volume_free(self):
-        import ipdb; ipdb.set_trace()
+
         product_uom = self.env['product.uom']
         categ_id = self.env.ref('product.product_uom_categ_vol').id
         ref_unit = product_uom.search([('category_id', '=', categ_id), ('uom_type', '=', 'reference')])

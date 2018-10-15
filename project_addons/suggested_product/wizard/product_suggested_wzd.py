@@ -64,7 +64,7 @@ class ProductSuggestedWzd(models.TransientModel):
 
 
     def action_add_suggested_products(self):
-        import ipdb; ipdb.set_trace()
+
         self.selected = True
 
     @api.model
