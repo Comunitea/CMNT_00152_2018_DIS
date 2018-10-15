@@ -144,7 +144,6 @@ msgstr "Margen"
 #: model:ir.model.fields,field_description:sale_order_lock.field_res_users_min_amount_order
 msgid "Min Amount Order"
 msgstr "Importe mínimo pedido"
-msgstr "Margen"
 
 #. module: sale_order_lock
 #: model:ir.model.fields,field_description:sale_order_lock.field_operating_unit_min_margin
