@@ -9,9 +9,11 @@ class PurchaseOrder(models.Model):
 
     @api.multi
     def _get_destination_location(self):
+
         res = super(PurchaseOrder, self)._get_destination_location()
         destination_location = self._context.get('destination_location', False)
-        if destination_location and not self.dest_address_id:
+        if destination_location and not self.dest_address_id and \
+                destination_location in self.env['stock.location'].search_read([('id','child_of',res)]):
             return destination_location.id
         return res
 
@@ -22,7 +24,7 @@ class PurchaseOrderLine(models.Model):
     @api.multi
     def _prepare_stock_moves(self, picking):
         destination_location = self.product_id.property_stock_location or self.product_id.categ_id.property_stock_location or False
-        if self.order_id.picking_type_id.code == 'incoming' and destination_location:
+        if destination_location and self.order_id.picking_type_id.code == 'incoming':
             ctx = self._context.copy()
             ctx.update({'destination_location': destination_location})
             self = self.with_context(ctx)

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="view_alternative_product_ids" model="ir.ui.view">
-            <field name="name">view_product_alternative</field>
-            <field name="model">product.alternative.wzd</field>
+        <record id="view_accessory_product_ids" model="ir.ui.view">
+            <field name="name">view_product_accessory</field>
+            <field name="model">product.accessory.wzd</field>
             <field name="arch" type="xml">
                 <form string="Product">
                     <h2>
@@ -34,7 +34,7 @@
                     </div>
 
                     <group>
-                        <field name="alternative_product_ids" readonly="1" mode="kanban" nolabel="1" options="{'no_create': True}">
+                        <field name="accessory_product_ids" readonly="1" mode="kanban" nolabel="1" options="{'no_create': True}">
                             <kanban create="0" delete="0">
                                 <field name="id"/>
                                 <field name="p_id"/>

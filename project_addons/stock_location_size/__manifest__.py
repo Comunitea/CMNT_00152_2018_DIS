@@ -1,8 +1,8 @@
 # © 2018 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
-    'name': 'Product Stock Location',
-    'summary': 'Add product stock location',
+    'name': 'Stock Location Size and type',
+    'summary': 'Add volumetrics, types ... to sstock location',
     'version': '11.0.1.0.0',
     'category': 'Product',
     'website': 'comunitea.com',
@@ -11,10 +11,13 @@
     'application': False,
     'installable': True,
     'depends': [
-        'stock', 'purchase'
+        'stock'
 
     ],
     'data': [
-        'views/product_view.xml',
+        'data/data.xml',
+        'views/stock_location.xml',
+        'views/stock_quant.xml',
+        'views/product_template.xml',
     ],
 }
