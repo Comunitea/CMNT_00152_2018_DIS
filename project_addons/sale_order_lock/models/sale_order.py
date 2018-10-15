@@ -97,7 +97,8 @@ class SaleOrder(models.Model):
     def check_shipping_lock(self):
         self.ensure_one()
         res = False
-        if self.partner_id.avoid_locks:
+        delivery_lines = self.order_line.filtered('is_delivery')
+        if self.partner_id.avoid_locks or delivery_lines:
             return False
 
         if self.partner_id.min_no_shipping and \
