@@ -7,11 +7,11 @@ from odoo.exceptions import ValidationError
 from odoo.addons import decimal_precision as dp
 
 
-class ProductAlternativeVariantWzd(models.TransientModel):
+class ProductAccessoryVariantWzd(models.TransientModel):
 
-    _name = 'product.alternative.variant.wzd'
+    _name = 'product.accessory.variant.wzd'
 
-    wzd_id = fields.Many2one('product.alternative.wzd')
+    wzd_id = fields.Many2one('product.accessory.wzd')
     name = fields.Char('Display name', readonly=True)
     product_id = fields.Many2one('product.product', string="Product", readonly=True)
     uom_id = fields.Many2one('product.uom', string='uom_id', readonly=True)
@@ -40,13 +40,13 @@ class ProductAlternativeVariantWzd(models.TransientModel):
             ol.product_uom_qty = product_uom_qty
             ol.product_uom_change()
 
-class ProductAlternativeWzd(models.TransientModel):
+class ProductAccessoryWzd(models.TransientModel):
 
-    _name = 'product.alternative.wzd'
+    _name = 'product.accessory.wzd'
 
     sale_order_line_id = fields.Many2one('sale.order.line', string='Sale order line')
     product_id = fields.Many2one('product.product', string='Product')
-    alternative_product_ids = fields.Many2many('product.alternative.variant.wzd', string='Alternative product', readonly=True)
+    accessory_product_ids = fields.Many2many('product.accessory.variant.wzd', string='accessory product', readonly=True)
     default_code = fields.Char(related='product_id.default_code', readonly="1")
     uom_id = fields.Many2one('product.uom', related='product_id.uom_id')
     lst_price = fields.Float('Public Price', digits=dp.get_precision('Product Price'), readonly=True)
@@ -62,28 +62,28 @@ class ProductAlternativeWzd(models.TransientModel):
     def get_values(self, product_id=False):
         if not product_id:
             return False
-        product_alternative_ids = []
+        product_accessory_ids = []
         line_id = self.env['sale.order.line'].browse(self._context.get('default_sale_order_line_id'))
-        alternative_ids = product_id.alternative_product_ids.mapped('product_variant_ids')
+        accessory_ids = product_id.accessory_product_ids.mapped('product_variant_ids')
         return {'p_id': product_id.id,
                 'product_id': product_id.id,
                 'lst_price': line_id.price_unit,
                 'sale_order_line_id' : self._context.get('default_sale_order_line_id'),
-                'alternative_product_ids': [(0, 0, {'product_id': alternative.id,
-                                                    'display_name': alternative.display_name,
-                                                    'default_code': alternative.default_code,
-                                                    'p_id': alternative.id,
+                'accessory_product_ids': [(0, 0, {'product_id': accessory.id,
+                                                    'display_name': accessory.display_name,
+                                                    'default_code': accessory.default_code,
+                                                    'p_id': accessory.id,
                                                     'wzd_id': self.id,
-                                                    'qty_available': alternative.qty_available,
+                                                    'qty_available': accessory.qty_available,
                                                     'currency_id': line_id.currency_id.id,
-                                                    'uom_id': alternative.uom_id.id,
-                                                    'lst_price': line_id.get_price_for_product(alternative)
-                                                    }) for alternative in alternative_ids]
+                                                    'uom_id': accessory.uom_id.id,
+                                                    'lst_price': line_id.get_price_for_product(accessory)
+                                                    }) for accessory in accessory_ids]
                 }
 
     @api.model
     def default_get(self, fields):
-        res = super(ProductAlternativeWzd, self).default_get(fields)
+        res = super(ProductAccessoryWzd, self).default_get(fields)
         product_id = self.env['product.product'].browse(self._context.get('default_product_id'))
         res.update(self.get_values(product_id))
         print (res)

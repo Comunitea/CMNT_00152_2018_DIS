@@ -2,7 +2,7 @@
 # © 2018 Comunitea - Kiko Sánchez <kiko@comunitea.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
-    'name': 'Alternative product in sale orders',
+    'name': 'accessory product in sale orders',
     'summary': 'Add kanban view in sale orders',
     'version': '11.0.1.0.0',
     'category': 'partner',
@@ -12,7 +12,7 @@
     'application': False,
     'installable': True,
     'depends': [
-        'website_sale'
+        'website_sale',
 
     ],
     'data': [

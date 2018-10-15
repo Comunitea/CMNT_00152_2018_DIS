@@ -3,10 +3,10 @@
    :alt: License: AGPL-3
 
 ======================
-Product Stock Location
+Stock Location Size
 ======================
 
-This module adds stock location in products.
+This module adds stock location leng, width, size and weight.
 Default stock location for any move to stock from purchase orders
 
 

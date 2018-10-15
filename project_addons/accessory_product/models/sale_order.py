@@ -9,17 +9,17 @@ class SaleOrder(models.Model):
 
     _inherit = "sale.order.line"
 
-    def action_show_alternative_products(self):
+    def action_show_accessory_products(self):
         self.ensure_one()
-        view = self.env.ref('alternative_product.view_alternative_product_ids')
+        view = self.env.ref('accessory_product.view_accessory_product_ids')
         if not self.product_id:
             return
         action = {
-            'name': _('Alternative products'),
+            'name': _('accessory products'),
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',
-            'res_model': 'product.alternative.wzd',
+            'res_model': 'product.accessory.wzd',
             'views': [(view.id, 'form')],
             'view_id': view.id,
             'target': 'new',
