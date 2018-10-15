@@ -106,6 +106,12 @@ class SaleOrder(models.Model):
             res = True
         return res
 
+    def _create_delivery_line(self, carrier, price_unit):
+        res = super(SaleOrder, self)._create_delivery_line(carrier, price_unit)
+        shipping_lock = self.check_shipping_lock()
+        self.write({'shipping_lock': shipping_lock})
+        return res
+
     @api.multi
     def check_amount_lock(self):
         self.ensure_one()
