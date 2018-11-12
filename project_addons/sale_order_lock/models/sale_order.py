@@ -89,7 +89,7 @@ class SaleOrder(models.Model):
 
         if self.type_id and self.type_id.operating_unit_id:
             min_margin = self.type_id.operating_unit_id.min_margin
-            if min_margin and self.margin < min_margin:
+            if min_margin and self.percent < min_margin:
                 res = True
         return res
 
