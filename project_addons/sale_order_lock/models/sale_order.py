@@ -179,12 +179,12 @@ class SaleOrder(models.Model):
                 reasons = ', '.join(reason_list)
                 if not reason_list:
                     reasons = _('Unknow')
-                body = _("Order %s has been locked because of: %s" %
-                         (order.name, reasons))
+                body = _("Order %s has been locked because of: %s") %\
+                         (order.name, reasons)
 
             # Send message of order was unlocked
             elif order_was_locked and not locked:
-                body = _("Order %s has been unlocked" % order.name)
+                body = _("Order %s has been unlocked") % order.name
 
             if body:
                 order.sudo().message_post(body=body,
@@ -223,7 +223,7 @@ class SaleOrder(models.Model):
         pids = [self.env.user.partner_id.id]
         user_name = self.env['res.users'].search([('id', '=', self._uid)]).name
         # Send message of order was unlocked
-        body = _("Unlock forced applied by %s" % user_name)
+        body = _("Unlock forced applied by %s") % (user_name)
         self.sudo().message_post(body=body,
                                     partner_ids=[(4, pids[0])],
                                     subtype='mail.mt_note')
@@ -235,7 +235,7 @@ class SaleOrder(models.Model):
         pids = [self.env.user.partner_id.id]
         user_name = self.env['res.users'].search([('id', '=', self._uid)]).name
         # Send message of order was unlocked
-        body = _("No force unlock applied by %s" % user_name)
+        body = _("No force unlock applied by %s") % user_name
         self.sudo().message_post(body=body,
                                     partner_ids=[(4, pids[0])],
                                     subtype='mail.mt_note')
