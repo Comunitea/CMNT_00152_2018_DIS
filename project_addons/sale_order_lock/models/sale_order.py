@@ -130,7 +130,6 @@ class SaleOrder(models.Model):
         Check if a sale order must be blocked, if any of the locks checks is
         setted. It also write the value for the individual lock checks
         """
-
         # Avoid infinity recursion because of the write method.
         if self._context.get('skip_check_locks', False):
             return
@@ -221,11 +220,25 @@ class SaleOrder(models.Model):
     def force_unlock_btn(self):
         self.ensure_one()
         self.write({'force_unlock': True})
+        pids = [self.env.user.partner_id.id]
+        user_name = self.env['res.users'].search([('id', '=', self._uid)]).name
+        # Send message of order was unlocked
+        body = _("Unlock forced applied by %s" % user_name)
+        self.sudo().message_post(body=body,
+                                    partner_ids=[(4, pids[0])],
+                                    subtype='mail.mt_note')
 
     @api.multi
     def unforce_unlock_btn(self):
         self.ensure_one()
         self.write({'force_unlock': False})
+        pids = [self.env.user.partner_id.id]
+        user_name = self.env['res.users'].search([('id', '=', self._uid)]).name
+        # Send message of order was unlocked
+        body = _("No force unlock applied by %s" % user_name)
+        self.sudo().message_post(body=body,
+                                    partner_ids=[(4, pids[0])],
+                                    subtype='mail.mt_note')
 
     # *********************** LOCKING FUNCTIONS *******************************
     @api.multi

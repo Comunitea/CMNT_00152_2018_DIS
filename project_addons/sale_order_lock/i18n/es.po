@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-09 16:32+0000\n"
-"PO-Revision-Date: 2018-10-09 16:32+0000\n"
+"POT-Creation-Date: 2018-11-13 13:31+0000\n"
+"PO-Revision-Date: 2018-11-13 13:31+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,11 +20,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_order_lock.field_res_users_avoid_locks
 msgid "Avoid locks"
 msgstr "Evitar bloqueos"
-
-#. module: sale_order_lock
-#: model:ir.model.fields,field_description:sale_order_lock.field_sale_order_lock_allow_edit
-msgid "Can i unlock?"
-msgstr "¿Puedo forzar desbloqueo?"
 
 #. module: sale_order_lock
 #: model:ir.actions.server,name:sale_order_lock.ir_cron_unlock_sale_oorder_ir_actions_server
@@ -62,12 +57,6 @@ msgstr "BLOQUEADO"
 #: model:ir.ui.view,arch_db:sale_order_lock.sale_order_form_locked
 msgid "Lock Control"
 msgstr "Control bloqueo"
-
-#. module: sale_order_lock
-#: model:ir.model.fields,field_description:sale_order_lock.field_res_partner_lock_orders
-#: model:ir.model.fields,field_description:sale_order_lock.field_res_users_lock_orders
-msgid "Lock Orders"
-msgstr "Bloquear Pedidos"
 
 #. module: sale_order_lock
 #: model:ir.ui.view,arch_db:sale_order_lock.sale_order_form_locked
@@ -134,7 +123,7 @@ msgid "Manage Locks in Sales Orders"
 msgstr "Gestionar bloqueos en pedidos de venta"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:167
+#: code:addons/sale_order_lock/models/sale_order.py:173
 #, python-format
 msgid "Margin"
 msgstr "Margen"
@@ -143,7 +132,7 @@ msgstr "Margen"
 #: model:ir.model.fields,field_description:sale_order_lock.field_res_partner_min_amount_order
 #: model:ir.model.fields,field_description:sale_order_lock.field_res_users_min_amount_order
 msgid "Min Amount Order"
-msgstr "Importe mínimo pedido"
+msgstr "Importe mínimo pedidosgstr \"Margen"
 
 #. module: sale_order_lock
 #: model:ir.model.fields,field_description:sale_order_lock.field_operating_unit_min_margin
@@ -162,13 +151,19 @@ msgid "No force unlock"
 msgstr "No forzar desbloqueo"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:171
+#: code:addons/sale_order_lock/models/sale_order.py:238
+#, python-format
+msgid "No force unlock applied by %s"
+msgstr "No forzar desbloque establecido por %s"
+
+#. module: sale_order_lock
+#: code:addons/sale_order_lock/models/sale_order.py:177
 #, python-format
 msgid "No reach min amount order"
 msgstr "No se alcanza el importe mínimo del pedido"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:169
+#: code:addons/sale_order_lock/models/sale_order.py:175
 #, python-format
 msgid "No reach shipping min"
 msgstr "No se alcanza el mínimo sin portes"
@@ -179,13 +174,13 @@ msgid "Operating Unit"
 msgstr "Unidad operacional"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:177
+#: code:addons/sale_order_lock/models/sale_order.py:183
 #, python-format
 msgid "Order %s has been locked because of: %s"
 msgstr "El pedido %s ha sido bloqueado a causa de: %s"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:181
+#: code:addons/sale_order_lock/models/sale_order.py:187
 #, python-format
 msgid "Order %s has been unlocked"
 msgstr "El pedido %s ha sido desbloqueado"
@@ -202,43 +197,43 @@ msgid "Recompute locks"
 msgstr "Recalcular bloqueos"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:163
+#: code:addons/sale_order_lock/models/sale_order.py:169
 #, python-format
 msgid "Risk"
 msgstr "Riesgo"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:237
+#: code:addons/sale_order_lock/models/sale_order.py:257
 #, python-format
 msgid "This order can not be cancelled becaused is locked"
 msgstr "Este pedido no puede ser cancelado porque está bloqueado"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:246
+#: code:addons/sale_order_lock/models/sale_order.py:266
 #, python-format
 msgid "This order can not be confirmed becaused is locked"
 msgstr "Este pedido no puede ser confirmado porque está bloqueado"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:255
+#: code:addons/sale_order_lock/models/sale_order.py:275
 #, python-format
 msgid "This order can not be finished becaused is locked"
 msgstr "Este pedido no puede ser finalizado porque está bloqueado"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:228
+#: code:addons/sale_order_lock/models/sale_order.py:248
 #, python-format
 msgid "This order can not be in draft becaused is locked"
 msgstr "No se puede volver a borrador este pedido porque está cancelado"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:273
+#: code:addons/sale_order_lock/models/sale_order.py:293
 #, python-format
 msgid "This order can not be invoiced becaused is locked"
 msgstr "Este pedido no se puede facturar porque está cancelado"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:264
+#: code:addons/sale_order_lock/models/sale_order.py:284
 #, python-format
 msgid "This order can not be unlocked becaused is locked"
 msgstr "Este pedido no se puede volver a a abrir porque está bloqueado"
@@ -254,13 +249,19 @@ msgid "UNLOCKED FORCED"
 msgstr "DESBLOQUEO FORZADO"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:175
+#: code:addons/sale_order_lock/models/sale_order.py:181
 #, python-format
 msgid "Unknow"
 msgstr "Desconocido"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:165
+#: code:addons/sale_order_lock/models/sale_order.py:226
+#, python-format
+msgid "Unlock forced applied by %s"
+msgstr "Forzar desbloqueo establecido por %s"
+
+#. module: sale_order_lock
+#: code:addons/sale_order_lock/models/sale_order.py:171
 #, python-format
 msgid "Unpaid"
 msgstr "Impagos"
