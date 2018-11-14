@@ -1,0 +1,33 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* partner_variable_decimals
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-11-14 11:26+0000\n"
+"PO-Revision-Date: 2018-11-14 11:26+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: partner_variable_decimals
+#: model:ir.model,name:partner_variable_decimals.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: partner_variable_decimals
+#: model:ir.model.fields,field_description:partner_variable_decimals.field_res_partner_decimals
+#: model:ir.model.fields,field_description:partner_variable_decimals.field_res_users_decimals
+msgid "Document Decimals"
+msgstr "Decimales en documentos"
+
+#. module: partner_variable_decimals
+#: model:ir.model,name:partner_variable_decimals.model_ir_qweb_field_float
+msgid "ir.qweb.field.float"
+msgstr "ir.qweb.field.float"
+
