@@ -78,4 +78,4 @@ class ProductProduct(models.Model):
             res2 = products.name_get()
         if res2:
             res.extend(res2)
-        return
+        return res
