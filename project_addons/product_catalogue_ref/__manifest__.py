@@ -11,7 +11,7 @@
     'application': False,
     'installable': True,
     'depends': [
-        'product', 'product_multi_ean'
+        'product', 'product_multi_ean', 'sale'
 
     ],
     'data': [

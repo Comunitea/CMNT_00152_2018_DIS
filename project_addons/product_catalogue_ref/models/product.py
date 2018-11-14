@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import models, fields, api, _
-
+from odoo.osv import expression
 
 class ProductTemplate(models.Model):
 
@@ -60,11 +60,22 @@ class ProductProduct(models.Model):
     catalogue_code = fields.Char('Catalogue Reference', index=True)
     ean13_str = fields.Char('Ean13 char', compute="_get_ean13_char", store=True)
 
-    # @api.model
-    # def name_search(self, name='', args=None, operator='ilike', limit=100):
-    #     if not args:
-    #         args = []
-    #
-    #     if name and operator in ['=', 'ilike', '=ilike', 'like', '=like']:
-    #         args = args + ['|', ('catalogue_code', '=', name), ('ean13_ids.name', 'in', name)]
-    #     return super(ProductProduct, self).name_search(name=name, args=args, operator=operator, limit=limit)
+    @api.model
+    def name_search(self, name='', args=None, operator='ilike', limit=100):
+        """
+        Search products also by cataloge ref and in the ean13 codes
+        """
+        if not args:
+            args = []
+        my_domain = []
+        res2 = []
+        res = super(ProductProduct, self).name_search(name=name, args=args, operator=operator, limit=limit)
+
+        if name and operator in ['=', 'ilike', '=ilike', 'like', '=like']:
+            my_domain = ['|', ('catalogue_code', operator, name), ('ean13_str', operator, name)]
+        if my_domain:
+            products = self.search(my_domain)
+            res2 = products.name_get()
+        if res2:
+            res.extend(res2)
+        return
