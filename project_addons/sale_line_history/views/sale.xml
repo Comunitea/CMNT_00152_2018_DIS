@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_add_line_history" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_invoice']" position="before">
+                <button type="object" name="action_view_line_history" class="oe_stat_button"
+                        icon="fa-history" attrs="{'invisible': [('partner_id', '=', False)]}" groups="base.group_user">
+                    <span>Sale history</span>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_order_line_history_view_tree" model="ir.ui.view">
+        <field name="name">sale.order.line.view.tree</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="product_id"/>
+                <field name="date_order"/>
+                <field name="product_uom_qty"/>
+                <field name="price_unit"/>
+                <button name="%(sale_order_line_history_add_to_order_view_action)d"
+                        type="action" string="Add to order" icon="fa-cart-plus" invisible="context.get('order_id', False) == False"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
