@@ -7,8 +7,10 @@ from odoo.exceptions import ValidationError
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    category_id = fields.Many2one(related='product_id.category_id')
-    uom_factor = fields.Float(related='product_id.min_sale_unit_id.factor')
+    category_id = fields.Many2one(related='product_id.category_id',
+                                  readonly=True)
+    uom_factor = fields.Float(related='product_id.min_sale_unit_id.factor',
+                              readonly=True)
 
     def check_min_sale_unit(self, res):
         #import ipdb; ipdb.set_trace()

@@ -29,7 +29,7 @@ class ProductTemplate(models.Model):
 
     catalogue_code = fields.Char(
         'Catalogue Reference', compute='_compute_catalogue_code',
-        inverse='_set_default_code', store=True)
+        inverse='_set_catalogue_code', store=True)
 
     ean13_str = fields.Char('Ean13 char', compute="_get_ean13_char", store=True)
 
@@ -72,7 +72,8 @@ class ProductProduct(models.Model):
         res = super(ProductProduct, self).name_search(name=name, args=args, operator=operator, limit=limit)
 
         if name and operator in ['=', 'ilike', '=ilike', 'like', '=like']:
-            my_domain = ['|', ('catalogue_code', operator, name), ('ean13_str', operator, name)]
+            my_domain = ['|', ('catalogue_code', operator, name),
+                            ('ean13_str', operator, name)]
         if my_domain:
             products = self.search(my_domain)
             res2 = products.name_get()
