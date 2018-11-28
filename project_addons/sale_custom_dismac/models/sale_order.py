@@ -29,6 +29,10 @@ class SaleOrder(models.Model):
         """
         Look at the partner for changing the invoice policy
         """
-        super(SaleOrder, self).onchange_partner_id()
+        import ipdb; ipdb.set_trace()
+        res = super(SaleOrder, self).onchange_partner_id()
         if self.partner_id and self.partner_id.whole_orders:
             self.update({'picking_policy': 'one'})
+        if not self.type_id.use_partner_agent:
+            self.user_id = self.env.uid
+        return res
