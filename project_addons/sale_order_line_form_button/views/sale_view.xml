@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <record model="ir.ui.view" id="sale_line_button">
+            <field name="name">sale_line_button</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree//field[@name='currency_id']" position="after">
+                    <button name="button_details" string="Details" type="object" icon="fa-wpforms"  class="oe_edit_only"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_order_line_form_view" model="ir.ui.view">
+            <field name="name">sale.order.line.view.form</field>
+            <field name="model">sale.order.line</field>
+            <field name="arch" type="xml">
+                <form string="Sales Order Lines">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="order_partner_id" invisible="1"/>
+                                <field name="order_pricelist_id" invisible="1"/>
+                                <field name="order_company_id" invisible="1"/>
+                                <field name="order_id" invisible="1"/>
+                                <field name="product_updatable" invisible="1"/>
+                                <field name="product_id" context="{'partner_id':order_partner_id, 'quantity':product_uom_qty, 'pricelist':order_pricelist_id, 'uom':product_uom, 'company_id': order_company_id}" attrs="{'readonly': [('product_updatable', '=', False)]}" force_save="1"/>
+                                <field name="layout_category_id" groups="sale.group_sale_layout"/>
+                                <field name="invoice_status" invisible="1"/>
+                                <field name="qty_to_invoice" invisible="1"/>
+                                <field name="qty_delivered_updateable" invisible="1"/>
+                                <field name="price_subtotal" invisible="1"/>
+                                <field name="category_id" invisible="1"/>
+                                <field name="uom_factor" invisible="1"/>
+                                <label for="product_uom_qty" string="Ordered Quantity"/>
+                                <div>
+                                    <field context="{'partner_id':order_partner_id, 'quantity':product_uom_qty, 'pricelist':order_pricelist_id, 'uom':product_uom, 'uom_qty_change':True, 'company_id': order_company_id}" name="product_uom_qty" class="oe_inline"/>
+                                    <field name="product_uom" groups="product.group_uom" class="oe_inline oe_no_button" attrs="{'readonly': [('state', 'in', ('sale','done', 'cancel'))]}"
+                                        domain="[('category_id', '=', category_id), ('factor', '&lt;=', uom_factor)]"/>
+                                </div>
+                                <label for="qty_delivered" string="Delivered Quantity" attrs="{'invisible': [('state', 'not in', ['sale', 'done'])]}"/>
+                                <div attrs="{'invisible': [('state', 'not in', ['sale', 'done'])]}">
+                                    <field name="qty_delivered" attrs="{'readonly': [('qty_delivered_updateable', '=', False)]}"/>
+                                </div>
+                                <label for="qty_invoiced" string="Invoiced Quantity" attrs="{'invisible': [('state', 'not in', ['sale', 'done'])]}"/>
+                                <div attrs="{'invisible': [('state', 'not in', ['sale', 'done'])]}">
+                                    <field name="qty_invoiced" attrs="{'invisible': [('state', 'not in', ['sale', 'done'])]}"/>
+                                </div>
+
+                                <field name="route_id" groups="sale_stock.group_route_so_lines" options="{'no_create': True}"/>
+                                <field name="price_unit"/>
+                                <field name="purchase_price" groups="base.group_user"/>
+
+                                <field name="rma_line_id" options="{'no_create': True}" groups="rma.group_rma_customer_user,rma.group_rma_supplier_user"/>
+                                <label for="discount" groups="sale.group_discount_per_so_line"/>
+                                <div name="discount" groups="sale.group_discount_per_so_line">
+                                    <field name="discount" class="oe_inline"/> %
+                                </div>
+                            </group>
+                            <group>
+                                <field name="product_packaging" attrs="{'invisible': [('product_id', '=', False)]}" context="{'default_product_id': product_id, 'tree_view_ref':'product.product_packaging_tree_view', 'form_view_ref':'product.product_packaging_form_view'}" domain="[('product_id','=',product_id)]" groups="product.group_stock_packaging"/>
+                                <field name="tax_id" widget="many2many_tags" options="{'no_create': True}" domain="[('type_tax_use','=','sale'),('company_id','=',order_company_id)]" attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"/>
+                                <label for="customer_lead"/>
+                                <div>
+                                    <field name="customer_lead" class="oe_inline"/> days
+                                </div>
+                                <field name="commission_free"/>
+                                <field name="agents" attrs="{'readonly': [('commission_free', '=', True)]}"/>
+                                <label for="analytic_tag_ids" groups="analytic.group_analytic_accounting"/>
+                                <div>
+                                    <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_accounting" options="{'color_field': 'color'}"/>
+                                </div>
+                            </group>
+                        </group>
+                        <label for="name"/>
+                        <field name="name"/>
+                        <div groups="base.group_no_one">
+                            <label for="invoice_lines"/>
+                            <field name="invoice_lines"/>
+                        </div>
+                        <field name="state" invisible="1"/>
+                    </sheet>
+                    <footer invisible="not context.get('view_buttons')">
+                        <button class="oe_highlight" name="button_save_data" string="Save" type="object" />
+                        or
+                        <button class="oe_link" special="cancel" string="Cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+</odoo>
