@@ -29,7 +29,7 @@ class ProductTemplate(models.Model):
 
     catalogue_code = fields.Char(
         'Catalogue Reference', compute='_compute_catalogue_code',
-        inverse='_set_default_code', store=True)
+        inverse='_set_catalogue_code', store=True)
 
     ean13_str = fields.Char('Ean13 char', compute="_get_ean13_char", store=True)
 
