@@ -32,6 +32,11 @@ msgid "Created by"
 msgstr "Creado por"
 
 #. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_type_use_partner_agent
+msgid "Use Partner Agent"
+msgstr "Usar agente del cliente"
+
+#. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route_create_date
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone_create_date
 msgid "Created on"

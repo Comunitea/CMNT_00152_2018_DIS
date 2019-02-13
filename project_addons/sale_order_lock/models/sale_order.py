@@ -27,15 +27,15 @@ class SaleOrder(models.Model):
 
     # lock_allow_edit = fields.Boolean(string='Can i unlock?',
     #                                  compute='_compute_lock_allow_edit')
-    force_unlock = fields.Boolean('Force Unlock', readonly=True)
+    force_unlock = fields.Boolean('Force Unlock', readonly=True, copy=False)
 
     # Lock Checkboxes
-    risk_lock = fields.Boolean('Locked by risk', readonly=True)
-    unpaid_lock = fields.Boolean('Locked by unpaid', readonly=True)
-    margin_lock = fields.Boolean('Locked by margin', readonly=True)
-    shipping_lock = fields.Boolean('Locked by shipping costs', readonly=True)
-    amount_lock = fields.Boolean('Locked by min amount', readonly=True)
-    locked = fields.Boolean('Locked', readonly=True)
+    risk_lock = fields.Boolean('Locked by risk', readonly=True, copy=False)
+    unpaid_lock = fields.Boolean('Locked by unpaid', readonly=True, copy=False)
+    margin_lock = fields.Boolean('Locked by margin', readonly=True, copy=False)
+    shipping_lock = fields.Boolean('Locked by shipping costs', readonly=True, copy=False)
+    amount_lock = fields.Boolean('Locked by min amount', readonly=True, copy=False)
+    locked = fields.Boolean('Locked', readonly=True, copy=False)
 
     # @api.multi
     # def _compute_lock_allow_edit(self):
@@ -202,6 +202,15 @@ class SaleOrder(models.Model):
         res = super(SaleOrder, self).write(vals)
         self.check_locks()
         return res
+    
+    # @api.multi
+    # def copy(self, default=None):
+    #     self.ensure_one()
+    #     if default is None:
+    #         default = {}
+    #     if not default.get('name'):
+    #         default.update(name=_('%s (copy)') % (self.name))
+    #     return super(ResourceResource, self).copy(default)
 
     @api.model
     def check_unlock_sale_orders(self):

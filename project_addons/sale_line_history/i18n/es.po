@@ -1,0 +1,109 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_line_history
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-11-26 16:06+0000\n"
+"PO-Revision-Date: 2018-11-26 16:06+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_line_history
+#: model:ir.ui.view,arch_db:sale_line_history.view_order_form_add_line_history
+#: model:ir.ui.view,arch_db:sale_line_history.view_partner_form
+msgid "<span>Sale history</span>"
+msgstr "<span>Historial de ventas</span>"
+
+#. module: sale_line_history
+#: model:ir.actions.act_window,name:sale_line_history.sale_order_line_history_add_to_order_view_action
+msgid "Add line history to order"
+msgstr "Añadir linea al pedido"
+
+#. module: sale_line_history
+#: model:ir.ui.view,arch_db:sale_line_history.sale_order_line_history_add_to_order_view_form
+#: model:ir.ui.view,arch_db:sale_line_history.sale_order_line_history_view_tree
+msgid "Add to order"
+msgstr "Añadir al pedido"
+
+#. module: sale_line_history
+#: model:ir.ui.view,arch_db:sale_line_history.sale_order_line_history_add_to_order_view_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: sale_line_history
+#: model:ir.model.fields,field_description:sale_line_history.field_sale_order_line_date_order
+msgid "Order Date"
+msgstr "Fecha de pedido"
+
+#. module: sale_line_history
+#: model:ir.model,name:sale_line_history.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: sale_line_history
+#: model:ir.model.fields,field_description:sale_line_history.field_sale_order_line_history_add_to_order_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: sale_line_history
+#: model:ir.model.fields,field_description:sale_line_history.field_sale_order_line_history_add_to_order_create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: sale_line_history
+#: model:ir.model.fields,field_description:sale_line_history.field_sale_order_line_history_add_to_order_display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: sale_line_history
+#: model:ir.model.fields,field_description:sale_line_history.field_sale_order_line_history_add_to_order_id
+msgid "ID"
+msgstr "ID (identificación)"
+
+#. module: sale_line_history
+#: model:ir.model.fields,field_description:sale_line_history.field_sale_order_line_history_add_to_order___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: sale_line_history
+#: model:ir.model.fields,field_description:sale_line_history.field_sale_order_line_history_add_to_order_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización de"
+
+#. module: sale_line_history
+#: model:ir.model.fields,field_description:sale_line_history.field_sale_order_line_history_add_to_order_write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: sale_line_history
+#: model:ir.model.fields,field_description:sale_line_history.field_sale_order_line_history_add_to_order_qty
+msgid "Qty"
+msgstr "Cantidad"
+
+#. module: sale_line_history
+#: model:ir.model,name:sale_line_history.model_sale_order
+msgid "Quotation"
+msgstr "Presupuesto"
+
+#. module: sale_line_history
+#: model:ir.model,name:sale_line_history.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea de pedido de ventas"
+
+#. module: sale_line_history
+#: model:ir.ui.view,arch_db:sale_line_history.sale_order_line_history_add_to_order_view_form
+msgid "or"
+msgstr "o"
+
+#. module: sale_line_history
+#: model:ir.model,name:sale_line_history.model_sale_order_line_history_add_to_order
+msgid "sale.order.line.history.add.to.order"
+msgstr "sale.order.line.history.add.to.order"
+
