@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Grupo para acceso resringido comerciales -->
+    <record id="group_cost_manager" model="res.groups">
+        <field name="name">Costs: Manager</field>
+        <field name="implied_ids" eval="False"/>
+        <field name="comment">The cost group for custom costs</field>
+    </record>
+</odoo>

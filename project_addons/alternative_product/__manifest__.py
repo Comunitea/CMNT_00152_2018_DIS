@@ -13,7 +13,7 @@
     'installable': True,
     'depends': [
         'website_sale',
-        'product_catalogue_ref'
+        'product_catalogue_ref',
     ],
     'data': [
         'views/sale_order.xml',

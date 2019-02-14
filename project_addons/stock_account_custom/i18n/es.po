@@ -1,0 +1,182 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* stock_account_custom
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-02-14 17:35+0000\n"
+"PO-Revision-Date: 2019-02-14 17:35+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,help:stock_account_custom.field_product_product_reference_cost
+msgid "Cost price for salesman users"
+msgstr "Precio de coste para comerciales"
+
+#. module: stock_account_custom
+#: model:res.groups,name:stock_account_custom.group_cost_manager
+msgid "Costs: Manager"
+msgstr "Costes: Administrador"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_purchase_order_exclude_compute_cost
+msgid "Exclude from compute cost"
+msgstr "Excluir de costes de referencia"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_id
+msgid "ID"
+msgstr "ID (identificación)"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,help:stock_account_custom.field_stock_move_exclude_compute_cost
+msgid "If true, this move is from a purchase, no include in cost computes"
+msgstr "Si está marcado, este movimiento viene de una compra marcado como no incluida en cálculos de costes de referencia"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,help:stock_account_custom.field_purchase_order_exclude_compute_cost
+msgid "If true, this purchase is no include in cost computes"
+msgstr "Si está marcado, esta compra no será incluida en cálculos de costes de referencia"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización de"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_stock_move_exclude_compute_cost
+msgid "Not include in costs"
+msgstr "Excluir de costes de referencia"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product_pricelist_cost
+msgid "Price list cost"
+msgstr "Coste de ref. para tarifa"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product_cost_ratio_id
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_template_cost_ratio_id
+msgid "Price ratio"
+msgstr "Coeficiente de referencia"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_template_pricelist_cost
+msgid "Pricelist cost"
+msgstr "Coste de tarifa"
+
+#. module: stock_account_custom
+#: model:ir.model,name:stock_account_custom.model_product_pricelist_item
+msgid "Pricelist item"
+msgstr "Item de Lista de precios"
+
+#. module: stock_account_custom
+#: model:ir.model,name:stock_account_custom.model_product_product
+msgid "Product"
+msgstr "Producto"
+
+#. module: stock_account_custom
+#: model:ir.model,name:stock_account_custom.model_product_template
+msgid "Product Template"
+msgstr "Plantilla de producto"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,help:stock_account_custom.field_product_product_cost_ratio_id
+#: model:ir.model.fields,help:stock_account_custom.field_product_template_cost_ratio_id
+msgid "Product ranking to get reference cost and product price"
+msgstr "Clasificación de los coeficientes aplicables a los costes de referencia"
+
+#. module: stock_account_custom
+#: model:ir.model,name:stock_account_custom.model_purchase_order
+msgid "Purchase Order"
+msgstr "Pedido de compra"
+
+#. module: stock_account_custom
+#: model:ir.model,name:stock_account_custom.model_purchase_order_line
+msgid "Purchase Order Line"
+msgstr "Línea de pedido de compra"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_purchase_ratio
+msgid "Purchase ratio"
+msgstr "Coeficiente de compras"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,help:stock_account_custom.field_product_price_ratio_sale_ratio
+msgid "Ratio to get price (list price) from pricelist_cost"
+msgstr "Coeficiente para obtener el precio de venta desde el coste de tarifa"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,help:stock_account_custom.field_product_price_ratio_purchase_ratio
+msgid "Ratio to get reference cost from pricelist_cost"
+msgstr "Coeficiente para obtener el coste de referencia desde el coste de tarifa"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product_reference_cost
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_template_reference_cost
+msgid "Reference cost"
+msgstr "Coste de referencia"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_sale_ratio
+msgid "Sale ratio"
+msgstr "Coeficiente de venta"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,help:stock_account_custom.field_product_product_pricelist_cost
+#: model:ir.model.fields,help:stock_account_custom.field_product_template_pricelist_cost
+#: model:ir.model.fields,help:stock_account_custom.field_product_template_reference_cost
+msgid "Standard price without special purchases"
+msgstr "Coste calculado sin compras marcadas como como excluidas de los cálculos"
+
+#. module: stock_account_custom
+#: model:ir.model,name:stock_account_custom.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de Stock"
+
+#. module: stock_account_custom
+#: model:res.groups,comment:stock_account_custom.group_cost_manager
+msgid "The cost group for custom costs"
+msgstr "Grupo para administradores de costes"
+
+#. module: stock_account_custom
+#: model:ir.model,name:stock_account_custom.model_product_price_ratio
+msgid "product.price.ratio"
+msgstr "Clasificación de ratios de referencia"
+
