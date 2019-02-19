@@ -36,16 +36,12 @@
                 <field name="cost_ratio_id" />
             </xpath>
             <xpath expr="//label[@for='standard_price']" position="before">
-                <label for="reference_cost" groups="base.group_user" attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"/>
-                <div name="reference_cost_uom" groups="base.group_user"
-                     attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}">
-                    <field name="reference_cost" widget='monetary' options="{'currency_field': 'currency_id', 'field_digits': True}"/>
-                </div>
-                <label for="pricelist_cost" groups="stock_account_custom.group_cost_manager" attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"/>
-                <div name="pricelist_cost_uom" groups="stock_account_custom.group_cost_manager"
-                attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}">
-                    <field name="pricelist_cost" widget='monetary' options="{'currency_field': 'currency_id', 'field_digits': True}"/>
-                </div>
+                <field name="reference_cost" widget='monetary' groups="base.group_user"
+                           attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"
+                           options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                <field name="pricelist_cost" widget='monetary' groups="stock_account_custom.group_cost_manager"
+                       attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"
+                       options="{'currency_field': 'currency_id', 'field_digits': True}"/>
             </xpath>
             <xpath expr="//label[@for='standard_price']" position="attributes">
                 <attribute name="groups">stock_account_custom.group_cost_manager</attribute>

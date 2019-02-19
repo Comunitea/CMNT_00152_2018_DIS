@@ -32,8 +32,6 @@ class ProductProduct(models.Model):
     def _compute_reference_cost(self):
         for product in self:
             product.reference_cost = product.pricelist_cost * product.product_tmpl_id.cost_ratio_id.purchase_ratio
-            print("Calculo coste de referencia para {}: {} €  {} % = {} €".format(product.name, product.pricelist_cost,
-                                                                           product.product_tmpl_id.cost_ratio_id.purchase_ratio,  product.reference_cost))
 
     @api.one
     def _set_cost_method(self):
@@ -41,7 +39,7 @@ class ProductProduct(models.Model):
             old_standard_price = self.standard_price
             ctx = self._context.copy()
             ctx.update(exclude_compute_cost=True)
-            pricelist_self = self.width_context(ctx)
+            pricelist_self = self.with_context(ctx)
             super(ProductProduct, pricelist_self)._set_cost_method()
             if self.standard_price != old_standard_price:
                 self.pricelist_cost = self.standard_price
@@ -106,7 +104,7 @@ class ProductTemplate(models.Model):
             template.pricelist_cost = template.product_variant_ids.pricelist_cost
 
         for template in (self - unique_variants):
-            n_v = len(template.product_variant_ids)
+            n_v = len(template.product_variant_ids) or 1
             pricelist_cost = sum(x.pricelist_cost for x in template.product_variant_ids)
             reference_cost = sum(x.reference_cost for x in template.product_variant_ids)
             template.pricelist_cost = pricelist_cost / n_v
