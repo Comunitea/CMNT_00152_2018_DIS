@@ -27,6 +27,9 @@
 
         </field>
     </record-->
+
+
+
     <record id="product_template_form_view_costs_custom" model="ir.ui.view">
         <field name="name">product.template.form.stock_account.custom</field>
         <field name="model">product.template</field>
@@ -36,6 +39,16 @@
                 <field name="cost_ratio_id" />
             </xpath>
             <xpath expr="//label[@for='standard_price']" position="before">
+                <field name="stock_value"></field>
+                <field name="qty_at_date"></field>
+
+                <field name="real_stock_cost" widget='monetary' groups="base.group_user"
+                           attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"
+                           options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                <field name="real_stock_cost_fixed" widget='monetary' groups="base.group_user"
+                           attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"
+                           options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+
                 <field name="reference_cost" widget='monetary' groups="base.group_user"
                            attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"
                            options="{'currency_field': 'currency_id', 'field_digits': True}"/>

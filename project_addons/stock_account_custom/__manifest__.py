@@ -17,5 +17,6 @@
         'security/ir.model.access.csv',
         'views/purchase_order.xml',
         'views/product.xml',
+        'views/pricelist_item.xml',
     ],
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_pricelist_item_form_view_custom" model="ir.ui.view">
+        <field name="name">product.pricelist.item.form.custom</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group/field[@name='base']/.." position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('compute_price', '!=', 'formula'), ('base', '=', 'pricelist_cost')]}</attribute>
+            </xpath>
+
+            <xpath expr="//group/field[@name='base']/.." position="after">
+                <group col="6" attrs="{'invisible': ['|', ('compute_price', '!=', 'formula'), ('base', '!=', 'pricelist_cost')]}">
+                    <field name="cost_ratio_id" colspan="6"/>
+                    <field name="base" colspan="6"/>
+                    <label string="New Price ="/>
+                    <div colspan="5">
+                        <span >Pricelist cost</span>
+                    </div>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -17,43 +17,48 @@ class ProductProduct(models.Model):
 
     _inherit = 'product.product'
 
-    pricelist_cost = fields.Float(
-        'Price list cost', company_dependent=True,
-        digits=dp.get_precision('Product cost'),
-        groups="stock_account_custom.group_cost_manager", help="Standard price without special purchases")
 
-    reference_cost = fields.Float(
-        'Reference cost',
-        compute='_compute_reference_cost',
-        digits=dp.get_precision('Product cost'),
-        help="Cost price for salesman users")
+    real_stock_cost = fields.Float('Real stock cost',
+                                   compute="_get_compute_custom_costs",
+                                   digits=dp.get_precision('Product cost'),
+                                   groups="stock_account_custom.group_cost_manager",
+                                   help="Stock value / Qty")
+    real_stock_cost_fixed = fields.Float('Fixed real stock cost',
+                                   compute="_get_compute_custom_costs",
+                                   digits=dp.get_precision('Product cost'),
+                                   groups="stock_account_custom.group_cost_manager",
+                                   help="Stock value / Qty (without special purchases)")
+    pricelist_cost = fields.Float('Price list cost',
+                                   digits=dp.get_precision('Product cost'),
+                                   groups="stock_account_custom.group_cost_manager",
+                                   help="Cost price used in pricelist (Fixed real stock cost manually frozen")
+    reference_cost = fields.Float('Reference cost',
+                                  compute="_get_compute_custom_costs",
+                                   digits=dp.get_precision('Product cost'),
+                                   help="Cost price for salesman users (Fixed real stock cost fixed by ratio)")
+
+    def _get_compute_custom_costs_with_context(self, ctx):
+        qty_at_date = self.qty_at_date
+        product = self.with_context(ctx)
+        candidates = product._get_fifo_candidates_in_move()
+        qty_remaining = sum(x.remaining_qty for x in candidates)
+        qty = qty_at_date - qty_remaining
+        return product.stock_value / qty
 
     @api.multi
-    def _compute_reference_cost(self):
+    def _get_compute_custom_costs(self):
+        ## Real stock_cost: Todos los movimientos
         for product in self:
-            product.reference_cost = product.pricelist_cost * product.product_tmpl_id.cost_ratio_id.purchase_ratio
-
-    @api.one
-    def _set_cost_method(self):
-        if self.property_cost_method == 'fifo' and self.cost_method in ['average', 'standard']:
-            old_standard_price = self.standard_price
-            ctx = self._context.copy()
-            ctx.update(exclude_compute_cost=True)
-            pricelist_self = self.with_context(ctx)
-            super(ProductProduct, pricelist_self)._set_cost_method()
-            if self.standard_price != old_standard_price:
-                self.pricelist_cost = self.standard_price
-        return super()._set_cost_method()
-
-    @api.multi
-    def _compute_stock_value(self):
-        return super()._compute_stock_value()
-        #
-        # ctx = self._context.copy()
-        # ctx.update(exclude_compute_cost=True)
-        # pricelist_self = self.width_context(ctx)
-        # super(ProductProduct, pricelist_self)._compute_stock_value()
-        # old_standard_price = self.standard_price
+            product.real_stock_cost = product.stock_value / product.qty_at_date
+        ## Fixed real stock_cost: Solo los movimientos con exclude_compute_cost = False
+        ctx = self._context.copy()
+        ctx.update(exclude_compute_cost=True)
+        for product in self:
+            product.real_stock_cost_fixed = product._get_compute_custom_costs_with_context(ctx)
+            if product.product_tmpl_id.cost_ratio_id:
+                product.reference_cost = product.real_stock_cost_fixed * product.product_tmpl_id.cost_ratio_id.purchase_ratio or 1.0
+            else:
+                product.reference_cost = product.real_stock_cost_fixed
 
     @api.multi
     def price_compute(self, price_type, uom=False, currency=False, company=False):
@@ -87,13 +92,26 @@ class ProductTemplate(models.Model):
 
     cost_ratio_id = fields.Many2one('product.price.ratio', 'Price ratio', company_dependent=True, help="Product ranking to get reference cost and product price")
 
+
+    stock_value = fields.Float(
+        'Value', compute='_compute_reference_cost')
+    qty_at_date = fields.Float(
+        'Quantity', compute='_compute_reference_cost')
     reference_cost = fields.Float(
         'Reference cost', compute='_compute_reference_cost',
-        digits=dp.get_precision('Product Price'), groups="stock_account_custom.group_cost_manager", help="Standard price without special purchases")
-
+        digits=dp.get_precision('Product Price'), groups="stock_account_custom.group_cost_manager", help="Cost price for salesman users (Fixed real stock cost fixed by ratio)")
     pricelist_cost = fields.Float(
-        'Pricelist cost', compute='_compute_reference_cost',
-        digits=dp.get_precision('Product Price'), groups="stock_account_custom.group_cost_manager", help="Standard price without special purchases")
+        'Pricelist cost',
+        digits=dp.get_precision('Product Price'), groups="stock_account_custom.group_cost_manager", help="Cost price used in pricelist (Fixed real stock cost manually frozen")
+    real_stock_cost = fields.Float(
+        'Real stock cost', compute='_compute_reference_cost',
+        digits=dp.get_precision('Product Price'), groups="stock_account_custom.group_cost_manager",
+        help="Stock value / Qty")
+    real_stock_cost_fixed = fields.Float(
+        'Fixed real stock cost', compute='_compute_reference_cost',
+        digits=dp.get_precision('Product Price'), groups="stock_account_custom.group_cost_manager",
+        help="Stock value / Qty (without special purchases)")
+
 
     @api.depends('product_variant_ids', 'product_variant_ids.reference_cost')
     def _compute_reference_cost(self):
@@ -102,13 +120,27 @@ class ProductTemplate(models.Model):
         for template in unique_variants:
             template.reference_cost = template.product_variant_ids.reference_cost
             template.pricelist_cost = template.product_variant_ids.pricelist_cost
+            template.real_stock_cost = template.product_variant_ids.real_stock_cost
+            template.real_stock_cost_fixed = template.product_variant_ids.real_stock_cost_fixed
+
+            template.stock_value = template.product_variant_ids.stock_value
+            template.qty_at_date = template.product_variant_ids.qty_at_date
 
         for template in (self - unique_variants):
             n_v = len(template.product_variant_ids) or 1
             pricelist_cost = sum(x.pricelist_cost for x in template.product_variant_ids)
             reference_cost = sum(x.reference_cost for x in template.product_variant_ids)
+            real_stock_cost = sum(x.real_stock_cost for x in template.product_variant_ids)
+            real_stock_cost_fixed = sum(x.fixed_real_stock_cost for x in template.product_variant_ids)
+            stock_value = sum(x.stock_value for x in template.product_variant_ids)
+            qty_at_date = sum(x.qty_at_date for x in template.product_variant_ids)
+
             template.pricelist_cost = pricelist_cost / n_v
             template.reference_cost = reference_cost / n_v
+            template.real_stock_cost = real_stock_cost / n_v
+            template.real_stock_cost_fixed = real_stock_cost_fixed / n_v
+            template.stock_value = stock_value / n_v
+            template.qty_at_date = qty_at_date / n_v
 
     @api.multi
     def price_compute(self, price_type, uom=False, currency=False, company=False):
