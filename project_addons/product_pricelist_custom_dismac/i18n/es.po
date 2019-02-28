@@ -91,7 +91,7 @@ msgstr "Importar"
 #. module: product_pricelist_custom_dismac
 #: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.view_product_pricelist_import_wzd_form
 msgid "Pricelist Items"
-msgstr "Productos de las promociones"
+msgstr "Productos de la promoción"
 
 #. module: product_pricelist_custom_dismac
 #: model:ir.model,name:product_pricelist_custom_dismac.model_product_pricelist_item
