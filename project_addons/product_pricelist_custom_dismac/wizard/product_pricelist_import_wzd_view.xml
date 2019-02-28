@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_pricelist_import_wzd_form" model="ir.ui.view">
+        <field name="name">view.product.pricelist.import.wzd.form</field>
+        <field name="model">product.pricelist.import.wzd</field>
+        <field name="arch" type="xml">
+            <form string="Products Price List">
+                <sheet>
+                    <div class="oe_button_box" name="button_box" attrs="{'invisible': [('id', '=', False)]}">
+                        <button name="toggle_active" type="object"
+                                class="oe_stat_button" icon="fa-archive" groups="sales_team.group_sale_manager">
+                            <field name="active" widget="boolean_button"
+                                options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="e.g. USD Retailers" attrs="{'invisible': [('id', '=', False)]}"/></h1>
+                    </div>
+                    <group>
+                        <field name="id" invisible="1" />
+                        <field name="date_start" attrs="{'invisible': [('id', '=', False)]}"/>
+                        <field name="date_end" attrs="{'invisible': [('id', '=', False)]}"/>
+                        <field name="file" filename="filename" attrs="{'invisible': [('id', '!=', False)]}"/>
+                        <button name="import_pricelist" type="object" class="btn-primary" string="Pricelist Import" attrs="{'invisible': [('id', '!=', False)]}"/>
+                    </group>
+                    <div groups="product.group_pricelist_item" attrs="{'invisible': [('id', '=', False)]}">
+                        <separator string="Pricelist Items"/>
+                        <field name="item_ids" nolabel="1" context="{'default_base':'list_price'}">
+                            <tree string="Pricelist Items">
+                                <field name="name" string="Applicable On"/>
+                                <field name="min_quantity"/>
+                                <field name="price" string="Price"/>
+                                <field name="base" invisible="1"/>
+                                <field name="price_discount" invisible="1"/>
+                                <field name="applied_on" invisible="1"/>
+                                <field name="compute_price" invisible="1"/>
+                            </tree>
+                        </field>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_product_pricelist_import_wzd_tree" model="ir.ui.view">
+        <field name="name">view.product.pricelist.import.wzd.tree</field>
+        <field name="model">product.pricelist.import.wzd</field>
+        <field name="inherit_id" ref="sale.product_pricelist_view_tree"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="selectable" position="after">
+                <field name="date_start"/>
+                <field name="date_end"/>
+            </field>
+            <field name="selectable" position="replace">
+                <field name="active"/>
+            </field>
+            <field name="currency_id" position="replace">
+                
+            </field>
+            <field name="sequence" position="replace">
+                
+            </field>
+        </field>
+    </record>
+   
+    <record id="action_product_pricelist_import" model="ir.actions.act_window">
+        <field name="name">Pricelist_import</field>
+        <field name="res_model">product.pricelist.import.wzd</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_product_pricelist_import_tree" model="ir.actions.act_window">
+        <field name="name">Pricelist_import_tree</field>
+        <field name="res_model">product.pricelist.import.wzd</field>
+        <field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_pricelist_import" name="Pricelist_import" parent="sale.product_menu_catalog" sequence="99"/>
+    <menuitem id="menu_pricelist_import_new" name="Pricelist_import_new" action="action_product_pricelist_import" parent="menu_pricelist_import" sequence="99"/>
+    <menuitem id="menu_pricelist_import_tree" name="Pricelist_import_tree" action="action_product_pricelist_import_tree" parent="menu_pricelist_import" sequence="99"/>
+    
+    
+</odoo>
