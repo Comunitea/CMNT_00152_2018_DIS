@@ -103,7 +103,7 @@ class PricelistImportWzd(models.TransientModel):
             'item_ids': product_pricelist_items_list
         })
 
-        self.view_product_pricelist(product_pricelist_obj.id)
+        return self.view_product_pricelist(product_pricelist_obj.id)
 
     def create_new_product_pricelist_item(self, quantity, price, product_obj, product_pricelist_obj, date_start, date_end):
         product_pricelist_item_obj = self.env['product.pricelist.item'].create({
@@ -135,11 +135,9 @@ class PricelistImportWzd(models.TransientModel):
     @api.multi
     def view_product_pricelist(self, product_pricelist_id):
         return {
-            'view_type': 'form',
-            'view_mode': 'form',
-            'name': 'view_product_pricelist_import_wzd_form',
+            'type': 'ir.actions.act_window',
             'res_model': 'product.pricelist.import.wzd',
-            'target': 'self',
-            'res_id': product_pricelist_id,
-            'type': 'ir.actions.act_window'
+            'view_type': 'form',
+            'view_mode': 'tree, form',
+            'res_id': 'action_product_pricelist_import_tree'
         }
