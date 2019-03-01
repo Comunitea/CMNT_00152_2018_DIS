@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-28 12:38+0000\n"
-"PO-Revision-Date: 2019-02-28 12:38+0000\n"
+"POT-Creation-Date: 2019-03-01 09:58+0000\n"
+"PO-Revision-Date: 2019-03-01 09:58+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,19 +21,22 @@ msgid "Applicable On"
 msgstr "Aplicable en"
 
 #. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_create_uid
 #: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_create_date
 #: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_create_date
 msgid "Created on"
-msgstr "Creado en"
+msgstr "Creado el"
 
 #. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_display_name
 #: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_display_name
 msgid "Display Name"
-msgstr "Nombre mostrado"
+msgstr "Nombre a Mostrar"
 
 #. module: product_pricelist_custom_dismac
 #: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_date_end
@@ -48,26 +51,45 @@ msgid "Ending valid for the pricelist item validation"
 msgstr "Finalización válida para la validación del elementos de tarifa de precios"
 
 #. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_error_msg
+msgid "Error Msg"
+msgstr "Error Msg"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_error_ids
+msgid "Error items"
+msgstr "Error items"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.view_product_pricelist_import_wzd_form
+msgid "Errores"
+msgstr "Errores"
+
+#. module: product_pricelist_custom_dismac
 #: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_file
 msgid "File"
 msgstr "Archivo"
 
 #. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_id
 #: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_id
 msgid "ID"
-msgstr "ID (identificación)"
+msgstr "ID"
 
 #. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error___last_update
 #: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd___last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
 
 #. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_write_uid
 #: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_write_uid
 msgid "Last Updated by"
 msgstr "Última actualización de"
 
 #. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_write_date
 #: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_write_date
 msgid "Last Updated on"
 msgstr "Última actualización en"
@@ -84,6 +106,7 @@ msgid "Pricelist"
 msgstr "Lista de precios"
 
 #. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_import_id
 #: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.view_product_pricelist_import_wzd_form
 msgid "Pricelist Import"
 msgstr "Importar"
@@ -91,7 +114,7 @@ msgstr "Importar"
 #. module: product_pricelist_custom_dismac
 #: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.view_product_pricelist_import_wzd_form
 msgid "Pricelist Items"
-msgstr "Productos de la promoción"
+msgstr "Items de Lista de precios"
 
 #. module: product_pricelist_custom_dismac
 #: model:ir.model,name:product_pricelist_custom_dismac.model_product_pricelist_item
@@ -105,6 +128,11 @@ msgid "Pricelist_import"
 msgstr "Importar promoción"
 
 #. module: product_pricelist_custom_dismac
+#: model:ir.actions.act_window,name:product_pricelist_custom_dismac.action_product_pricelist_import_error
+msgid "Pricelist_import_error_tree"
+msgstr "Listado de errores de importación"
+
+#. module: product_pricelist_custom_dismac
 #: model:ir.ui.menu,name:product_pricelist_custom_dismac.menu_pricelist_import_new
 msgid "Pricelist_import_new"
 msgstr "Nueva importación"
@@ -114,6 +142,11 @@ msgstr "Nueva importación"
 #: model:ir.ui.menu,name:product_pricelist_custom_dismac.menu_pricelist_import_tree
 msgid "Pricelist_import_tree"
 msgstr "Listado de importaciones"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.view_product_pricelist_import_error_tree
+msgid "Product Pricelist import error(s)"
+msgstr "Listado de errores en la importación"
 
 #. module: product_pricelist_custom_dismac
 #: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.view_product_pricelist_import_wzd_form
@@ -133,12 +166,25 @@ msgid "Starting date for the pricelist item validation"
 msgstr "Fecha inicial para la validación del elemento de lista de precios"
 
 #. module: product_pricelist_custom_dismac
+#: code:addons/product_pricelist_custom_dismac/wizard/product_pricelist_import_wzd.py:99
+#, python-format
+msgid "There are %s products with the catalogue_code: %s. You may check this out.\n"
+""
+msgstr "Existen %s productos con el código de catálogo: %s. Quizá debas revisarlo.\n"
+""
+
+#. module: product_pricelist_custom_dismac
 #: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.view_product_pricelist_import_wzd_form
 msgid "e.g. USD Retailers"
 msgstr "ej. USD Minoristas"
 
 #. module: product_pricelist_custom_dismac
+#: model:ir.model,name:product_pricelist_custom_dismac.model_product_pricelist_import_error
+msgid "product.pricelist.import.error"
+msgstr "Listado de errores de importación"
+
+#. module: product_pricelist_custom_dismac
 #: model:ir.model,name:product_pricelist_custom_dismac.model_product_pricelist_import_wzd
 msgid "product.pricelist.import.wzd"
-msgstr "product.pricelist.import.wzd"
+msgstr "Importación de promociones"
 

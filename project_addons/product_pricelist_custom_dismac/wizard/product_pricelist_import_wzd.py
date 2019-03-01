@@ -7,25 +7,18 @@ from odoo.exceptions import UserError
 import datetime, xlrd
 import base64
 from pprint import pprint
+from odoo import exceptions
 
 class PricelistImportWzd(models.TransientModel):
     _name = "product.pricelist.import.wzd"
 
     file = fields.Binary(string="File", required=True)
-    pricelist_id = fields.Many2one("product.pricelist", ondelete="cascade")
-    name = fields.Char(related="pricelist_id.name")
-    date_start = fields.Date(related="pricelist_id.date_start")
-    date_end = fields.Date(related="pricelist_id.date_end")
-    sequence = fields.Integer(related="pricelist_id.sequence")
-    discount_policy = fields.Selection(related="pricelist_id.discount_policy")
-    active = fields.Boolean(related="pricelist_id.active")
-    item_ids = fields.One2many(related="pricelist_id.item_ids")
 
     def _parse_row_vals(self, row, idx):
             
         res = {
             'catalogue_code': row[0],
-            'name': row[40],
+            'name': 'PROMOTION ' + row[40],
             'date_start': row[41],
             'date_end': row[42],
             'c1': row[46],
@@ -50,6 +43,7 @@ class PricelistImportWzd(models.TransientModel):
 
         product_pricelist_obj = []
         product_pricelist_items_list = []
+        error_msg = ""
 
         file = base64.b64decode(self.file)
         book = xlrd.open_workbook(file_contents=file)
@@ -71,9 +65,6 @@ class PricelistImportWzd(models.TransientModel):
             if row[0]:
 
                 row_vals = self._parse_row_vals(row, idx)
-
-                #if row_vals['ean_ud'] == "" or row_vals['ean_ud'] == 'FIN' or len(row_vals['ean_ud']) < 1:
-                #    break
                     
                 # Creamos el product_pricelist con los datos del primer row
                 if not product_pricelist_obj:
@@ -82,7 +73,7 @@ class PricelistImportWzd(models.TransientModel):
                 # Buscamos si existe algún producto (product.product) donde el campo ean13_str contenga el ean
                 product_obj = self.env['product.product'].search([('catalogue_code', '=', row_vals['catalogue_code']), ('catalogue_code', '!=', False)])
 
-                if product_obj:
+                if product_obj and len(product_obj) == 1:
                     if row_vals['c1'] and row_vals['pvp1']:
                         self.create_new_product_pricelist_item(row_vals['c1'], row_vals['pvp1'], product_obj, product_pricelist_obj, row_vals['date_start'], row_vals['date_end'])
                     
@@ -94,20 +85,16 @@ class PricelistImportWzd(models.TransientModel):
                     
                     if row_vals['c4'] and row_vals['pvp4']:
                         self.create_new_product_pricelist_item(row_vals['c4'], row_vals['pvp4'], product_obj, product_pricelist_obj, row_vals['date_start'], row_vals['date_end'])
+                else:
+                    if len(product_obj) != 1:
+                        error_msg = _("There are %s products with the catalogue_code: %s. You may check this out.\n" % (len(product_obj), row_vals['catalogue_code']))
+                        self.create_new_error_line(error_msg, product_pricelist_obj.id)
 
-        self.update({
-            'pricelist_id': product_pricelist_obj.id
-        })
-
-        product_pricelist_obj.update({
-            'item_ids': product_pricelist_items_list
-        })
-
-        return self.view_product_pricelist()
+        return self.view_product_pricelist(product_pricelist_obj.id)
 
     def create_new_product_pricelist_item(self, quantity, price, product_obj, product_pricelist_obj, date_start, date_end):
         product_pricelist_item_obj = self.env['product.pricelist.item'].create({
-            'product_tmpl_id': product_obj.product_tmpl_id.id,
+            'product_tmpl_id': product_obj.id,
             'applied_on': '0_product_variant',
             'base': 'list_price',
             'pricelist_id': product_pricelist_obj.id,
@@ -129,17 +116,32 @@ class PricelistImportWzd(models.TransientModel):
             'selectable': False,
             'discount_policy': 'with_discount',
             'item_ids': [],
-            'sequence': 1
+            'sequence': 1,
+            'is_promotion': True
         })
         return product_pricelist_obj
     
     @api.multi
-    def view_product_pricelist(self):
+    def view_product_pricelist(self, id):
         return {
             'type': 'ir.actions.act_window',
-            'res_model': 'product.pricelist.import.wzd',
+            'res_model': 'product.pricelist',
             'view_type': 'form',
             'view_mode': 'form',
-            'res_id': self.id,
+            'view_id ref="product_pricelist_import_wzd_view"': '',
+            'res_id': id,
             'target': 'self',
         }
+    
+    @api.multi
+    def create_new_error_line(self, error_msg, id):
+        error_obj = self.env['product.pricelist.import.error'].create({
+            'import_id': id,
+            'error_msg': error_msg
+        })
+
+    class PricelistImportError(models.Model):
+        _name = "product.pricelist.import.error"
+
+        import_id = fields.Many2one('product.pricelist', 'Pricelist Import', ondelete="cascade")
+        error_msg = fields.Text()
