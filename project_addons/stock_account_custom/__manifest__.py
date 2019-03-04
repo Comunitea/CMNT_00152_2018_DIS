@@ -11,6 +11,7 @@
     'installable': True,
     'depends': [
         'stock_account',
+        'purchase_last_price_info'
     ],
     'data': [
         'security/groups.xml',

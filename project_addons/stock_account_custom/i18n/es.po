@@ -18,7 +18,7 @@ msgstr ""
 #. module: stock_account_custom
 #: model:ir.model.fields,help:stock_account_custom.field_product_product_reference_cost
 msgid "Cost price for salesman users"
-msgstr "Precio de coste para comerciales"
+msgstr "Precio de coste de referencia"
 
 #. module: stock_account_custom
 #: model:res.groups,name:stock_account_custom.group_cost_manager
@@ -43,7 +43,7 @@ msgstr "Nombre mostrado"
 #. module: stock_account_custom
 #: model:ir.model.fields,field_description:stock_account_custom.field_purchase_order_exclude_compute_cost
 msgid "Exclude from compute cost"
-msgstr "Excluir de costes de referencia"
+msgstr "Excluir de coste de referencia"
 
 #. module: stock_account_custom
 #: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_id
@@ -88,7 +88,7 @@ msgstr "Excluir de costes de referencia"
 #. module: stock_account_custom
 #: model:ir.model.fields,field_description:stock_account_custom.field_product_product_pricelist_cost
 msgid "Price list cost"
-msgstr "Coste de ref. para tarifa"
+msgstr "Coste de tarifa"
 
 #. module: stock_account_custom
 #: model:ir.model.fields,field_description:stock_account_custom.field_product_product_cost_ratio_id
@@ -163,7 +163,7 @@ msgstr "Coeficiente de venta"
 #: model:ir.model.fields,help:stock_account_custom.field_product_template_pricelist_cost
 #: model:ir.model.fields,help:stock_account_custom.field_product_template_reference_cost
 msgid "Standard price without special purchases"
-msgstr "Coste calculado sin compras marcadas como como excluidas de los cálculos"
+msgstr "Coste calculado "
 
 #. module: stock_account_custom
 #: model:ir.model,name:stock_account_custom.model_stock_move

@@ -11,7 +11,7 @@ class ProductPriceRatio(models.Model):
 
     name = fields.Char('Name')
     purchase_ratio = fields.Float('Purchase ratio', help="Ratio to get reference cost from pricelist_cost")
-    sale_ratio = fields.Float('Sale ratio', help="Ratio to get price (list price) from pricelist_cost")
+
 
 class ProductProduct(models.Model):
 
@@ -31,11 +31,15 @@ class ProductProduct(models.Model):
     pricelist_cost = fields.Float('Price list cost',
                                    digits=dp.get_precision('Product cost'),
                                    groups="stock_account_custom.group_cost_manager",
-                                   help="Cost price used in pricelist (Fixed real stock cost manually frozen")
+                                   help="Cost price used in pricelist (Last "
+                                        "purchase cost manually frozen")
     reference_cost = fields.Float('Reference cost',
                                   compute="_get_compute_custom_costs",
                                    digits=dp.get_precision('Product cost'),
-                                   help="Cost price for salesman users (Fixed real stock cost fixed by ratio)")
+                                   help="Cost price (reference)")
+    last_purchase_price_fixed = fields.Float(
+        string='Last Purchase Price Fixed',
+        compute='_compute_last_purchase_fixed')
 
     def _get_compute_custom_costs_with_context(self, ctx):
         qty_at_date = self.qty_at_date
@@ -43,22 +47,28 @@ class ProductProduct(models.Model):
         candidates = product._get_fifo_candidates_in_move()
         qty_remaining = sum(x.remaining_qty for x in candidates)
         qty = qty_at_date - qty_remaining
-        return product.stock_value / qty
+        if qty:
+            res = product.stock_value / qty
+        else:
+            res = product.real_stock_cost
+        return res
 
     @api.multi
     def _get_compute_custom_costs(self):
         ## Real stock_cost: Todos los movimientos
         for product in self:
-            product.real_stock_cost = product.stock_value / product.qty_at_date
+            if product.qty_at_date:
+                product.real_stock_cost = product.stock_value / product.qty_at_date
         ## Fixed real stock_cost: Solo los movimientos con exclude_compute_cost = False
         ctx = self._context.copy()
         ctx.update(exclude_compute_cost=True)
         for product in self:
             product.real_stock_cost_fixed = product._get_compute_custom_costs_with_context(ctx)
             if product.product_tmpl_id.cost_ratio_id:
-                product.reference_cost = product.real_stock_cost_fixed * product.product_tmpl_id.cost_ratio_id.purchase_ratio or 1.0
+                product.reference_cost = product.last_purchase_price_fixed * \
+                                         product.product_tmpl_id.cost_ratio_id.purchase_ratio or 1.0
             else:
-                product.reference_cost = product.real_stock_cost_fixed
+                product.reference_cost = product.last_purchase_price_fixed
 
     @api.multi
     def price_compute(self, price_type, uom=False, currency=False, company=False):
@@ -86,13 +96,31 @@ class ProductProduct(models.Model):
         return prices
 
 
+
+    @api.multi
+    def _compute_last_purchase_fixed(self):
+        """ Get last purchase price, last purchase date and last supplier """
+        PurchaseOrderLine = self.env['purchase.order.line']
+        for product in self:
+            lines = PurchaseOrderLine.search(
+                [('product_id', '=', product.id),
+                 ('state', 'in', ['purchase', 'done']),
+                 ('order_id.exclude_compute_cost', '<>', True)]).sorted(
+                key=lambda l: l.order_id.date_order, reverse=True)
+            inv_lines = lines[:1].invoice_lines.sorted(key=lambda l:
+                l.invoice_id.date_invoice, reverse=True)
+            if inv_lines:
+                lpp = inv_lines[:1].price_unit
+            else:
+                lpp = lines[:1].price_unit
+            product.last_purchase_price_fixed = lpp
+
+
 class ProductTemplate(models.Model):
 
     _inherit = 'product.template'
 
     cost_ratio_id = fields.Many2one('product.price.ratio', 'Price ratio', company_dependent=True, help="Product ranking to get reference cost and product price")
-
-
     stock_value = fields.Float(
         'Value', compute='_compute_reference_cost')
     qty_at_date = fields.Float(
@@ -146,12 +174,14 @@ class ProductTemplate(models.Model):
     def price_compute(self, price_type, uom=False, currency=False, company=False):
 
         if price_type != 'pricelist_cost':
-            return super().price_compute(price_type=price_type, uom=uom, currency=currency, company=company)
+            return super().price_compute(price_type=price_type, uom=uom,
+                                         currency=currency, company=company)
 
         if not uom and self._context.get('uom'):
             uom = self.env['product.uom'].browse(self._context['uom'])
         if not currency and self._context.get('currency'):
-            currency = self.env['res.currency'].browse(self._context['currency'])
+            currency = self.env['res.currency'].\
+                browse(self._context['currency'])
 
         templates = self.with_context(force_company=company and company.id or self._context.get('force_company',
                                                                                                     self.env.user.company_id.id)).sudo()
