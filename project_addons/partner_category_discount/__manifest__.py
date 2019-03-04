@@ -1,10 +1,10 @@
 # © 2019 Comunitea - Santi Argüeso <santi@comunitea.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
-    'name': 'Precios de venta por cliente',
-    'summary': 'Establecer precios específicos de venta por cliente',
+    'name': 'Descunetos en categorías por cliente',
+    'summary': 'Establecer descuentos de venta por categoría en cadaa cliente',
     'version': '11.0.1.0.0',
-    'category': 'partner',
+    'category': 'sale',
     'website': 'comunitea.com',
     'author': 'Comunitea',
     'license': 'AGPL-3',
@@ -14,10 +14,9 @@
         'product',
     ],
     'data': [
-        'views/customer_price.xml',
-        'views/product_view.xml',
+        'views/category_discount.xml',
         'views/res_partner_view.xml',
         'security/ir.model.access.csv',
-        'security/customer_price_security.xml'
+        'security/category_discount_security.xml'
     ],
 }

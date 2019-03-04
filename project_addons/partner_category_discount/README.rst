@@ -3,7 +3,7 @@
    :alt: License: AGPL-3
 
 ========================================
-Permite establecer precios específicos de venta por cliente
+Permite establecer descuentos por categorías para cada cliente
 ========================================
 
 
@@ -15,7 +15,7 @@ Credits
 Contributors
 ------------
 * Comunitea
-* Kiko Sánchez <kiko@comunitea.com>
+* Santi Argüeso <santi@comunitea.com>
 
 Maintainer
 ----------
