@@ -87,7 +87,7 @@ class PricelistImportWzd(models.TransientModel):
                         self.create_new_product_pricelist_item(row_vals['c4'], row_vals['pvp4'], product_obj, product_pricelist_obj, row_vals['date_start'], row_vals['date_end'])
                 else:
                     if len(product_obj) != 1:
-                        error_msg = _("There are %s products with the catalogue_code: %s. You may check this out.\n" % (len(product_obj), row_vals['catalogue_code']))
+                        error_msg = _("There are %s products with the catalogue_code: %s. You may check this out.\n") % (len(product_obj), row_vals['catalogue_code'])
                         self.create_new_error_line(error_msg, product_pricelist_obj.id)
 
         return self.view_product_pricelist(product_pricelist_obj.id)
