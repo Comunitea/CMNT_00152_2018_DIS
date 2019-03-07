@@ -25,7 +25,7 @@ class CategoryDiscount(models.Model):
             partner = partner_id
         else:
             partner = partner_id.id
-        categ = category
+        categ = self.env['product.category'].browse(category)
         categ_ids = {}
         while categ:
             categ_ids[categ.id] = True
@@ -34,8 +34,8 @@ class CategoryDiscount(models.Model):
         domain = [('partner_id', '=', partner),
                   ('category_id', 'in', categ_ids),
                   ]
-        customer_discount = self.env['customer.discount'].\
-            search(domain, limit=1,order='category_id.parent_left desc')
+        customer_discount = self.env['category.discount'].\
+            search(domain, limit=1)
         if customer_discount:
             return customer_discount
         return False
