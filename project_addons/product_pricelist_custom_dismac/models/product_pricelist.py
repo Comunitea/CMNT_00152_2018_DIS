@@ -14,6 +14,34 @@ class Pricelist(models.Model):
     error_ids = fields.One2many('product.pricelist.import.error', 'import_id', 'Error items')
 
     @api.multi
+    def search_promotion(self, product_id, qty, date):
+        if not date:
+            date = self._context.get('date') or fields.Date.context_today(self)
+        if not qty:
+            qty = 1
+        domain = [('product_id', '=', product_id),
+                  ('pricelist_id.is_promotion', '=', True)
+                  ]
+        rules = self.env['product.pricelist.item'].search(
+            domain, order='min_quantity desc')
+        correct_rule = False
+        for rule in rules:
+            if rule.min_quantity and qty < rule.min_quantity:
+                continue
+            else:
+                correct_rule = rule
+        return correct_rule
+
+    @api.model
+    def search(self, args, offset=0, limit=None, order=None, count=False):
+        if not any(arg[0] == 'is_promotion' for arg in args):
+            args += [('is_promotion', '<>', True )]
+        return super(Pricelist, self).search(args, offset=offset,
+                                                  limit=limit, order=order,
+                                                  count=count)
+
+
+    @api.multi
     def show_error_list(self, context=None):
         domain = [('import_id','=',self.id)]
 

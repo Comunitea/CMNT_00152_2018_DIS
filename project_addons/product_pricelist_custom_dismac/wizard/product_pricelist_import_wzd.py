@@ -94,7 +94,7 @@ class PricelistImportWzd(models.TransientModel):
 
     def create_new_product_pricelist_item(self, quantity, price, product_obj, product_pricelist_obj, date_start, date_end):
         product_pricelist_item_obj = self.env['product.pricelist.item'].create({
-            'product_tmpl_id': product_obj.id,
+            'product_id': product_obj.id,
             'applied_on': '0_product_variant',
             'base': 'list_price',
             'pricelist_id': product_pricelist_obj.id,
