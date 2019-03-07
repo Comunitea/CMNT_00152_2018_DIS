@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="res_partner_view_buttons_listprice" model="ir.ui.view">
+        <field name="name">res.partner.view.buttons.listprice</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button string="Custom Pricelist" icon="fa-list" class="oe_stat_button" name="show_partner_prices" type="object"></button>
+            </div>
+            <field name="property_product_pricelist" position = "after">
+                <field name = "fixed_prices"/>
+            </field>
+        </field>
+    </record>
+
+
+    <record id="product_partner_prices" model="ir.ui.view">
+        <field name="name">product.partner.prices</field>
+        <field name="model">product.product</field>
+        <field eval="777" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Precios de producto" >
+                <field name="default_code" />
+                <field name="catalogue_code" />
+                <field name="name" />
+                <field name="price" />
+                <field name="price_description" />
+                <field name="uom_id" />
+                <field name="barcode" />
+                <field name="product_tmpl_id" invisible="1" on_change="1" can_create="true" can_write="true" modifiers="{'required':true,'column_invisible':true}"/>
+                <field name="active" invisible="1" modifiers="{'column_invisible':true}"/>
+            </tree>
+        </field>
+    </record>
+
+
+</odoo>
