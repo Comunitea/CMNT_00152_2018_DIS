@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- © 2018 Comunitea
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+     <record id="product_customer_value_tree" model="ir.ui.view">
+            <field name="name">product.customer.value.tree</field>
+            <field name="model">product.customer.value</field>
+            <field name="arch" type="xml">
+                <tree>
+                <field name="product_id" />
+                <field name="partner_id" />
+                <field name="default_code" />
+                <field name="description" />
+                </tree>
+            </field>
+     </record>
+     <record id="product_customer_value_search_view" model="ir.ui.view">
+        <field name="name">product.customer.value.search</field>
+        <field name="model">product.customer.value</field>
+        <field name="arch" type="xml">
+            <search string="Customer value">
+                <field name="default_code" string="Code" filter_domain="[('default_code','ilike',self)]"/>
+                <field name="product_id" string="Partner" filter_domain="[('product_id','ilike',self)]"/>
+                <field name="partner_id" string="Partner" filter_domain="[('partner_id','ilike',self)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_routes_tree" model="ir.actions.act_window">
+            <field name="name">Customer values</field>
+            <field name="res_model">product.customer.value</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="stock_location_route_tree" />
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a route.
+              </p>
+                <p>You can define here the main routes that run through
+                    your warehouses and that define the flows of your products. These
+                    routes can be assigned to a product, a product category or be fixed
+                    on procurement or sales order. </p>
+            </field>
+        </record>
+</odoo>
