@@ -6,8 +6,8 @@
             <field name="name">product.customer.value.tree</field>
             <field name="model">product.customer.value</field>
             <field name="arch" type="xml">
-                <tree>
-                <field name="product_id" />
+                <tree editable="top">
+                <field name="product_id" invisible="context.get('hide_product_column',False)"/>
                 <field name="partner_id" />
                 <field name="default_code" />
                 <field name="description" />
@@ -26,21 +26,17 @@
         </field>
     </record>
 
-    <record id="action_routes_tree" model="ir.actions.act_window">
+    <record id="action_customer_refs_tree" model="ir.actions.act_window">
             <field name="name">Customer values</field>
             <field name="res_model">product.customer.value</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="stock_location_route_tree" />
+            <field name="view_id" ref="product_customer_value_tree" />
             <field name="help" type="html">
-                <p class="oe_view_nocontent_create">
-                    Click to add a route.
+              <p class="oe_view_nocontent_create">
+                 Click to add a route.
               </p>
-                <p>You can define here the main routes that run through
-                    your warehouses and that define the flows of your products. These
-                    routes can be assigned to a product, a product category or be fixed
-                    on procurement or sales order. </p>
             </field>
         </record>
 </odoo>

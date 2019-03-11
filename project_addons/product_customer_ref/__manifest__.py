@@ -12,11 +12,13 @@
     'installable': True,
     'depends': [
         'product',
+        'sale'
 
     ],
     'data': [
         'views/product_view.xml',
         'views/product_customer_value.xml',
+        'views/res_partner.xml',
         'security/ir.model.access.csv'
     ],
 }

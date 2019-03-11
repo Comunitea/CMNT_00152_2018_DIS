@@ -12,14 +12,14 @@ class ProductCustomerValue(models.Model):
     @api.multi
     def _name_get(self):
         res = []
-        partner_id = self._context.get('customer_partner_id', False)
         for val in self:
-            res.append((val.id, val.default_code))
+            name = '[%s] %s' % (val.default_code, val.description)
+            res.append((val.id, name))
         return res
 
 
     product_id = fields.Many2one('product.product', string="Related product", required=True, ondelete="cascade")
-    partner_id = fields.Many2one('res.partner', string='Customer', domain=[('customer', '=', True)])
+    partner_id = fields.Many2one('res.partner', string='Customer', domain=[('customer', '=', True)],  required=True)
     default_code = fields.Char('Default code')
     description = fields.Char('Description')
 
@@ -53,7 +53,7 @@ class ProductProduct(models.Model):
             for product in self:
                 domain = [('product_id', '=', product.id), ('partner_id', '=', partner_id)]
                 customer_vals = self.env['product.customer.value']
-                val = customer_vals.search_read(domain, ['default_code','description'])
+                val = customer_vals.search_read(domain, ['default_code', 'description'])
                 if val:
                     product.write({
                             'customer_default_code': val[0]['default_code'],
@@ -61,14 +61,12 @@ class ProductProduct(models.Model):
 
     customer_default_code = fields.Char('Customer code', compute=_get_customer_values)
     customer_name = fields.Char('Customer description', compute=_get_customer_values)
-    action_view_customer_refs = fields.One2many('product.customer.value', 'product_id', 'Customer vals')
-    partner_customer_value_id = fields.Many2one('res.partner', 'Customer values', store=False)
+    product_customer_value_ids = fields.One2many('product.customer.value', 'product_id', 'Customer vals')
+    product_customer_value_id = fields.Many2one('res.partner', 'Customer values', store=False)
 
     def action_view_customer_refs(self):
-        routes = self.mapped('action_view_customer_refs')
-
-
-
-        action = self.env.ref('stock.action_routes_form').read()[0]
+        routes = self.mapped('product_customer_value_ids')
+        action = self.env.ref('product_customer_ref.action_customer_refs_tree').read()[0]
         action['domain'] = [('id', 'in', routes.ids)]
+        action['context'] = {'hide_product_column': True, 'default_product_id': self.id, 'default_default_code': self.default_code, 'default_description': self.description_sale}
         return action
