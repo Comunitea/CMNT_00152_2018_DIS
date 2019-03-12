@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_delivery_report_tree" model="ir.ui.view">
+        <field name="model">sale.delivery.report</field>
+        <field name="type">tree</field>
+        <field name="inherit_id" ref="sale.view_order_line_tree"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr='//tree' position="replace">
+                <tree string="Products Price List" create="false" decoration-success="actual_status=='sent'"
+                 decoration-info="sendable==1" decoration-warning="actual_status=='cancel'"
+                 decoration-danger="sendable==0">
+                    <field name="partner_name" readonly="1"/>
+                    <field name="name" readonly="1"/>
+                    <field name="product_id" readonly="1"/>
+                    <field name="date" readonly="1"/>
+                    <field name="date_expected" readonly="1"/>
+                    <field name="sml_ordered_qty" widget="integer" readonly="1"/>
+                    <field name="qty_delivered" widget="integer" readonly="1"/>
+                    <field name="sml_qty_canceled" widget="integer" readonly="1"/>
+                    <field name="qty_available" widget="integer" readonly="1"/>
+                    <field name="actual_status" readonly="1"/>
+                    <field name="state" readonly="1" invisible="1"/>
+                    <field name="sendable" readonly="1" invisible="1"/>
+                </tree>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_delivery_report_search" model="ir.ui.view">
+        <field name="name">sale.delivery.report.search</field>
+        <field name="model">sale.delivery.report</field>
+        <field name="arch" type="xml">
+            <search string="Sales Delivery Status">
+                <filter name="not_delivered" string="Pendientes" domain="[('actual_status', 'in', ['in_progress', 'cancel'])]"/>
+                <filter name="delivered" string="Entregados" domain="[('actual_status', 'in', ['sent'])]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Fecha de entrega" name="date_expected" context="{'group_by':'date_expected'}"/>
+                    <filter string="Producto" context="{'group_by':'product_id'}"/>
+                    <filter string="Cliente" name="partner_name" context="{'group_by':'partner_name'}"/>
+                    <filter string="Estado actual" name="actual_status" context="{'group_by':'actual_status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_delivery_report_all" model="ir.actions.act_window">
+        <field name="name">Sales Delivery Status</field>
+        <field name="res_model">sale.delivery.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree, form</field>
+        <field name="view_id"></field>  <!-- force empty -->
+        <field name="search_view_id" ref="view_delivery_report_search"/>
+        <field name="context">{'search_default_not_delivered':1}</field>
+        <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
+    </record>
+
+    <menuitem id="menu_action_delivery_report_all"
+            name="Entregas pendientes"
+            action="action_delivery_report_all"
+            parent="sale.menu_sale_report"
+            sequence="2"/>
+</odoo>
