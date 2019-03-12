@@ -12,7 +12,8 @@
     'installable': True,
     'depends': [
         'product',
-        'sale'
+        'sale',
+        'sale_team_product_custom_dismac'
 
     ],
     'data': [

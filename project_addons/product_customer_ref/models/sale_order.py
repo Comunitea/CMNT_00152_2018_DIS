@@ -15,7 +15,6 @@ class SaleOrder(models.Model):
 
         if self.partner_id and self.partner_id.own_product_codes:
             for line in self.order_line:
-
                 if line.product_id:
                     line.update_product_customer_name(self.partner_id.id, line.product_id.id)
 

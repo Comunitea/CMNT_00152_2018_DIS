@@ -7,10 +7,10 @@ from odoo.exceptions import UserError
 class SaleTeamProductData(models.Model):
     _name = "sale.team.product"
 
-    product_tmpl_id = fields.Many2one('product.template', string='product', ondelete="cascade")
+    product_tmpl_id = fields.Many2one('product.template', string='product', required=True, ondelete="cascade")
     team_id = fields.Many2one(
         'crm.team',
-        string='Sales Team', ondelete="cascade"
+        string='Sales Team', required=True, ondelete="cascade"
     )    
     image = fields.Binary(
         "Image", attachment=True,
@@ -28,6 +28,10 @@ class SaleTeamProductData(models.Model):
     description = fields.Text(
         'Description', translate=True,
         help="A precise description of the Product, used only for internal information purposes.")
+    _sql_constraints = [
+        ('product_sale_team_uniq', 'unique(product_tmpl_id, team_id)',
+         'There is already a customization for this product with the team sale you selected, check it out.')
+    ]
 
     @api.multi
     @api.constrains('product_tmpl_id', 'team_id')
@@ -36,7 +40,16 @@ class SaleTeamProductData(models.Model):
             if not var.description and not var.image:
                 raise UserError(
                     _("Description and image fields are both empty, you need to define atleast one of them."))
-            else:
-                if self.env['sale.team.product'].search([('product_tmpl_id', '=', var.product_tmpl_id.id), ('team_id', '=', var.team_id.id), ('id', '!=', var.id)]):
-                    raise UserError(
-                        _("There is already a customization for this product with the team sale you selected, check it out."))
+
+    @api.multi
+    def _image_get(self):
+        self.ensure_one()
+        return self.image or False
+        
+
+    @api.multi
+    def _description_get(self):
+        self.ensure_one()
+        return val.description or ''
+        
+                        
