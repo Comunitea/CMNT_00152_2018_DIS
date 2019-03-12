@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-11 14:04+0000\n"
-"PO-Revision-Date: 2019-03-11 14:04+0000\n"
+"POT-Creation-Date: 2019-03-12 16:16+0000\n"
+"PO-Revision-Date: 2019-03-12 16:16+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -36,9 +36,16 @@ msgid "Description"
 msgstr "Descripción"
 
 #. module: sale_team_product_custom_dismac
-#: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_sale_team_product_description_to_show
-msgid "Description To Show"
-msgstr "Descripción"
+#: code:addons/sale_team_product_custom_dismac/models/sale_team_product.py:42
+#, python-format
+msgid "Description and image fields are both empty, you need to define atleast one of them."
+msgstr "Los campos descripción e imagen están vacíos, debes rellenar al menos uno de ellos."
+
+#. module: sale_team_product_custom_dismac
+#: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_product_product_description_team
+#: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_product_template_description_team
+msgid "Description sale (team)"
+msgstr "Descripción para el canal de ventas"
 
 #. module: sale_team_product_custom_dismac
 #: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_sale_team_product_display_name
@@ -48,7 +55,7 @@ msgstr "Nombre"
 #. module: sale_team_product_custom_dismac
 #: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_sale_team_product_id
 msgid "ID"
-msgstr "ID (identificación)"
+msgstr "ID"
 
 #. module: sale_team_product_custom_dismac
 #: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_sale_team_product_image
@@ -56,24 +63,25 @@ msgid "Image"
 msgstr "Imagen"
 
 #. module: sale_team_product_custom_dismac
-#: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_sale_team_product_image_to_show
-msgid "Image To Show"
-msgstr "Imagen"
+#: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_product_product_image_team
+#: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_product_template_image_team
+msgid "Image (team)"
+msgstr "Imagen para el canal de ventas"
 
 #. module: sale_team_product_custom_dismac
 #: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_sale_team_product___last_update
 msgid "Last Modified on"
-msgstr "Última modificación en"
+msgstr "Últ. modificación en"
 
 #. module: sale_team_product_custom_dismac
 #: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_sale_team_product_write_uid
 msgid "Last Updated by"
-msgstr "Última actualización de"
+msgstr "Últ. actualización por"
 
 #. module: sale_team_product_custom_dismac
 #: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_sale_team_product_write_date
 msgid "Last Updated on"
-msgstr "Última actualización en"
+msgstr "Últ. actualización en"
 
 #. module: sale_team_product_custom_dismac
 #: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_sale_team_product_image_medium
@@ -89,6 +97,11 @@ msgstr "Imagen mediana del producto. Se redimensionará automáticamente a 128x1
 #: model:ir.model,name:sale_team_product_custom_dismac.model_product_template
 msgid "Product Template"
 msgstr "Plantilla de producto"
+
+#. module: sale_team_product_custom_dismac
+#: model:ir.model,name:sale_team_product_custom_dismac.model_sale_order
+msgid "Quotation"
+msgstr "Presupuesto"
 
 #. module: sale_team_product_custom_dismac
 #: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_product_product_sale_team_product_ids
@@ -107,6 +120,11 @@ msgid "Sale Teams"
 msgstr "Canales de venta"
 
 #. module: sale_team_product_custom_dismac
+#: model:ir.model,name:sale_team_product_custom_dismac.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea de pedido de ventas"
+
+#. module: sale_team_product_custom_dismac
 #: model:ir.model.fields,field_description:sale_team_product_custom_dismac.field_sale_team_product_team_id
 msgid "Sales Team"
 msgstr "Canales de venta"
@@ -122,10 +140,9 @@ msgid "Small-sized image of the product. It is automatically resized as a 64x64p
 msgstr "Imagen pequeña del producto. Se redimensiona automáticamente a 64x64px, preservando el ratio de aspecto. Use este campo siempre que se requiera una imagen pequeña."
 
 #. module: sale_team_product_custom_dismac
-#: code:addons/sale_team_product_custom_dismac/models/sale_team_product.py:57
-#, python-format
+#: sql_constraint:sale.team.product:0
 msgid "There is already a customization for this product with the team sale you selected, check it out."
-msgstr "Ya existe una personalización para este producto y ese mismo canal de ventas, revísalo."
+msgstr "Ya existe una personalización para el producto y canal de ventas seleccionado."
 
 #. module: sale_team_product_custom_dismac
 #: model:ir.model.fields,help:sale_team_product_custom_dismac.field_sale_team_product_image
