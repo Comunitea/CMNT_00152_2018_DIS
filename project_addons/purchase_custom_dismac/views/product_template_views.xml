@@ -4,10 +4,10 @@
         <field name="name">product.template.product.form</field>
         <field name="model">product.template</field>
         <field name="priority" eval="8" />
-        <field name="inherit_id" ref="sale.product_template_form_view_sale_order_button"/>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_view_sales']" position="after">
-                <button string="Undelivered Items" icon="fa-sign-out" class="oe_stat_button" name="get_undelivered_items" type="object"></button>
+            <xpath expr="//button[@name='toggle_active']" position="before">
+                <button string="Unreceived Items" icon="fa-sign-in" class="oe_stat_button" name="get_unreceived_items" type="object"></button>
             </xpath>
         </field>
     </record>

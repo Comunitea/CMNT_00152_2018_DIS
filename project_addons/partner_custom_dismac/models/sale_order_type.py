@@ -4,8 +4,8 @@
 from odoo import models, fields, api
 
 
-class ResPartner(models.Model):
+class SaleOrderType(models.Model):
     _inherit = 'sale.order.type'
 
-    unclaimable_for = fields.Integer('days after being claimed', help="Partner won't be claimable for this days after being claimed by another user", store=True, default=90)
-    days_without_order_or_quotation = fields.Integer('days_without_order_or_quotation', help="Number of days with no order or quotation before the partner becomes claimable", store=True, default=180)
+    unclaimable_for = fields.Integer('Days to claim', help="Partner won't be claimable for this days after being claimed by another user", default=90)
+    days_without_order_or_quotation = fields.Integer('Days without order', help="Number of days with no order or quotation before the partner becomes claimable", default=180)

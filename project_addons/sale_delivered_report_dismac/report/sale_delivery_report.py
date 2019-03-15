@@ -9,24 +9,20 @@ class SaleDelivery(models.Model):
     _name = "sale.delivery.report"
     _description = "Sales Delivery Status"
     _auto = False
-    _rec_name = 'date'
-    _order = 'date desc'
+    _rec_name = 'date_order'
+    _order = 'date_order desc'
 
-    name = fields.Char('Order Reference', readonly=True)
-    product_id = fields.Many2one('product.product', 'Product', readonly=True)
-    date = fields.Datetime('Date Order', readonly=True)
-    date_expected = fields.Datetime('Expected Date', readonly=True)
-    state = fields.Selection([
-        ('draft', 'Draft Quotation'),
-        ('sent', 'Quotation Sent'),
-        ('sale', 'Sales Order'),
-        ('done', 'Sales Done'),
-        ('cancel', 'Cancelled'),
-        ], string='Status', readonly=True)
+    product_id = fields.Many2one('product.product', readonly=True)
+    partner_id = fields.Many2one('res.partner', readonly=True)
+    sale_order_id = fields.Many2one('sale.order', readonly=True)
+    sale_order_line_id = fields.Many2one('sale.order.line', readonly=True)
+    stock_move_id = fields.Many2one('stock.move', readonly=True)
+    date_order = fields.Datetime(related='sale_order_id.date_order', readonly=True)
+    date_expected = fields.Datetime(related='stock_move_id.date_expected', readonly=True)
+    state = fields.Selection(related='sale_order_id.state', readonly=True)
     actual_status = fields.Selection(selection=[('in_progress', 'En proceso'), ('sent', 'Enviado'), ('cancel', 'Cancelado')], readonly=True)
-    partner_name = fields.Char('Partner Name', readonly=True)
     sml_ordered_qty = fields.Float('Qty Ordered', readonly=True)  
-    qty_delivered = fields.Float('Qty Delivered', readonly=True)
+    qty_delivered = fields.Float(related='sale_order_line_id.qty_delivered', readonly=True)
     sml_qty_canceled = fields.Float('Qty Canceled', readonly=True)
     qty_available = fields.Float(related='product_id.qty_available', readonly=True)
     sendable = fields.Float(compute="_update_status", readonly=True)
@@ -35,13 +31,11 @@ class SaleDelivery(models.Model):
         select_str = """
             WITH currency_rate as (%s)
              SELECT min(l.id) as id,
-                    l.name as product_name,
+                    l.id as sale_order_line_id,
                     l.product_id as product_id,
-                    s.name as name,
-                    s.date_order as date,
-                    sm.date_expected as date_expected,
-                    s.state as state,
-                    partner.name as partner_name,
+                    l.order_id as sale_order_id,
+                    sm.id as stock_move_id,
+                    partner.id as partner_id,
                     (select SUM(sm.ordered_qty) from stock_move sm where sm.sale_line_id = l.id) as sml_ordered_qty,
                     l.qty_delivered as qty_delivered,
                     (select SUM(sm.ordered_qty) from stock_move sm where sm.sale_line_id = l.id and sm.state = 'cancel') as sml_qty_canceled,
@@ -67,19 +61,12 @@ class SaleDelivery(models.Model):
     def _group_by(self):
         group_by_str = """
 
-            GROUP BY l.name,
-                     l.product_id,
-                    s.name,
-                    s.date_order,
-                    sm.date_expected,
-                    s.state,
-                    partner.name,
-                    s.user_id,
-                    l.product_uom_qty,
+            GROUP BY l.product_id,
                     l.qty_delivered,
                     sm.state,
                     l.id,
-                    sm.id
+                    sm.id,
+                    partner.id
         """
         return group_by_str
 

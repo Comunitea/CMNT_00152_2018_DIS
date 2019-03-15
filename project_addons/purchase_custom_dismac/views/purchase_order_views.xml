@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="purchase_custom_tree" model="ir.ui.view">
+     <field name="name">purchase.order.line.tree</field>
+        <field name="model">purchase.order.line</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Purchase Order Lines" create="false" delete="false" edit="false" decoration-success="qty_to_receive&lt;=0"
+                decoration-danger="qty_to_receive&gt;0">
+                <field name="currency_id" invisible="1"/>
+                <field name="order_id"/>
+                <field name="product_id" attrs="{'readonly': [('state', 'in', ('purchase', 'to approve','done', 'cancel'))]}" context="{'partner_id':parent.partner_id, 'quantity':product_qty,'uom':product_uom, 'company_id': parent.company_id}" force_save="1"/>
+                <field name="date_planned"  widget="date"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                <field name="account_analytic_id" context="{'default_partner_id':parent.partner_id}" groups="purchase.group_analytic_accounting"/>
+                <field name="analytic_tag_ids" groups="purchase.group_analytic_accounting" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="product_qty"/>
+                <field name="qty_received"/>
+                <field name="product_uom" groups="product.group_uom" attrs="{'readonly': [('state', 'in', ('purchase', 'done', 'cancel'))]}" force_save="1"/>
+                <field name="price_unit"/>
+                <field name="qty_to_receive" invisible="1"/>
+                <field name="price_subtotal" widget="monetary"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="purchase_custom_search" model="ir.ui.view">
+        <field name="name">purchase.custom.order.line.search</field>
+        <field name="model">purchase.order.line</field>
+        <field name="arch" type="xml">
+            <search string="Purchase Order Lines Status">
+                <field name="order_id"/>
+                <field name="product_id"/>
+                <field name="company_id"/>
+                <filter name="not_delivered" string="Pendientes" domain="[('qty_to_receive', '&gt;', 0), ('state', 'not in', ['draft', 'cancel', 'done'])]"/>
+                <filter name="delivered" string="Entregados" domain="[('qty_to_receive', '&lt;=', 0)]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Fecha de entrega" name="date_planned" context="{'group_by':'date_planned'}"/>
+                    <filter string="Producto" context="{'group_by':'product_id'}"/>
+                    <filter string="Cliente" name="company_id" context="{'group_by':'company_id'}"/>
+                    <filter string="Estado" name="state" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_purchase_custom_all" model="ir.actions.act_window">
+        <field name="name">Purchase Order Lines</field>
+        <field name="res_model">purchase.order.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="purchase_custom_tree"></field>  <!-- force empty -->
+        <field name="search_view_id" ref="purchase_custom_search"/>
+        <field name="context">{'search_default_not_delivered':1}</field>
+    </record>
+
+    <record id="purchase_custom_order_form" model="ir.ui.view">
+        <field name="name">purchase.order.form.min.amount</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']" position="before">
+                <div class="oe_right">
+                    <group col="4">
+                        <field name="needed_for_min_amount" string="Amount needed to serve" widget="monetary" attrs="{'invisible': [('needed_for_min_amount', '&lt;=', 0)]}"/>
+                        <field name="needed_for_free_delivery" string="Amount needed for free delivery" widget="monetary" attrs="{'invisible': [('needed_for_free_delivery', '&lt;=', 0)]}"/>
+                    </group>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+     <menuitem id="menu_action_purchase_custom_all"
+            name="Compras pendientes"
+            action="action_purchase_custom_all"
+            parent="purchase.purchase_report"
+            sequence="2"/>
+</odoo>

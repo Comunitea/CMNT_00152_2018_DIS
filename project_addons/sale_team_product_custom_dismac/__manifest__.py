@@ -14,7 +14,8 @@
         'website_sale'
     ],
     'data': [
-        'views/product_template.xml'
+        'views/product_template.xml',
+        'security/ir.model.access.csv'
     ],
     'installable': True,
 }
