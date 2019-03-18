@@ -9,7 +9,7 @@
             <xpath expr="//group[@name='website']" position="after">
                 <hr/>
                 <div class="o_horizontal_separator">Sale Teams</div>
-                <field name="sale_team_product_ids" mode="kanban" context="{'product_tmpl_id': active_id, 'default_product_template_id': active_id}">
+                <field name="sale_team_product_ids" mode="kanban" context="{'product_tmpl_id': active_id, 'default_product_tmpl_id': active_id}">
                     <kanban>
                         <field name="id"/>
                         <field name="product_tmpl_id"/>
@@ -34,9 +34,8 @@
                     </kanban>
                     <form string="Sale Team Product Info" options="{'initial_mode': 'edit'}">
                         <sheet>
-                            <field name="product_tmpl_id" invisible="1"/>
-                            <hr/>
                             <group>
+                                <field name="product_tmpl_id" invisible="1" context="{'product_tmpl_id': parent.id, 'default_product_tmpl_id': parent.id}"/>
                                 <field name="team_id" widget="selection"/>
                                 <field name="image" widget="image"/>
                                 <field name="description"/>

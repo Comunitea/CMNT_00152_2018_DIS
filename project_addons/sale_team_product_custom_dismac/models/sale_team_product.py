@@ -34,8 +34,8 @@ class SaleTeamProductData(models.Model):
     ]
 
     @api.multi
-    @api.constrains('product_tmpl_id', 'team_id')
-    def check_if_already_exists(self):
+    @api.constrains('description', 'image')
+    def check_if_both_empty(self):
         for var in self:
             if not var.description and not var.image:
                 raise UserError(
@@ -50,6 +50,6 @@ class SaleTeamProductData(models.Model):
     @api.multi
     def _description_get(self):
         self.ensure_one()
-        return val.description or ''
+        return self.description or ''
         
                         
