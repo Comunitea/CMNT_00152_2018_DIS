@@ -21,8 +21,8 @@ class ResPartner(models.Model):
 
         for partner in self:
             sale_order_obj = self.env['sale.order'].search([('partner_id', '=', partner.id)], limit=1, order='id desc')    
-            claimable_on = datetime.strptime(sale_order_obj and sale_order_obj.date_order or partner.create_date, '%Y-%m-%d %H:%M:%S')+relativedelta(days =+ partner.days_without_order_or_quotation)
-            unclaimed_for = datetime.strptime(partner.claimed_on, '%Y-%m-%d %H:%M:%S')+relativedelta(days =+ partner.unclaimable_for)
+            claimable_on = datetime.strptime(sale_order_obj and sale_order_obj.date_order or partner.create_date, '%Y-%m-%d %H:%M:%S')+relativedelta(days =+ partner.days_without_order_or_quotation or sale_order_obj.type_id.days_without_order_or_quotation)
+            unclaimed_for = datetime.strptime(partner.claimed_on, '%Y-%m-%d %H:%M:%S')+relativedelta(days =+ partner.unclaimable_for or sale_order_obj.type_id.unclaimable_for)
             end_claimable_on = max(claimable_on, unclaimed_for)
 
             today_date = datetime.now()
