@@ -22,7 +22,7 @@ class ResPartner(models.Model):
             value = {
                 'name': _('Purchase order lines'),
                 'view_type': 'form',
-                'view_mode': 'tree',
+                'view_mode': 'tree,form',
                 'res_model': 'purchase.order.line',
                 'views': [
                     (tree_view and tree_view[1] or False, 'tree')],
