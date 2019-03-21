@@ -11,7 +11,7 @@
                 <button string="Purchase lines" icon="fa-sign-in" attrs="{'invisible': [('supplier', '=', False)]}" class="oe_stat_button" name="get_purchase_lines" type="object"></button>
             </button>
             <xpath expr="//page[@name='sales_purchases']//field[@name='supplier']" position="after">
-                <field name="min_amount_to_serve" string="Min. amount to serve" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <!--field name="min_amount_to_serve" string="Min. amount to serve" attrs="{'invisible': [('supplier', '=', False)]}"/-->
                 <field name="min_amount_for_free_delivery" string="Min. amount for free delivery" attrs="{'invisible': [('supplier', '=', False)]}"/>
             </xpath>
         </field>

@@ -7,7 +7,7 @@ from dateutil.relativedelta import relativedelta
 class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
 
-    needed_for_min_amount = fields.Float('Amount needed to achieve the min. delivery amount.', compute="_check_min_purchase_amount", store=True)
+    #needed_for_min_amount = fields.Float('Amount needed to achieve the min. delivery amount.', compute="_check_min_purchase_amount", store=True)
     needed_for_free_delivery = fields.Float('Amount needed to get free delivery amount.', compute="_check_min_delivery_amount", store=True)
 
     @api.multi
@@ -23,11 +23,11 @@ class PurchaseOrder(models.Model):
             else:
                 order.date_planned = order.date_order 
     
-    @api.multi
-    @api.depends('amount_total')
-    def _check_min_purchase_amount(self):
-        for order in self:
-            order.needed_for_min_amount = order.partner_id.min_amount_to_serve - order.amount_total
+    # @api.multi
+    # @api.depends('amount_total')
+    # def _check_min_purchase_amount(self):
+    #     for order in self:
+    #         order.needed_for_min_amount = order.partner_id.min_amount_to_serve - order.amount_total
     
     @api.multi
     @api.depends('amount_total')

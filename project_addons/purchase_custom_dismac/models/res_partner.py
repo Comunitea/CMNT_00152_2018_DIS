@@ -6,7 +6,8 @@ from datetime import datetime, timedelta
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    min_amount_to_serve = fields.Float('Minimum amount to serve the order', store=True, default=0.0)
+    #min_amount_to_serve = fields.Float('Minimum amount to serve the order',
+    # store=True, default=0.0)
     min_amount_for_free_delivery = fields.Float('Minimum amount for free delivery', store=True, default=0.0)
 
     def get_purchase_lines(self):
