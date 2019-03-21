@@ -10,7 +10,9 @@ class ProductPriceRatio(models.Model):
     _name ="product.price.ratio"
 
     name = fields.Char('Name')
-    purchase_ratio = fields.Float('Purchase ratio', help="Ratio to get reference cost from pricelist_cost")
+    purchase_ratio = fields.Float('Purchase ratio',
+                    help="Ratio to get reference cost from pricelist_cost",
+                    digits=4)
 
 
 class ProductProduct(models.Model):
@@ -20,22 +22,22 @@ class ProductProduct(models.Model):
 
     real_stock_cost = fields.Float('Real stock cost',
                                    compute="_get_compute_custom_costs",
-                                   digits=dp.get_precision('Product cost'),
+                                   digits=dp.get_precision('Product Price'),
                                    groups="stock_account_custom.group_cost_manager",
                                    help="Stock value / Qty")
     real_stock_cost_fixed = fields.Float('Fixed real stock cost',
                                    compute="_get_compute_custom_costs",
-                                   digits=dp.get_precision('Product cost'),
+                                   digits=dp.get_precision('Product Price'),
                                    groups="stock_account_custom.group_cost_manager",
                                    help="Stock value / Qty (without special purchases)")
     pricelist_cost = fields.Float('Price list cost',
-                                   digits=dp.get_precision('Product cost'),
+                                   digits=dp.get_precision('Product Price'),
                                    groups="stock_account_custom.group_cost_manager",
                                    help="Cost price used in pricelist (Last "
                                         "purchase cost manually frozen")
     reference_cost = fields.Float('Reference cost',
                                   compute="_get_compute_custom_costs",
-                                   digits=dp.get_precision('Product cost'),
+                                   digits=dp.get_precision('Product Price'),
                                    help="Cost price (reference)")
     last_purchase_price_fixed = fields.Float(
         string='Last Purchase Price Fixed',

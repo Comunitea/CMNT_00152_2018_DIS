@@ -5,3 +5,4 @@ from . import product
 from . import stock_move
 from . import purchase_order
 from . import product_pricelist
+from . import sale_order
