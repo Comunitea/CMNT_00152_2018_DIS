@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="view_settlement_form">
+        <field name="name">Settlements</field>
+        <field name="model">sale.commission.settlement</field>
+        <field name="inherit_id" ref="sale_commission.view_settlement_form" />
+        <field name="arch" type="xml">
+            <header position="inside">
+                <button string="Settlement by goal"
+                        attrs="{'invisible': [('by_goals', '!=', True)]}"
+                        class="oe_highlight"
+                        type="object"
+                        name="settlement_by_goal" />
+            </header>
+
+            <field name="date_to" position="after">
+                <field name="by_goals"/>
+            </field>
+
+            <xpath expr="//field[@name='lines']/tree/field[@name='commission']" position="after">
+                <field name="type_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_settlement_line_tree">
+        <field name="name">Settlement lines</field>
+        <field name="model">sale.commission.settlement.line</field>
+        <field name="inherit_id" ref="sale_commission.view_settlement_line_tree" />
+        <field name="arch" type="xml">
+            <field name="commission" position="after">
+                <field name="type_id"/>
+            </field>
+        </field>
+    </record>
+
+    
+
+
+
+</odoo>

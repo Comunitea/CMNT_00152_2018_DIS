@@ -23,7 +23,7 @@ class AgentMonthGoal(models.Model):
         string='Month', required=True)
     stationery_goal = fields.Float('Stationery Goal')
     furniture_goal = fields.Float('Furniture Goal')
-    office_goal = fields.Float('Furniture Goal')
+    office_goal = fields.Float('Office Goal')
     total_goal = fields.Float('Total Goal', compute='_compute_total_goal')
 
     _sql_constraints = [

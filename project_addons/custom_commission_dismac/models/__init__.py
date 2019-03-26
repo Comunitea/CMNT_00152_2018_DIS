@@ -3,3 +3,6 @@
 from . import agent_month_goal  # noqa
 from . import commission_by  # noqa
 from . import res_partner  # noqa
+from . import sale_commission  # noqa
+from . import sale_commission_mixin  # noqa
+from . import settlement  # noqa

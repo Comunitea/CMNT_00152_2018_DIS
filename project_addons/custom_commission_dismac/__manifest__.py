@@ -16,6 +16,7 @@
         'security/ir.model.access.csv',
         'views/agent_month_goal_view.xml',
         'views/commission_by_view.xml',
+        'views/settlement_view.xml',
     ],
     'installable': True,
 }
