@@ -18,25 +18,50 @@
                 <field name="by_goals"/>
             </field>
 
-            <xpath expr="//field[@name='lines']/tree/field[@name='commission']" position="after">
-                <field name="type_id"/>
+
+            <xpath expr="//group[3]" position="after">
+                <group string="Settlements by Operating Unit" attrs="{'invisible': [('by_goals', '!=', True)]}">
+                    <field name="unit_line_ids" nolabel="1">
+                        <tree>
+                            <field name="unit_id"/>
+                            <field name="commission"/>
+                            <field name="amount"/>
+                        </tree>
+                        <form>
+                            <sheet>
+                                <group>
+                                    <field name="unit_id"/>
+                                    <field name="commission"/>
+                                    <field name="amount"/>
+                                </group>
+                                <group string="Settlements by Goals">
+                                     <field name="goal_line_ids" nolabel="1">
+                                        <tree>
+                                            <field name="goal_type_id"/>
+                                            <field name="note"/>
+                                            <field name="commission"/>
+                                            <field name="amount"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </group>
+                <group class="oe_subtotal_footer oe_right">
+                    <field name="goals_total"
+                           class="oe_subtotal_footer_separator"
+                           widget="monetary"
+                           options="{'currency_field': 'currency_id'}"/>
+                </group>
+            </xpath>
+
+            <xpath expr="//field[@name='lines']/.." position="attributes">
+                <attribute name="attrs">{'invisible': [('by_goals', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='total']/.." position="attributes">
+                <attribute name="attrs">{'invisible': [('by_goals', '=', True)]}</attribute>
             </xpath>
         </field>
     </record>
-
-    <record model="ir.ui.view" id="view_settlement_line_tree">
-        <field name="name">Settlement lines</field>
-        <field name="model">sale.commission.settlement.line</field>
-        <field name="inherit_id" ref="sale_commission.view_settlement_line_tree" />
-        <field name="arch" type="xml">
-            <field name="commission" position="after">
-                <field name="type_id"/>
-            </field>
-        </field>
-    </record>
-
-    
-
-
-
 </odoo>

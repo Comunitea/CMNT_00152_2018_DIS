@@ -7,13 +7,18 @@ class ResPartner(models.Model):
 
     _inherit = 'res.partner'
 
-    @api.multi
-    def _compute_total_goal(self):
-        for amg in self:
-            amg.total_goal = \
-                amg.stationery_goal + amg.furniture_goal + amg.office_goal
-
     agent_goal_ids = fields.One2many(
-        'agent.month.goal', 'partner_id', 'Month Objevctives')
+        'agent.month.goal', 'agent_id', 'Month Objevctives')
     
-    total_goal = fields.Float('Total Goal', compute='_compute_total_goal')
+    @api.multi
+    def action_view_month_goals(self):
+        self.ensure_one()
+
+        action = self.env.ref(
+            'custom_commission_dismac.goals_by_month').read()[0]
+        if len(self.agent_goal_ids):
+            action['domain'] = [('id', 'in', self.agent_goal_ids.ids)]
+        else:
+            action = {'type': 'ir.actions.act_window_close'}
+        return action
+    
