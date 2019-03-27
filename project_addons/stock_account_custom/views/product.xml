@@ -45,13 +45,18 @@
                 <field name="real_stock_cost" widget='monetary' groups="base.group_user"
                            attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"
                            options="{'currency_field': 'currency_id', 'field_digits': True}"/>
-                <field name="real_stock_cost_fixed" widget='monetary' groups="base.group_user"
+                <!--field name="real_stock_cost_fixed" widget='monetary' groups="base.group_user"
                            attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"
-                           options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                           options="{'currency_field': 'currency_id', 'field_digits': True}"/-->
+                <field name="cost_method"  groups="base.group_user"
+                           attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"/>
+                <field name="cost_method_product_id"  attrs="{'invisible':['|', '&amp;', ('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False),('cost_method', '!=', 'formula')]}"/>
+                <field name="cost_method_ratio" attrs="{'invisible':['|', '&amp;', ('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False),('cost_method', '!=', 'formula')]}"/>
 
                 <field name="reference_cost" widget='monetary' groups="base.group_user"
                            attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"
                            options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+
                 <field name="pricelist_cost" widget='monetary' groups="stock_account_custom.group_cost_manager"
                        attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"
                        options="{'currency_field': 'currency_id', 'field_digits': True}"/>
@@ -68,10 +73,10 @@
     <record id="product_last_purchase_info_fixed_form_view" model="ir.ui.view">
 		<field name="name">product.last.purchase.info.fixed.form</field>
 		<field name="model">product.product</field>
-		<field name="inherit_id" ref="purchase_last_price_info.product_last_purchase_info_form_view" />
+		<field name="inherit_id" ref="product.product_normal_form_view" />
 		<field name="priority" eval="30" />
 		<field name="arch" type="xml">
-			<field name="last_purchase_price" position="after">
+			<field name="lst_price" position="after">
                 <field name="last_purchase_price_fixed" />
 			</field>
 		</field>
@@ -88,8 +93,6 @@
             </xpath>
         </field>
     </record>
-
-
 
 
     <record id="product_easy_edit_stcok_account_custom" model="ir.ui.view">
@@ -117,5 +120,16 @@
                 </xpath>
             </field>
      </record>
+
+
+    <record id="action_update_pricelist_cost" model="ir.actions.server">
+            <field name="name">Update Pricelist Cost</field>
+            <field name="model_id" ref="model_product_product"/>
+            <field name="binding_model_id" ref="product.model_product_product"/>
+            <field name="state">code</field>
+            <field name="code">
+records.update_pricelist_cost()
+            </field>
+        </record>
 
 </odoo>
