@@ -40,8 +40,17 @@ class ProductProduct(models.Model):
                                    digits=dp.get_precision('Product Price'),
                                    help="Cost price (reference)")
     last_purchase_price_fixed = fields.Float(
-        string='Last Purchase Price Fixed',
-        compute='_compute_last_purchase_fixed')
+                                    string='Last Purchase Price Fixed',
+                                    compute='_compute_last_purchase_fixed')
+
+    @api.model
+    def update_pricelist_cost(self):
+        for product in self:
+            if product.cost_method == 'last_cost':
+                product.pricelist_cost = product.last_purchase_price_fixed
+            if product.cost_method == 'formula':
+                product.pricelist_cost = product.cost_method_product_id. \
+                                             cost_method_product_id * product.cost_method_ratio
 
     def _get_compute_custom_costs_with_context(self, ctx):
         qty_at_date = self.qty_at_date
@@ -141,7 +150,15 @@ class ProductTemplate(models.Model):
         'Fixed real stock cost', compute='_compute_reference_cost',
         digits=dp.get_precision('Product Price'), groups="stock_account_custom.group_cost_manager",
         help="Stock value / Qty (without special purchases)")
-
+    cost_method = fields.Selection([
+        ('last_cost', 'Last Cost'),
+        ('manual', 'Manual'),
+        ('formula', 'Formula'),
+    ], "Calculation method",
+        default='last_cost', required=True,
+        help='Calculation method for Pricelist Cost')
+    cost_method_product_id = fields.Many2one('product.product', 'Cost Product')
+    cost_method_ratio = fields.Float('Ratio', digits=(16,4),default='1')
 
     @api.depends('product_variant_ids', 'product_variant_ids.reference_cost')
     def _compute_reference_cost(self):
