@@ -46,6 +46,12 @@ $ sandbox/bin/python3 bootstrap.py --setuptools-version=40.8.0 -c devel-buildout
 ```
 $ bin/buildout -c [archivo_buildout]
 ```
+
+- Si falla al instalar xmlsec ....
+```
+$ apt-get install libxml2-dev libxmlsec1-dev libxmlsec1-openssl
+```
+
 - Actualmente supervisor no funciona en python3, por lo que si no se instala manualmente es necesario lanzar postgres y odoo con los comandos
 ```
 $ parts/postgres/bin/postmaster --config-file=etc/postgresql.conf
