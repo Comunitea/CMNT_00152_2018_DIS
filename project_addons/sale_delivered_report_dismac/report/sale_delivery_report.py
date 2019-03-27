@@ -10,7 +10,52 @@ class SaleDelivery(models.Model):
     _description = "Sales Delivery Status"
     _auto = False
     _rec_name = 'date_order'
-    _order = 'date_order desc'
+    _order = 'date_expected asc'
+
+
+    @api.multi
+    def _get_purchase_order_line(self):
+        pol_ids = self.env['purchase.order.line']
+        for line in self:
+            domain = [('product_id', '=', line.product_id.id), ('qty_to_receive', '!=', 0), ('date_planned', '<=', line.date_expected), ('id', 'not in', pol_ids.ids)]
+            pol = self.env['purchase.order.line'].search(domain, order ='date_planned asc', limit=1)
+            if pol:
+                pol_ids |= pol
+                line.purchase_order_line_id = pol.id
+
+
+    @api.multi
+    def _get_qty_to_delivered(self):
+
+        product_id = self.mapped('product_id')
+        if not product_id:
+            p_id = self._context.get('product_id', False)
+            product_id = self.env['product.product'].browse(p_id)
+        if len(product_id)!= 1:
+            return
+        #Compras asociadas pendientes de recibir
+        domain = [('product_id', '=', product_id.id), ('qty_to_receive', '!=', 0)]
+        pol = self.env['purchase.order.line'].search(domain, order ='date_planned asc')
+
+        qty_available = product_id.qty_available
+        qty_reserved = 0.00
+
+        for line in self.filtered(lambda x: x.product_id == product_id).sorted(key='date_expected', reverse=False):
+            pol_line_ids = pol.filtered(lambda x: x.date_planned < line.date_expected)
+
+            line.qty_to_receive = sum(x.qty_to_receive for x in pol_line_ids)
+            if pol_line_ids:
+                pol -= pol_line_ids
+                line.purchase_order_line_id = pol_line_ids[0].id
+                line.date_planned = pol_line_ids[0].date_planned
+                line.purchase_order_ids = [(6, 0, pol_line_ids.mapped('order_id').ids)]
+            line.qty_to_delivered = line.sml_ordered_qty - line.qty_delivered - line.sml_qty_canceled
+            line.qty_available_to_delivered = qty_available + sum(x.qty_to_receive for x in pol_line_ids)
+            line.qty_reserved += line.qty_to_delivered
+            qty_reserved  += line.qty_to_delivered
+            qty_available -= line.qty_to_delivered
+
+            line.sendable = line.qty_available_to_delivered >= line.qty_to_delivered
 
     product_id = fields.Many2one('product.product', readonly=True)
     partner_id = fields.Many2one('res.partner', readonly=True)
@@ -25,8 +70,15 @@ class SaleDelivery(models.Model):
     qty_delivered = fields.Float(related='sale_order_line_id.qty_delivered', readonly=True)
     sml_qty_canceled = fields.Float('Qty Canceled', readonly=True)
     qty_available = fields.Float(related='product_id.qty_available', readonly=True)
-    sendable = fields.Float(compute="_update_status", readonly=True)
-      
+    purchase_order_line_id = fields.Many2one(compute="_get_qty_to_delivered")
+    qty_to_receive = fields.Float(compute="_get_qty_to_delivered")
+    date_planned = fields.Datetime(compute="_get_qty_to_delivered")
+    purchase_order_ids = fields.Many2many('purchase.order', compute="_get_qty_to_delivered")
+    qty_reserved = fields.Float(compute="_get_qty_to_delivered")
+    qty_to_delivered = fields.Float(compute="_get_qty_to_delivered")
+    qty_available_to_delivered = fields.Float(compute="_get_qty_to_delivered")
+    sendable = fields.Float(compute="_get_qty_to_delivered")
+
     def _select(self):
         select_str = """
             WITH currency_rate as (%s)
@@ -44,7 +96,7 @@ class SaleDelivery(models.Model):
                          (select SUM(sm.ordered_qty) from stock_move sm where sm.sale_line_id = l.id and sm.state = 'cancel')) then 'cancel'
                         when ((select SUM(sm.ordered_qty) from stock_move sm where sm.sale_line_id = l.id) = qty_delivered) then 'sent'
                         else 'in_progress'
-                    end as actual_status
+                    end as actual_status  
         """ % self.env['res.currency']._select_companies_rates()
         return select_str
 
@@ -78,7 +130,7 @@ class SaleDelivery(models.Model):
             %s
             FROM ( %s )
             %s
-            )""" % (self._table, self._select(), self._from(), self._group_by()))
+            ) order by date_expected""" % (self._table, self._select(), self._from(), self._group_by()))
     
     
     @api.multi

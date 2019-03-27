@@ -3,14 +3,14 @@
 from odoo import fields, models, api
 from datetime import datetime, timedelta
 
-class ProductTemplate(models.Model):
-    _inherit = "product.template"
+class ProductProduct(models.Model):
+    _inherit = "product.product"
 
     def get_undelivered_items(self):
-        obj_product = self.env['product.product'].search([('product_tmpl_id', '=', self.id)])
+
         tree_view = self.env.ref(
             'sale_delivered_report_dismac.view_delivery_report_tree')
-        domain = [('product_id', '=', obj_product.id)]
+        domain = [('product_id', '=', self.id)]
         return {
             'name': 'Sales delivery report',
             'type': 'ir.actions.act_window',

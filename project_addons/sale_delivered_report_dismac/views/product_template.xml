@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="product_template_only_form_view" model="ir.ui.view">
-        <field name="name">product.template.product.form</field>
-        <field name="model">product.template</field>
-        <field name="priority" eval="8" />
-        <field name="inherit_id" ref="sale.product_template_form_view_sale_order_button"/>
+    <record id="sale_delivered_report_dismac.product_template_only_form_view" model="ir.ui.view"/>
+    <record id="product_undelivered_items" model="ir.ui.view">
+        <field name="name">product.undelivered.items</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock.product_form_view_procurement_button"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_view_sales']" position="after">
+            <xpath expr="//button[@name='action_view_stock_move_lines']" position="after">
                 <button string="Undelivered Items" icon="fa-sign-out" class="oe_stat_button" name="get_undelivered_items" type="object"></button>
             </xpath>
         </field>

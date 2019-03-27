@@ -12,7 +12,8 @@
     'installable': True,
     'depends': [
         'stock',
-        'sale_order_type'
+        'sale_order_type',
+        'purchase_open_qty'
     ],
     'data': [
         'report/sale_delivery_report_views.xml',
