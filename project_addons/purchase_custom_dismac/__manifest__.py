@@ -11,7 +11,9 @@
     'application': False,
     'installable': True,
     'depends': [
-        'purchase'
+        'stock',
+        'purchase',
+        'purchase_open_qty'
     ],
     'data': [
         'views/res_partner_views.xml',

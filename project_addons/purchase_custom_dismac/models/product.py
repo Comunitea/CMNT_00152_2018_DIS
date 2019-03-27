@@ -4,18 +4,17 @@ from odoo import fields, models, api, _
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-class ProductTemplate(models.Model):
-    _inherit = "product.template"
+class ProductProduct(models.Model):
+    _inherit = "product.product"
 
     def get_unreceived_items(self):
-        obj_product = self.env['product.product'].search([('product_tmpl_id', '=', self.id)])
         model_data = self.env['ir.model.data']
 
         tree_view = model_data.get_object_reference(
             'purchase_custom_dismac', 'purchase_custom_tree')
         search_view = model_data.get_object_reference(
             'purchase_custom_dismac', 'purchase_custom_search')
-        domain = [('product_id', '=', obj_product.id)]
+        domain = [('product_id', '=', self.id)]
         value = {}
         for call in self:
             value = {
