@@ -7,13 +7,8 @@ class AgentMonthGoal(models.Model):
 
     _name = 'agent.month.goal'
 
-    @api.multi
-    def _compute_total_goal(self):
-        for amg in self:
-            amg.total_goal = \
-                amg.stationery_goal + amg.furniture_goal + amg.office_goal
 
-    partner_id = fields.Many2one(
+    agent_id = fields.Many2one(
         'res.partner', 'Agent', required=True,
         domain=[('agent', '=', True)])
     month = fields.Selection([
@@ -21,13 +16,14 @@ class AgentMonthGoal(models.Model):
         (5, 'May'), (6, 'June'), (7, 'July'), (8, 'August'), 
         (9, 'September'), (10, 'October'), (11, 'November'), (12, 'December')], 
         string='Month', required=True)
-    stationery_goal = fields.Float('Stationery Goal')
-    furniture_goal = fields.Float('Furniture Goal')
-    office_goal = fields.Float('Office Goal')
-    total_goal = fields.Float('Total Goal', compute='_compute_total_goal')
+    unit_id = fields.Many2one('operating.unit', 'Operating Unit')
+    amount_goal = fields.Float('Amount Goal')
+    goal_type_id = fields.Many2one('goal.type', 'Goal Type')
+
 
     _sql_constraints = [
         ('unique_partner_month',
-         'unique(partner_id, month)',
-         _("You can not define same, agent and month goal")),
+         'unique(agent_id, month, unit_id, goal_type_id)',
+         _("You can not define same, agent, month, operating unit, \
+            and goal type")),
     ]
