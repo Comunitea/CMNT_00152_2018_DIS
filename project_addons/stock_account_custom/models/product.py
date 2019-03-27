@@ -12,7 +12,7 @@ class ProductPriceRatio(models.Model):
     name = fields.Char('Name')
     purchase_ratio = fields.Float('Purchase ratio',
                     help="Ratio to get reference cost from pricelist_cost",
-                    digits=4)
+                    digits=(16,4))
 
 
 class ProductProduct(models.Model):
