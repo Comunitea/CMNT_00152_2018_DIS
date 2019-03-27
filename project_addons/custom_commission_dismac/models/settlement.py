@@ -10,6 +10,13 @@ class Settlement(models.Model):
     unit_line_ids = fields.One2many(
         'operating.unit.settlement.line', 'settlement', 
         'Settlement by Operating Unit', readonly=True)
+    goals_total = fields.Float(compute="_compute_total", readonly=True, 
+                               store=True)
+    
+    @api.depends('unit_line_ids', 'unit_line_ids.amount')
+    def _compute_total(self):
+        for sett in self:
+            sett.total = sum(x.amount for x in sett.unit_line_ids)
     
 
     @api.multi

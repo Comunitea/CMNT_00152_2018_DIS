@@ -48,11 +48,20 @@
                         </form>
                     </field>
                 </group>
+                <group class="oe_subtotal_footer oe_right">
+                    <field name="goals_total"
+                           class="oe_subtotal_footer_separator"
+                           widget="monetary"
+                           options="{'currency_field': 'currency_id'}"/>
+                </group>
             </xpath>
 
-            <!-- <xpath expr="//group[2]" position="attributes">
+            <xpath expr="//field[@name='lines']/.." position="attributes">
                 <attribute name="attrs">{'invisible': [('by_goals', '=', True)]}</attribute>
-            </xpath> -->
+            </xpath>
+            <xpath expr="//field[@name='total']/.." position="attributes">
+                <attribute name="attrs">{'invisible': [('by_goals', '=', True)]}</attribute>
+            </xpath>
         </field>
     </record>
 </odoo>
