@@ -8,9 +8,10 @@ from odoo.osv import expression
 class ProductCustomerValue(models.Model):
 
     _name = 'product.customer.value'
+    _rec_name = 'default_code'
 
     @api.multi
-    def _name_get(self):
+    def name_get(self):
         res = []
         for val in self:
             name = '[%s] %s' % (val.default_code, val.description)
@@ -27,37 +28,61 @@ class ProductProduct(models.Model):
 
     _inherit = 'product.product'
 
+    def get_context_partner(self, context):
+        p_id = context.get('customer_partner_id', False)
+        partner_id = False
+        if p_id:
+            #print ('Buscando partner: {}'.format(p_id))
+            partner_id = self.env['res.partner'].search([('name', '=', p_id)], limit=1)
+        return partner_id
+
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        args = args or []
+        partner_id = self.get_context_partner(self._context)
+        if partner_id and partner_id.own_product_codes:
+            domain = [('partner_id', '=', partner_id), ('default_code', operator, name)]
+            customer_vals = self.env['product.customer.value']
+            ids = customer_vals.search(domain).mapped('product_id').ids
+            if ids:
+                args = expression.AND([args, ids])
+        return super().name_search(name=name, args=args, operator=operator, limit=limit)
+
+
     @api.multi
-    def _name_get(self):
+    def name_get(self):
+        
         result = []
-        partner_id = self._context.get('customer_partner_id', False)
-        if partner_id:
-            own_product_codes = self.env['res.partner'].search_read([('id', '=', partner_id)], ['own_product_codes'], limit=1)
-            own_product_code = own_product_codes and own_product_codes[0]['own_product_codes']
-            if own_product_code:
-                for product in self:
-                    domain = [('product_id', '=', product.id), ('partner_id', '=', partner_id)]
-                    customer_vals = self.env['product.customer.value']
-                    val = customer_vals.search_read(domain, ['default_code','description'])
-                    if val:
-                        name = '[%s] %s' % (val[0]['default_code'], val[0]['description'])
-                        result.append((product.id, name))
-                        self -= product
-        old_res = self._name_get()
-        return result.append(old_res)
+        partner_id = self.get_context_partner(self._context)
+        if partner_id and partner_id.own_product_codes:
+            for product in self:
+                domain = [('product_id', '=', product.id), ('partner_id', '=', partner_id.id)]
+                customer_vals = self.env['product.customer.value']
+                val = customer_vals.search(domain)
+                if val:
+                    name = '[%s] %s' % (val.default_code, val.description)
+                    result.append((product.id, name))
+                    self -= product
+            #print ('Name get con partner_id: {}'.format(result))
+        res = super(ProductProduct, self).name_get()
+        #print('Name get normal: {}'.format(res))
+        if result:
+            res += result
+            #print('Suma de name get{}'.format(res))
+        return res
 
     @api.multi
     def _get_customer_values(self):
-        partner_id = self._context.get('customer_partner_id', False)
+        partner_id = self.get_context_partner(self._context)
         if partner_id:
             for product in self:
-                domain = [('product_id', '=', product.id), ('partner_id', '=', partner_id)]
-                customer_vals = self.env['product.customer.value']
-                val = customer_vals.search_read(domain, ['default_code', 'description'])
-                if val:
-                    product.write({
-                            'customer_default_code': val[0]['default_code'],
-                            'customer_name': val[0]['description']})
+                domain = [('product_id', '=', product.id), ('partner_id', '=', partner_id.id)]
+                customer_vals = self.env['product.customer.value'].search(domain, limit=1)
+                if customer_vals:
+                    product.customer_default_code = customer_vals.default_code
+                    product.customer_name = customer_vals.description
+                else:
+                    product.customer_default_code = self._context.get('customer_partner_id', 'Sin codigo')
 
     customer_default_code = fields.Char('Customer code', compute=_get_customer_values)
     customer_name = fields.Char('Customer description', compute=_get_customer_values)

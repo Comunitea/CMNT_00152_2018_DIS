@@ -8,12 +8,12 @@
             <field name="inherit_id" ref="product.product_product_tree_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='default_code']" position="after">
-                    <field name="customer_default_code" invisible="not context.get('customer_partner_id',False)"/>
+                    <field name="customer_default_code" /> <!--invisible="context.get('customer_partner_id', False)"/-->
                 </xpath>
             </field>
      </record>
     <record model="ir.ui.view" id="product_form_view_customer_ref">
-            <field name="name">product.product.curtomer_ref_form</field>
+            <field name="name">product.product.customer_ref_form</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
@@ -35,7 +35,8 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='pricelist_id']" position="before">
                 <field name="product_customer_value_id" widget="selection"
-                       context="{'customer_partner_id': self}" filter_domain="[]" /> <!-- Keep widget=selection on this field to pass numeric `self` value, which is not the case for regular m2o widgets! -->
+                       context="{'customer_partner_id': self}"
+                       filter_domain="[]" /> <!-- Keep widget=selection on this field to pass numeric `self` value, which is not the case for regular m2o widgets! -->
             </xpath>
             <xpath expr="//field[@name='name']" position="after">
                 <field string="Customer codes" name="product_customer_value_ids" />

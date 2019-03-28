@@ -17,7 +17,6 @@ class SaleOrder(models.Model):
             for line in self.order_line:
                 if line.product_id:
                     line.update_product_customer_name(self.partner_id.id, line.product_id.id)
-
         return res
 
 
