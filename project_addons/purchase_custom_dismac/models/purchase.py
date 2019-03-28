@@ -34,14 +34,14 @@ class PurchaseOrder(models.Model):
     def _check_min_delivery_amount(self):
         for order in self:
             order.needed_for_free_delivery = order.partner_id.min_amount_for_free_delivery - order.amount_total
-
-class PurchaseOrderLine(models.Model):
-    _inherit = "purchase.order.line"
-
-    qty_to_receive = fields.Float('Quantity left to recieve', compute="_update_quantity_left_to_recieve", store=True)
-
-    @api.multi
-    @api.depends('product_qty', 'qty_received')
-    def _update_quantity_left_to_recieve(self):
-        for var in self:
-            var.qty_to_receive = var.product_qty - var.qty_received
+#
+# class PurchaseOrderLine(models.Model):
+#     _inherit = "purchase.order.line"
+#
+#     qty_to_receive = fields.Float('Quantity left to recieve', compute="_update_quantity_left_to_recieve", store=True)
+#
+#     @api.multi
+#     @api.depends('product_qty', 'qty_received')
+#     def _update_quantity_left_to_recieve(self):
+#         for var in self:
+#             var.qty_to_receive = var.product_qty - var.qty_received

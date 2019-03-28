@@ -47,9 +47,9 @@ class ProductProduct(models.Model):
     @api.model
     def update_pricelist_cost(self):
         for product in self:
-            if product.cost_method == 'last_cost':
+            if product.cost_method_calc == 'last_cost':
                 product.pricelist_cost = product.last_purchase_price_fixed
-            if product.cost_method == 'formula':
+            if product.cost_method_calc == 'formula':
                 product.pricelist_cost = product.cost_method_product_id. \
                                              cost_method_product_id * product.cost_method_ratio
 
@@ -151,7 +151,7 @@ class ProductTemplate(models.Model):
         'Fixed real stock cost', compute='_compute_reference_cost',
         digits=dp.get_precision('Product Price'), groups="stock_account_custom.group_cost_manager",
         help="Stock value / Qty (without special purchases)")
-    cost_method = fields.Selection([
+    cost_method_calc = fields.Selection([
         ('last_cost', 'Last Cost'),
         ('manual', 'Manual'),
         ('formula', 'Formula'),
