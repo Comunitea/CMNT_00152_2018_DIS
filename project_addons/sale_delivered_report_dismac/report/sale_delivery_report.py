@@ -4,6 +4,8 @@
 
 from odoo import tools
 from odoo import api, fields, models
+from lxml import etree
+
 
 class SaleDelivery(models.Model):
     _name = "sale.delivery.report"
@@ -11,6 +13,21 @@ class SaleDelivery(models.Model):
     _auto = False
     _rec_name = 'date_order'
     _order = 'date_expected asc'
+
+    @api.model
+    def fields_view_get(self, view_id=None, view_type='tree', toolbar=False, submenu=False):
+
+        ctx = self._context
+        res = super(SaleDelivery, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
+        print (ctx)
+        if view_type == 'form' and ctx.get('product_id', False):
+            doc = etree.XML(res['arch'])
+            for node in doc.xpath("//field[@class='hide_product_id']"):
+                print(node)
+                node.set('invisible', '0')
+            res['arch'] = etree.tostring(doc)
+        return res
+
 
 
     @api.multi
