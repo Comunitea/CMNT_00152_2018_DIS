@@ -9,9 +9,9 @@
             <tree string="Products Price List" delete="false" edit="false" create="false"  decoration-success="actual_status=='sent'"
                 decoration-info="sendable==1" decoration-warning="actual_status=='cancel'"
                 decoration-danger="sendable==0">
-                <field name="partner_id" readonly="1" context="{'partner_id': parent.partner_id}"/>
-                <field name="sale_order_id" readonly="1" context="{'sale_order_id': parent.sale_order_id}"/>
-                <field name="product_id" readonly="1" context="{'product_id': parent.product_id}"/>
+                <field name="partner_id" readonly="1" />
+                <field name="sale_order_id" readonly="1" />
+                <field name="product_id" readonly="1" />
                 <field name="date_order" readonly="1"/>
                 <field name="date_expected" readonly="1"/>
                 <field name="sml_ordered_qty" widget="integer" readonly="1"/>
