@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="invoice_form_add_sale_purchase_price" model="ir.ui.view">
+        <field name="name">invoice_form_add_sale_purchase_price</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='invoice_line_tax_ids']" position="after">
+                <field name="sale_purchase_price"/>
+            </xpath>
+
+            <field name="amount_untaxed" position="before">
+                <field name="coef" class="oe_subtotal_footer_separator"/>
+            </field>
+        </field>
+    </record>
+</odoo>
