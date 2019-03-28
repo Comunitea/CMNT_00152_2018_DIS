@@ -51,6 +51,7 @@ class ProductProduct(models.Model):
 
     @api.multi
     def name_get(self):
+        
         result = []
         partner_id = self.get_context_partner(self._context)
         if partner_id and partner_id.own_product_codes:
