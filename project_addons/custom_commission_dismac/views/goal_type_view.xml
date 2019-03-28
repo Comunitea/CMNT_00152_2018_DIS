@@ -34,8 +34,8 @@
                                 </field>
                             </group>
                         </page>
-                        <page string="Margin Rules" attrs="{'invisible': [('type', '!=', 'margin_goal')]}">
-                            <group string="Margin Rules">
+                        <page string="Coeficient Margin Rules" attrs="{'invisible': [('type', '!=', 'margin_goal')]}">
+                            <group string="Coeficient Margin Rules">
                                 <field name="by_margin_ids" nolabel="1">
                                     <tree>
                                         <field name="coef"/>
@@ -81,7 +81,7 @@
         <field name="name">commission_by_sales_tree_view</field>
         <field name="model">commission.by.sales</field>
         <field name="arch" type="xml">
-            <tree string="Commissions by sales" editable="bottom">
+            <tree string="Sale Goal Rules" editable="bottom">
                 <field name="goal_type_id"/>
                 <field name="goal_per"/>
                 <field name="commission"/>
@@ -93,7 +93,7 @@
         <field name="name">commission_by_sales_search_view</field>
         <field name="model">commission.by.sales</field>
         <field name="arch" type="xml">
-            <search string="Commissions by sales">
+            <search string="Sale Goal Rules">
                 <field name="goal_type_id"/>
                 <group expand="1" string="Group By">
                     <filter string="Goal Type" name="group_goal_type" context="{'group_by': 'goal_type_id'}"/>
@@ -103,7 +103,7 @@
     </record>
 
     <record id="action_commission_by_sales" model="ir.actions.act_window" >
-        <field name="name">Commission by sales</field>
+        <field name="name">Sale Goal Rules</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">commission.by.sales</field>
         <field name="view_type">form</field>
@@ -111,7 +111,7 @@
     </record>
 
     <menuitem id="menu_commission_by_sales"
-              name="Commission by sales"
+              name="Sale Goal Rules"
               parent="menu_commission_compute"
               groups="sales_team.group_sale_manager"
               action="action_commission_by_sales"
@@ -124,7 +124,7 @@
         <field name="name">commission_by_margin_tree_view</field>
         <field name="model">commission.by.margin</field>
         <field name="arch" type="xml">
-            <tree string="Commission by Margin" editable="bottom">
+            <tree string="Coeficient Margin Rules" editable="bottom">
                 <field name="goal_type_id"/>
                 <field name="coef"/>
                 <field name="commission"/>
@@ -136,18 +136,17 @@
         <field name="name">commission_by_margin_search_view</field>
         <field name="model">commission.by.margin</field>
         <field name="arch" type="xml">
-            <search string="Commission by Margin">
+            <search string="Coeficient Margin Rules">
                 <field name="goal_type_id"/>
                 <group expand="1" string="Group By">
-                    <filter string="Sale Type" name="group_type" context="{'group_by': 'goal_type_id'}"/>
-                    <filter string="Goal Type" name="group_goal_typpe" context="{'group_by': 'goal_type_id'}"/>
+                    <filter string="Goal Type" name="group_goal_type" context="{'group_by': 'goal_type_id'}"/>
                 </group>
             </search>
         </field>
     </record>
 
     <record id="action_commission_by_margin" model="ir.actions.act_window" >
-        <field name="name">Commission by Margin</field>
+        <field name="name">Coeficient Margin Rules</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">commission.by.margin</field>
         <field name="view_type">form</field>
@@ -155,7 +154,7 @@
     </record>
 
     <menuitem id="menu_commission_by_margin"
-              name="Commission by Margin"
+              name="Coeficient Margin Rules"
               parent="menu_commission_compute"
               groups="sales_team.group_sale_manager"
               action="action_commission_by_margin"

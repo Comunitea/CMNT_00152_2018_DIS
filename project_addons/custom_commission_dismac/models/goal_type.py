@@ -10,7 +10,7 @@ class GoalType(models.Model):
     type = fields.Selection([
         ('sale_goal', 'Sale Goal'),
         ('margin_goal', 'Margin Goal'),
-        ('customer_number', 'Customer Number'),
+        ('customer_number', 'Customer Numbers'),
         ], 'Type', required=True)
     by_sale_ids = fields.One2many(
         'commission.by.sales', 'goal_type_id', 'Sale Goal Rules')
@@ -83,7 +83,7 @@ class CommissionBySales(models.Model):
     _name = 'commission.by.sales'
 
     goal_type_id = fields.Many2one(
-        comodel_name='goal.type', string='Type', required=True)
+        comodel_name='goal.type', string='Goal Type', required=True)
     goal_per = fields.Float('From % Goal', required=True)
     commission = fields.Float('Commission (%)')
 
