@@ -71,7 +71,7 @@ class SaleDelivery(models.Model):
             line.qty_reserved += line.qty_to_delivered
             qty_reserved  += line.qty_to_delivered
             qty_available -= line.qty_to_delivered
-
+            line.qty_available_after_delivered = qty_available
             line.sendable = line.qty_available_to_delivered >= line.qty_to_delivered
 
     product_id = fields.Many2one('product.product', readonly=True)
@@ -94,6 +94,7 @@ class SaleDelivery(models.Model):
     qty_reserved = fields.Float(compute="_get_qty_to_delivered")
     qty_to_delivered = fields.Float(compute="_get_qty_to_delivered")
     qty_available_to_delivered = fields.Float(compute="_get_qty_to_delivered")
+    qty_available_after_delivered = fields.Float(compute="_get_qty_to_delivered")
     sendable = fields.Float(compute="_get_qty_to_delivered")
 
     def _select(self):

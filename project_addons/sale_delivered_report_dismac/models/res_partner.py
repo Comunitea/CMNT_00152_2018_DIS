@@ -7,6 +7,9 @@ class ResPartner(models.Model):
     _inherit = "res.partner"
 
     def get_undelivered_items(self):
+
+
+
         tree_view = self.env.ref(
             'sale_delivered_report_dismac.view_delivery_report_tree')
         domain = [('partner_id', '=', self.id)]
