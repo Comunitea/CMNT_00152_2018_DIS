@@ -12,6 +12,10 @@
                         class="oe_highlight"
                         type="object"
                         name="settlement_by_goal" />
+                <button string="Delete Settlement by goal"
+                        attrs="{'invisible': [('by_goals', '!=', True)]}"
+                        type="object"
+                        name="delete_settlement_by_goal" />
             </header>
 
             <field name="date_to" position="after">
@@ -31,8 +35,6 @@
                             <sheet>
                                 <group>
                                     <field name="unit_id"/>
-                                    <field name="commission"/>
-                                    <field name="amount"/>
                                 </group>
                                 <group string="Settlements by Goals">
                                      <field name="goal_line_ids" nolabel="1">
@@ -44,12 +46,20 @@
                                         </tree>
                                     </field>
                                 </group>
+                                 <group class="oe_subtotal_footer oe_right">
+                                    <field name="commission"/>
+                                    <field name="amount"
+                                           class="oe_subtotal_footer_separator"
+                                           widget="monetary"
+                                           options="{'currency_field': 'currency_id'}"/>
+                                </group>
                             </sheet>
                         </form>
                     </field>
                 </group>
-                <group class="oe_subtotal_footer oe_right">
-                    <field name="goals_total"
+                <group class="oe_subtotal_footer oe_right" attrs="{'invisible': [('by_goals', '!=', True)]}">
+                    <field name="commission_total"/>
+                    <field name="settlemet_total"
                            class="oe_subtotal_footer_separator"
                            widget="monetary"
                            options="{'currency_field': 'currency_id'}"/>

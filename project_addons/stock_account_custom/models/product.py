@@ -41,7 +41,8 @@ class ProductProduct(models.Model):
                                    help="Cost price (reference)")
     last_purchase_price_fixed = fields.Float(
                                     string='Last Purchase Price Fixed',
-                                    compute='_compute_last_purchase_fixed')
+                                    compute='_compute_last_purchase_fixed',
+                                    digits=dp.get_precision('Product Price'))
 
     @api.model
     def update_pricelist_cost(self):
