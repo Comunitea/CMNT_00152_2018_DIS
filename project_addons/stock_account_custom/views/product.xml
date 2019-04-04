@@ -52,6 +52,7 @@
                            attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"/>
                 <field name="cost_method_product_id"  attrs="{'invisible':['|', '&amp;', ('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False),('cost_method_calc', '!=', 'formula')]}"/>
                 <field name="cost_method_ratio" attrs="{'invisible':['|', '&amp;', ('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False),('cost_method_calc', '!=', 'formula')]}"/>
+                <field name="period_max_cost" attrs="{'invisible':['|', '&amp;', ('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False),('cost_method_calc', '!=', 'max')]}"/>
 
                 <field name="reference_cost" widget='monetary' groups="base.group_user"
                            attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"

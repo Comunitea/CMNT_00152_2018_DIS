@@ -152,7 +152,7 @@ msgstr "Nueva importación"
 #: model:ir.actions.act_window,name:product_pricelist_custom_dismac.action_product_pricelist_import_tree
 #: model:ir.ui.menu,name:product_pricelist_custom_dismac.menu_pricelist_import_tree
 msgid "Pricelist_import_tree"
-msgstr "Listado de importaciones"
+msgstr "Promociones importadas
 
 #. module: product_pricelist_custom_dismac
 #: model:ir.actions.act_window,name:product_pricelist_custom_dismac.product_pricelist_action2

@@ -3,6 +3,8 @@
 
 from odoo import models, fields, api
 from odoo.addons import decimal_precision as dp
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 
 class ProductPriceRatio(models.Model):
@@ -51,7 +53,29 @@ class ProductProduct(models.Model):
                 product.pricelist_cost = product.last_purchase_price_fixed
             if product.cost_method_calc == 'formula':
                 product.pricelist_cost = product.cost_method_product_id. \
-                                             cost_method_product_id * product.cost_method_ratio
+                                             last_purchase_price_fixed * \
+                                         product.cost_method_ratio
+            if product.cost_method_calc == 'max':
+                product.pricelist_cost = product.get_max_in_period()
+
+    @api.multi
+    def get_max_in_period(self):
+        PurchaseOrderLine = self.env['purchase.order.line']
+
+        ref_date = datetime.today() - relativedelta(
+            months=self.period_max_cost)
+        lines = PurchaseOrderLine.search(
+            [('product_id', '=', self.id),
+             ('state', 'in', ['purchase', 'done']),
+             ('order_id.date_order', '>=', fields.Datetime.to_string(
+                 ref_date))])
+        inv_lines = lines.mapped('invoice_lines')
+        pur_prices = lines.mapped('price_unit')
+        inv_prices = inv_lines.mapped(
+            'price_unit')
+        product_price = max(pur_prices +  inv_prices)
+        return product_price
+
 
     def _get_compute_custom_costs_with_context(self, ctx):
         qty_at_date = self.qty_at_date
@@ -155,9 +179,11 @@ class ProductTemplate(models.Model):
         ('last_cost', 'Last Cost'),
         ('manual', 'Manual'),
         ('formula', 'Formula'),
+        ('max', 'Max in Period'),
     ], "Calculation method",
         default='last_cost', required=True,
         help='Calculation method for Pricelist Cost')
+    period_max_cost = fields.Integer('Period (Months)')
     cost_method_product_id = fields.Many2one('product.product', 'Cost Product')
     cost_method_ratio = fields.Float('Ratio', digits=(16,4),default='1')
 
@@ -169,7 +195,8 @@ class ProductTemplate(models.Model):
             template.reference_cost = template.product_variant_ids.reference_cost
             template.pricelist_cost = template.product_variant_ids.pricelist_cost
             template.real_stock_cost = template.product_variant_ids.real_stock_cost
-            template.real_stock_cost_fixed = template.product_variant_ids.real_stock_cost_fixed
+            #template.real_stock_cost_fixed =
+            # template.product_variant_ids.real_stock_cost_fixed
 
             template.stock_value = template.product_variant_ids.stock_value
             template.qty_at_date = template.product_variant_ids.qty_at_date
@@ -179,14 +206,15 @@ class ProductTemplate(models.Model):
             pricelist_cost = sum(x.pricelist_cost for x in template.product_variant_ids)
             reference_cost = sum(x.reference_cost for x in template.product_variant_ids)
             real_stock_cost = sum(x.real_stock_cost for x in template.product_variant_ids)
-            real_stock_cost_fixed = sum(x.fixed_real_stock_cost for x in template.product_variant_ids)
+            #real_stock_cost_fixed = sum(x.fixed_real_stock_cost for x in
+            # template.product_variant_ids)
             stock_value = sum(x.stock_value for x in template.product_variant_ids)
             qty_at_date = sum(x.qty_at_date for x in template.product_variant_ids)
 
             template.pricelist_cost = pricelist_cost / n_v
             template.reference_cost = reference_cost / n_v
             template.real_stock_cost = real_stock_cost / n_v
-            template.real_stock_cost_fixed = real_stock_cost_fixed / n_v
+            #template.real_stock_cost_fixed = real_stock_cost_fixed / n_v
             template.stock_value = stock_value / n_v
             template.qty_at_date = qty_at_date / n_v
 

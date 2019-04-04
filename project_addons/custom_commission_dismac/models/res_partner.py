@@ -9,6 +9,9 @@ class ResPartner(models.Model):
 
     agent_goal_ids = fields.One2many(
         'agent.month.goal', 'agent_id', 'Month Objevctives')
+    agent_type = fields.Selection(selection_add=[('face', 'Presencial'),
+                                 ('telemarketer', 'Teleoperadora')],
+                                  default='face')
     
     @api.multi
     def action_view_month_goals(self):

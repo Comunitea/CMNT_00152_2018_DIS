@@ -9,7 +9,8 @@
         <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
         <field name="arch" type="xml">
             <div name="button_box" position="inside">
-                <button string="Custom Pricelist" icon="fa-list" class="oe_stat_button" name="show_partner_prices" type="object"></button>
+                <button string="Custom Pricelist" icon="fa-list" class="oe_stat_button" name="show_partner_prices" type="object"
+                attrs="{'invisible': [('customer', '=', False)]}"></button>
             </div>
             <field name="property_product_pricelist" position = "after">
                 <field name = "fixed_prices"/>
@@ -28,6 +29,8 @@
                 <field name="catalogue_code" />
                 <field name="name" />
                 <field name="price" />
+                <field name="reference_cost" />
+                <field name="price_coeff" />
                 <field name="price_description" />
                 <field name="uom_id" />
                 <field name="barcode" />

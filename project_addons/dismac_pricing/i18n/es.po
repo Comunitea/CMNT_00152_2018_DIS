@@ -23,7 +23,7 @@ msgstr "Contacto"
 #. module: dismac_pricing
 #: model:ir.ui.view,arch_db:dismac_pricing.res_partner_view_buttons_listprice
 msgid "Custom Pricelist"
-msgstr "Tarifa peronalizada"
+msgstr "Tarifa personalizada"
 
 #. module: dismac_pricing
 #: model:ir.model.fields,field_description:dismac_pricing.field_res_partner_fixed_prices

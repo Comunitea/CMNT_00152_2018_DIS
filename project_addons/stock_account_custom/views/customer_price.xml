@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="customer_price_add_coef_tree" model="ir.ui.view">
+        <field name="name">customer.price.add.coeff.tree</field>
+        <field name="model">customer.price</field>
+        <field name="inherit_id" ref="customer_price.view_customer_price_tree"/>
+        <field name="arch" type="xml">
+            <field name="price" position="after">
+                <field name="price_coef" />
+            </field>
+        </field>
+    </record>
+</odoo>

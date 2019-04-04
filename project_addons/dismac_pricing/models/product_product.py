@@ -9,6 +9,8 @@ class ProductProduct(models.Model):
 
     price_description = fields.Char('Price Explanation',
                                     compute='_compute_product_price', )
+    price_coeff = fields.Float('Price Coeff',
+                               compute='_compute_product_price')
 
     def _compute_product_price(self):
         """
@@ -74,5 +76,9 @@ class ProductProduct(models.Model):
                         explanation = "Aplicada promoción "
                 product.price = price
                 product.price_description = explanation
+                if product.reference_cost:
+                    product.price_coeff = price / product.reference_cost
+                else:
+                    product.price_coeff = 0
 
         return res

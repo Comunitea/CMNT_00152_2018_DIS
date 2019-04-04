@@ -23,7 +23,7 @@ class Pricelist(models.Model):
                   ('pricelist_id.is_promotion', '=', True)
                   ]
         rules = self.env['product.pricelist.item'].search(
-            domain, order='min_quantity desc')
+            domain, order='min_quantity asc')
         correct_rule = False
         for rule in rules:
             if rule.min_quantity and qty < rule.min_quantity:

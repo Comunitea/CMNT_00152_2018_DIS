@@ -12,7 +12,8 @@
     'depends': [
         'stock_account',
         'purchase_last_price_info',
-        'sale_margin'
+        'sale_margin',
+        'customer_price'
     ],
     'data': [
         'security/groups.xml',
@@ -20,5 +21,6 @@
         'views/purchase_order.xml',
         'views/product.xml',
         'views/pricelist_item.xml',
+        'views/customer_price.xml'
     ],
 }

@@ -26,7 +26,7 @@
         <field name="arch" type="xml">
             <data>
                 <xpath expr='//form' position="replace">
-                    <form string="Products Price List" create="false" edit="false">
+                    <form string="Products Price List" create="false">
                         <sheet>
                             <div class="oe_button_box" name="button_box">
                                 <button name="toggle_active" type="object"
