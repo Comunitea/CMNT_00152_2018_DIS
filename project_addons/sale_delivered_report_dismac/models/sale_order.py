@@ -24,11 +24,10 @@ class SaleOrderLine(models.Model):
     @api.onchange('product_uom', 'product_uom_qty')
     def product_uom_change(self):
         res = super().product_uom_change()
-        self._get_date_planned()
+        #self._get_date_planned()
         return res
 
-    def _get_date_planned(self):
-        ctx = self._context.copy()
+    def _get_qty_canceled(self):
         sql_sum = "select SUM(ordered_qty) from stock_move where state = 'cancel' and sale_line_id = {}"
         for line in self:
             if line.product_id:
@@ -40,15 +39,19 @@ class SaleOrderLine(models.Model):
                 else:
                     line.qty_canceled = 0.0
 
-                if line.product_uom_qty <= (line.qty_canceled + line.qty_delivered):
+    def _get_date_planned(self):
+        ctx = self._context.copy()
+        for line in self:
+            if line.product_id:
+                if line.product_uom_qty > (line.qty_canceled + line.qty_delivered):
                     ctx.update(product_id=line.product_id.id)
                     domain = [('product_id', '=', line.product_id.id), ('actual_status', 'in', ['in_progress', 'cancel'])]
                     sl_report = self.with_context(ctx).env['sale.delivery.report'].search(domain)
                     if sl_report:
-                        sl_line =  sl_report.filtered(lambda x: x.sale_order_line_id.id == line.id)
-                        line.planned_delivery_date = sl_line.date_planned or sl_line.date_expected
+                        sl_line = sl_report.filtered(lambda x: x.date_order <= line.order_id.date_order).sorted(key=lambda x: x.date_order, reverse=True)
+                        line.planned_delivery_date = sl_line[0] and (sl_line[0].date_planned or sl_line[0].date_expected)
 
 
 
     planned_delivery_date= fields.Date("Estimated delivery date", compute="_get_date_planned")
-    qty_canceled = fields.Float('Qty Canceled', compute="_get_date_planned")
+    qty_canceled = fields.Float('Qty Canceled', compute="_get_qty_canceled")

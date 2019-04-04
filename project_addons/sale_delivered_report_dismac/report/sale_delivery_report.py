@@ -43,7 +43,7 @@ class SaleDelivery(models.Model):
             pol = self.env['purchase.order.line'].search(domain, order ='date_planned asc', limit=1)
             if pol:
                 pol_ids |= pol
-                line.purchase_order_line_id = pol.id
+                line.purchase_order_line_id.id = pol.id
 
     def get_sale_order_line(self, product_id, sale_order_line_id):
 
