@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="after">
-                <button name="get_unreceived_purchase_lines" type="object" class="oe_stat_button" icon="fa-pencil-square-o"/>
+                <button name="get_unreceived_purchase_lines" type="object" class="oe_stat_button" icon="fa-sign-in"/>
             </xpath>
         </field>
     </record>

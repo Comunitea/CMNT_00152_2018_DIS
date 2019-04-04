@@ -28,7 +28,12 @@ class SaleDelivery(models.Model):
             res['arch'] = etree.tostring(doc)
         return res
 
-
+    @api.multi
+    def _get_sl_from(self):
+        sl_from = self._context.get('sale_order_line_id', False)
+        sl_from = self.env['sale.order.line'].browse(sl_from)
+        for sr in self:
+            sr.sl_from = sl_from
 
     @api.multi
     def _get_purchase_order_line(self):
@@ -39,6 +44,14 @@ class SaleDelivery(models.Model):
             if pol:
                 pol_ids |= pol
                 line.purchase_order_line_id = pol.id
+
+    def get_sale_order_line(self, product_id, sale_order_line_id):
+
+        line = self.filtered(lambda x: x.sl_from == sale_order_line_id and x.product_id == product_id)
+        return line and line.date_planned
+
+
+
 
 
     @api.multi
@@ -52,7 +65,7 @@ class SaleDelivery(models.Model):
             return
         #Compras asociadas pendientes de recibir
         domain = [('product_id', '=', product_id.id), ('qty_to_receive', '!=', 0)]
-        pol = self.env['purchase.order.line'].search(domain, order ='date_planned asc')
+        pol = self.env['purchase.order.line'].search(domain, order='date_planned asc')
 
         qty_available = product_id.qty_available
         qty_reserved = 0.00
@@ -96,6 +109,7 @@ class SaleDelivery(models.Model):
     qty_available_to_delivered = fields.Float(compute="_get_qty_to_delivered")
     qty_available_after_delivered = fields.Float(compute="_get_qty_to_delivered")
     sendable = fields.Float(compute="_get_qty_to_delivered")
+    sl_from = fields.Many2one('sale.order.line', readonly=True, compute="_get_sl_from")
 
     def _select(self):
         select_str = """

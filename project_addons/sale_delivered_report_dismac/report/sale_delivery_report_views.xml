@@ -8,13 +8,14 @@
         <field name="arch" type="xml">
             <tree string="Products Price List" delete="false" edit="false" create="false"
                   decoration-success="qty_available_after_delivered &gt;=0"
-                  decoration-danger="qty_available_after_delivered &lt; 0">
+                  decoration-danger="qty_available_after_delivered &lt; 0"
+                  decoration-bf="sale_order_line_id==sl_from">
                 <field name="partner_id" readonly="1" context="{'partner_id': parent.partner_id.id}"/>
                 <field name="sale_order_id" readonly="1" context="{'sale_order_id': parent.sale_order_id}"/>
                 <field name="product_id" readonly="1" context="{'product_id': parent.product_id}"/>
-                <field name="partner_id" readonly="1" />
+                <!--field name="partner_id" readonly="1" />
                 <field name="sale_order_id" readonly="1" />
-                <field name="product_id" readonly="1" />
+                <field name="product_id" readonly="1" /-->
                 <field name="date_order" readonly="1"/>
                 <field name="date_expected" readonly="1"/>
                 <field name="sml_ordered_qty" widget="integer" readonly="1"/>
@@ -29,6 +30,8 @@
                 <field name="purchase_order_ids" widget="many2many_tags" readonly="1" invisible="0" class="hide_product_id"/>
                 <field name="state" readonly="1" invisible="1"/>
                 <field name="sendable" readonly="1" invisible="1"/>
+                <field name="sale_order_line_id" readonly="1" invisible="1"/>
+                <field name="sl_from" readonly="1" invisible="1"/>
             </tree>
         </field>
     </record>

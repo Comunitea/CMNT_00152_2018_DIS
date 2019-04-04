@@ -13,9 +13,9 @@ class ProductTemplate(models.Model):
                                        domain = "[('category_id', '=', category_id)]",
                                        help="Default Min Sale Unit of Measure used for sale.")
 
-    @api.multi
-    @api.onchange('product_uom')
-    def product_uom_change(self):
-        self.min_sale_unit_id = False
-        domain = [('category_id', '=', self.product_uom.category_id.id)]
-        res['domain']['min_sale_unit_id'] = domain
+    #@api.multi
+    #@api.onchange('product_uom')
+    #def product_uom_change(self):
+    #    self.min_sale_unit_id = False
+    #    domain = [('category_id', '=', self.product_uom.category_id.id)]
+    #    res['domain']['min_sale_unit_id'] = domain
