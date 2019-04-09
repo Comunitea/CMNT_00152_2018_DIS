@@ -8,27 +8,34 @@
         <field name="arch" type="xml">
             <tree string="Products Price List" delete="false" edit="false" create="false"
                   decoration-success="qty_available_after_delivered &gt;=0"
-                  decoration-danger="qty_available_after_delivered &lt; 0"
+                  decoration-danger="qty_available_after_delivered &lt; 0 or date_planned &gt; date_order"
                   decoration-bf="sale_order_line_id==sl_from">
                 <field name="partner_id" readonly="1" context="{'partner_id': parent.partner_id.id}"/>
                 <field name="sale_order_id" readonly="1" context="{'sale_order_id': parent.sale_order_id}"/>
                 <field name="product_id" readonly="1" context="{'product_id': parent.product_id}"/>
+                <field name="line_qty_available" readonly="1" />
                 <!--field name="partner_id" readonly="1" />
                 <field name="sale_order_id" readonly="1" />
                 <field name="product_id" readonly="1" /-->
                 <field name="date_order" readonly="1"/>
-                <field name="date_expected" readonly="1"/>
-                <field name="sml_ordered_qty" widget="integer" readonly="1"/>
+                <!--field name="date_expected" readonly="1"/-->
+                <field name="product_uom_qty" widget="integer" readonly="1"/>
                 <field name="qty_delivered" widget="integer" readonly="1"/>
-                <field name="sml_qty_canceled" widget="integer" readonly="1"/>
-                <field name="qty_to_delivered" widget="integer" readonly="1"/>
+                <field name="qty_cancelled" widget="integer" readonly="1"/>
+                <field name="qty_to_delivered"
+                       options='{"fg_color": "green: sale_order_id != False"}'
+                       widget="integer" readonly="1"/>
+                <field name="line_virtual_available" string="Available to deliver" widget="integer" readonly="1"/>
                 <field name="qty_available_to_delivered" widget="integer" readonly="1"/>
                 <field name="qty_available_after_delivered" widget="integer" readonly="1" />
                 <field name="actual_status" readonly="1"/>
                 <field name="qty_to_receive" widget="integer" readonly="1" invisible="0" class="hide_product_id"/>
                 <field name="date_planned" readonly="1" class="hide_product_id" invisible="0"/>
+                <field name="date_available" readonly="1" class="hide_product_id" invisible="0"/>
                 <field name="purchase_order_ids" widget="many2many_tags" readonly="1" invisible="0" class="hide_product_id"/>
                 <field name="state" readonly="1" invisible="1"/>
+
+                <field name="purchase_order_group" readonly="1" invisible="0"/>
                 <field name="sendable" readonly="1" invisible="1"/>
                 <field name="sale_order_line_id" readonly="1" invisible="1"/>
                 <field name="sl_from" readonly="1" invisible="1"/>
@@ -48,14 +55,14 @@
                         <field name="partner_id" modifiers="{'readonly':true}"/>
                         <field name="sale_order_id" modifiers="{'readonly':true}"/>
                         <field name="sale_order_line_id" modifiers="{'readonly':true}"/>
-                        <field name="stock_move_id" modifiers="{'readonly':true}"/>
+                        <!--field name="stock_move_id" modifiers="{'readonly':true}"/-->
                         <field name="date_order" modifiers="{'readonly':true}"/>
-                        <field name="date_expected" modifiers="{'readonly':true}"/>
+                        <!--field name="date_expected" modifiers="{'readonly':true}"/-->
                         <field name="state" modifiers="{'readonly':true}"/>
                         <field name="actual_status" modifiers="{'readonly':true}"/>
-                        <field name="sml_ordered_qty"  widget="integer" modifiers="{'readonly':true}"/>
+                        <field name="product_uom_qty"  widget="integer" modifiers="{'readonly':true}"/>
                         <field name="qty_delivered" modifiers="{'readonly':true}"/>
-                        <field name="sml_qty_canceled" modifiers="{'readonly':true}"/>
+                        <field name="qty_cancelled" modifiers="{'readonly':true}"/>
                         <field name="qty_available" modifiers="{'readonly':true}"/>
                     </group>
                 </sheet>
@@ -68,8 +75,8 @@
         <field name="model">sale.delivery.report</field>
         <field name="arch" type="xml">
             <search string="Sales Delivery Status">
-                <filter name="not_delivered" string="Pendientes" domain="[('actual_status', 'in', ['in_progress', 'cancel'])]"/>
-                <filter name="delivered" string="Entregados" domain="[('actual_status', 'in', ['sent'])]"/>
+                <filter name="not_delivered" string="Pendientes" domain="[('state', 'in', ('purchase', 'sale', 'done')), ('actual_status', 'in', ('in_progress', 'cancel'))]"/>
+                <filter name="delivered" string="Entregados" domain="[('state', 'in', ('sale', 'done')), ('qty_to_delivered','=', 0)]"/>
                  <field name="product_id" widget="selection"
                        context="{'product_id': self}" />
                 <field name="partner_id" widget="selection" filter_domain = "[('partner_id', 'child_of', self)]"/>

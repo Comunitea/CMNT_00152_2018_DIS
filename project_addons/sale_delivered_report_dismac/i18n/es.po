@@ -159,12 +159,12 @@ msgid "Qty Available To Delivered"
 msgstr "Disponible para entrega"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_sml_qty_canceled
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_qty_cancelled
 msgid "Qty Canceled"
 msgstr "Cancelado"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_sml_ordered_qty
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_qty_cancelled
 msgid "Qty Ordered"
 msgstr "Pedido"
 

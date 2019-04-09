@@ -11,7 +11,8 @@
                         context="{'sale_order_line_id': id}"
                         type="object" class="oe_stat_button" icon="fa-sign-out"/>
                 <field name="planned_delivery_date"/>
-                <field name="qty_canceled"/>
+                <field name="sendable" invisible="1"/>
+                <field name="qty_cancelled"/>
             </xpath>
         </field>
     </record> 

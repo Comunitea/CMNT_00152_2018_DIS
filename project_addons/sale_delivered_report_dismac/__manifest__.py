@@ -11,9 +11,10 @@
     'application': False,
     'installable': True,
     'depends': [
-        'stock',
+        'order_line_canceled_qty',
         'sale_order_type',
-        'purchase_open_qty'
+        'purchase_open_qty',
+        'web_tree_dynamic_colored_field'
     ],
     'data': [
         'report/sale_delivery_report_views.xml',

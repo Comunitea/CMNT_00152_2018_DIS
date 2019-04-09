@@ -10,7 +10,7 @@
     'license': 'AGPL-3',
     'installable': True,
     'depends': [
-        'sale',
+        'sale_order_dates'
     ],
     'data': [
         'views/sale_order_view.xml'
