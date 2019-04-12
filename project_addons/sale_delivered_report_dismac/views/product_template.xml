@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="sale_delivered_report_dismac.product_template_only_form_view" model="ir.ui.view"/>
+    
     <record id="product_undelivered_items" model="ir.ui.view">
         <field name="name">product.undelivered.items</field>
         <field name="model">product.product</field>

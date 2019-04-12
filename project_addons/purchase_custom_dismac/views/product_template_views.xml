@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="purchase_custom_dismac.product_template_only_form_view" model="ir.ui.view"/>
     <record id="product_unreceived_items" model="ir.ui.view">
         <field name="name">product.unreceived.items.product.form</field>
         <field name="model">product.product</field>

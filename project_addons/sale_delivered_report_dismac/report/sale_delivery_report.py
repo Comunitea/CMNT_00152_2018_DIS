@@ -267,8 +267,8 @@ class SaleDelivery(models.Model):
     date_available = fields.Datetime(compute="_get_qty_to_delivered", readonly=True, help="Data with available stock")
 
     def _select(self):
-        select_str = """           
-             SELECT  
+        select_str = """
+             SELECT
                     min(l.id) as id,
                     l.id as sale_order_line_id,
                     null as purchase_order_line_id,
@@ -280,10 +280,10 @@ class SaleDelivery(models.Model):
                     sm.state as sm_state,
                     s.partner_id as partner_id,
                     l.product_uom_qty as product_uom_qty,
-                    l.product_uom, 
+                    l.product_uom,
                     l.qty_delivered as qty_delivered,
                     l.qty_cancelled as qty_cancelled,
-                    case 
+                    case
                         when sm.state in ('done', 'cancel') then sm.date
                         else sm.date_expected
                     end as date_expected,
@@ -292,7 +292,7 @@ class SaleDelivery(models.Model):
                         when (l.product_uom_qty > 0 and l.product_uom_qty = l.qty_delivered + l.qty_cancelled) then 'sent'
                         else 'in_progress'
                     end as actual_status
-                    
+
         """
         return select_str
 
@@ -325,23 +325,23 @@ class SaleDelivery(models.Model):
         return group_by_str
 
     def _select2(self):
-        select_str = """           
-             SELECT  
+        select_str = """
+             SELECT
                     min(pl.id) as id,
-                    null as sale_line_id, 
+                    null as sale_line_id,
                     pl.id as sale_order_line_id,
                     pl.product_id as product_id,
-                    null as sale_order_id, 
+                    null as sale_order_id,
                     pl.order_id as purchase_order_id,
                     p.date_order,
                     p.state,
                     sm.state as sm_state,
                     p.partner_id as partner_id,
                     pl.product_qty as product_uom_qty,
-                    pl.product_uom, 
+                    pl.product_uom,
                     pl.qty_received as qty_delivered,
                     pl.qty_cancelled as qty_cancelled,
-                    case 
+                    case
                         when sm.date_expected isnull then sm.date
                         else sm.date_expected
                     end as date_expected,
@@ -349,7 +349,7 @@ class SaleDelivery(models.Model):
                         when (pl.product_qty > 0 and pl.product_qty = pl.qty_cancelled) then 'cancel'
                         when (pl.product_qty > 0 and pl.product_qty = pl.qty_received + pl.qty_cancelled) then 'sent'
                         else 'in_progress'
-                    end as actual_status                    
+                    end as actual_status
         """
         return select_str
 
@@ -370,7 +370,7 @@ class SaleDelivery(models.Model):
             GROUP BY pl.product_id,
                      pl.qty_received,
                      pl.id,
-                     pl.product_uom, 
+                     pl.product_uom,
                      p.state,
                      p.partner_id,
                      p.date_planned,
@@ -383,13 +383,13 @@ class SaleDelivery(models.Model):
         return group_by_str
 
     def _select3(self):
-        select_str = """           
-             SELECT  
+        select_str = """
+             SELECT
                     min(id) as id,
-                    null as sale_line_id, 
+                    null as sale_line_id,
                     null as sale_order_line_id,
                     product_id as product_id,
-                    null as sale_order_id, 
+                    null as sale_order_id,
                     null as purchase_order_id,
                     date,
                     null as state,
@@ -404,7 +404,7 @@ class SaleDelivery(models.Model):
                         when state = 'cancel' then 'cancel'
                         when state = 'done' then 'sent'
                         else 'in_progress'
-                    end as actual_status                    
+                    end as actual_status
         """
         return select_str
 
@@ -426,7 +426,7 @@ class SaleDelivery(models.Model):
             GROUP BY product_id,
                      product_uom_qty,
                      id,
-                     product_uom, 
+                     product_uom,
                      state,
                      partner_id,
                      date,
@@ -445,24 +445,22 @@ class SaleDelivery(models.Model):
             FROM ( %s )
             %s
             %s
-            
-            UNION 
+
+            UNION
             %s
             FROM ( %s )
             %s
             %s
-            
-            UNION 
+
+            UNION
             %s
             FROM %s
             %s
             %s
-            
+
             order by date_order) """ % (self._table, self._select(), self._from(), self._where(), self._group_by(),
                                         self._select2(), self._from2(), self._where2(),  self._group_by2(),
                                         self._select3(), self._from3(), self._where3(),  self._group_by3())
-
-        print (sql)
         self.env.cr.execute(sql)
 
 
@@ -478,4 +476,3 @@ class SaleDelivery(models.Model):
             else:
                 var.sendable = 2
 
-        
