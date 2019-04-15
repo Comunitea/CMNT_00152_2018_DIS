@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record id="view_settlement_tree_custom" model="ir.ui.view" >
+        <field name="model">sale.commission.settlement</field>
+        <field name="inherit_id" ref="sale_commission.view_settlement_tree"/>
+        <field name="arch" type="xml">
+            <field name="total" position="replace">
+                <field name="total"  string="Total without goals"/>
+                <field name="commission_total"/>
+                <field name="settlemet_total" string="Total by goals"/>
+            </field>
+        </field>
+    </record>
+
     <record model="ir.ui.view" id="view_settlement_form">
         <field name="name">Settlements</field>
         <field name="model">sale.commission.settlement</field>
@@ -74,4 +86,20 @@
             </xpath>
         </field>
     </record>
+
+    <!-- Cambio el nombre del asistente de Comisiones de liquidaciones a Asistente liquidaciones -->
+     <act_window id="action_agents_settlement_custom_name"
+                 name="Settle Wizard"
+                 res_model="sale.commission.make.settle"
+                 view_mode="form"
+                 view_type="form"
+                 target="new" />
+
+    <delete model="ir.ui.menu" id="sale_commission.menu_agents_settlement"/>
+
+    <menuitem id="custom_menu_agents_settlement"
+              name="Settle Wizard"
+              parent="sale_commission.menu_sale_commissions_management"
+              action="action_agents_settlement_custom_name" />
+    
 </odoo>

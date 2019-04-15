@@ -301,7 +301,7 @@ class SaleDelivery(models.Model):
                         when (l.product_uom_qty > 0 and l.product_uom_qty = l.qty_delivered + l.qty_cancelled) then 'sent'
                         else 'in_progress'
                     end as actual_status
-                    
+
         """
         return select_str
 
@@ -317,7 +317,6 @@ class SaleDelivery(models.Model):
         return """
             where sm.state not in ('done', 'draft', 'cancel')
         """
-
 
     def _group_by(self):
         group_by_str = """
@@ -363,7 +362,6 @@ class SaleDelivery(models.Model):
                     end as actual_status                    
         """
         return select_str
-
 
     def _from2(self):
         from_str = """
@@ -421,7 +419,6 @@ class SaleDelivery(models.Model):
         """
         return select_str
 
-
     def _from3(self):
         from_str = """
                     stock_move
@@ -430,9 +427,9 @@ class SaleDelivery(models.Model):
 
     def _where3(self):
         where = """
-        
+
             where sale_line_id isnull and purchase_line_id isnull and state not in ('draft', 'done', 'cancel')
-            
+
         """
         return where
 
@@ -449,7 +446,6 @@ class SaleDelivery(models.Model):
                      state
         """
         return group_by_str
-
 
     @api.model_cr
     def init(self):
@@ -478,12 +474,11 @@ class SaleDelivery(models.Model):
         sql = """CREATE or REPLACE VIEW %s as (
            %s
            %s
-           
+
             order by date_order) """ % (self._table, sql1, sql2)
 
-        print (sql)
+        print(sql)
         self.env.cr.execute(sql)
-
 
     @api.multi
     def _update_status(self):
@@ -497,4 +492,3 @@ class SaleDelivery(models.Model):
             else:
                 var.sendable = 2
 
-        

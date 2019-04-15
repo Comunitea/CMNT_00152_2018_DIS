@@ -23,6 +23,9 @@
                         <field name="name"/>
                         <field name="type"/>
                     </group>
+                    <group  attrs="{'invisible': [('type', '!=', 'sale_goal')]}">
+                        <field name="global_units"/>
+                    </group>
                     <notebook>
                         <page string="Sale Goal Rules" attrs="{'invisible': [('type', '!=', 'sale_goal')]}">
                             <group string="Sale Goal Rules">

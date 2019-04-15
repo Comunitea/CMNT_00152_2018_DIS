@@ -46,3 +46,7 @@ msgstr "Explicación de precio"
 msgid "Product"
 msgstr "Producto"
 
+#. module: dismac_pricing
+#: model:ir.ui.view,arch_db:dismac_pricing.view_order_form
+msgid "create custom prices"
+msgstr "Crear precios personalizados"

@@ -14,9 +14,8 @@ class SaleCommissionMakeSettle(models.TransientModel):
         Compute settlements by goals
         """
         res = super().action_settle()
-
         sett_ids = []
-        sett_objs = False
+        sett_objs = self.env['sale.commission.settlement']
 
         if res.get('domain', False):
             sett_ids = res['domain'][0][2]
