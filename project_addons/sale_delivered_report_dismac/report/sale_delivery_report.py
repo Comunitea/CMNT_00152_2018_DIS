@@ -61,15 +61,15 @@ class SaleDelivery(models.Model):
                                                            self._context.get('from_date'),
                                                            to_date=to_date)
             print ("Cantidades {}".format(qty))
-            if qties[line.product_id.id]['qty_available'] >= qty:
+            if qties[line.product_id.id]['virtual_available'] >= qty:
                 return line
         return False
 
     @api.multi
     def _get_line_qty_available(self, to_date=False):
-
+        vals={}
         for line in self:
-            to_date = max(to_date or line.date_expected, fields.Datetime.now())
+            to_date = line.date_order
             qties = line.product_id._compute_quantities_dict(self._context.get('lot_id'), self._context.get('owner_id'),
                                                              self._context.get('package_id'),
                                                              self._context.get('from_date'),
@@ -78,106 +78,107 @@ class SaleDelivery(models.Model):
             line.line_virtual_available = qties[line.product_id.id]['virtual_available']
             line.line_qty_available = qties[line.product_id.id]['qty_available']
 
-            print("Cantidades {}".format(qties))
+            print("Cantidades a fecha {}\n{}".format(to_date, qties))
+        return
 
-
-
-        orders = self.mapped('sale_order_id')
-        for order in orders:
-            to_date = order.requested_date or order.date_order
-            product_ids = order.order_line.mapped('product_id')
-            qties = product_ids._compute_quantities_dict(self._context.get('lot_id'),
-                                                                                   self._context.get('owner_id'),
-                                                                                   self._context.get('package_id'),
-                                                                                   self._context.get('from_date'),
-                                                                                   to_date=to_date)
-            print ("Cantidades a fecha {} para los productos {}"
-                   "\n "
-                   "{}"
-                   "\n".format(to_date, product_ids, qties))
-            for line in order.order_line:
-
-                vals = {'line_virtual_available': qties[line.product_id.id]['virtual_available'],
-                        'line_qty_available': qties[line.product_id.id]['qty_available']}
-        print (vals)
 
 
 
     @api.multi
-    def _get_qty_to_delivered(self):
+    def _get_qty_to_delivered(self, product_id = False):
 
-        product_id = self.mapped('product_id')
-        if not product_id:
-            p_id = self._context.get('product_id', False)
+        #product_id = self.mapped('product_id')
+        if not product_id or len(product_id)!= 1:
+            p_id = self._context.get('product_id', False) or  self._context.get('line_product_id', False)
             product_id = self.env['product.product'].browse(p_id)
-        if len(product_id)!= 1:
+        if not product_id:
             return
-
-
+        print ("Lista de artículos {}".format(product_id))
         #Compras asociadas pendientes de recibir
         #domain = [('product_id', '=', product_id.id), ('qty_to_receive', '!=', 0)]
         #pol = self.env['purchase.order.line'].search(domain, order='date_planned asc')
-
         #Movimientos de entrada de compras asociados a este producto
+
         domain = [('product_id', '=', product_id.id),
                   ('location_id.usage', '=', 'supplier'),
                   ('purchase_line_id', '!=', False),
                   ('state', 'not in', ('done', 'cancel', 'draft'))]
 
         p_moves = self.env['stock.move'].search(domain, order='date_expected asc')
-        print ("Movientos asociados de compra: {}".format(p_moves))
         stock_qty = qty_available = product_id.qty_available
-        print ("Disponibilidad inicial: {}".format(stock_qty))
         qty_reserved = 0.00
-        last_date = False
-        last_ids = []
-        purchase_added = []
+        print ("Movientos asociados de compra: {}".format(p_moves))
+        print ("Disponibilidad inicial: {}".format(stock_qty))
         print ("Lista completa de lineas a cheq: {} con fechas {}".format(self, self.mapped('date_order')))
-        #import ipdb; ipdb.set_trace()
+
+
         lines = self.filtered(lambda x: x.product_id == product_id).sorted(key='date_order', reverse=False)
         purchases = lines.filtered(lambda x: x.purchase_order_id).sorted(key="date_expected", reverse=False)
+
         if lines:
             max_date= lines[0].date_expected
+
         for line in lines:
             product_uom_qty = line.product_uom._compute_quantity(line.product_uom_qty, line.product_uom)
             qty_cancelled = line.product_uom._compute_quantity(line.qty_cancelled, line.product_uom)
             qty_delivered = line.product_uom._compute_quantity(line.qty_delivered, line.product_uom)
 
-            max_date = max(max_date, line.date_expected)
             line.qty_available_to_delivered = qty_available
             line.qty_to_delivered = product_uom_qty - qty_delivered - qty_cancelled
+
+            max_date = max(max_date, line.date_expected)
+
             if line.purchase_order_id:
                 print("Linea de compra: {}".format(line.purchase_order_id.name))
+
                 line.date_available = line.date_expected
-                line.qty_available_after_delivered = line.qty_available_to_delivered + line.qty_to_delivered
-                line.qty_available_to_delivered = line.qty_available_after_delivered
-                qty_available = qty_available + line.qty_to_delivered
+                line.date_planned = line.date_expected
+
+                qty_available += line.qty_to_delivered
+                line.qty_available_after_delivered = qty_available
+                line.qty_available_to_delivered = line.qty_to_delivered
                 line.qty_to_receive = line.qty_to_delivered
                 line.purchase_order_ids = [(6, 0, [line.purchase_order_id.id])]
-                #purchase_added(line.purchase_id.id)
+
                 line.sendable = True
                 line.purchase_order_group = "Purchase"
                 purchases = purchases - line
-                line.date_planned = line.date_expected
+                last = {'qty': qty_available, 'date': line.date_expected, 'id': line.purchase_order_id.id}
+
                 continue
+
             print ('A entregar: {} Disponible {}'.format(line.qty_to_delivered, line.qty_available_to_delivered))
 
             if line.sale_order_id:
+                qty_reserved += line.qty_to_delivered
+                from_initial_stock = qty_reserved <= stock_qty
+
                 print("Linea de venta: {}".format(line.sale_order_id.name))
                 from_stock = qty_available >= line.qty_to_delivered
                 # Si me llega lo que hay
                 print ('\nLinea: {} Stock={}'.format(line.sale_order_id.name, from_stock))
                 if from_stock:
-                    line.date_available = line.date_expected
-                    line.qty_available_after_delivered = line.qty_available_to_delivered - line.qty_to_delivered
+                    line.qty_available_to_delivered = qty_available
+                    qty_available -= line.qty_to_delivered
+                    line.qty_available_after_delivered = qty_available
                     qty_reserved += line.qty_to_delivered
-                    line.sendable = True
-                    line.purchase_order_group = "Stock"
-                    line.date_planned = line.date_expected
+                    if from_initial_stock:
+                        line.date_available = line.date_expected
+                        line.purchase_order_group = "Stock"
+                        line.sendable = True
+                        #line.date_planned = line.date_expected
+                    else:
+                        if last:
+                            line.date_available = last['date']
+                            line.purchase_order_group = "Order"
+                            line.sendable = True
+                            #line.date_planned = last['date']
+                            line.purchase_order_ids = [(6, 0, [last['id']])]
 
                     # NO me llega lo que hay, busco la primera compra y añado los campos
                     # date_planned, purchase_order_ids y purchase_group
                 else:
+
                     purchase_line = purchases.get_p_line_qty_available(qty=line.qty_to_delivered)
                     print ("Actualizao la linea con compra {}".format(line.name))
                     if purchase_line:
@@ -190,8 +191,13 @@ class SaleDelivery(models.Model):
                         line.sendable = False
                         line.purchase_order_group = "No Stock"
 
+                    qty_available -= line.qty_to_delivered
+                    line.qty_available_after_delivered = qty_available
+                    qty_reserved += line.qty_to_delivered
+            line.date_planned = line.date_expected or line.date_order#max(line.date_available or line.date_order, line.date_order or line.date_available)
+            if not line.purchase_order_id and not line.sale_order_id:
+                line.purchase_order_group = "Move"
 
-                qty_available = qty_available - line.qty_to_delivered
             print ('\nLinea: {} Stock={}'.format(line.sale_order_id.name, from_stock))
             print ('A entregar: {} Disponible {}'.format(line.qty_to_delivered, line.qty_available_to_delivered))
 
@@ -239,13 +245,16 @@ class SaleDelivery(models.Model):
     purchase_order_group = fields.Char('Purchase group', compute="_get_qty_to_delivered")
 
     actual_status = fields.Selection(selection=[('in_progress', 'En proceso'), ('sent', 'Enviado'), ('cancel', 'Cancelado')], readonly=True)
+
     sm_state = fields.Selection([
         ('draft', 'Draft'),
         ('waiting', 'Waiting Another Operation'),
         ('confirmed', 'Waiting'),
+        ('partially_available', 'Partially Available'),
         ('assigned', 'Ready'),
         ('done', 'Done'),
         ('cancel', 'Cancelled'),
+
     ], string='Status', readonly=True)
     state = fields.Selection([
         ('draft', 'Draft Quotation'),
@@ -305,7 +314,9 @@ class SaleDelivery(models.Model):
         return from_str
 
     def _where(self):
-        return ''
+        return """
+            where sm.state not in ('done', 'draft', 'cancel')
+        """
 
 
     def _group_by(self):
@@ -363,7 +374,9 @@ class SaleDelivery(models.Model):
         return from_str
 
     def _where2(self):
-        return ''
+        return """
+            where sm.state not in ('done', 'draft', 'cancel')
+        """
 
     def _group_by2(self):
         group_by_str = """
@@ -392,7 +405,7 @@ class SaleDelivery(models.Model):
                     null as sale_order_id, 
                     null as purchase_order_id,
                     date,
-                    null as state,
+                    'done' as state,
                     state as sm_state,
                     null as partner_id,
                     product_qty as product_uom_qty,
@@ -402,7 +415,7 @@ class SaleDelivery(models.Model):
                     date_expected,
                     case
                         when state = 'cancel' then 'cancel'
-                        when state = 'done' then 'sent'
+                        when state = 'done' then 'sent'    
                         else 'in_progress'
                     end as actual_status                    
         """
@@ -417,7 +430,9 @@ class SaleDelivery(models.Model):
 
     def _where3(self):
         where = """
-            where sale_line_id isnull and purchase_line_id isnull and state not in ('done', 'cancel')
+        
+            where sale_line_id isnull and purchase_line_id isnull and state not in ('draft', 'done', 'cancel')
+            
         """
         return where
 
@@ -439,28 +454,32 @@ class SaleDelivery(models.Model):
     @api.model_cr
     def init(self):
         # self._table = sale_report
+        sql1 = """
+                %s
+            FROM ( %s )
+            %s
+            %s
+        """ % (self._select(), self._from(), self._where(), self._group_by())
+        sql2 = """union
+                        %s
+                    FROM ( %s )
+                    %s
+                    %s
+                """ % (self._select2(), self._from2(), self._where2(), self._group_by2())
+        sql3 = """union
+                        %s
+                    FROM %s
+                    %s
+                    %s
+                """ % (self._select3(), self._from3(), self._where3(), self._group_by3())
+
         tools.drop_view_if_exists(self.env.cr, self._table)
+
         sql = """CREATE or REPLACE VIEW %s as (
-            %s
-            FROM ( %s )
-            %s
-            %s
-            
-            UNION 
-            %s
-            FROM ( %s )
-            %s
-            %s
-            
-            UNION 
-            %s
-            FROM %s
-            %s
-            %s
-            
-            order by date_order) """ % (self._table, self._select(), self._from(), self._where(), self._group_by(),
-                                        self._select2(), self._from2(), self._where2(),  self._group_by2(),
-                                        self._select3(), self._from3(), self._where3(),  self._group_by3())
+           %s
+           %s
+           
+            order by date_order) """ % (self._table, sql1, sql2)
 
         print (sql)
         self.env.cr.execute(sql)

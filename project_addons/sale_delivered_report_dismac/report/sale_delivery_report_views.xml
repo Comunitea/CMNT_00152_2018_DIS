@@ -7,11 +7,13 @@
         <field name="type">tree</field>
         <field name="arch" type="xml">
             <tree string="Products Price List" delete="false" edit="false" create="false"
-                  decoration-success="qty_available_after_delivered &gt;=0"
-                  decoration-danger="qty_available_after_delivered &lt; 0 or date_planned &gt; date_order"
-                  decoration-bf="sale_order_line_id==sl_from">
+                  decoration-success="not purchase_order_id and qty_available_after_delivered &gt;=0"
+                  decoration-danger="not purchase_order_id and qty_available_after_delivered &lt; 0"
+                  decoration-bf="not purchase_order_id and sale_order_line_id==sl_from"
+                  decoration-muted="purchase_order_id">
                 <field name="partner_id" readonly="1" context="{'partner_id': parent.partner_id.id}"/>
                 <field name="sale_order_id" readonly="1" context="{'sale_order_id': parent.sale_order_id}"/>
+                <field name="purchase_order_id" modifiers="{'readonly':true}"/>
                 <field name="product_id" readonly="1" context="{'product_id': parent.product_id}"/>
                 <field name="line_qty_available" readonly="1" />
                 <!--field name="partner_id" readonly="1" />
@@ -54,6 +56,7 @@
                         <field name="product_id" modifiers="{'readonly':true}"/>
                         <field name="partner_id" modifiers="{'readonly':true}"/>
                         <field name="sale_order_id" modifiers="{'readonly':true}"/>
+                        <field name="purchase_order_id" modifiers="{'readonly':true}"/>
                         <field name="sale_order_line_id" modifiers="{'readonly':true}"/>
                         <!--field name="stock_move_id" modifiers="{'readonly':true}"/-->
                         <field name="date_order" modifiers="{'readonly':true}"/>
