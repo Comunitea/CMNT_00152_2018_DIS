@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <report string="Batch picking custom"
-            id="action_report_batch_picking_custom"
-            model="stock.batch.picking"
-            report_type="qweb-pdf"
-            name="stock_batch_picking_custom.report_batch_picking_custom"
-            file="stock_batch_picking_custom.report_batch_picking_custom"/>
+
+
 
     <template id="report_batch_picking_custom">
         <t t-call="web.html_container">
@@ -34,18 +30,23 @@
                         <br/>
                             <t t-foreach="get_grouped_data(doc)" t-as="l0_data">
                                 <table class="table table-condensed">
-                                    <caption>
+                                    <!--caption>
                                         <b>
                                             <u>
                                                 <span t-esc="l0_data['name']"/>
                                             </u>
                                         </b>
-                                    </caption>
+                                    </caption-->
                                     <thead>
-                                        <th>Product</th>
-                                        <th>Location</th>
-                                        <th class="text-right">QTY</th>
-                                        <!--<th>Explanation</th>-->
+                                        <th width="80%">
+                                            <b><u>
+                                                <span t-esc="l0_data['name']"/>
+                                            </u></b>
+                                        </th>
+                                        <th width="12%"><span>Location</span>
+                                        </th>
+                                        <th width="8%" class="text-right"><span>Qty</span>
+                                        </th>
                                     </thead>
                                     <tbody>
                                         <t t-set="total_qty" t-value="0.0"/>
@@ -60,14 +61,12 @@
                                                 <td>
                                                     <span t-field="product.display_name"/>
                                                 </td>
-                                                <td>
+                                                <td class="text-left">
                                                     <span t-esc="location.name"/>
                                                 </td>
                                                 <td class="text-right">
                                                     <span t-esc="qty"/>
                                                 </td>
-                                                <!--<td>stock error<br/>breakage-->
-                                                <!--</td>-->
                                                 <tr align="left" t-if="product.description_warehouse">
                                                     <td colspan="4">
                                                         <pre class="description ">
@@ -81,7 +80,7 @@
                                     <tfoot>
                                         <tr>
                                             <td/>
-                                            <td id="total_label" class="text-right">
+                                            <td id="total_label" class="text-left">
                                                 <strong>Total:</strong>
                                             </td>
                                             <td id="total_qty" class="text-right">

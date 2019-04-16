@@ -3,7 +3,7 @@
 from odoo import _, api, fields, models
 
 from odoo.exceptions import ValidationError
-
+from pprint import pprint
 
 class StockBatchPicking(models.Model):
 
@@ -22,3 +22,9 @@ class StockBatchPicking(models.Model):
         if len(self.picking_ids.mapped('picking_type_id')) > 1:
             raise ValidationError(_("All pìckings in batch must be same type"))
 
+
+    @api.multi
+    def write(self, vals):
+        pprint (vals)
+
+        return super().write(vals)

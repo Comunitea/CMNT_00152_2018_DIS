@@ -10,24 +10,23 @@ class SaleOrderLine(models.Model):
 
     @api.multi
     def get_line_qties(self):
-        orders = self.mapped('order_id')
+
         product_ids = self.mapped('product_id')
         if not product_ids:
             self.write({'virtual_available': 0.00, 'qty_available': 0.00})
             return
 
-        for order in orders:
+        for line in self:
+            order = line.order_id
             to_date = order.requested_date or order.date_order
             qties = product_ids._compute_quantities_dict(self._context.get('lot_id'),
                                                                  self._context.get('owner_id'),
                                                                  self._context.get('package_id'),
                                                                  self._context.get('from_date'),
                                                                  to_date=to_date)
-
-            for line in order.order_line:
-                vals = {'virtual_available': qties[line.product_id.id]['virtual_available'],
-                         'qty_available': qties[line.product_id.id]['qty_available']}
-                line.update(vals)
+            vals = {'virtual_available': qties[line.product_id.id]['virtual_available'],
+                     'qty_available': qties[line.product_id.id]['qty_available']}
+            line.update(vals)
 
     qty_available = fields.Float(
         'Quantity On Hand', compute='get_line_qties',

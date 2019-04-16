@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- stock.batch.picking form view -->
-    <record model="ir.ui.view" id="stock_batch_picking_form">
+    <record model="ir.ui.view" id="stock_batch_picking_form_custom">
         <field name="name">stock.batch.picking.form.custom</field>
         <field name="model">stock.batch.picking</field>
         <field name="inherit_id" ref="stock_batch_picking.stock_batch_picking_form"/>
@@ -9,9 +9,12 @@
             <field name="picker_id" position="before">
                 <field name="picking_type_id"/>
             </field>
+            <xpath expr="//field[@name='move_line_ids']/tree/field[@name='product_id']" position="before">
+                    <field name="sale_order"/>
+            </xpath>
         </field>
     </record>
-    <record model="ir.ui.view" id="stock_batch_picking_form">
+    <record model="ir.ui.view" id="stock_batch_picking_tree_custom">
         <field name="name">stock.batch.picking.tree.custom</field>
         <field name="model">stock.batch.picking</field>
         <field name="inherit_id" ref="stock_batch_picking.stock_batch_picking_tree"/>
@@ -34,6 +37,8 @@
                 <xpath expr="//filter[@name='picker_id']" position="before">
                     <filter name="picking_type_id" string="Picking type" context="{'group_by':'picking_type_id'}"/>
                 </xpath>
+
+
 
         </field>
     </record>

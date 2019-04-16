@@ -14,18 +14,17 @@ class ReportPrintBatchPicking(models.AbstractModel):
 
     @api.model
     def key_level_0(self, operation):
-        return operation.location_id.id, operation.location_dest_id.id
+        return operation.location_id.location_id.id, operation.location_dest_id.id
 
     @api.model
     def key_level_1(self, operation):
-        return operation.product_id.id
+        return operation.location_id.location_id.id, operation.product_id.id
 
     @api.model
-    def new_level_0(self, operation, type=''):
-        level_0_name = u'{}: {} \u21E8 {}'.format(
-            type,
-            operation.location_id.name_get()[0][1],
-            operation.location_dest_id.name_get()[0][1])
+    def new_level_0(self, operation):
+        level_0_name = u'{} \u21E8 {}'.format(
+            operation.location_id.location_id.name,
+            operation.location_dest_id.name)
         return {
             'name': level_0_name,
             'location': operation.location_id,
@@ -38,6 +37,7 @@ class ReportPrintBatchPicking(models.AbstractModel):
         return {
             'product': operation.product_id,
             'product_qty': operation.product_qty or operation.qty_done,
+            'product_uom_qty': operation.product_uom_qty,
             'operations': operation,
         }
 
@@ -45,6 +45,8 @@ class ReportPrintBatchPicking(models.AbstractModel):
     def update_level_1(self, group_dict, operation):
         group_dict['product_qty'] += (
             operation.product_qty or operation.qty_done)
+        group_dict['product_uom_qty'] += (
+                operation.product_uom_qty)
         group_dict['operations'] += operation
 
     @api.model
@@ -64,7 +66,7 @@ class ReportPrintBatchPicking(models.AbstractModel):
         for op in batch.move_line_ids:
             l0_key = self.key_level_0(op)
             if l0_key not in grouped_data:
-                grouped_data[l0_key] = self.new_level_0(op, batch.picking_type_id.name)
+                grouped_data[l0_key] = self.new_level_0(op)
             l1_key = self.key_level_1(op)
             if l1_key in grouped_data[l0_key]['l1_items']:
                 self.update_level_1(
