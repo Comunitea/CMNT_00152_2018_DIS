@@ -50,15 +50,15 @@ class ReportPrintBatchPicking(models.AbstractModel):
         group_dict['operations'] += operation
 
     @api.model
-    def sort_level_0(self, rec_list):
+    def sort_level_0(self, rec_list, location_field="location"):
         return sorted(rec_list, key=lambda rec: (
-            rec['location'].posx, rec['location'].posy, rec['location'].posz,
-            rec['location'].name))
+            rec[location_field].posx, rec[location_field].posy, rec[location_field].posz,
+            rec[location_field].name))
 
     @api.model
-    def sort_level_1(self, rec_list):
+    def sort_level_1(self, rec_list, product_field='product'):
         return sorted(rec_list, key=lambda rec: (
-            rec['product'].default_code or '', rec['product'].id))
+            rec[product_field].default_code or '', rec[product_field].id))
 
     @api.model
     def _get_grouped_data(self, batch):

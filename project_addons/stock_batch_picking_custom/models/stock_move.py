@@ -11,15 +11,13 @@ class StockMoveLine(models.Model):
 
     @api.multi
     def _get_sale_order(self):
-        for move in self:
-            if not move.move_id.sale_line_id:
-                lines = move.move_id.move_dest_ids.mapped('sale_line_id')
-                if lines:
-                    line = lines[0]
-            else:
-                line = move.move_id.sale_line_id
 
-            move.sale_order = line.order_id
+        for move in self:
+            line = move.move_id.mapped('sale_line_id') or move.move_id.move_dest_ids.mapped('sale_line_id')
+            if line:
+                move.sale_order = line[0].order_id
+                move.partner_id = line[0].order_id.partner_id
 
     sale_order = fields.Many2one('sale.order', compute="_get_sale_order")
+    partner_id = fields.Many2one('res.partner', compute="_get_sale_order")
 
