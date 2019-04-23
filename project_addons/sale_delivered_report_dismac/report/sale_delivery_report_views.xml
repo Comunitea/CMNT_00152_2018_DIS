@@ -11,10 +11,10 @@
                   decoration-danger="not purchase_order_id and qty_available_after_delivered &lt; 0"
                   decoration-bf="not purchase_order_id and sale_order_line_id==sl_from"
                   decoration-muted="purchase_order_id">
-                <field name="partner_id" readonly="1" context="{'partner_id': parent.partner_id.id}"/>
-                <field name="sale_order_id" readonly="1" context="{'sale_order_id': parent.sale_order_id}"/>
+                <field name="partner_id" readonly="1" />
+                <field name="sale_order_id" readonly="1" />
                 <field name="purchase_order_id" modifiers="{'readonly':true}"/>
-                <field name="product_id" readonly="1" context="{'product_id': parent.product_id}"/>
+                <field name="product_id" readonly="1" />
                 <field name="line_qty_available" readonly="1" />
                 <!--field name="partner_id" readonly="1" />
                 <field name="sale_order_id" readonly="1" />

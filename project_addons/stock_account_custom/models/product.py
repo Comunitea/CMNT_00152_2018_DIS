@@ -157,8 +157,13 @@ class ProductProduct(models.Model):
                     l.invoice_id.date_invoice, reverse=True)
                 if inv_lines:
                     lpp = inv_lines[:1].price_unit
+                    uom_id = inv_lines[:1].uom_id
                 else:
                     lpp = lines[:1].price_unit
+                    uom_id = lines[:1].product_uom
+                if uom_id and uom_id.id != product.uom_id.id:
+                    lpp = uom_id._compute_price(
+                        lpp, product.uom_id)
                 product.last_purchase_price_fixed = lpp
 
 
