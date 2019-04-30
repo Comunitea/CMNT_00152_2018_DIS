@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<!--PRESUPUESTOS -->
+
+<!--Papeleria-->
+
+        <report
+            id="budget_stationery"
+            model="sale.order"
+            string="Papelería"
+            report_type="qweb-pdf"
+            name="custom_documents_dismac.report_budget_stationery"
+            file="custom_documents_dismac.report_budget_stationery"
+            print_report_name="'Presupuesto - %s' % (object.name)"
+        />
+
+<!--Papeleria-lista precios -->
+
+        <report
+            id="budget_stationery_list_prices"
+            model="sale.order"
+            string="Papelería - Lista de precios"
+            report_type="qweb-pdf"
+            name="custom_documents_dismac.report_budget_stationery_list_prices_report"
+            file="custom_documents_dismac.report_budget_stationery_list_prices_report"
+            print_report_name="'Presupuesto - %s' % (object.name)"
+        />
+
+<!--Papeleria-IVA -->
+
+        <report
+            id="budget_stationery_iva"
+            model="sale.order"
+            string="Papelería - IVA incluído"
+            report_type="qweb-pdf"
+            name="custom_documents_dismac.report_budget_stationery_iva_report"
+            file="custom_documents_dismac.report_budget_stationery_iva_report"
+            print_report_name="'Presupuesto - %s' % (object.name)"
+        />
+
+<!--Mobiliario -->
+
+        <report
+            id="budget_furniture"
+            model="sale.order"
+            string="Mobiliario"
+            report_type="qweb-pdf"
+            name="custom_documents_dismac.report_budget_furniture_report"
+            file="custom_documents_dismac.report_budget_furniture_report"
+            print_report_name="'Presupuesto - %s' % (object.name)"
+        />
+
+<!--Mobiliario total -->
+
+        <report
+            id="budget_furniture_totals_only"
+            model="sale.order"
+            string="Mobiliario - Sólo Totales"
+            report_type="qweb-pdf"
+            name="custom_documents_dismac.report_budget_furniture_totals_only_report"
+            file="custom_documents_dismac.report_budget_furniture_totals_only_report"
+            print_report_name="'Presupuesto - %s' % (object.name)"
+        />
+
+<!--Mobiliario - Interno -->
+
+        <report
+            id="budget_internal_furniture"
+            model="sale.order"
+            string="Mobiliario - Interno"
+            report_type="qweb-pdf"
+            name="custom_documents_dismac.report_budget_internal_furniture_report"
+            file="custom_documents_dismac.report_budget_internal_furniture_report"
+            print_report_name="'Presupuesto - %s' % (object.name)"
+        />
+
+<!--Mobiliario - Concursos -->
+
+        <report
+            id="budget_furniture_contests"
+            model="sale.order"
+            string="Mobiliario - Concursos"
+            report_type="qweb-pdf"
+            name="custom_documents_dismac.report_budget_furniture_contests_report"
+            file="custom_documents_dismac.report_budget_furniture_contests_report"
+            print_report_name="'Presupuesto - %s' % (object.name)"
+        />
+
+<!--Facturacion - Factura-->
+
+        <report
+            id="invoice"
+            model="account.invoice"
+            string="Factura"
+            report_type="qweb-pdf"
+            name="custom_documents_dismac.report_invoice"
+            file="custom_documents_dismac.report_invoice"
+            attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_printed_report_name())"
+            groups="account.group_account_invoice"
+        />
+
+<!--Facturacion - Factura PROFORMA-->
+
+        <report
+            id="invoice_pro"
+            model="sale.order"
+            string="Factura proforma"
+            report_type="qweb-pdf"
+            name="custom_documents_dismac.report_invoice_pro"
+            file="custom_documents_dismac.report_invoice_pro"
+            print_report_name="'Order - %s' % (object.name)"
+        />
+
+<!--Albaran -->
+
+<!--
+        <report
+            id="delivery_note"
+            model="stock.picking"
+            string="Albarán"
+            report_type="qweb-pdf"
+            name="custom_documents_dismac.delivery_note_report"
+            file="custom_documents_dismac.delivery_note_report"
+            print_report_name="'Delivery - %s' % (object.name)"
+        />
+-->
+
+<!--Pedido -->
+
+        <report
+            id="order"
+            model="sale.order"
+            string="Pedido"
+            report_type="qweb-pdf"
+            name="custom_documents_dismac.order_report"
+            file="custom_documents_dismac.order_report"
+            print_report_name="'Order - %s' % (object.name)"
+
+        />
+
+    </data>
+</odoo>
