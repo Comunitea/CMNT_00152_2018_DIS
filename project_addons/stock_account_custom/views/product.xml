@@ -79,6 +79,9 @@
 		<field name="arch" type="xml">
 			<field name="lst_price" position="after">
                 <field name="last_purchase_price_fixed" />
+                <field name="force_purchase_price_fixed" />
+                <field name="last_purchase_price_fixed_alternative"
+                       attrs="{'invisible': [('force_purchase_price_fixed', '=', False)]}"/>
 			</field>
 		</field>
 	</record>

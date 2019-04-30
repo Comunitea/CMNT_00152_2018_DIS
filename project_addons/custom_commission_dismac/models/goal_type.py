@@ -16,14 +16,25 @@ class GoalType(models.Model):
         'commission.by.sales', 'goal_type_id', 'Sale Goal Rules')
     by_margin_ids = fields.One2many(
         'commission.by.margin', 'goal_type_id', 'Margin Rules')
+    global_units = fields.Boolean(
+        'Compute units globally', default=True)
 
     @api.multi
-    def get_sale_goal_commission(self, unit_info):
+    def get_sale_goal_commission(self, info_data):
+        """
+        Si global_units es true, calculo los objetivos de todas las unidades
+        operacionales, estén o no procesadas anteriormente.
+        """
+
         commission = 0.0
         note = ''
-        if not unit_info['amount_goal']:
-            return 0.0
-        per = round((unit_info['amount'] / unit_info['amount_goal']) * 100, 2)
+
+        amount_goal = round(info_data['amount_goal'], 2)
+        amount = round(info_data['amount'], 2)
+
+        if not amount_goal:
+            return commission, note
+        per = round((amount / amount_goal) * 100, 2)
         domain = [
             ('id', 'in', self.by_sale_ids.ids),
             ('goal_per', '<=', per),
@@ -32,8 +43,8 @@ class GoalType(models.Model):
         if line:
             commission = line.commission
 
-            note += _('Month goal: %s €\n') % unit_info['amount_goal']
-            note += _('Computed amount: %s €\n') % unit_info['amount']
+            note += _('Month goal: %s €\n') % amount_goal
+            note += _('Computed amount: %s €\n') % amount
             note += _('Goal percentage: %s \n') % per
             note += _('Rule applied -> From percentage goal: %s') % \
                 line.goal_per

@@ -45,6 +45,12 @@ class ProductProduct(models.Model):
                                     string='Last Purchase Price Fixed',
                                     compute='_compute_last_purchase_fixed',
                                     digits=dp.get_precision('Product Price'))
+    force_purchase_price_fixed = fields.Boolean(
+        'Force Last Purchase Price Fixed',
+        default=False)
+    last_purchase_price_fixed_alternative = fields.Float(
+        string='Last Purchase Price Fixed Alternative',
+        digits=dp.get_precision('Product Price'))
 
     @api.model
     def update_pricelist_cost(self):
@@ -138,18 +144,27 @@ class ProductProduct(models.Model):
         """ Get last purchase price, last purchase date and last supplier """
         PurchaseOrderLine = self.env['purchase.order.line']
         for product in self:
-            lines = PurchaseOrderLine.search(
-                [('product_id', '=', product.id),
-                 ('state', 'in', ['purchase', 'done']),
-                 ('order_id.exclude_compute_cost', '<>', True)]).sorted(
-                key=lambda l: l.order_id.date_order, reverse=True)
-            inv_lines = lines[:1].invoice_lines.sorted(key=lambda l:
-                l.invoice_id.date_invoice, reverse=True)
-            if inv_lines:
-                lpp = inv_lines[:1].price_unit
+            if product.force_purchase_price_fixed:
+                product.last_purchase_price_fixed = \
+                    product.last_purchase_price_fixed_alternative
             else:
-                lpp = lines[:1].price_unit
-            product.last_purchase_price_fixed = lpp
+                lines = PurchaseOrderLine.search(
+                    [('product_id', '=', product.id),
+                     ('state', 'in', ['purchase', 'done']),
+                     ('order_id.exclude_compute_cost', '<>', True)]).sorted(
+                    key=lambda l: l.order_id.date_order, reverse=True)
+                inv_lines = lines[:1].invoice_lines.sorted(key=lambda l:
+                    l.invoice_id.date_invoice, reverse=True)
+                if inv_lines:
+                    lpp = inv_lines[:1].price_unit
+                    uom_id = inv_lines[:1].uom_id
+                else:
+                    lpp = lines[:1].price_unit
+                    uom_id = lines[:1].product_uom
+                if uom_id and uom_id.id != product.uom_id.id:
+                    lpp = uom_id._compute_price(
+                        lpp, product.uom_id)
+                product.last_purchase_price_fixed = lpp
 
 
 class ProductTemplate(models.Model):

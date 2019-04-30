@@ -38,26 +38,41 @@ class Settlement(models.Model):
     def settlement_by_goal(self):
         self.ensure_one()
         month_goal_obj = self.env['agent.month.goal']
-        invoces_by_unit = {}
+        invoices_by_unit = {}  # agrupo las facturas por unidad operacional
+        # Conveniente ver el global de todas
+        invoices_by_global = {
+            'amount': 0.0, 'coef': 0.0, 'num': 0.0,
+            'amount_goal': 0.0, 'total_coef': 0.0
+        }
 
-        # Agrupo Facturas porunidad operacional, (papelería, mobiliario...)
+        # Agrupo Facturas por unidad operacional, (papelería, mobiliario...)
         for inv in self.lines.mapped('invoice'):
             # Líneas sin tipo de venta no comisionan
-            if not inv.operating_unit_id:
-                continue
+            # if not inv.operating_unit_id:
+            #     continue
 
             # Obtengo importe total y coeficiente sobre margen
-            if inv.operating_unit_id not in invoces_by_unit:
-                invoces_by_unit[inv.operating_unit_id] = {
+            if inv.operating_unit_id not in invoices_by_unit:
+                invoices_by_unit[inv.operating_unit_id] = {
                     'amount': 0.0, 'coef': 0.0, 'num': 0.0}
-            invoces_by_unit[inv.operating_unit_id]['amount'] += \
-                inv.amount_total
-            invoces_by_unit[inv.operating_unit_id]['coef'] += inv.coef
-            invoces_by_unit[inv.operating_unit_id]['num'] += 1
+            invoices_by_unit[inv.operating_unit_id]['amount'] += \
+                inv.amount_untaxed
+            invoices_by_global['amount'] += inv.amount_untaxed
+            invoices_by_unit[inv.operating_unit_id]['coef'] += inv.coef
+            invoices_by_global['coef'] += inv.coef
+            invoices_by_unit[inv.operating_unit_id]['num'] += 1
+            invoices_by_global['num'] += 1
 
         month = datetime.strptime(self.date_to, '%Y-%m-%d').month
 
-        for op_unit in invoces_by_unit:
+        global_goal_types = self.env['goal.type']
+
+        # Calculo las líneas por unidad operacional
+        # excluyendo aqueyas líneas que solo tengan un objetivo de tipo
+        # venta y con unidades globales establecido
+        # Compruebo en el siguiente bucle si tengo que crear líneas para
+        # objetivos de este tipo
+        for op_unit in invoices_by_unit:
             # Busco objetivos para el agente en el mes dado y para la unidad
             # operacional
             domain = [
@@ -73,6 +88,13 @@ class Settlement(models.Model):
             if not goal_types:
                 continue
 
+            # Si solo hay un objetivo y este es de ventas calculo por unidades
+            # global lo dejamos para luego, y ya no creo línea por unidad
+            if len(goal_types) == 1 and goal_types[0].type == 'sale_goal' and \
+                    goal_types[0].global_units:
+                global_goal_types += goal_types[0]
+                continue
+
             # Creo una línea por cada unidad operacional liquidada
             vals = {
                 'settlement': self.id,
@@ -81,29 +103,80 @@ class Settlement(models.Model):
             ousl = self.env['operating.unit.settlement.line'].create(vals)
 
             # Añado a unit_info el coeficiente de las facturas y el objetivo
-            # para esa unidad operacional
-            unit_info = invoces_by_unit[op_unit]
+            # para esa unidad operacional, también para el cálculo global
+            unit_info = invoices_by_unit[op_unit]
+            total_coef = unit_info['coef'] / unit_info['num']
             unit_info.update({
                 'amount_goal': amount_goal,
-                'total_coef': unit_info['coef'] / unit_info['num']
+                'total_coef': total_coef
             })
 
             # Creo una goal.line por cada objetivo dentro de la linea de unidad
-            # operacional
+            # operacional:
             goal_line_vals = []
             for gt in goal_types:
-                commission, note = gt.get_commission(unit_info)
-                amount = unit_info['amount'] * (commission / 100.0)
-                vals = {
-                    'unit_line_id': ousl.id,
-                    'goal_type_id': gt.id,
-                    'note': note,
-                    'commission': commission,
-                    'amount': amount
-                }
-                goal_line_vals.append((0, 0, vals))
 
+                # Dejo para despues los tipos de objetivos que agrupan unidades
+                if gt.type == 'sale_goal' and gt.global_units:
+                    global_goal_types += goal_types[0]
+                    continue
+
+                vals = self.get_goal_line_vals(ousl, gt, unit_info)
+                goal_line_vals.append((0, 0, vals))
             ousl.write({'goal_line_ids': goal_line_vals})
+
+        if len(global_goal_types) >= 1:
+            self.create_extra_global_settlement_lines(global_goal_types,
+                                                      invoices_by_global)
+        return
+
+    def get_goal_line_vals(self, ousl, gt, info_data):
+        vals = {}
+        commission, note = gt.get_commission(info_data)
+        amount = info_data['amount'] * (commission / 100.0)
+        vals = {
+            'unit_line_id': ousl.id,
+            'goal_type_id': gt.id,
+            'note': note,
+            'commission': commission,
+            'amount': amount
+        }
+        return vals
+
+    def create_extra_global_settlement_lines(self, global_goal_types,
+                                             invoices_by_global):
+        """
+        Creo una línea extra, sin unidad operacional, que contenga,
+        para cada tipo de objetivo de ventas marcado con unidades
+        globales, una línea con el cálculo
+        de objetivos globalmente, mirando el importe de todas las facturas
+        y comparándolo con la suma de los objetivos de cada unidad operacional
+        """
+        month_goal_obj = self.env['agent.month.goal']
+        vals = {
+            'settlement': self.id,
+            'unit_id': False
+        }
+        ousl = self.env['operating.unit.settlement.line'].create(vals)
+
+        goal_line_vals = []
+        month = datetime.strptime(self.date_to, '%Y-%m-%d').month
+        for gt in global_goal_types:
+            # Calculo el objetivo total del mes
+            domain = [
+                ('month', '=', month),
+                ('agent_id', '=', self.agent.id),
+                ('goal_type_id', '=', gt.id)
+            ]
+            month_goals = month_goal_obj.search(domain)
+            if not month_goals:
+                continue
+            amount_goal = sum(month_goals.mapped('amount_goal'))
+            invoices_by_global.update(amount_goal=amount_goal)
+
+            vals = self.get_goal_line_vals(ousl, gt, invoices_by_global)
+            goal_line_vals.append((0, 0, vals))
+        ousl.write({'goal_line_ids': goal_line_vals})
         return
 
     def _prepare_invoice_line(self, settlement, invoice, product):
@@ -134,7 +207,7 @@ class OperatingUnitSettlementLine(models.Model):
         "sale.commission.settlement", readonly=True, ondelete="cascade",
         required=True)
     unit_id = fields.Many2one(
-        comodel_name='operating.unit', string='Operating Unit', required=True)
+        comodel_name='operating.unit', string='Operating Unit', required=False)
     commission = fields.Float('Commission Applied (%)',
                               compute='_compute_total')
     amount = fields.Float('Settlement Amount',

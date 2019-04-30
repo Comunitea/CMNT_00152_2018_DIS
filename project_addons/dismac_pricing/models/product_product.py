@@ -80,5 +80,5 @@ class ProductProduct(models.Model):
                     product.price_coeff = price / product.reference_cost
                 else:
                     product.price_coeff = 0
-
+            print(product.price_description)
         return res

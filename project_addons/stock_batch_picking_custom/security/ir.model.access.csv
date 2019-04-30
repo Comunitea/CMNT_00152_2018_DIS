@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_batch_picking_moves_done_user,stock.picking.moves.use,model_batch_picking_group_move,stock.group_stock_user,1,1,0,0
+access_stock_batch_picking_moves_done_manager,stock.picking.moves.manage,model_batch_picking_group_move,stock.group_stock_manager,1,1,1,1

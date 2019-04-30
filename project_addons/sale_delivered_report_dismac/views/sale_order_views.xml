@@ -8,7 +8,7 @@
             <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
 
                 <button name="get_unreceived_sale_lines"
-                        context="{'sale_order_line_id': id}"
+                        context="{'sale_order_line_id': id, 'line_product_id': product_id}"
                         type="object" class="oe_stat_button" icon="fa-sign-out"/>
                 <field name="planned_delivery_date"/>
                 <field name="sendable" invisible="1"/>
