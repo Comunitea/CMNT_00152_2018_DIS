@@ -105,7 +105,7 @@ class StockBatchPicking(models.Model):
         self.moves_all_count = len(self.move_grouped_ids)
         return
 
-    picking_type_id = fields.Many2one('stock.picking.type', 'Picking type', required=True)
+    picking_type_id = fields.Many2one('stock.picking.type', 'Picking type')
     move_grouped_ids = fields.One2many('batch.picking.group.move', 'batch_id', domain=[('group', '=', True)])#,compute="get_moves_done")
     moves_all_count = fields.Integer('Moves count')
     qty_applied = fields.Boolean('Qty applied', default=False)
