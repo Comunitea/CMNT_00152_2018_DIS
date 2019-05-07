@@ -23,9 +23,9 @@
                         CIF: <span t-field="o.company_id.vat"/>
                 </div>
                 <div  class="text-right">
-                    <div> Telf. <span t-field="o.company_id.phone"/></div>
-                    <div><span t-field="o.company_id.website"/></div>
-                    <div>email: <span t-field="o.company_id.email"/></div>
+                    <div t-if="o.company_id.phone" > Telf. <span t-field="o.company_id.phone"/></div>
+                    <div t-if="o.company_id.website"><span t-field="o.company_id.website"/></div>
+                    <div t-if="o.company_id.email">email: <span t-field="o.company_id.email"/></div>
                 </div>
             </div>
         </div>
@@ -34,24 +34,26 @@
 <!-- PIE footer layout  -->
 
     <template id="footer_layout_custom">
-        <div class="text-center" style="border-top: 1px solid black;">
-            <div class="text-muted">
+        <div class="footer text-center" style="border-top: 1px solid black;">
+            <div class="row">
                 <p>Inscrita en el Registro Mercantil de Pontevedra, Folio 206, Libro 765 Soc, Inscrip. 3a Hoja PO-5165</p>
             </div>
         </div>
     </template>
 
     <template id="footer_budget_layout_custom">
-        <div class="row">
-            <div class="col-xs-8" style="font-size: 70%;">Inscrita en el Registro Mercantil de Pontevedra,
-            Folio 206, Libro 765 Soc, Inscrip. 3a Hoja PO-5165</div>
-            <div class="col-xs-2 col-xs-offset-2 text-right" style="font-size: 70%;">I.V.A. no incluido.</div>
-        </div>
-        <div class="row">
-            <div class="col-xs-4 col-xs-offset-8 text-right" style="font-size: 70%;">Validez del presupuesto: 30 días</div>
-        </div>
-        <div class="row">
-            <div class="col-xs-4 col-xs-offset-8 text-right" style="font-size: 70%;">Esta sujeto a las fluctuaciones del mercado.</div>
+        <div class="footer ">
+            <div class="row">
+                <div class="col-xs-8" style="font-size: 70%;">Inscrita en el Registro Mercantil de Pontevedra,
+                Folio 206, Libro 765 Soc, Inscrip. 3a Hoja PO-5165</div>
+                <div class="col-xs-2 col-xs-offset-2 text-right" style="font-size: 70%;">I.V.A. no incluido.</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-xs-offset-8 text-right" style="font-size: 70%;">Validez del presupuesto: 30 días</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-xs-offset-8 text-right" style="font-size: 70%;">Esta sujeto a las fluctuaciones del mercado.</div>
+            </div>
         </div>
     </template>
 

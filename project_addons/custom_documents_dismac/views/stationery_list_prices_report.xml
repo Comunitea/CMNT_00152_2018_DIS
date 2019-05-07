@@ -37,7 +37,6 @@
                     <table class="table table-condensed">
                         <thead style="border: 1px solid black;">
                             <tr>
-                                <th style="border: 1px solid black;">REFERENCIA</th>
                                 <th style="border: 1px solid black;">DESCRIPCIÓN</th>
                                 <th style="border: 1px solid black;">CANTIDAD</th>
                                 <th  class="text-right" style="border: 1px solid black;">PRECIO*</th>
@@ -47,9 +46,6 @@
                             <t t-foreach="o.order_line" t-as="o_line">
 
                                 <tr>
-                                    <td>
-                                        <span t-field="o_line.product_id.default_code"/>
-                                    </td>
                                     <td>
                                         <span t-field="o_line.name"/>
                                     </td>

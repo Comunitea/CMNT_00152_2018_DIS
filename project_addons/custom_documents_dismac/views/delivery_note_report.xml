@@ -12,7 +12,7 @@
                         <div><strong>PRESUPUESTO</strong></div>
                         <div>NÚMERO : <span t-field="o.name"/></div>
                         <div>FECHA : <span t-field="o.scheduled_date"/></div>
-                        <div>PROVEEDOR Nº : ????</div>
+                        <div>PROVEEDOR Nº :</div>
                     </div>
 
                     <div class="col-xs-5 col-xs-offset-2">
@@ -29,7 +29,7 @@
                 <br/>
                 <div class="row">
                     <div class="col-xs-6">REF.CLIENTE: <span t-field="o.partner_id.ref"/></div>
-                    <div class="col-xs-6"> COMERCIAL: ???</div>
+                    <div class="col-xs-6"> COMERCIAL:</div>
                 </div>
                 <br/>
 
@@ -38,7 +38,6 @@
                     <table class="table table-condensed">
                         <thead style="border: 1px solid black;">
                             <tr>
-                                <th style="border: 1px solid black;">REFERENCIA</th>
                                 <th style="border: 1px solid black;">DESCRIPCIÓN</th>
                                 <th style="border: 1px solid black;">CANTIDAD</th>
                                 <th style="border: 1px solid black;">PRECIO</th>
@@ -51,9 +50,6 @@
 
                                 <tr>
                                     <td>
-                                        <span t-field="m_line.product_id.default_code"/>
-                                    </td>
-                                    <td>
                                         <span t-field="m_line.product_id"/>
                                     </td>
                                     <td>
@@ -63,17 +59,17 @@
                                         <span t-field="m_line.price_unit"/>
                                     </td>
                                     <td class="text-right">
-                                       ??
+
                                     </td>
                                     <td class="text-right">
-                                        ??
+
                                     </td>
                                 </tr>
                             </t>
 
                         </tbody>
                     </table>
-<div class="clearfix">
+                    <div class="clearfix">
                         <div class="row" name="total">
                             <div class="col-xs-4 pull-right">
                                 <table class="table table-condensed" style="min-width: 200px;max-width: 350px;">
