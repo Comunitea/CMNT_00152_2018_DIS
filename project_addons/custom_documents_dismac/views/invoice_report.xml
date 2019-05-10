@@ -44,9 +44,9 @@
                     </div>
                     <br/><br/>
                     <t t-foreach="o.order_lines_layouted()" t-as="page">
-                    <table class="table table-condensed">
-                        <thead style="border: 1px solid black !important;">
-                            <tr style="border-bottom: 1px solid black !important;">
+                    <table class="table-condensed col-xs-12">
+                        <thead style="border: 1px solid black">
+                            <tr style="border-bottom: 1px solid black">
                                 <th style="border: 1px solid black;">DESCRIPCIÓN</th>
                                 <th style="border: 1px solid black;">CANTIDAD</th>
                                 <th style="border: 1px solid black;">PRECIO</th>

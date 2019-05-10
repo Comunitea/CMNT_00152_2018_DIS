@@ -35,7 +35,7 @@
 
                 <!--TABLA-->
 
-                    <table class="table table-condensed">
+                    <table class="table-condensed col-xs-12">
                         <thead style="border: 1px solid black;">
                             <tr>
                                 <th style="border: 1px solid black;">DESCRIPCIÓN</th>
