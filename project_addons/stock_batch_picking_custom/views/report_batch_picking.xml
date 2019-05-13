@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
+ <report string="Batch picking groupe"
+            id="action_report_batch_picking_custom"
+            model="stock.batch.picking"
+            report_type="qweb-pdf"
+            name="stock_batch_picking_custom.report_batch_picking_custom"
+            file="stock_batch_picking_custom.report_batch_picking_custom"/>
 
 
     <template id="report_batch_picking_custom">
