@@ -54,7 +54,7 @@ class StockImportWzd(models.TransientModel):
 
 
     def import_products(self):
-        
+
         self.ensure_one()
         _logger.info(_('STARTING PRODUCT IMPORTATION'))
 
@@ -66,8 +66,7 @@ class StockImportWzd(models.TransientModel):
         idx = 1
 
         for nline in range(1, sh.nrows):
-            if idx> 500:
-                break
+            
             idx += 1
             row = sh.row_values(nline)
             row_vals = self._parse_row_vals(row, idx)
