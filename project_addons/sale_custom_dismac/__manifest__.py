@@ -12,7 +12,9 @@
     'installable': True,
     'depends': [
         'sale',
-        'sale_order_type'
+        'sale_order_type',
+        'sale_commission',
+        'sale_margin'
     ],
     'data': [
         'security/ir.model.access.csv',

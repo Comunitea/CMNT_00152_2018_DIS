@@ -10,10 +10,10 @@
                 <button name="get_unreceived_sale_lines"
                         context="{'sale_order_line_id': id, 'line_product_id': product_id}"
                         type="object" class="oe_stat_button" icon="fa-sign-out"/>
-                <field name="planned_delivery_date"/>
+                <field name="planned_delivery_date" />
                 <field name="sendable" invisible="1"/>
-                <field name="qty_cancelled"/>
+                <field name="qty_cancelled" attrs="{'column_invisible': [('parent.state', 'not in', ['sale', 'done'])]}"/>
             </xpath>
         </field>
-    </record> 
+    </record>
 </odoo>
