@@ -40,51 +40,52 @@
             print_report_name="'Presupuesto - %s' % (object.name)"
         />
 
-<!--Mobiliario -->
+<!--Mobiliario nuevo-->
 
         <report
-            id="budget_furniture"
+            id="budget_furniture_new"
             model="sale.order"
-            string="Mobiliario"
+            string="Mobiliario nuevo"
             report_type="qweb-pdf"
-            name="custom_documents_dismac.report_budget_furniture_report"
-            file="custom_documents_dismac.report_budget_furniture_report"
+            name="custom_documents_dismac.report_budget_furniture_new_report"
+            file="custom_documents_dismac.report_budget_furniture_new_report"
             print_report_name="'Presupuesto - %s' % (object.name)"
         />
 
-<!--Mobiliario total -->
+<!--Mobiliario nuevo con IVA-->
 
         <report
-            id="budget_furniture_totals_only"
+            id="budget_furniture_new_iva"
             model="sale.order"
-            string="Mobiliario - Sólo Totales"
+            string="Mobiliario nuevo - con IVA"
             report_type="qweb-pdf"
-            name="custom_documents_dismac.report_budget_furniture_totals_only_report"
-            file="custom_documents_dismac.report_budget_furniture_totals_only_report"
+            name="custom_documents_dismac.report_budget_furniture_new_iva_report"
+            file="custom_documents_dismac.report_budget_furniture_new_iva_report"
             print_report_name="'Presupuesto - %s' % (object.name)"
         />
 
-<!--Mobiliario - Interno -->
+<!--Mobiliario nuevo sin fotos-->
 
         <report
-            id="budget_internal_furniture"
+            id="budget_furniture_new_without_photos"
             model="sale.order"
-            string="Mobiliario - Interno"
+            string="Mobiliario nuevo - sin Fotos"
             report_type="qweb-pdf"
-            name="custom_documents_dismac.report_budget_internal_furniture_report"
-            file="custom_documents_dismac.report_budget_internal_furniture_report"
+            name="custom_documents_dismac.report_budget_furniture_new_without_photos_report"
+            file="custom_documents_dismac.report_budget_furniture_new_without_photos_report"
             print_report_name="'Presupuesto - %s' % (object.name)"
         />
 
-<!--Mobiliario - Concursos -->
+
+<!--Mobiliario nuevo sin fotos con IVA-->
 
         <report
-            id="budget_furniture_contests"
+            id="budget_furniture_new_iva_without_photos"
             model="sale.order"
-            string="Mobiliario - Concursos"
+            string="Mobiliario nuevo - sin Fotos con IVA"
             report_type="qweb-pdf"
-            name="custom_documents_dismac.report_budget_furniture_contests_report"
-            file="custom_documents_dismac.report_budget_furniture_contests_report"
+            name="custom_documents_dismac.report_budget_furniture_new_iva_without_photos"
+            file="custom_documents_dismac.report_budget_furniture_new_iva_without_photos"
             print_report_name="'Presupuesto - %s' % (object.name)"
         />
 

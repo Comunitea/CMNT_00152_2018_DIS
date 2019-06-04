@@ -23,7 +23,11 @@
         'views/order_report.xml',
         'views/internal_furniture_report.xml',
         'views/furniture_contests_report.xml',
-        'views/pro_invoice_report.xml'
+        'views/pro_invoice_report.xml',
+        'views/furniture_new_report.xml',
+        'views/furniture_new_iva_report.xml',
+        'views/furniture_new_without_photos_report.xml',
+        'views/furniture_new_iva_without_photos_report.xml'
 
     ],
     'installable': True,
