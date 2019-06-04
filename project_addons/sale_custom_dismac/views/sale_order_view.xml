@@ -9,9 +9,37 @@
             <field name="company_id" position="after">
                 <field name="approval_conditions"/>
             </field>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='analytic_tag_ids']" position="attributes">
+                <attribute name="attrs">{'column_invisible': True}</attribute>
+            </xpath>
         </field>
     </record>
 
+    <record model="ir.ui.view" id="sale_margin_sale_order_line_form_not_visible">
+        <field name="name">sale.order.line.tree.margin.invisible.view.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_margin.sale_margin_sale_order_line_form"/>
+        <field name="arch" type="xml">
+           <xpath expr="//field[@name='order_line']/tree//field[@name='purchase_price']" position="attributes">
+                <attribute name="attrs">{'column_invisible': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_agent_invisible_form_inherit" model="ir.ui.view">
+        <field name="name">sale.agent.order.invisible.inherit.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_commission.view_order_agent_form_inherit"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='order_line']/tree//field[@name='commission_status']" position="attributes">
+                    <attribute name="attrs">{'column_invisible': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree//button[@name='button_edit_agents']" position="attributes">
+                    <attribute name="attrs">{'column_invisible': True}</attribute>
+            </xpath>
+        </field>
+    </record>
 
 </odoo>
 
