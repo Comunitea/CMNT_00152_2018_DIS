@@ -1,6 +1,6 @@
 # © 2018 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from datetime import datetime
 
 
@@ -63,9 +63,11 @@ class Settlement(models.Model):
             invoices_by_unit[inv.operating_unit_id]['num'] += 1
             invoices_by_global['num'] += 1
 
+        # import ipdb; ipdb.set_trace()
         month = datetime.strptime(self.date_to, '%Y-%m-%d').month
 
         global_goal_types = self.env['goal.type']
+        min_goal_types = self.env['goal.type']  # special case
 
         # Calculo las líneas por unidad operacional
         # excluyendo aqueyas líneas que solo tengan un objetivo de tipo
@@ -98,7 +100,8 @@ class Settlement(models.Model):
             # Creo una línea por cada unidad operacional liquidada
             vals = {
                 'settlement': self.id,
-                'unit_id': op_unit.id
+                'unit_id': op_unit.id,
+                'name': _('Settlement in %s') % op_unit.name
             }
             ousl = self.env['operating.unit.settlement.line'].create(vals)
 
@@ -118,22 +121,61 @@ class Settlement(models.Model):
 
                 # Dejo para despues los tipos de objetivos que agrupan unidades
                 if gt.type == 'sale_goal' and gt.global_units:
-                    global_goal_types += goal_types[0]
+                    global_goal_types += gt
+                    continue
+                # Dejo para después los tipos de objetivos de mínimos de
+                # clientes ya que el cálculo es global
+                if (gt.type == 'min_customers'):
+                    min_goal_types += gt
                     continue
 
                 vals = self.get_goal_line_vals(ousl, gt, unit_info)
                 goal_line_vals.append((0, 0, vals))
             ousl.write({'goal_line_ids': goal_line_vals})
 
+        # Líneas de liquidación por ventas marcadas como globales
         if len(global_goal_types) >= 1:
             self.create_extra_global_settlement_lines(global_goal_types,
                                                       invoices_by_global)
+
+        # Líneas iquidación globales del tipo de objetivo de clinetes mínimos
+        if len(min_goal_types) >= 1:
+            self.create_extra_min_settlement_lines(min_goal_types,
+                                                   invoices_by_unit)
         return
 
     def get_goal_line_vals(self, ousl, gt, info_data):
+        # import ipdb; ipdb.set_trace()
         vals = {}
-        commission, note = gt.get_commission(info_data)
-        amount = info_data['amount'] * (commission / 100.0)
+        min_data = {}
+        # Actualizo info si el tipo de objetivo es basado en mínimo de clientes
+        if gt.type == 'min_customers':
+            month_goal_obj = self.env['agent.month.goal']
+            month = datetime.strptime(self.date_to, '%Y-%m-%d').month
+            domain = [
+                ('month', '=', month),
+                ('agent_id', '=', self.agent.id),
+            ]
+            month_goals = month_goal_obj.search(domain)
+            if not month_goals:
+                return {}
+            min_customers = month_goals.mapped('min_customers')[0]
+            min_data = {
+                'agent': self.agent,
+                'date_from':  self.date_from,
+                'date_to': self.date_to,
+                'min_customers': min_customers,
+                'month_goals': month_goals
+            }
+
+        commission, note = gt.get_commission(info_data, min_data)
+        amount = 0.0
+        if 'amount' in info_data:
+            amount = info_data['amount'] * (commission / 100.0)
+        else:
+            # TODO
+            amount = 9999999 * (commission / 100.0)
+        
         vals = {
             'unit_line_id': ousl.id,
             'goal_type_id': gt.id,
@@ -143,6 +185,25 @@ class Settlement(models.Model):
         }
         return vals
 
+    def create_extra_min_settlement_lines(self, min_goal_types,
+                                          invoices_by_unit):
+        """
+        """
+        # import ipdb; ipdb.set_trace()
+        vals = {
+            'settlement': self.id,
+            'unit_id': False,
+            'name': _('Global settlement by min customers goal')
+        }
+        ousl = self.env['operating.unit.settlement.line'].create(vals)
+
+        goal_line_vals = []
+        for gt in min_goal_types:
+            vals = self.get_goal_line_vals(ousl, gt, invoices_by_unit)
+            goal_line_vals.append((0, 0, vals))
+        ousl.write({'goal_line_ids': goal_line_vals})
+        return
+
     def create_extra_global_settlement_lines(self, global_goal_types,
                                              invoices_by_global):
         """
@@ -150,12 +211,14 @@ class Settlement(models.Model):
         para cada tipo de objetivo de ventas marcado con unidades
         globales, una línea con el cálculo
         de objetivos globalmente, mirando el importe de todas las facturas
-        y comparándolo con la suma de los objetivos de cada unidad operacional
+        y comparándolo con la suma de los objetivos de cada unidad 
+        operacional
         """
         month_goal_obj = self.env['agent.month.goal']
         vals = {
             'settlement': self.id,
-            'unit_id': False
+            'unit_id': False,
+            'name': _('Global settlement by sales')
         }
         ousl = self.env['operating.unit.settlement.line'].create(vals)
 
@@ -190,19 +253,11 @@ class Settlement(models.Model):
                 if invoice.type == 'in_refund' else settlement.settlemet_total
         return res
 
-    # def _add_extra_invoice_lines(self, settlement):
-    #     """
-    #     Este hook podría estar bien si queremos respetar la creación de
-    #     líneas de factura original mezclado con nuestro sistema de
-    #     liquidación.
-    #     """
-    #     res = super()._add_extra_invoice_lines(settlement)
-    #     return res
-
 
 class OperatingUnitSettlementLine(models.Model):
     _name = 'operating.unit.settlement.line'
 
+    name = fields.Text('Description')
     settlement = fields.Many2one(
         "sale.commission.settlement", readonly=True, ondelete="cascade",
         required=True)

@@ -39,6 +39,7 @@
                 <group string="Settlements by Operating Unit" attrs="{'invisible': [('by_goals', '!=', True)]}">
                     <field name="unit_line_ids" nolabel="1">
                         <tree>
+                            <field name="name"/>
                             <field name="unit_id"/>
                             <field name="commission"/>
                             <field name="amount"/>
@@ -46,6 +47,7 @@
                         <form>
                             <sheet>
                                 <group>
+                                    <field name="name"/>
                                     <field name="unit_id"/>
                                 </group>
                                 <group string="Settlements by Goals">
