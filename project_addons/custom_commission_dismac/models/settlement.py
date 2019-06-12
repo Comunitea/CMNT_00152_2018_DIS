@@ -173,9 +173,12 @@ class Settlement(models.Model):
         if 'amount' in info_data:
             amount = info_data['amount'] * (commission / 100.0)
         else:
-            # TODO
-            amount = 9999999 * (commission / 100.0)
-        
+            # En este caso info data esta agrupado por unidades
+            total_amount = 0.0
+            for dic in info_data.values():
+                total_amount += dic['amount']
+            amount = total_amount * (commission / 100.0)
+
         vals = {
             'unit_line_id': ousl.id,
             'goal_type_id': gt.id,

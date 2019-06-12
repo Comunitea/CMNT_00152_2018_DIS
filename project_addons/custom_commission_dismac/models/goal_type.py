@@ -20,7 +20,7 @@ class GoalType(models.Model):
         'commission.by.sales', 'goal_type_id', 'Sale Goal Rules')
     global_units = fields.Boolean(
         'Compute units globally', default=True)
-    
+
     # BLOQUE 1 COMISIONES POR CENTAS
     by_margin_ids = fields.One2many(
         'commission.by.margin', 'goal_type_id', 'Margin Rules')
@@ -42,7 +42,7 @@ class GoalType(models.Model):
 
     # Objetivo Nº Clientes
     num_customers = fields.Integer('Nº Customers with purchase')
-    num_customers_com = fields.Integer('Commission (%)')
+    num_customers_com = fields.Float('Commission (%)')
 
     # Objetivo Nº nuevos clientes
     new_customers = fields.Integer('Nº new Customers')
@@ -56,7 +56,7 @@ class GoalType(models.Model):
         """
 
         commission = 0.0
-        note = _('No Sale Goal Commission\n')
+        note = _('No Sale Goal Commission')
 
         amount_goal = round(info_data['amount_goal'], 2)
         amount = round(info_data['amount'], 2)
@@ -82,7 +82,7 @@ class GoalType(models.Model):
     @api.multi
     def get_margin_goal_commission(self, unit_info):
         commission = 0.0
-        note = _('No Margin Commission\n')
+        note = _('No Margin Commission')
         coef = unit_info['total_coef']
         domain = [
             ('id', 'in', self.by_margin_ids.ids),
@@ -98,9 +98,8 @@ class GoalType(models.Model):
         return commission, note
 
     def get_web_commission(self, units_info, min_data):
-        # import ipdb; ipdb.set_trace()
         commission = 0.0
-        note = _('No Web Commission\n')
+        note = _('No Web Commission')
 
         so = self.env['sale.order']
         # Comprobar número de clientes con compra por web
@@ -122,62 +121,62 @@ class GoalType(models.Model):
         if new_web_customers >= self.web_customers:
             commission = self.web_com
             note = _(
+                'WEB SALE COMMISSION\n'
                 'Goal web customers: %s\n'
                 'Num web customers: %s\n'
-                'Commission applied -> %s'
+                'Commission applied: %s %'
             ) % (self.web_customers, new_web_customers, commission)
         return commission, note
 
     def get_mob_commission(self, units_info, min_data):
-        # import ipdb; ipdb.set_trace()
         commission = 0.0
-        note = _('No Forniture Commission\n')
+        note = _('No Forniture Commission')
         if self.mob_unit_id and units_info.get(self.mob_unit_id, {}):
             mob_data = units_info.get(self.mob_unit_id)
             if mob_data['amount'] >= mob_data['amount_goal']:
                 commission = self.mob_com
                 note = _(
+                   'FORNITURE COMMISSION\n'
                    'amount goal : %s \n'
                    'goal : %s \n'
-                   'Commission applied -> %s'
+                   'Commission applied: %s'
                 ) % (mob_data['amount_goal'], mob_data['amount'], commission)
         return commission, note
 
     def get_inf_commission(self, units_info, min_data):
-        # import ipdb; ipdb.set_trace()
         commission = 0.0
-        note = _('No Computing Commission\n')
+        note = _('No Computing Commission')
         if self.info_unit_id and units_info.get(self.info_unit_id, {}):
             info_data = units_info.get(self.mob_unit_id)
             if info_data['amount'] >= info_data['amount_goal']:
                 commission = self.minfo_om
                 note = _(
-                    'amount goal : %s \n\
-                    amount : %s \n \
-                    Commission applied -> %s %'
+                    'COMPUTING COMMISSION\n'
+                    'amount goal : %s \n'
+                    'amount : %s \n'
+                    'Commission applied: %s'
                 ) % (info_data['amount_goal'], info_data['amount'], commission)
         return commission, note
 
     def get_num_customers_commission(self, units_info, min_data):
-        # import ipdb; ipdb.set_trace()
         commission = 0.0
-        note = _('No Num Customers Commission\n')
+        note = _('No Num Customers Commission')
         orders = min_data.get('orders')
         customers = orders.mapped('partner_id')
         num_customers = len(customers)
         if num_customers >= self.num_customers:
             commission = self.num_customers_com
             note = _(
+                'Nº CUSTOMERS COMMISSION\n'
                 'Goal customer numbers : %s \n'
                 'number : %s \n'
-                'Commission applied -> %s'
+                'Commission applied: %s'
             ) % (self.num_customers, num_customers, commission)
         return commission, note
 
     def get_new_customers_commission(self, units_info, min_data):
         commission = 0.0
-        note = _('No New Customers Commission\n')
-        # import ipdb; ipdb.set_trace()
+        note = _('No New Customers Commission')
         so = self.env['sale.order']
         # Comprobar número de clientes con compra por web
         orders = min_data.get('orders')
@@ -201,9 +200,10 @@ class GoalType(models.Model):
         if new_customers >= self.new_customers:
             commission = self.new_customers_com
             note = _(
+                'NEW CUSTOMERS COMMISSION\n'
                 'Goal Num new customers: %s \n'
                 'Num new Customers: %s \n'
-                'Commission applied -> %s'
+                'Commission applied: %s'
             ) % (self.new_customers, new_customers, commission)
         return commission, note
 
@@ -214,10 +214,9 @@ class GoalType(models.Model):
         toda la info necesaria para el cálculo de comisión en lugar
         de directamente la info de una unidad concreta.
         """
-        # TODO
-        # import ipdb; ipdb.set_trace()
+
         commission = 0.0
-        note = _('No Min customers Commission\n')
+        note = _('No Min customers Commission')
         # Compruebo número de clientes de este mes
         so = self.env['sale.order']
         agent = min_data['agent']
@@ -235,38 +234,38 @@ class GoalType(models.Model):
         customers = orders.mapped('partner_id')
         min_data.update(orders=orders)
         if customers and len(customers) >= min_data['min_customers']:
-            note = ''
+            note = '----------------------------------------------------\n'
+            sep = '\n----------------------------------------------------\n'
             # Calculo comisiones por ventas web
             com2, note2 = self.get_web_commission(units_info, min_data)
             commission += com2
-            note += '\n' + note2
+            note += note2 + sep
 
             # Calculo comision por ventas mobiliario
             com2, note2 = self.get_mob_commission(units_info, min_data)
             commission += com2
-            note += '\n' + note2
+            note += sep + note2 + sep
 
             # Calculo comision por ventas informatica
             com2, note2 = self.get_inf_commission(units_info, min_data)
             commission += com2
-            note += '\n' + note2
+            note += sep + note2 + sep
 
             # Calculo nº clientes con compra
             com2, note2 = self.get_num_customers_commission(units_info,
                                                             min_data)
             commission += com2
-            note += '\n' + note2
+            note += sep + note2 + sep
 
             # Calculo nuevos clientes
             com2, note2 = self.get_new_customers_commission(units_info,
                                                             min_data)
             commission += com2
-            note += '\n' + note2
+            note += sep + note2 + sep
         return commission, note
 
     @api.multi
     def get_commission(self, unit_info,  min_data={}):
-        # import ipdb; ipdb.set_trace()
         self.ensure_one()
         commission = 0.0
         note = ''
