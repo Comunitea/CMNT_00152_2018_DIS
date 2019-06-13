@@ -21,9 +21,9 @@ class SaleCommissionMakeSettle(models.TransientModel):
             sett_ids = res['domain'][0][2]
             sett_objs = self.env['sale.commission.settlement'].browse(sett_ids)
 
-        if sett_objs:
+        if sett_objs and self.by_goals:
             sett_objs.write({'by_goals': self.by_goals})
 
-        for sett in sett_objs:
-            sett.settlement_by_goal()
+            for sett in sett_objs:
+                sett.settlement_by_goal()
         return res

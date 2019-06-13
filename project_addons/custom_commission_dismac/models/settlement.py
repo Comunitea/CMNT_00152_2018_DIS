@@ -1,6 +1,6 @@
 # © 2018 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from datetime import datetime
 
 
@@ -42,7 +42,7 @@ class Settlement(models.Model):
         # Conveniente ver el global de todas
         invoices_by_global = {
             'amount': 0.0, 'coef': 0.0, 'num': 0.0,
-            'amount_goal': 0.0, 'total_coef': 0.0
+            'amount_goal': 0.0, 'total_coef': 0.0, 'reduced_amount': 0.0
         }
 
         # Agrupo Facturas por unidad operacional, (papelería, mobiliario...)
@@ -50,11 +50,11 @@ class Settlement(models.Model):
             # Líneas sin tipo de venta no comisionan
             # if not inv.operating_unit_id:
             #     continue
-
             # Obtengo importe total y coeficiente sobre margen
             if inv.operating_unit_id not in invoices_by_unit:
                 invoices_by_unit[inv.operating_unit_id] = {
-                    'amount': 0.0, 'coef': 0.0, 'num': 0.0}
+                    'amount': 0.0, 'coef': 0.0, 'num': 0.0, 
+                    'reduced_amount': 0.0}
             invoices_by_unit[inv.operating_unit_id]['amount'] += \
                 inv.amount_untaxed
             invoices_by_global['amount'] += inv.amount_untaxed
@@ -63,9 +63,17 @@ class Settlement(models.Model):
             invoices_by_unit[inv.operating_unit_id]['num'] += 1
             invoices_by_global['num'] += 1
 
+            # Si hay comisiones con señalamiento, obtenemos el % de 
+            # reduction_per definido en la línea de agent
+            reduced_amount = inv.get_reduced_amount(self.agent)
+            invoices_by_unit[inv.operating_unit_id]['reduced_amount'] += \
+                reduced_amount
+            invoices_by_global['reduced_amount'] += reduced_amount
+
         month = datetime.strptime(self.date_to, '%Y-%m-%d').month
 
         global_goal_types = self.env['goal.type']
+        min_goal_types = self.env['goal.type']  # special case
 
         # Calculo las líneas por unidad operacional
         # excluyendo aqueyas líneas que solo tengan un objetivo de tipo
@@ -78,13 +86,14 @@ class Settlement(models.Model):
             domain = [
                 ('month', '=', month),
                 ('agent_id', '=', self.agent.id),
+                # ('|') TODO
                 ('unit_id', '=', op_unit.id)
+                # ('unit_id', '=', False)
             ]
             month_goals = month_goal_obj.search(domain)
             if not month_goals:
                 continue
             goal_types = month_goals.mapped('goal_type_id')
-            amount_goal = month_goals.mapped('amount_goal')[0]
             if not goal_types:
                 continue
 
@@ -96,9 +105,11 @@ class Settlement(models.Model):
                 continue
 
             # Creo una línea por cada unidad operacional liquidada
+            # aunque sea 0, (esto lo podríamos modificar)
             vals = {
                 'settlement': self.id,
-                'unit_id': op_unit.id
+                'unit_id': op_unit.id,
+                'name': _('Settlement in %s') % op_unit.name
             }
             ousl = self.env['operating.unit.settlement.line'].create(vals)
 
@@ -106,6 +117,7 @@ class Settlement(models.Model):
             # para esa unidad operacional, también para el cálculo global
             unit_info = invoices_by_unit[op_unit]
             total_coef = unit_info['coef'] / unit_info['num']
+            amount_goal = month_goals.mapped('amount_goal')[0]
             unit_info.update({
                 'amount_goal': amount_goal,
                 'total_coef': total_coef
@@ -118,30 +130,110 @@ class Settlement(models.Model):
 
                 # Dejo para despues los tipos de objetivos que agrupan unidades
                 if gt.type == 'sale_goal' and gt.global_units:
-                    global_goal_types += goal_types[0]
+                    global_goal_types += gt
+                    continue
+                # Dejo para después los tipos de objetivos de mínimos de
+                # clientes ya que el cálculo es global
+                if (gt.type == 'min_customers'):
+                    min_goal_types += gt
                     continue
 
-                vals = self.get_goal_line_vals(ousl, gt, unit_info)
+                vals = self.get_sett_goal_line_vals(ousl, gt, unit_info)
                 goal_line_vals.append((0, 0, vals))
             ousl.write({'goal_line_ids': goal_line_vals})
 
+        # Líneas de liquidación por ventas marcadas como globales
         if len(global_goal_types) >= 1:
             self.create_extra_global_settlement_lines(global_goal_types,
                                                       invoices_by_global)
+
+        # Líneas iquidación globales del tipo de objetivo de clinetes mínimos
+        if len(min_goal_types) >= 1:
+            self.create_extra_min_settlement_lines(min_goal_types,
+                                                   invoices_by_unit)
         return
 
-    def get_goal_line_vals(self, ousl, gt, info_data):
+    def get_sett_goal_line_vals(self, ousl, gt, info_data):
+        """
+        Obtengo las líneas con los importes liquidados,
+        Calculo las comisiones también con el porcentaje de señalamiento
+        y devuelvo la liquidación sobre este importe,
+        Si no hay señalamiento el porcentaje es el 100% (valor por defecto)
+        y la liquidacion es la misma que la original.
+        """
         vals = {}
-        commission, note = gt.get_commission(info_data)
-        amount = info_data['amount'] * (commission / 100.0)
+        min_data = {}
+        # Actualizo info si el tipo de objetivo es basado en mínimo de clientes
+        if gt.type == 'min_customers':
+            month_goal_obj = self.env['agent.month.goal']
+            month = datetime.strptime(self.date_to, '%Y-%m-%d').month
+            domain = [
+                ('month', '=', month),
+                ('agent_id', '=', self.agent.id),
+            ]
+            month_goals = month_goal_obj.search(domain)
+            if not month_goals:
+                return {}
+            min_customers = month_goals.mapped('min_customers')[0]
+            min_data = {
+                'agent': self.agent,
+                'date_from':  self.date_from,
+                'date_to': self.date_to,
+                'min_customers': min_customers,
+                'month_goals': month_goals
+            }
+
+        commission, note = gt.get_commission(info_data, min_data)
+        amount = 0.0
+        reduced_amount = 0.0
+        if 'amount' in info_data and 'reduced_amount' in info_data:
+            amount = info_data['amount'] * (commission / 100.0)
+            reduced_amount = info_data['reduced_amount'] * (commission / 100.0)
+            note += _('\nSubtotal computed: %s') % info_data['amount']
+            note += _('\nSubtotal reduced: %s') % info_data['reduced_amount']
+        else:
+            # En este caso info data esta agrupado por unidades
+            total_amount = 0.0
+            total_reduced_amount = 0.0
+            for dic in info_data.values():
+                total_amount += dic['amount']
+                total_reduced_amount += dic['reduced_amount']
+            amount = total_amount * (commission / 100.0)
+            reduced_amount = total_reduced_amount * (commission / 100.0)
+            note += _('\nSubtotal computed: %s') % amount
+            note += _('\nSubtotal reduced: %s') % total_reduced_amount
+
+        # Si hay calculo por señalamiento devuelvo la liquidacin reducida
+        # settlement_amount = amount
+        settlement_amount = reduced_amount or amount
+
         vals = {
             'unit_line_id': ousl.id,
             'goal_type_id': gt.id,
             'note': note,
             'commission': commission,
-            'amount': amount
+            'amount': settlement_amount
         }
         return vals
+
+    def create_extra_min_settlement_lines(self, min_goal_types,
+                                          invoices_by_unit):
+        """
+        """
+        # import ipdb; ipdb.set_trace()
+        vals = {
+            'settlement': self.id,
+            'unit_id': False,
+            'name': _('Global settlement by min customers goal')
+        }
+        ousl = self.env['operating.unit.settlement.line'].create(vals)
+
+        goal_line_vals = []
+        for gt in min_goal_types:
+            vals = self.get_sett_goal_line_vals(ousl, gt, invoices_by_unit)
+            goal_line_vals.append((0, 0, vals))
+        ousl.write({'goal_line_ids': goal_line_vals})
+        return
 
     def create_extra_global_settlement_lines(self, global_goal_types,
                                              invoices_by_global):
@@ -150,12 +242,14 @@ class Settlement(models.Model):
         para cada tipo de objetivo de ventas marcado con unidades
         globales, una línea con el cálculo
         de objetivos globalmente, mirando el importe de todas las facturas
-        y comparándolo con la suma de los objetivos de cada unidad operacional
+        y comparándolo con la suma de los objetivos de cada unidad 
+        operacional
         """
         month_goal_obj = self.env['agent.month.goal']
         vals = {
             'settlement': self.id,
-            'unit_id': False
+            'unit_id': False,
+            'name': _('Global settlement by sales')
         }
         ousl = self.env['operating.unit.settlement.line'].create(vals)
 
@@ -174,7 +268,7 @@ class Settlement(models.Model):
             amount_goal = sum(month_goals.mapped('amount_goal'))
             invoices_by_global.update(amount_goal=amount_goal)
 
-            vals = self.get_goal_line_vals(ousl, gt, invoices_by_global)
+            vals = self.get_sett_goal_line_vals(ousl, gt, invoices_by_global)
             goal_line_vals.append((0, 0, vals))
         ousl.write({'goal_line_ids': goal_line_vals})
         return
@@ -190,19 +284,11 @@ class Settlement(models.Model):
                 if invoice.type == 'in_refund' else settlement.settlemet_total
         return res
 
-    # def _add_extra_invoice_lines(self, settlement):
-    #     """
-    #     Este hook podría estar bien si queremos respetar la creación de
-    #     líneas de factura original mezclado con nuestro sistema de
-    #     liquidación.
-    #     """
-    #     res = super()._add_extra_invoice_lines(settlement)
-    #     return res
-
 
 class OperatingUnitSettlementLine(models.Model):
     _name = 'operating.unit.settlement.line'
 
+    name = fields.Text('Description')
     settlement = fields.Many2one(
         "sale.commission.settlement", readonly=True, ondelete="cascade",
         required=True)

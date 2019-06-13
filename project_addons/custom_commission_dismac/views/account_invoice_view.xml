@@ -14,4 +14,16 @@
             </field>
         </field>
     </record>
+
+    <!-- This view is needed for proper visualization of the popup / embedded one2many -->
+    <record id="invoice_line_agent_tree_reduction_per" model="ir.ui.view">
+        <field name="name">account.invoice.line.agent.tree_reduction_per</field>
+        <field name="model">account.invoice.line.agent</field>
+        <field name="inherit_id" ref="sale_commission.invoice_line_agent_tree" />
+        <field name="arch" type="xml">
+            <field name="commission" position="after">
+               <field name="reduction_per"/>
+            </field>
+        </field>
+    </record>
 </odoo>

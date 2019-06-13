@@ -7,7 +7,6 @@ class AgentMonthGoal(models.Model):
 
     _name = 'agent.month.goal'
 
-
     agent_id = fields.Many2one(
         'res.partner', 'Agent', required=True,
         domain=[('agent', '=', True)])
@@ -18,8 +17,8 @@ class AgentMonthGoal(models.Model):
         string='Month', required=True)
     unit_id = fields.Many2one('operating.unit', 'Operating Unit')
     amount_goal = fields.Float('Amount Goal')
+    min_customers = fields.Integer('Min customers')
     goal_type_id = fields.Many2one('goal.type', 'Goal Type')
-
 
     _sql_constraints = [
         ('unique_partner_month',

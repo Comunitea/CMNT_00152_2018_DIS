@@ -31,3 +31,20 @@ class AccountInvoicer(models.Model):
             if cost:
                 coef = sale / cost
             inv.coef = coef
+
+    @api.multi
+    def get_reduced_amount(self, agent):
+        """
+        Busca en las líneas de agente, cual es el porcentaje de señalamiento
+        y devuelve la base imponible con este porcentaje aplicado.
+        Presupongo que todas las líneas del agente dado tienen el mismo
+        porcentaje de reducción sobre la base imponible
+        """
+        res = self.amount_untaxed
+        self.ensure_one()
+        agent_lines = self.invoice_line_ids.mapped('agents').filtered(
+            lambda a: a.agent == agent)
+        if agent_lines:
+            per = agent_lines[0].reduction_per
+            res = self.amount_untaxed * (per / 100.0)
+        return res

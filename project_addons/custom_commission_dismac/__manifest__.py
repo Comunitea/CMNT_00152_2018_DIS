@@ -20,6 +20,7 @@
         'views/goal_type_view.xml',
         'views/settlement_view.xml',
         'views/account_invoice_view.xml',
+        'views/sale_order_view.xml',
         'wizard/wizard_settle_view.xml',
     ],
     'installable': True,

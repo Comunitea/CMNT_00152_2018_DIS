@@ -47,6 +47,24 @@
                                 </field>
                             </group>
                         </page>
+                        <page string="Min Customers" attrs="{'invisible': [('type', '!=', 'min_customers')]}">
+                            <group>
+                                <group string="Conditions">
+                                    <field name="web_customers"/>
+                                    <field name="mob_unit_id"/>
+                                    <field name="info_unit_id" />
+                                    <field name="num_customers"/>
+                                    <field name="new_customers"/>
+                                </group>
+                                <group string="Commissions (%)">
+                                    <field name="web_com"/>
+                                    <field name="mob_com" />
+                                    <field name="info_com"/>
+                                    <field name="num_customers_com"/>
+                                    <field name="new_customers_com"/>
+                                </group>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
