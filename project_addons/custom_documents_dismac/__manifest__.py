@@ -8,7 +8,9 @@
     'license': 'AGPL-3',
     'author': "Comunitea, ",
     'depends': [
-        'base'
+        'base',
+        'sale',
+        'account'
     ],
     'data': [
         'views/list_reports.xml',
@@ -27,7 +29,9 @@
         'views/furniture_new_report.xml',
         'views/furniture_new_iva_report.xml',
         'views/furniture_new_without_photos_report.xml',
-        'views/furniture_new_iva_without_photos_report.xml'
+        'views/furniture_new_iva_without_photos_report.xml',
+        'views/sales_views.xml',
+        'views/invoice_report_templates.xml'
 
     ],
     'installable': True,
