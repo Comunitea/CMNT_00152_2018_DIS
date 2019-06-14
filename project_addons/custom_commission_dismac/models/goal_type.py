@@ -192,7 +192,7 @@ class GoalType(models.Model):
                 ('partner_id', '=', customer.id),
                 ('date_order', '<', min_data['date_from']),
                 ('date_order', '>', two_years_ago_date),
-                ('state', 'not in', ['draft, cancell'])
+                ('state', 'not in', ['draft, cancel'])
             ]
             old_orders = so.search(domain)
             if not old_orders:
