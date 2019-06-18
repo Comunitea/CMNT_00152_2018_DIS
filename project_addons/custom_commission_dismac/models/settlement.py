@@ -80,19 +80,30 @@ class Settlement(models.Model):
         # venta y con unidades globales establecido
         # Compruebo en el siguiente bucle si tengo que crear líneas para
         # objetivos de este tipo
+        visited_month_goal_ids = []
         for op_unit in invoices_by_unit:
             # Busco objetivos para el agente en el mes dado y para la unidad
             # operacional
             domain = [
                 ('month', '=', month),
                 ('agent_id', '=', self.agent.id),
-                # ('|') TODO
                 ('unit_id', '=', op_unit.id)
-                # ('unit_id', '=', False)
             ]
             month_goals = month_goal_obj.search(domain)
+
+            # Busqueda objetivos globales
+            domain = [
+                ('month', '=', month),
+                ('agent_id', '=', self.agent.id),
+                ('unit_id', '=', False),
+                ('id', 'not in', visited_month_goal_ids)
+            ]
+            global_month_goals = month_goal_obj.search(domain)
+            visited_month_goal_ids.extend(global_month_goals.ids)
+            month_goals += global_month_goals
             if not month_goals:
                 continue
+
             goal_types = month_goals.mapped('goal_type_id')
             if not goal_types:
                 continue
@@ -200,7 +211,7 @@ class Settlement(models.Model):
                 total_reduced_amount += dic['reduced_amount']
             amount = total_amount * (commission / 100.0)
             reduced_amount = total_reduced_amount * (commission / 100.0)
-            note += _('\nSubtotal computed: %s') % amount
+            note += _('\nSubtotal computed: %s') % total_amount
             note += _('\nSubtotal reduced: %s') % total_reduced_amount
 
         # Si hay calculo por señalamiento devuelvo la liquidacin reducida
@@ -220,7 +231,6 @@ class Settlement(models.Model):
                                           invoices_by_unit):
         """
         """
-        # import ipdb; ipdb.set_trace()
         vals = {
             'settlement': self.id,
             'unit_id': False,
