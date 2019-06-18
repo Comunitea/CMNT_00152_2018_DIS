@@ -20,7 +20,7 @@ class SaleOrderLine(models.Model):
             'agents': [(0, 0, {
                 'agent': x.agent.id,
                 'commission': x.commission.id,
-                'reduction_amount': x.reduction_amount}) for x in self.agents]
+                'reduction_per': x.reduction_per}) for x in self.agents]
         })
         return res
 
