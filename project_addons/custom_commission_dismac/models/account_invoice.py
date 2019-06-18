@@ -8,6 +8,7 @@ class AccountInvoiceLine(models.Model):
 
     _inherit = 'account.invoice.line'
 
+    # TODO Falta el calculo para cuando se crea factura manual?
     sale_purchase_price = fields.Float(
         string='Sale Cost', digits=dp.get_precision('Product Price'))
 

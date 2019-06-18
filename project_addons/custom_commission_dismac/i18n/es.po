@@ -6,14 +6,39 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-10 17:03+0000\n"
-"PO-Revision-Date: 2019-04-10 17:03+0000\n"
+"POT-Creation-Date: 2019-06-18 08:46+0000\n"
+"PO-Revision-Date: 2019-06-18 08:46+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/settlement.py:192
+#: code:addons/custom_commission_dismac/models/settlement.py:203
+#, python-format
+msgid "\n"
+"Subtotal computed: %s"
+msgstr "\n"
+"Subtotal calculado: %s"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/settlement.py:193
+#: code:addons/custom_commission_dismac/models/settlement.py:204
+#, python-format
+msgid "\n"
+"Subtotal reduced: %s"
+msgstr "\n"
+"Subtotal reducido: %s"
+
+#. module: custom_commission_dismac
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_account_invoice_line_agent_reduction_per
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_sale_commission_line_mixin_reduction_per
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_sale_order_line_agent_reduction_per
+msgid "% Over subtotal"
+msgstr "% sobre subtotal"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_agent_id
@@ -43,6 +68,18 @@ msgid "By Goals"
 msgstr "Por objetivos"
 
 #. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/goal_type.py:153
+#, python-format
+msgid "COMPUTING COMMISSION\n"
+"amount goal : %s \n"
+"amount : %s \n"
+"Commission applied: %s"
+msgstr "COMISIÓN VENTAS INFORMÁTICA\n"
+"Importe objetivo: %s \n"
+"Importe : %s \n"
+"Comisión aplicada: %s"
+
+#. module: custom_commission_dismac
 #: model:ir.actions.act_window,name:custom_commission_dismac.action_commission_by_margin
 #: model:ir.ui.menu,name:custom_commission_dismac.menu_commission_by_margin
 #: model:ir.ui.view,arch_db:custom_commission_dismac.commission_by_margin_search_view
@@ -54,6 +91,11 @@ msgstr "Reglas por coeficiente de margen"
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_commission
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_commission
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_info_com
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_mob_com
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_new_customers_com
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_num_customers_com
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_web_com
 msgid "Commission (%)"
 msgstr "Comisión (%)"
 
@@ -79,25 +121,47 @@ msgid "Commission in sales"
 msgstr "Comisión en ventas"
 
 #. module: custom_commission_dismac
+#: model:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
+msgid "Commissions (%)"
+msgstr "Comisiones (%)"
+
+#. module: custom_commission_dismac
+#: model:ir.model.fields,help:custom_commission_dismac.field_account_invoice_line_agent_reduction_per
+#: model:ir.model.fields,help:custom_commission_dismac.field_sale_commission_line_mixin_reduction_per
+#: model:ir.model.fields,help:custom_commission_dismac.field_sale_order_line_agent_reduction_per
+msgid "Compute settlement with % reduced over invoices subtotal"
+msgstr "Calcular la liquidación con un % reducido sobre el subtotal de la factura"
+
+#. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_global_units
 msgid "Compute units globally"
 msgstr "Calcular unidades op. globalmente"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/goal_type.py:47
+#: code:addons/custom_commission_dismac/models/goal_type.py:76
 #, python-format
-msgid "Computed amount: %s â¬\n"
+msgid "Computed amount: %s €\n"
 ""
-msgstr "Importe computado: %s â¬\n"
+msgstr "Importe calculado: %s €\n"
 ""
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/goal_type.py:65
+#: code:addons/custom_commission_dismac/models/goal_type.py:94
 #, python-format
 msgid "Computed coef: %s \n"
 "Rule applied -> From Margin Coeff %s"
 msgstr "Coeficiente computado: %s \n"
 "Regla aplicada -> Desde coef. margen %s"
+
+#. module: custom_commission_dismac
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_info_unit_id
+msgid "Computing Operating Unit"
+msgstr "Unidad Operacional Informática"
+
+#. module: custom_commission_dismac
+#: model:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
+msgid "Conditions"
+msgstr "Condiciones"
 
 #. module: custom_commission_dismac
 #: model:ir.model,name:custom_commission_dismac.model_res_partner
@@ -125,11 +189,6 @@ msgid "Created on"
 msgstr "Creado en"
 
 #. module: custom_commission_dismac
-#: selection:goal.type,type:0
-msgid "Customer Numbers"
-msgstr "Número clientes"
-
-#. module: custom_commission_dismac
 #: selection:agent.month.goal,month:0
 msgid "December"
 msgstr "Diciembre"
@@ -138,6 +197,11 @@ msgstr "Diciembre"
 #: model:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_form
 msgid "Delete Settlement by goal"
 msgstr "Borrar comisiones por objetivo"
+
+#. module: custom_commission_dismac
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_name
+msgid "Description"
+msgstr "Descripción"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_display_name
@@ -150,9 +214,26 @@ msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/goal_type.py:138
+#, python-format
+msgid "FORNITURE COMMISSION\n"
+"amount goal : %s \n"
+"amount : %s \n"
+"Commission applied: %s"
+msgstr "COMISIÓN VENTAS MOBILIARIO\n"
+"Importe objetivo : %s \n"
+"Importe : %s \n"
+"Comisión aplicada: %s"
+
+#. module: custom_commission_dismac
 #: selection:agent.month.goal,month:0
 msgid "February"
 msgstr "Febrero"
+
+#. module: custom_commission_dismac
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_mob_unit_id
+msgid "Forniture Operating Unit"
+msgstr "Unidad Operacional Mobiliario"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_goal_per
@@ -163,6 +244,18 @@ msgstr "Desde % Objetivo"
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_coef
 msgid "From Margin Coeff"
 msgstr "Desde coef. margen"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/settlement.py:227
+#, python-format
+msgid "Global settlement by min customers goal"
+msgstr "Liquidación global por objetivo de min clientes"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/settlement.py:252
+#, python-format
+msgid "Global settlement by sales"
+msgstr "Liquidación global por ventas"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_goal_line_ids
@@ -188,7 +281,7 @@ msgid "Goal Types"
 msgstr "Tipos de objetivo"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/goal_type.py:48
+#: code:addons/custom_commission_dismac/models/goal_type.py:77
 #, python-format
 msgid "Goal percentage: %s \n"
 ""
@@ -306,6 +399,17 @@ msgid "May"
 msgstr "Mayo"
 
 #. module: custom_commission_dismac
+#: selection:goal.type,type:0
+#: model:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
+msgid "Min Customers"
+msgstr "Min clientes"
+
+#. module: custom_commission_dismac
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_min_customers
+msgid "Min customers"
+msgstr "Min clientes"
+
+#. module: custom_commission_dismac
 #: model:ir.model,name:custom_commission_dismac.model_sale_commission_line_mixin
 msgid "Mixin model for having commission agent lines in any object inheriting from this one"
 msgstr "Modelo mixin para tener líneas de agente de comisiones en cualquier objeto heredando de éste"
@@ -323,17 +427,83 @@ msgid "Month Objevctives"
 msgstr "Objetivos mensuales"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/goal_type.py:46
+#: code:addons/custom_commission_dismac/models/goal_type.py:75
 #, python-format
-msgid "Month goal: %s â¬\n"
+msgid "Month goal: %s €\n"
 ""
-msgstr "Objetivo mes: %s â¬\n"
+msgstr "Objetivo mes: %s €\n"
 ""
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/goal_type.py:202
+#, python-format
+msgid "NEW CUSTOMERS COMMISSION\n"
+"Goal Num new customers: %s \n"
+"Num new Customers: %s \n"
+"Commission applied: %s"
+msgstr "COMISIÓN PR NUEVOS CLIENTESn"
+"Objetivo nº nuevos clientes: %s \n"
+"Nº nuevos clientes: %s \n"
+"Comisión aplicada: %s"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_name
 msgid "Name"
 msgstr "Nombre"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/goal_type.py:148
+#, python-format
+msgid "No Computing Commission"
+msgstr "Sin comisión informática"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/goal_type.py:133
+#, python-format
+msgid "No Forniture Commission"
+msgstr "Sin comisión mobiliario"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/goal_type.py:85
+#, python-format
+msgid "No Margin Commission"
+msgstr "Sin comisión por margen"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/goal_type.py:219
+#, python-format
+msgid "No Min customers Commission"
+msgstr "Sin comisión por mínimo de clientes"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/goal_type.py:179
+#, python-format
+msgid "No New Customers Commission"
+msgstr "Sin comisiónm por nuevos clientes"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/goal_type.py:163
+#, python-format
+msgid "No Num Customers Commission"
+msgstr "Sin comisión por nº clientes"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/goal_type.py:59
+#, python-format
+msgid "No Sale Goal Commission"
+msgstr "Sin comisión por ventas"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/goal_type.py:102
+#, python-format
+msgid "No Web Commission"
+msgstr "Sin comisión web"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/goal_type.py:226
+#, python-format
+msgid "No user related to agent %s"
+msgstr "No hay usuario relaccionado con el agente %s"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_note
@@ -344,6 +514,33 @@ msgstr "Notas"
 #: selection:agent.month.goal,month:0
 msgid "November"
 msgstr "Noviembre"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/goal_type.py:169
+#, python-format
+msgid "Nº CUSTOMERS COMMISSION\n"
+"Goal customer numbers : %s \n"
+"number : %s \n"
+"Commission applied: %s"
+msgstr "COMISIÓN NÚMERO DE CLIENTES\n"
+"Objetivo nº clientes : %s \n"
+"número : %s \n"
+"Comisión aplicada: %s"
+
+#. module: custom_commission_dismac
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_num_customers
+msgid "Nº Customers with purchase"
+msgstr "Nº clientes con compra"
+
+#. module: custom_commission_dismac
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_new_customers
+msgid "Nº new Customers"
+msgstr "Nº clientes nuevos"
+
+#. module: custom_commission_dismac
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_web_customers
+msgid "Nº new web customers"
+msgstr "Nº cliente web nuevos"
 
 #. module: custom_commission_dismac
 #: selection:agent.month.goal,month:0
@@ -358,7 +555,7 @@ msgid "Operating Unit"
 msgstr "Unidad operacional"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/goal_type.py:49
+#: code:addons/custom_commission_dismac/models/goal_type.py:78
 #, python-format
 msgid "Rule applied -> From percentage goal: %s"
 msgstr "Regla aplicada -> Desde porcentaje objetivo: %s"
@@ -427,6 +624,12 @@ msgid "Settlement by goal"
 msgstr "Liquidaciones por objetivos"
 
 #. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/settlement.py:112
+#, python-format
+msgid "Settlement in %s"
+msgstr "Liquidación en %s"
+
+#. module: custom_commission_dismac
 #: model:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_form
 msgid "Settlements by Goals"
 msgstr "Liquidaciones por objetivos"
@@ -456,15 +659,27 @@ msgstr "Tipo"
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_unit_line_id
 msgid "Unit Line"
-msgstr "Unit Line"
+msgstr "Línea unidad"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/goal_type.py:123
+#, python-format
+msgid "WEB SALE COMMISSION\n"
+"Goal web customers: %s\n"
+"Num web customers: %s\n"
+"Commission applied: %s %"
+msgstr "COMISIÓN VENTAS WEB\n"
+"Objetivo clientes web: %s\n"
+"Nº clientes web: %s\n"
+"Comisión aplicada: %s %"
 
 #. module: custom_commission_dismac
 #: model:ir.model,name:custom_commission_dismac.model_sale_commission_make_settle
 msgid "Wizard for settling commissions in invoices"
-msgstr "Wizard for settling commissions in invoices"
+msgstr "Asistente para establecer comisiones en facturas"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/agent_month_goal.py:27
+#: code:addons/custom_commission_dismac/models/agent_month_goal.py:26
 #: sql_constraint:agent.month.goal:0
 #, python-format
 msgid "You can not define same, agent, month, operating unit,             and goal type"
@@ -479,6 +694,11 @@ msgstr "agent.month.goal"
 #: model:ir.model,name:custom_commission_dismac.model_commission_by_margin
 msgid "commission.by.margin"
 msgstr "commission.by.margin"
+
+#. module: custom_commission_dismac
+#: model:ir.model,name:custom_commission_dismac.model_commission_by_min_customers
+msgid "commission.by.min.customers"
+msgstr "commission.by.min.customers"
 
 #. module: custom_commission_dismac
 #: model:ir.model,name:custom_commission_dismac.model_commission_by_sales

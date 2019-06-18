@@ -63,7 +63,7 @@ class Settlement(models.Model):
             invoices_by_unit[inv.operating_unit_id]['num'] += 1
             invoices_by_global['num'] += 1
 
-            # Si hay comisiones con señalamiento, obtenemos el % de 
+            # Si hay comisiones con señalamiento, obtenemos el % de
             # reduction_per definido en la línea de agent
             reduced_amount = inv.get_reduced_amount(self.agent)
             invoices_by_unit[inv.operating_unit_id]['reduced_amount'] += \

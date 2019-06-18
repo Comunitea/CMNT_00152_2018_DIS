@@ -138,7 +138,7 @@ class GoalType(models.Model):
                 note = _(
                    'FORNITURE COMMISSION\n'
                    'amount goal : %s \n'
-                   'goal : %s \n'
+                   'amount : %s \n'
                    'Commission applied: %s'
                 ) % (mob_data['amount_goal'], mob_data['amount'], commission)
         return commission, note
