@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-18 08:46+0000\n"
-"PO-Revision-Date: 2019-06-18 08:46+0000\n"
+"POT-Creation-Date: 2019-06-24 12:49+0000\n"
+"PO-Revision-Date: 2019-06-24 12:49+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/settlement.py:192
 #: code:addons/custom_commission_dismac/models/settlement.py:203
+#: code:addons/custom_commission_dismac/models/settlement.py:214
 #, python-format
 msgid "\n"
 "Subtotal computed: %s"
@@ -25,8 +25,8 @@ msgstr "\n"
 "Subtotal calculado: %s"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/settlement.py:193
 #: code:addons/custom_commission_dismac/models/settlement.py:204
+#: code:addons/custom_commission_dismac/models/settlement.py:215
 #, python-format
 msgid "\n"
 "Subtotal reduced: %s"
@@ -246,13 +246,13 @@ msgid "From Margin Coeff"
 msgstr "Desde coef. margen"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/settlement.py:227
+#: code:addons/custom_commission_dismac/models/settlement.py:237
 #, python-format
 msgid "Global settlement by min customers goal"
 msgstr "Liquidación global por objetivo de min clientes"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/settlement.py:252
+#: code:addons/custom_commission_dismac/models/settlement.py:262
 #, python-format
 msgid "Global settlement by sales"
 msgstr "Liquidación global por ventas"
@@ -329,6 +329,11 @@ msgid "Invoice Line"
 msgstr "Linea de la Factura"
 
 #. module: custom_commission_dismac
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_crm_lead_pointing
+msgid "Is pointing"
+msgstr "Es señalamiento"
+
+#. module: custom_commission_dismac
 #: selection:agent.month.goal,month:0
 msgid "January"
 msgstr "Enero"
@@ -372,6 +377,11 @@ msgstr "Última actualización de"
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_write_date
 msgid "Last Updated on"
 msgstr "Última actualización en"
+
+#. module: custom_commission_dismac
+#: model:ir.model,name:custom_commission_dismac.model_crm_lead
+msgid "Lead/Opportunity"
+msgstr "Iniciativa/Oportunidad"
 
 #. module: custom_commission_dismac
 #: selection:agent.month.goal,month:0
@@ -555,6 +565,11 @@ msgid "Operating Unit"
 msgstr "Unidad operacional"
 
 #. module: custom_commission_dismac
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_crm_lead_pointing_per
+msgid "Poiting (%)"
+msgstr "Señalamiento (%)"
+
+#. module: custom_commission_dismac
 #: code:addons/custom_commission_dismac/models/goal_type.py:78
 #, python-format
 msgid "Rule applied -> From percentage goal: %s"
@@ -624,7 +639,7 @@ msgid "Settlement by goal"
 msgstr "Liquidaciones por objetivos"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/settlement.py:112
+#: code:addons/custom_commission_dismac/models/settlement.py:123
 #, python-format
 msgid "Settlement in %s"
 msgstr "Liquidación en %s"
@@ -638,6 +653,12 @@ msgstr "Liquidaciones por objetivos"
 #: model:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_form
 msgid "Settlements by Operating Unit"
 msgstr "Liquidaciones por unidad operacional"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/sale_order.py:40
+#, python-format
+msgid "The partner related to commercial %s must be a                         partner"
+msgstr "El partner relacionado con el comercial %s debe estar marcado como agente"
 
 #. module: custom_commission_dismac
 #: model:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_tree_custom
@@ -676,7 +697,7 @@ msgstr "COMISIÓN VENTAS WEB\n"
 #. module: custom_commission_dismac
 #: model:ir.model,name:custom_commission_dismac.model_sale_commission_make_settle
 msgid "Wizard for settling commissions in invoices"
-msgstr "Asistente para establecer comisiones en facturas"
+msgstr "Asistente para liquidar las comisiones en favturas"
 
 #. module: custom_commission_dismac
 #: code:addons/custom_commission_dismac/models/agent_month_goal.py:26
