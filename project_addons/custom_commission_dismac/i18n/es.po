@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-24 12:49+0000\n"
-"PO-Revision-Date: 2019-06-24 12:49+0000\n"
+"POT-Creation-Date: 2019-06-24 16:27+0000\n"
+"PO-Revision-Date: 2019-06-24 16:27+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -35,6 +35,7 @@ msgstr "\n"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_account_invoice_line_agent_reduction_per
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_reduction_per
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_sale_commission_line_mixin_reduction_per
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_sale_order_line_agent_reduction_per
 msgid "% Over subtotal"
@@ -42,6 +43,7 @@ msgstr "% sobre subtotal"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_agent_id
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_agent
 #: model:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_search_view
 msgid "Agent"
 msgstr "Agente"
@@ -50,6 +52,11 @@ msgstr "Agente"
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_amount_goal
 msgid "Amount Goal"
 msgstr "Importe objetivo"
+
+#. module: custom_commission_dismac
+#: model:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
+msgid "Apply"
+msgstr "Aplicar"
 
 #. module: custom_commission_dismac
 #: selection:agent.month.goal,month:0
@@ -80,6 +87,26 @@ msgstr "COMISIÓN VENTAS INFORMÁTICA\n"
 "Comisión aplicada: %s"
 
 #. module: custom_commission_dismac
+#: model:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: custom_commission_dismac
+#: model:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
+msgid "Change Agent Lines"
+msgstr "Modificar líneas de agentes"
+
+#. module: custom_commission_dismac
+#: model:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
+msgid "Change Agents"
+msgstr "Modificar líneas de agentes"
+
+#. module: custom_commission_dismac
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_line_ids
+msgid "Change Agents lines"
+msgstr "Modificar líneas de agentes"
+
+#. module: custom_commission_dismac
 #: model:ir.actions.act_window,name:custom_commission_dismac.action_commission_by_margin
 #: model:ir.ui.menu,name:custom_commission_dismac.menu_commission_by_margin
 #: model:ir.ui.view,arch_db:custom_commission_dismac.commission_by_margin_search_view
@@ -87,6 +114,11 @@ msgstr "COMISIÓN VENTAS INFORMÁTICA\n"
 #: model:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
 msgid "Coeficient Margin Rules"
 msgstr "Reglas por coeficiente de margen"
+
+#. module: custom_commission_dismac
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_commission
+msgid "Commission"
+msgstr "Comisión"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_commission
@@ -127,6 +159,7 @@ msgstr "Comisiones (%)"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,help:custom_commission_dismac.field_account_invoice_line_agent_reduction_per
+#: model:ir.model.fields,help:custom_commission_dismac.field_change_agents_lines_wzd_reduction_per
 #: model:ir.model.fields,help:custom_commission_dismac.field_sale_commission_line_mixin_reduction_per
 #: model:ir.model.fields,help:custom_commission_dismac.field_sale_order_line_agent_reduction_per
 msgid "Compute settlement with % reduced over invoices subtotal"
@@ -170,6 +203,8 @@ msgstr "Contacto"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_create_uid
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_create_uid
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_create_uid
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_create_uid
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_create_uid
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_create_uid
@@ -180,6 +215,8 @@ msgstr "Creado por"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_create_date
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_create_date
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_create_date
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_create_date
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_create_date
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_create_date
@@ -205,6 +242,8 @@ msgstr "Descripción"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_display_name
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_display_name
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_display_name
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_display_name
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_display_name
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_display_name
@@ -310,6 +349,8 @@ msgstr "Agrupar por"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_id
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_id
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_id
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_id
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_id
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_id
@@ -334,6 +375,11 @@ msgid "Is pointing"
 msgstr "Es señalamiento"
 
 #. module: custom_commission_dismac
+#: model:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
+msgid "It will change line agents globally"
+msgstr "Esto modificará las líneas de agentes globalmente"
+
+#. module: custom_commission_dismac
 #: selection:agent.month.goal,month:0
 msgid "January"
 msgstr "Enero"
@@ -350,6 +396,8 @@ msgstr "Junio"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal___last_update
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd___last_update
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd___last_update
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin___last_update
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales___last_update
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line___last_update
@@ -360,6 +408,8 @@ msgstr "Última modificación en"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_write_uid
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_write_uid
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_write_uid
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_write_uid
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_write_uid
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_write_uid
@@ -370,6 +420,8 @@ msgstr "Última actualización de"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_write_date
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_write_date
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_write_date
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_write_date
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_write_date
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_write_date
@@ -423,6 +475,11 @@ msgstr "Min clientes"
 #: model:ir.model,name:custom_commission_dismac.model_sale_commission_line_mixin
 msgid "Mixin model for having commission agent lines in any object inheriting from this one"
 msgstr "Modelo mixin para tener líneas de agente de comisiones en cualquier objeto heredando de éste"
+
+#. module: custom_commission_dismac
+#: model:ir.actions.act_window,name:custom_commission_dismac.action_change_agents_wzd
+msgid "Modify Line Agents"
+msgstr "Modificar líneas de agentes"
 
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_month
@@ -695,9 +752,14 @@ msgstr "COMISIÓN VENTAS WEB\n"
 "Comisión aplicada: %s %"
 
 #. module: custom_commission_dismac
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_wzd_id
+msgid "Wizard"
+msgstr "Asistente"
+
+#. module: custom_commission_dismac
 #: model:ir.model,name:custom_commission_dismac.model_sale_commission_make_settle
 msgid "Wizard for settling commissions in invoices"
-msgstr "Asistente para liquidar las comisiones en favturas"
+msgstr "ASsistente para facturar liquidaciones"
 
 #. module: custom_commission_dismac
 #: code:addons/custom_commission_dismac/models/agent_month_goal.py:26
@@ -710,6 +772,16 @@ msgstr "No puedes definir el mismo agente, mes, unidad operacional y tipo de obj
 #: model:ir.model,name:custom_commission_dismac.model_agent_month_goal
 msgid "agent.month.goal"
 msgstr "agent.month.goal"
+
+#. module: custom_commission_dismac
+#: model:ir.model,name:custom_commission_dismac.model_change_agents_lines_wzd
+msgid "change.agents.lines.wzd"
+msgstr "change.agents.lines.wzd"
+
+#. module: custom_commission_dismac
+#: model:ir.model,name:custom_commission_dismac.model_change_agents_wzd
+msgid "change.agents.wzd"
+msgstr "change.agents.wzd"
 
 #. module: custom_commission_dismac
 #: model:ir.model,name:custom_commission_dismac.model_commission_by_margin
@@ -740,4 +812,9 @@ msgstr "goal.type"
 #: model:ir.model,name:custom_commission_dismac.model_operating_unit_settlement_line
 msgid "operating.unit.settlement.line"
 msgstr "operating.unit.settlement.line"
+
+#. module: custom_commission_dismac
+#: model:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
+msgid "or"
+msgstr "o"
 

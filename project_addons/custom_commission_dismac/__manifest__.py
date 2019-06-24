@@ -24,6 +24,7 @@
         'views/sale_order_view.xml',
         'views/crm_lead_view.xml',
         'wizard/wizard_settle_view.xml',
+        'wizard/change_agent_wzd_view.xml',
     ],
     'installable': True,
 }
