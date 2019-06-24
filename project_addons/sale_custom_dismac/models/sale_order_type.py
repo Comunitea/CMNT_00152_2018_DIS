@@ -7,3 +7,4 @@ class SaleOrderType(models.Model):
     _inherit = 'sale.order.type'
 
     use_partner_agent = fields.Boolean()
+    show_layout = fields.Boolean()

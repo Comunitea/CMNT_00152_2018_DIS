@@ -10,6 +10,7 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     approval_conditions = fields.Boolean('Approval Conditions')
+    show_layout = fields.Boolean(related='type_id.show_layout', readonly=True)
 
     @api.multi
     def action_confirm(self):

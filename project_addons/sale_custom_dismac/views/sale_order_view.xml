@@ -12,6 +12,12 @@
             <xpath expr="//field[@name='order_line']/tree//field[@name='analytic_tag_ids']" position="attributes">
                 <attribute name="attrs">{'column_invisible': True}</attribute>
             </xpath>
+            <xpath expr="//field[@name='order_line']" position="before">
+                <field name="show_layout" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='layout_category_id']" position="attributes">
+                <attribute name="attrs">{'column_invisible': [('parent.show_layout','=',False)]}</attribute>
+            </xpath>
         </field>
     </record>
 

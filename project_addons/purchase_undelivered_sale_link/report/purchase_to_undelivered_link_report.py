@@ -34,15 +34,15 @@ class PurchaseUndeliveredLinkReport(models.Model):
     def _select(self):
         select_str = """
             WITH currency_rate as (%s)
-             select 
-             min(sol.id) as id, 
+             select
+             min(sol.id) as id,
              so.id as sale_order_id,
              so.partner_id as partner_id,
-             so.date_order as date_order,  
+             so.date_order as date_order,
              sol.product_id as product_id,
              sol.product_uom_qty,
              sol.product_uom,
-             sol.qty_delivered, 
+             sol.qty_delivered,
              sol.qty_cancelled,
              sol.product_uom_qty - sol.qty_delivered- sol.qty_cancelled as qty_to_delivered,
              sm.picking_id as picking_id,
@@ -50,14 +50,14 @@ class PurchaseUndeliveredLinkReport(models.Model):
              so.company_id as company_id,
              sm.state as sm_state,
              so.state as so_state
-             
+
         """ % self.env['res.currency']._select_companies_rates()
         return select_str
 
     def _from(self):
         from_str = """
                 stock_move sm
-                join stock_location sl on sl.id = sm.location_id 
+                join stock_location sl on sl.id = sm.location_id
                 join sale_order_line sol on sol.id = sm.sale_line_id
                 join sale_order so on so.id = sol.order_id
                 """
@@ -65,28 +65,28 @@ class PurchaseUndeliveredLinkReport(models.Model):
 
     def _where(self):
         where = """
-                sm.state in ('partially_available','confirmed') 
+                sm.state in ('partially_available','confirmed')
                 """
         return where
 
     def _group_by(self):
         group_by_str = """
 
-            group by 
-                so.id, 
-                sol.id, 
-                so.partner_id, 
-                so.date_order, 
-                sol.product_id, 
-                sol.product_uom_qty, 
-                sol.qty_delivered, 
-                sol.qty_cancelled, 
-                sm.picking_id, 
-                sm.sale_line_id, 
-                so.company_id, 
-                sm.state, 
+            group by
+                so.id,
+                sol.id,
+                so.partner_id,
+                so.date_order,
+                sol.product_id,
+                sol.product_uom_qty,
+                sol.qty_delivered,
+                sol.qty_cancelled,
+                sm.picking_id,
+                sm.sale_line_id,
+                so.company_id,
+                sm.state,
                 so.state, sol.product_uom
-            
+
         """
         return group_by_str
 
@@ -97,9 +97,8 @@ class PurchaseUndeliveredLinkReport(models.Model):
         sql = """CREATE or REPLACE VIEW %s as (
             %s
             FROM ( %s )
-            WHERE ( %s ) 
-            %s 
+            WHERE ( %s )
+            %s
             order by so.date_order)
             """ % (self._table, self._select(), self._from(), self._where(), self._group_by())
-        print(sql)
         self.env.cr.execute(sql)

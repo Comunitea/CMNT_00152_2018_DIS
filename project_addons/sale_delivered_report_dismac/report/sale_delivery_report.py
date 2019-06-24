@@ -19,11 +19,9 @@ class SaleDelivery(models.Model):
 
         ctx = self._context
         res = super(SaleDelivery, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
-        print (ctx)
         if view_type == 'form' and ctx.get('product_id', False):
             doc = etree.XML(res['arch'])
             for node in doc.xpath("//field[@class='hide_product_id']"):
-                print(node)
                 node.set('invisible', '0')
             res['arch'] = etree.tostring(doc)
         return res
@@ -60,7 +58,6 @@ class SaleDelivery(models.Model):
                                                            self._context.get('package_id'),
                                                            self._context.get('from_date'),
                                                            to_date=to_date)
-            print ("Cantidades {}".format(qty))
             if qties[line.product_id.id]['virtual_available'] >= qty:
                 return line
         return False
@@ -77,8 +74,6 @@ class SaleDelivery(models.Model):
 
             line.line_virtual_available = qties[line.product_id.id]['virtual_available']
             line.line_qty_available = qties[line.product_id.id]['qty_available']
-
-            print("Cantidades a fecha {}\n{}".format(to_date, qties))
         return
 
 
@@ -93,7 +88,6 @@ class SaleDelivery(models.Model):
             product_id = self.env['product.product'].browse(p_id)
         if not product_id:
             return
-        print ("Lista de artículos {}".format(product_id))
         #Compras asociadas pendientes de recibir
         #domain = [('product_id', '=', product_id.id), ('qty_to_receive', '!=', 0)]
         #pol = self.env['purchase.order.line'].search(domain, order='date_planned asc')
@@ -107,9 +101,6 @@ class SaleDelivery(models.Model):
         p_moves = self.env['stock.move'].search(domain, order='date_expected asc')
         stock_qty = qty_available = product_id.qty_available
         qty_reserved = 0.00
-        print ("Movientos asociados de compra: {}".format(p_moves))
-        print ("Disponibilidad inicial: {}".format(stock_qty))
-        print ("Lista completa de lineas a cheq: {} con fechas {}".format(self, self.mapped('date_order')))
 
 
         lines = self.filtered(lambda x: x.product_id == product_id).sorted(key='date_order', reverse=False)
@@ -129,7 +120,6 @@ class SaleDelivery(models.Model):
             max_date = max(max_date, line.date_expected)
 
             if line.purchase_order_id:
-                print("Linea de compra: {}".format(line.purchase_order_id.name))
 
                 line.date_available = line.date_expected
                 line.date_planned = line.date_expected
@@ -147,16 +137,12 @@ class SaleDelivery(models.Model):
 
                 continue
 
-            print ('A entregar: {} Disponible {}'.format(line.qty_to_delivered, line.qty_available_to_delivered))
-
             if line.sale_order_id:
                 qty_reserved += line.qty_to_delivered
                 from_initial_stock = qty_reserved <= stock_qty
 
-                print("Linea de venta: {}".format(line.sale_order_id.name))
                 from_stock = qty_available >= line.qty_to_delivered
                 # Si me llega lo que hay
-                print ('\nLinea: {} Stock={}'.format(line.sale_order_id.name, from_stock))
                 if from_stock:
                     line.qty_available_to_delivered = qty_available
                     qty_available -= line.qty_to_delivered
@@ -180,7 +166,6 @@ class SaleDelivery(models.Model):
                 else:
 
                     purchase_line = purchases.get_p_line_qty_available(qty=line.qty_to_delivered)
-                    print ("Actualizao la linea con compra {}".format(line.name))
                     if purchase_line:
                         line.date_available = purchase_line.date_expected
                         line.sendable = True
@@ -197,9 +182,6 @@ class SaleDelivery(models.Model):
             line.date_planned = line.date_expected or line.date_order#max(line.date_available or line.date_order, line.date_order or line.date_available)
             if not line.purchase_order_id and not line.sale_order_id:
                 line.purchase_order_group = "Move"
-
-            print ('\nLinea: {} Stock={}'.format(line.sale_order_id.name, from_stock))
-            print ('A entregar: {} Disponible {}'.format(line.qty_to_delivered, line.qty_available_to_delivered))
 
         self = lines.sorted(key=lambda x: (x.date_available or max_date, x.sale_order_line_id))
 
@@ -276,8 +258,8 @@ class SaleDelivery(models.Model):
     date_available = fields.Datetime(compute="_get_qty_to_delivered", readonly=True, help="Data with available stock")
 
     def _select(self):
-        select_str = """           
-             SELECT  
+        select_str = """
+             SELECT
                     min(l.id) as id,
                     l.id as sale_order_line_id,
                     null as purchase_order_line_id,
@@ -289,10 +271,10 @@ class SaleDelivery(models.Model):
                     sm.state as sm_state,
                     s.partner_id as partner_id,
                     l.product_uom_qty as product_uom_qty,
-                    l.product_uom, 
+                    l.product_uom,
                     l.qty_delivered as qty_delivered,
                     l.qty_cancelled as qty_cancelled,
-                    case 
+                    case
                         when sm.state in ('done', 'cancel') then sm.date
                         else sm.date_expected
                     end as date_expected,
@@ -335,23 +317,23 @@ class SaleDelivery(models.Model):
         return group_by_str
 
     def _select2(self):
-        select_str = """           
-             SELECT  
+        select_str = """
+             SELECT
                     min(pl.id) as id,
-                    null as sale_line_id, 
+                    null as sale_line_id,
                     pl.id as sale_order_line_id,
                     pl.product_id as product_id,
-                    null as sale_order_id, 
+                    null as sale_order_id,
                     pl.order_id as purchase_order_id,
                     p.date_order,
                     p.state,
                     sm.state as sm_state,
                     p.partner_id as partner_id,
                     pl.product_qty as product_uom_qty,
-                    pl.product_uom, 
+                    pl.product_uom,
                     pl.qty_received as qty_delivered,
                     pl.qty_cancelled as qty_cancelled,
-                    case 
+                    case
                         when sm.date_expected isnull then sm.date
                         else sm.date_expected
                     end as date_expected,
@@ -359,7 +341,7 @@ class SaleDelivery(models.Model):
                         when (pl.product_qty > 0 and pl.product_qty = pl.qty_cancelled) then 'cancel'
                         when (pl.product_qty > 0 and pl.product_qty = pl.qty_received + pl.qty_cancelled) then 'sent'
                         else 'in_progress'
-                    end as actual_status                    
+                    end as actual_status
         """
         return select_str
 
@@ -381,7 +363,7 @@ class SaleDelivery(models.Model):
             GROUP BY pl.product_id,
                      pl.qty_received,
                      pl.id,
-                     pl.product_uom, 
+                     pl.product_uom,
                      p.state,
                      p.partner_id,
                      p.date_planned,
@@ -394,13 +376,13 @@ class SaleDelivery(models.Model):
         return group_by_str
 
     def _select3(self):
-        select_str = """           
-             SELECT  
+        select_str = """
+             SELECT
                     min(id) as id,
-                    null as sale_line_id, 
+                    null as sale_line_id,
                     null as sale_order_line_id,
                     product_id as product_id,
-                    null as sale_order_id, 
+                    null as sale_order_id,
                     null as purchase_order_id,
                     date,
                     'done' as state,
@@ -413,9 +395,9 @@ class SaleDelivery(models.Model):
                     date_expected,
                     case
                         when state = 'cancel' then 'cancel'
-                        when state = 'done' then 'sent'    
+                        when state = 'done' then 'sent'
                         else 'in_progress'
-                    end as actual_status                    
+                    end as actual_status
         """
         return select_str
 
@@ -438,7 +420,7 @@ class SaleDelivery(models.Model):
             GROUP BY product_id,
                      product_uom_qty,
                      id,
-                     product_uom, 
+                     product_uom,
                      state,
                      partner_id,
                      date,
@@ -477,7 +459,6 @@ class SaleDelivery(models.Model):
 
             order by date_order) """ % (self._table, sql1, sql2)
 
-        print(sql)
         self.env.cr.execute(sql)
 
     @api.multi

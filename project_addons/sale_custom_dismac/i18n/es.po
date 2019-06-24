@@ -129,3 +129,9 @@ msgstr "delivery.route"
 msgid "partner.zone"
 msgstr "partner.zone"
 
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_show_layout
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_type_show_layout
+msgid "Show Layout"
+msgstr "Mostrar secciones"
