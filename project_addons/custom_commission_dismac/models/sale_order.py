@@ -1,6 +1,7 @@
 # © 2016 Comunitea - Javier Colmenero <javier@comunitea.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-from odoo import api, models, fields
+from odoo import api, models, fields, _
+from odoo.exceptions import UserError
 
 
 class SaleOrderLine(models.Model):
@@ -24,10 +25,30 @@ class SaleOrderLine(models.Model):
         })
         return res
 
-
-class SaleOrderLineAgent(models.AbstractModel):
-    _inherit = "sale.commission.line.mixin"
-
-    reduction_per = fields.Float(
-        '% Over subtotal', default=100.0, 
-        help='Compute settlement with % reduced over invoices subtotal')
+    @api.model
+    def create(self, vals):
+        """
+        Si al crear la línea se viene de una oportunidad con señalamiento
+        Se reescriben los porcentages de reducción de la línea y se añade
+        el nuevo agente con el porcentage de señalamiento adecuado.
+        """
+        res = super().create(vals)
+        opp = res.order_id.opportunity_id
+        if opp and opp.pointing:
+            if not opp.user_id.partner_id.agent:
+                raise UserError(
+                    _('The partner related to commercial %s must be a \
+                        partner') % opp.user_id.name
+                )
+            new_agent = opp.user_id.partner_id
+            pointing_per = opp.pointing_per
+            res.agents.write({
+                'reduction_per': 100.0 - pointing_per
+            })
+            res.write({
+                'agents': [(0, 0, {
+                    'agent': new_agent.id,
+                    'commission': new_agent.commission.id,
+                    'reduction_per': pointing_per})]
+            })
+        return res
