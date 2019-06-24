@@ -8,3 +8,4 @@ from . import sale_commission_mixin  # noqa
 from . import settlement  # noqa
 from . import sale_order  # noqa
 from . import account_invoice  # noqa
+from . import crm_lead  # noqa
