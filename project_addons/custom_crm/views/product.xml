@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_product_view_tree" model="ir.ui.view">
+        <field name="name">product.product.view.tree</field>
+        <field name="model">product.product</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="default_code"/>
+                <field name="name"/>
+                <field name="catalogue_code"/>
+                <field name="qty_available"/>
+                <field name="virtual_available"/>
+                <field name="lst_price"/>
+                <field name="reference_cost"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="product_action_crm" model="ir.actions.act_window">
+        <field name="name">Product Variants</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_type">form</field>
+        <field name="context">{"search_default_filter_to_sell":1}</field>
+        <field name="view_id" ref="product_product_view_tree"/>
+        <field name="search_view_id" ref="product.product_search_form_view"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+            Click to define a new product.
+            </p><p>
+            You must define a product for everything you sell, whether it's
+            a physical product, a consumable or a service you offer to
+            customers.
+            </p><p>
+            The product form contains information to simplify the sale
+            process: price, notes in the quotation, accounting data,
+            procurement methods, etc.
+            </p>
+        </field>
+    </record>
+    <menuitem id="menu_products" action="product_action_crm"
+    parent="crm.crm_menu_root" groups="product.group_product_variant" sequence="2"/>
+
+</odoo>
