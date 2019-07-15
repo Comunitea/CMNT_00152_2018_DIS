@@ -7,7 +7,8 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <field name="company_id" position="after">
-                <field name="approval_conditions"/>
+                <field name="need_approval" />
+                <field name="approval_conditions" groups="sales_team.group_sale_manager" attrs="{'invisible': [('need_approval', '=', False)]}"/>
             </field>
             <xpath expr="//field[@name='order_line']/tree//field[@name='analytic_tag_ids']" position="attributes">
                 <attribute name="attrs">{'column_invisible': True}</attribute>
@@ -18,6 +19,22 @@
             <xpath expr="//field[@name='order_line']/tree//field[@name='layout_category_id']" position="attributes">
                 <attribute name="attrs">{'column_invisible': [('parent.show_layout','=',False)]}</attribute>
             </xpath>
+        </field>
+    </record>
+
+    <!-- Add filter por approval-->
+    <record id="view_sales_order_filter_approval" model="ir.ui.view" >
+        <field name="name">sale.order.filter.approval</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <!-- Add the locked checkbox -->
+            <filter name="my_sale_orders_filter" position="after">
+                <separator/>
+                <filter string="Pending Approval" name="pending_approval" domain="[('need_approval','=',True), ('approval_conditions', '=', False)]"/>
+                <separator/>
+
+            </filter>
         </field>
     </record>
 
@@ -46,6 +63,5 @@
             </xpath>
         </field>
     </record>
-
 </odoo>
 
