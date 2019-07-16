@@ -2,7 +2,7 @@
 # © 2016 Comunitea - Javier Colmenero <javier@comunitea.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from odoo import fields, models, api
-
+from odoo.tools import pycompat
 
 class ProductProduct(models.Model):
     _inherit = "product.product"
@@ -10,14 +10,16 @@ class ProductProduct(models.Model):
     price_description = fields.Char('Price Explanation',
                                     compute='_compute_product_price', )
     price_coeff = fields.Float('Price Coeff',
-                               compute='_compute_product_price')
+                               compute='_compute_price_coeff')
 
     def _compute_product_price(self):
         """
         When read price, search in customer prices first
         """
         res = super(ProductProduct, self)._compute_product_price()
+
         partner_id = self._context.get('partner', False)
+
         qty = self._context.get('quantity', 1.0)
         date = self._context.get('date') or fields.Date.context_today(self)
         if partner_id:
@@ -49,8 +51,10 @@ class ProductProduct(models.Model):
                     promotion_price = 0
 
                 # Selecciona precio mínimo
-                partner = self.env['res.partner'].browse(partner_id)[0]
-
+                if isinstance(partner_id, pycompat.integer_types):
+                    partner = self.env['res.partner'].browse(partner_id)[0]
+                else:
+                    partner = partner_id
                 if partner.fixed_prices:
                     if customer_price:
                         price = customer_price
@@ -76,9 +80,12 @@ class ProductProduct(models.Model):
                         explanation = "Aplicada promoción "
                 product.price = price
                 product.price_description = explanation
-                if product.reference_cost:
-                    product.price_coeff = price / product.reference_cost
-                else:
-                    product.price_coeff = 0
-            print(product.price_description)
+            #print(product.price_description)
         return res
+
+    def _compute_price_coeff(self):
+        for product in self:
+            if product.reference_cost:
+                product.price_coeff = product.price / product.reference_cost
+            else:
+                product.price_coeff = 0
