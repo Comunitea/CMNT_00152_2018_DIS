@@ -9,7 +9,7 @@ class SaleOrder(models.Model):
 
     _inherit = 'sale.order'
 
-    approval_conditions = fields.Boolean('Approval Conditions')
+    approval_conditions = fields.Boolean('Approval Conditions', default=False)
     show_layout = fields.Boolean(related='type_id.show_layout', readonly=True)
     need_approval = fields.Boolean(related='type_id.need_approval',
                                    readonly=True)
