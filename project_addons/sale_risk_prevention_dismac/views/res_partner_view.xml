@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="res_partner_view_risk" model="ir.ui.view" >
+        <field name="name">res.partner.view.risk</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+           <xpath expr="//page[@name='sales_purchases']//field[@name='supplier']" position="after">
+                <field name="risk_document" />
+            </xpath>
+
+        <page name="sales_purchases" position="after">
+               <page name="risk_documents" string="Prevention Documents"  attrs="{'invisible': [('risk_document', '=', False)]}">
+                    <group>
+                        <group colspan="4" string="Company Documents">
+                            <field name="risk_document_company_ids" nolabel="1">
+                                <tree string="Company Documents" editable="bottom">
+                                    <field name="document"/>
+                                    <field name="file"/>
+                                    <field name="due_bool" />
+                                    <field name="due_date"/>
+                                 </tree>
+                            </field>
+                        </group>
+                        <group colspan="4" string="Employee Documents">
+                            <field name="risk_document_company_ids" nolabel="1">
+                                <tree string="Employee Documents" editable="bottom">
+                                    <field name="document"/>
+                                    <field name="file"/>
+                                    <field name="due_bool" />
+                                    <field name="due_date"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                </page>
+            </page>
+        </field>
+    </record>
+
+</odoo>
+

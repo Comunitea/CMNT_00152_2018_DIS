@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="sale_order_form_risk" model="ir.ui.view">
+        <field name="name">sale.order.form.risk</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="company_id" position="after">
+                <field name="opt_prevention_risk" readonly="True"/>
+                <field name="need_prevention_risk" attrs="{'invisible': [('opt_prevention_risk', '=', False)], 'required': [('opt_prevention_risk', '=', True)]}"/>
+            </field>
+            <notebook position="inside">
+                <page string="Prevention Risk" name="prevention_risk" attrs="{'invisible': [('need_prevention_risk', '!=', True)]}">
+                    <group>
+                        <field name="request_prevention" />
+                        <field name="prevention_risk_contact_id" />
+                        <field name="installation_explanation" />
+                        <field name="subcontracts" />
+                    </group>
+                    <group>
+                        <group colspan="4" string="Company Documents">
+                            <field name="risk_document_ids" nolabel="1">
+                                <tree string="Documents" editable="bottom">
+                                    <field name="document"/>
+                                    <field name="file"/>
+
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                    <group>
+                         <field name="risk_document_completed"/>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>
+

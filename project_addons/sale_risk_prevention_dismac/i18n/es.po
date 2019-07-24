@@ -1,0 +1,197 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_risk_prevention_dismac
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-07-24 10:21+0000\n"
+"PO-Revision-Date: 2019-07-24 10:21+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.ui.view,arch_db:sale_risk_prevention_dismac.res_partner_view_risk
+#: model:ir.ui.view,arch_db:sale_risk_prevention_dismac.sale_order_form_risk
+msgid "Company Documents"
+msgstr "Documentos de la empresa"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model,name:sale_risk_prevention_dismac.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_create_uid
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_sale_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_create_date
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_sale_create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_display_name
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_sale_display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_document
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_sale_document
+msgid "Document"
+msgstr "Documento"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.ui.view,arch_db:sale_risk_prevention_dismac.sale_order_form_risk
+msgid "Documents"
+msgstr "Documentos"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_due_bool
+msgid "Due"
+msgstr "Sujeto a vcto "
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_due_date
+msgid "Due Date"
+msgstr "Fecha de vencimiento"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.ui.view,arch_db:sale_risk_prevention_dismac.res_partner_view_risk
+msgid "Employee Documents"
+msgstr "Documentos de los trabajadores"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_file
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_sale_file
+msgid "File"
+msgstr "Archivo"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_id
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_sale_id
+msgid "ID"
+msgstr "ID (identificación)"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_sale_order_installation_explanation
+msgid "Installation Explanation"
+msgstr "Explicación de la instalación"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document___last_update
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_sale___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_sale_write_uid
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización de"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_sale_write_date
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_sale_order_need_prevention_risk
+msgid "Need Prevention Risk"
+msgstr "Necesita prevencion de riesgos"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_sale_order_opt_prevention_risk
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_sale_order_type_opt_prevention_risk
+msgid "Opt Prevention Risk"
+msgstr "Opt para prevención"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_partner_id
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_res_partner_risk_document_company_ids
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_res_users_risk_document_company_ids
+msgid "Prevention Company Documents"
+msgstr "Documentos de prevención de la empresa"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_sale_order_prevention_risk_contact_id
+msgid "Prevention Contact"
+msgstr "Contacto de prevención"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_sale_order_risk_document_ids
+#: model:ir.ui.view,arch_db:sale_risk_prevention_dismac.res_partner_view_risk
+msgid "Prevention Documents"
+msgstr "Documentos de prevención"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_res_partner_risk_document_employee_ids
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_res_users_risk_document_employee_ids
+msgid "Prevention Employee Documents"
+msgstr "Documentos de prevención de trabajadores"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.ui.view,arch_db:sale_risk_prevention_dismac.sale_order_form_risk
+msgid "Prevention Risk"
+msgstr "Prevención de riesgos"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model,name:sale_risk_prevention_dismac.model_sale_order
+msgid "Quotation"
+msgstr "Presupuesto"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_sale_order_request_prevention
+msgid "Request prevention risk"
+msgstr "Solicitar prevención de riesgo"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_res_partner_risk_document
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_res_users_risk_document
+msgid "Risk Document needed"
+msgstr "Docuementos de riesgo necesarios"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_sale_order_risk_document_completed
+msgid "Risk document completed"
+msgstr "Docuemntación de riesgo competada"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_sale_sale_order_id
+msgid "Sale Order"
+msgstr "Pedido de venta"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_sale_order_subcontracts
+msgid "Subcontracts"
+msgstr "Subcontratas propuestas"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model,name:sale_risk_prevention_dismac.model_sale_order_type
+msgid "Type of sale order"
+msgstr "Tipo de pedido de venta"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model,name:sale_risk_prevention_dismac.model_risk_prevention_document
+msgid "risk.prevention.document"
+msgstr "risk.prevention.document"
+
+#. module: sale_risk_prevention_dismac
+#: model:ir.model,name:sale_risk_prevention_dismac.model_risk_prevention_document_sale
+msgid "risk.prevention.document.sale"
+msgstr "risk.prevention.document.sale"
+
