@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-24 10:21+0000\n"
-"PO-Revision-Date: 2019-07-24 10:21+0000\n"
+"POT-Creation-Date: 2019-07-24 12:17+0000\n"
+"PO-Revision-Date: 2019-07-24 12:17+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -122,6 +122,11 @@ msgid "Partner"
 msgstr "Empresa"
 
 #. module: sale_risk_prevention_dismac
+#: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_partner_e_id
+msgid "Partner E"
+msgstr "Partner E"
+
+#. module: sale_risk_prevention_dismac
 #: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_res_partner_risk_document_company_ids
 #: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_res_users_risk_document_company_ids
 msgid "Prevention Company Documents"
@@ -157,18 +162,18 @@ msgstr "Presupuesto"
 #. module: sale_risk_prevention_dismac
 #: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_sale_order_request_prevention
 msgid "Request prevention risk"
-msgstr "Solicitar prevención de riesgo"
+msgstr "Solicita prevención de riesgo"
 
 #. module: sale_risk_prevention_dismac
 #: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_res_partner_risk_document
 #: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_res_users_risk_document
 msgid "Risk Document needed"
-msgstr "Docuementos de riesgo necesarios"
+msgstr "Documentos de riesgo necesarios"
 
 #. module: sale_risk_prevention_dismac
 #: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_sale_order_risk_document_completed
 msgid "Risk document completed"
-msgstr "Docuemntación de riesgo competada"
+msgstr "Documentación de riesgo completada"
 
 #. module: sale_risk_prevention_dismac
 #: model:ir.model.fields,field_description:sale_risk_prevention_dismac.field_risk_prevention_document_sale_sale_order_id

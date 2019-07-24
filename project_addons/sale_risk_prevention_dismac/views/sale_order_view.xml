@@ -20,7 +20,7 @@
                     <group>
                         <group colspan="4" string="Company Documents">
                             <field name="risk_document_ids" nolabel="1">
-                                <tree string="Documents" editable="bottom">
+                                <tree string="Documents" >
                                     <field name="document"/>
                                     <field name="file"/>
 
@@ -35,5 +35,20 @@
             </notebook>
         </field>
     </record>
+
+    <record id="risk_prevencion_document_sale_view_form" model="ir.ui.view" >
+        <field name="name">risk.prevention.document.sale.view.form</field>
+        <field name="model">risk.prevention.document.sale</field>
+       <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+            <group col="4">
+                <field name="document" colspan="4"/>
+                <field name="file" colspan="4"/>
+            </group>
+            </form>
+        </field>
+    </record>
+
 </odoo>
 

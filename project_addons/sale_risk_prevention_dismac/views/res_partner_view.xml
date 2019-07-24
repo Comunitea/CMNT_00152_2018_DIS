@@ -15,7 +15,7 @@
                     <group>
                         <group colspan="4" string="Company Documents">
                             <field name="risk_document_company_ids" nolabel="1">
-                                <tree string="Company Documents" editable="bottom">
+                                <tree string="Company Documents">
                                     <field name="document"/>
                                     <field name="file"/>
                                     <field name="due_bool" />
@@ -24,8 +24,8 @@
                             </field>
                         </group>
                         <group colspan="4" string="Employee Documents">
-                            <field name="risk_document_company_ids" nolabel="1">
-                                <tree string="Employee Documents" editable="bottom">
+                            <field name="risk_document_employee_ids" nolabel="1">
+                                <tree string="Employee Documents">
                                     <field name="document"/>
                                     <field name="file"/>
                                     <field name="due_bool" />
@@ -38,6 +38,23 @@
             </page>
         </field>
     </record>
+
+    <record id="risk_prevencion_document_view_form" model="ir.ui.view" >
+        <field name="name">risk.prevention.document.view.form</field>
+        <field name="model">risk.prevention.document</field>
+       <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+            <group col="4">
+                <field name="document" colspan="4"/>
+                <field name="file"/>
+                <field name="due_bool" />
+                <field name="due_date" attrs="{'invisible': [('due_bool', '=', False)]}"/>
+            </group>
+            </form>
+        </field>
+    </record>
+
 
 </odoo>
 
