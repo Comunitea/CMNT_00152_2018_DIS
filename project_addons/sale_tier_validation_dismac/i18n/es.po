@@ -1,0 +1,99 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_tier_validation_dismac
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-07-24 08:35+0000\n"
+"PO-Revision-Date: 2019-07-24 08:35+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_tier_validation_dismac
+#: model:ir.ui.view,arch_db:sale_tier_validation_dismac.sale_order_form_validation
+msgid "<i class=\"fa fa-info-circle\"/>This SO needs to be\n"
+"                        validated."
+msgstr "<i class=\"fa fa-info-circle\"/>Este pedido necesita ser\n"
+"                        validado."
+
+#. module: sale_tier_validation_dismac
+#: model:ir.ui.view,arch_db:sale_tier_validation_dismac.sale_order_form_validation
+msgid "<i class=\"fa fa-thumbs-down\"/> Operation has been <b>rejected</b>."
+msgstr "<i class=\"fa fa-thumbs-down\"/> La operación ha sido <b>rechazada</b>."
+
+#. module: sale_tier_validation_dismac
+#: model:ir.ui.view,arch_db:sale_tier_validation_dismac.sale_order_form_validation
+msgid "<i class=\"fa fa-thumbs-up\"/> Operation has been <b>validated</b>!"
+msgstr "<i class=\"fa fa-thumbs-up\"/> La operación ha sido  <b>validada</b>!"
+
+#. module: sale_tier_validation_dismac
+#: model:ir.ui.view,arch_db:sale_tier_validation_dismac.view_sale_order_filter_validation
+msgid "My Sales to review"
+msgstr "Mis pedidos a revisar"
+
+#. module: sale_tier_validation_dismac
+#: model:ir.ui.view,arch_db:sale_tier_validation_dismac.view_sale_order_filter_validation
+msgid "Needs my Review"
+msgstr "Necesita mi revisión"
+
+#. module: sale_tier_validation_dismac
+#: model:ir.model,name:sale_tier_validation_dismac.model_sale_order
+msgid "Quotation"
+msgstr "Presupuesto"
+
+#. module: sale_tier_validation_dismac
+#: model:ir.ui.view,arch_db:sale_tier_validation_dismac.sale_order_form_validation
+msgid "Reject"
+msgstr "Rechazar"
+
+#. module: sale_tier_validation_dismac
+#: model:ir.ui.view,arch_db:sale_tier_validation_dismac.sale_order_form_validation
+msgid "Request Validation"
+msgstr "Solicitar validación"
+
+#. module: sale_tier_validation_dismac
+#: model:ir.ui.view,arch_db:sale_tier_validation_dismac.sale_order_form_validation
+msgid "Restart Validation"
+msgstr "Reiniciar validación"
+
+#. module: sale_tier_validation_dismac
+#: model:ir.ui.view,arch_db:sale_tier_validation_dismac.sale_order_form_validation
+msgid "Reviews"
+msgstr "Revisiones"
+
+#. module: sale_tier_validation_dismac
+#: model:ir.ui.view,arch_db:sale_tier_validation_dismac.view_sale_order_filter_validation
+msgid "SOs validated and ready to be confirmed"
+msgstr "Pedidos validados y listos para ser confirmados"
+
+#. module: sale_tier_validation_dismac
+#: model:ir.ui.view,arch_db:sale_tier_validation_dismac.sale_order_form_validation
+msgid "Validate"
+msgstr "Validar"
+
+#. module: sale_tier_validation_dismac
+#: model:ir.ui.view,arch_db:sale_tier_validation_dismac.view_sale_order_filter_validation
+msgid "Validated"
+msgstr "Validado"
+
+#. module: sale_tier_validation_dismac
+#: model:mail.activity.type,name:sale_tier_validation_dismac.mail_activity_data_validation
+msgid "Validation"
+msgstr "Validación"
+
+#. module: sale_tier_validation_dismac
+#: model:ir.model,name:sale_tier_validation_dismac.model_tier_definition
+msgid "tier.definition"
+msgstr "tier.definition"
+
+#. module: sale_tier_validation_dismac
+#: model:ir.model,name:sale_tier_validation_dismac.model_tier_validation
+msgid "tier.validation"
+msgstr "tier.validation"
+

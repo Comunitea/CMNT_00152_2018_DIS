@@ -9,7 +9,7 @@ class SaleOrder(models.Model):
 
     _inherit = 'sale.order'
 
-    approval_conditions = fields.Boolean('Approval Conditions', default=False)
+    #approval_conditions = fields.Boolean('Approval Conditions', default=False)
     show_layout = fields.Boolean(related='type_id.show_layout', readonly=True)
     need_approval = fields.Boolean(related='type_id.need_approval',
                                    readonly=True)
@@ -24,10 +24,6 @@ class SaleOrder(models.Model):
                     and not order.client_order_ref:
                 msg = _('The customer for this order requires a customer \
                         reference number')
-                raise UserError(msg)
-            if order.need_approval \
-                    and not order.approval_conditions:
-                msg = _('This order requires an specific conditions approval')
                 raise UserError(msg)
         res = super().action_confirm()
         return res

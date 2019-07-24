@@ -5,7 +5,7 @@
     "summary": "Extends the functionality of SAle Orders to "
                "support a tier validation process.",
     "version": "11.0.1.0.0",
-    "category": "SAles",
+    "category": "Sales",
     "website": "https://github.com/OCA/purchase-workflow",
     "author": "Comunitea, Odoo Community Association (OCA)",
     "license": "AGPL-3",
@@ -14,8 +14,10 @@
     "depends": [
         "sale",
         "base_tier_validation",
+        "mail"
     ],
     "data": [
         "views/sale_order_view.xml",
+        "data/mail_activity_data.xml"
     ],
 }

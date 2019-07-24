@@ -2,3 +2,4 @@
 
 from . import sale_order
 from . import tier_definition
+from . import tier_validation
