@@ -10,6 +10,9 @@
                 <field name="need_approval" />
                 <field name="approval_conditions" groups="sales_team.group_sale_manager" attrs="{'invisible': [('need_approval', '=', False)]}"/>
             </field-->
+            <button name="print_quotation" position="after">
+                <button name="%(sale_custom_dismac.apply_global_discount_action)d" states="draft,sent" string="Apply discount to all lines" type="action" />
+            </button>
             <xpath expr="//field[@name='order_line']/tree//field[@name='analytic_tag_ids']" position="attributes">
                 <attribute name="attrs">{'column_invisible': True}</attribute>
             </xpath>
@@ -60,6 +63,9 @@
             </xpath>
             <xpath expr="//field[@name='order_line']/tree//button[@name='button_edit_agents']" position="attributes">
                     <attribute name="attrs">{'column_invisible': True}</attribute>
+            </xpath>
+             <xpath expr="//field[@name='commission_total']" position="attributes">
+                    <attribute name="attrs">{'invisible': True}</attribute>
             </xpath>
         </field>
     </record>

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-15 12:34+0000\n"
-"PO-Revision-Date: 2019-07-15 12:34+0000\n"
+"POT-Creation-Date: 2019-08-20 09:37+0000\n"
+"PO-Revision-Date: 2019-08-20 09:37+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,24 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: sale_custom_dismac
-#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_approval_conditions
-msgid "Approval Conditions"
-msgstr "Visto bueno condiciones"
+#: model:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
+msgid "Apply discount"
+msgstr "Aplicar descuento"
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,arch_db:sale_custom_dismac.sale_order_form_custom
+msgid "Apply discount to all lines"
+msgstr "Aplicar descuento global"
+
+#. module: sale_custom_dismac
+#: model:ir.actions.act_window,name:sale_custom_dismac.apply_global_discount_action
+msgid "Apply global discount"
+msgstr "Aplicar descuento global"
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
+msgid "Cancel"
+msgstr "Cancelar"
 
 #. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_res_partner
@@ -26,12 +41,14 @@ msgid "Contact"
 msgstr "Contacto"
 
 #. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount_create_uid
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route_create_uid
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone_create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount_create_date
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route_create_date
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone_create_date
 msgid "Created on"
@@ -44,30 +61,40 @@ msgid "Delivery Route"
 msgstr "Ruta de entrega"
 
 #. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount_discount
+msgid "Discount(%)"
+msgstr "Discount(%)"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount_display_name
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route_display_name
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone_display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount_id
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route_id
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone_id
 msgid "ID"
 msgstr "ID (identificación)"
 
 #. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount___last_update
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route___last_update
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone___last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
 
 #. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount_write_uid
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route_write_uid
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone_write_uid
 msgid "Last Updated by"
 msgstr "Última actualización de"
 
 #. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount_write_date
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route_write_date
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone_write_date
 msgid "Last Updated on"
@@ -90,11 +117,6 @@ msgstr "Necesita aprobación"
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users_no_valued_picking
 msgid "No valued picking"
 msgstr "Sin albarán valorado"
-
-#. module: sale_custom_dismac
-#: model:ir.ui.view,arch_db:sale_custom_dismac.view_sales_order_filter_approval
-msgid "Pending Approval"
-msgstr "Pending Approval"
 
 #. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_sale_order
@@ -126,12 +148,6 @@ msgid "The customer for this order requires a customer                         r
 msgstr "El cliente de este pedido obliga a que haya un número de referencia del cliente"
 
 #. module: sale_custom_dismac
-#: code:addons/sale_custom_dismac/models/sale_order.py:30
-#, python-format
-msgid "This order requires an specific conditions approval"
-msgstr "Este pedido require la aprobación de condiciones"
-
-#. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_sale_order_type
 msgid "Type of sale order"
 msgstr "Tipo de pedido de venta"
@@ -148,9 +164,19 @@ msgid "Zone"
 msgstr "Zona"
 
 #. module: sale_custom_dismac
+#: model:ir.model,name:sale_custom_dismac.model_apply_global_discount
+msgid "apply.global.discount"
+msgstr "apply.global.discount"
+
+#. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_delivery_route
 msgid "delivery.route"
 msgstr "delivery.route"
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
+msgid "or"
+msgstr "o"
 
 #. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_partner_zone
