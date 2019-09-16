@@ -26,6 +26,12 @@ class PurchaseOrder(models.Model):
     #needed_for_min_amount = fields.Float('Amount needed to achieve the min. delivery amount.', compute="_check_min_purchase_amount", store=True)
     needed_for_free_delivery = fields.Float('Amount needed to get free delivery amount.', compute="_check_min_delivery_amount", store=True)
 
+    @api.depends('picking_ids.state')
+    def _count_ship(self):
+        for po in self:
+            po.shipment_count_ = len([x.id for x in po.picking_ids
+                                      if x.state not in ['cancel']])
+
     @api.multi
     @api.depends('order_line.date_planned', 'date_order')
     def _compute_date_planned(self):
