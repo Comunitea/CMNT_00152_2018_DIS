@@ -7,6 +7,22 @@ from dateutil.relativedelta import relativedelta
 class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
 
+    @api.depends('picking_ids.state', 'picking_ids.supplier_ref')
+    def _get_supplier_pick_refs(self):
+        for purchase in self:
+            refs = []
+            for pick in purchase.picking_ids:
+                if pick.supplier_ref and pick.state == 'done' \
+                        and pick.supplier_ref not in refs:
+                    refs.append(pick.supplier_ref)
+            if refs:
+                purchase.supplier_picking_ref = " // ".join(refs)
+
+    shipment_count_ = fields.Integer('Incoming Shipments',
+                                     compute='_count_ship', store=True)
+    carrier = fields.Many2one('delivery.carrier', 'Carrier')
+    supplier_picking_ref = fields.Text("Supplier picking refs.", store=True,
+                                       compute="_get_supplier_pick_refs")
     #needed_for_min_amount = fields.Float('Amount needed to achieve the min. delivery amount.', compute="_check_min_purchase_amount", store=True)
     needed_for_free_delivery = fields.Float('Amount needed to get free delivery amount.', compute="_check_min_delivery_amount", store=True)
 
@@ -45,3 +61,14 @@ class PurchaseOrder(models.Model):
 #     def _update_quantity_left_to_recieve(self):
 #         for var in self:
 #             var.qty_to_receive = var.product_qty - var.qty_received
+
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        args = args or []
+        domain = []
+        if name:
+            domain = ['|', '|', ('name', operator, name),
+                      ('partner_ref', operator, name),
+                      ('supplier_picking_ref', operator, name)]
+        pos = self.search(domain + args, limit=limit)
+        return pos.name_get()

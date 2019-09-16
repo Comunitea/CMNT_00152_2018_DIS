@@ -64,6 +64,10 @@
                         <!--field name="needed_for_min_amount" string="Amount needed to serve" widget="monetary" attrs="{'invisible': [('needed_for_min_amount', '&lt;=', 0)]}"/-->
                         <field name="needed_for_free_delivery" string="Amount needed for free delivery" widget="monetary" attrs="{'invisible': [('needed_for_free_delivery', '&lt;=', 0)]}"/>
             </xpath>
+            <field name="picking_type_id" position="after">
+                    <field name="carrier"/>
+                <field name="supplier_picking_ref"/>
+            </field>
         </field>
     </record>
 
