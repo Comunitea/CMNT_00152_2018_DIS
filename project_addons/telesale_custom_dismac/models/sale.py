@@ -8,7 +8,6 @@ class SaleOrder(models.Model):
 
     @api.model
     def get_head_order_vals(self, order):
-        import ipdb; ipdb.set_trace()
         res = super().get_head_order_vals(order)
         st = self.env['sale.order.type'].\
             search([('telesale', '=', True)], limit=1)
