@@ -20,7 +20,7 @@
         'views/purchase_order_views.xml',
         'views/product_template_views.xml',
         'views/sale_order_views.xml',
-        'views/stock_view.xml'
+        'views/stock_view.xml',
         'security/ir.model.access.csv'
     ]
 }
