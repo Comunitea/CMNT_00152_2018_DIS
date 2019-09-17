@@ -14,7 +14,8 @@
         'sale',
         'sale_order_type',
         'sale_commission',
-        'sale_margin'
+        'sale_margin',
+        'sale_order_revision'
     ],
     'data': [
         'security/ir.model.access.csv',

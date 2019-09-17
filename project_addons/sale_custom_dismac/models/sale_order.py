@@ -28,6 +28,12 @@ class SaleOrder(models.Model):
         res = super().action_confirm()
         return res
 
+    @api.multi
+    def action_cancel(self):
+        self.write({'active': False,})
+        return super(SaleOrder, self).action_cancel()
+
+
     def set_user_id(self):
         if self.type_id.use_partner_agent:
             user = self.partner_id.user_id
