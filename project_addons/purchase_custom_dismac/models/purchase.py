@@ -3,6 +3,7 @@
 from odoo import fields, models, api
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from odoo.tools.misc import formatLang
 
 class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
@@ -25,6 +26,23 @@ class PurchaseOrder(models.Model):
                                        compute="_get_supplier_pick_refs")
     #needed_for_min_amount = fields.Float('Amount needed to achieve the min. delivery amount.', compute="_check_min_purchase_amount", store=True)
     needed_for_free_delivery = fields.Float('Amount needed to get free delivery amount.', compute="_check_min_delivery_amount", store=True)
+
+    @api.multi
+    @api.depends('name', 'partner_ref')
+    def name_get(self):
+        result = []
+        for po in self:
+            name = po.name
+            if po.partner_ref:
+                name += ' (' + po.partner_ref + ')'
+            if self.env.context.get('show_total_amount') and po.amount_total:
+                name += ': ' + formatLang(self.env, po.amount_total,
+                                          currency_obj=po.currency_id) + ": " \
+                            + po.supplier_picking_ref
+
+
+            result.append((po.id, name))
+        return result
 
     @api.depends('picking_ids.state')
     def _count_ship(self):
