@@ -18,7 +18,8 @@ class PurchaseOrder(models.Model):
                     refs.append(pick.supplier_ref)
             if refs:
                 purchase.supplier_picking_ref = " // ".join(refs)
-
+            else:
+                purchase.supplier_picking_ref = ""
     shipment_count_ = fields.Integer('Incoming Shipments',
                                      compute='_count_ship', store=True)
     carrier = fields.Many2one('delivery.carrier', 'Carrier')
