@@ -29,9 +29,9 @@ class SaleOrder(models.Model):
         return res
 
     @api.multi
-    def action_cancel(self):
+    def action_draft(self):
         self.write({'active': False,})
-        return super(SaleOrder, self).action_cancel()
+        return super(SaleOrder, self).action_draft()
 
 
     def set_user_id(self):
