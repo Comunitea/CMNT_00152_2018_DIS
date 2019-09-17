@@ -30,7 +30,7 @@ class SaleOrder(models.Model):
 
     @api.multi
     def action_draft(self):
-        self.write({'active': False,})
+        self.write({'active': True,})
         return super(SaleOrder, self).action_draft()
 
 
