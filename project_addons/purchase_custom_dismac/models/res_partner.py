@@ -9,6 +9,7 @@ class ResPartner(models.Model):
     #min_amount_to_serve = fields.Float('Minimum amount to serve the order',
     # store=True, default=0.0)
     min_amount_for_free_delivery = fields.Float('Minimum amount for free delivery', store=True, default=0.0)
+    customer_ref = fields.Char("Referencia cliente Dismac")
 
     def get_purchase_lines(self):
         model_data = self.env['ir.model.data']
