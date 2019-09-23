@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-15 12:57+0000\n"
-"PO-Revision-Date: 2019-03-15 12:57+0000\n"
+"POT-Creation-Date: 2019-09-23 16:17+0000\n"
+"PO-Revision-Date: 2019-09-23 16:17+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,19 +21,14 @@ msgid "Amount needed for free delivery"
 msgstr "Importe para entrega gratuita"
 
 #. module: purchase_custom_dismac
-#: model:ir.model.fields,field_description:purchase_custom_dismac.field_purchase_order_needed_for_min_amount
-msgid "Amount needed to achieve the min. delivery amount."
-msgstr "Importe mínimo para pedido"
-
-#. module: purchase_custom_dismac
 #: model:ir.model.fields,field_description:purchase_custom_dismac.field_purchase_order_needed_for_free_delivery
 msgid "Amount needed to get free delivery amount."
 msgstr "Importe para entrega gratuita"
 
 #. module: purchase_custom_dismac
-#: model:ir.ui.view,arch_db:purchase_custom_dismac.purchase_custom_order_form
-msgid "Amount needed to serve"
-msgstr "Importe mínimo para pedido"
+#: model:ir.model.fields,field_description:purchase_custom_dismac.field_purchase_order_carrier
+msgid "Carrier"
+msgstr "Forma de envío"
 
 #. module: purchase_custom_dismac
 #: model:ir.ui.view,arch_db:purchase_custom_dismac.purchase_custom_search
@@ -71,14 +66,14 @@ msgid "Group By"
 msgstr "Agrupar por"
 
 #. module: purchase_custom_dismac
-#: model:ir.ui.view,arch_db:purchase_custom_dismac.purchase_custom_res_partner_view_purchase_account_buttons
-msgid "Min. amount for free delivery"
-msgstr "Cantidad mínima para envío gratuito"
+#: model:ir.model.fields,field_description:purchase_custom_dismac.field_purchase_order_shipment_count_
+msgid "Incoming Shipments"
+msgstr "Envíos a recibir"
 
 #. module: purchase_custom_dismac
 #: model:ir.ui.view,arch_db:purchase_custom_dismac.purchase_custom_res_partner_view_purchase_account_buttons
-msgid "Min. amount to serve"
-msgstr "Cantidad mínima para pedido"
+msgid "Min. amount for free delivery"
+msgstr "Cantidad mínima para envío gratuito"
 
 #. module: purchase_custom_dismac
 #: model:ir.model.fields,field_description:purchase_custom_dismac.field_res_partner_min_amount_for_free_delivery
@@ -87,15 +82,14 @@ msgid "Minimum amount for free delivery"
 msgstr "Cantidad mínima para envío gratuito"
 
 #. module: purchase_custom_dismac
-#: model:ir.model.fields,field_description:purchase_custom_dismac.field_res_partner_min_amount_to_serve
-#: model:ir.model.fields,field_description:purchase_custom_dismac.field_res_users_min_amount_to_serve
-msgid "Minimum amount to serve the order"
-msgstr "Cantidad mínima para pedido"
-
-#. module: purchase_custom_dismac
 #: model:ir.ui.view,arch_db:purchase_custom_dismac.purchase_custom_search
 msgid "Pendientes"
 msgstr "Pendientes"
+
+#. module: purchase_custom_dismac
+#: model:ir.model,name:purchase_custom_dismac.model_product_product
+msgid "Product"
+msgstr "Producto"
 
 #. module: purchase_custom_dismac
 #: model:ir.model,name:purchase_custom_dismac.model_product_template
@@ -134,8 +128,8 @@ msgid "Purchase lines"
 msgstr "Líneas de compra"
 
 #. module: purchase_custom_dismac
-#: code:addons/purchase_custom_dismac/models/product.py:22
-#: code:addons/purchase_custom_dismac/models/res_partner.py:23
+#: code:addons/purchase_custom_dismac/models/product.py:21
+#: code:addons/purchase_custom_dismac/models/res_partner.py:25
 #: code:addons/purchase_custom_dismac/models/sale_order.py:21
 #, python-format
 msgid "Purchase order lines"
@@ -143,13 +137,14 @@ msgstr "Líneas de compra"
 
 #. module: purchase_custom_dismac
 #: model:ir.model.fields,field_description:purchase_custom_dismac.field_purchase_order_line_qty_to_receive
-msgid "Quantity left to recieve"
-msgstr "Cantidad por recibir"
+msgid "Qty to Receive"
+msgstr "Ctdad. a recibir"
 
 #. module: purchase_custom_dismac
-#: model:ir.model,name:purchase_custom_dismac.model_sale_order
-msgid "Quotation"
-msgstr "Presupuesto"
+#: model:ir.model.fields,field_description:purchase_custom_dismac.field_res_partner_customer_ref
+#: model:ir.model.fields,field_description:purchase_custom_dismac.field_res_users_customer_ref
+msgid "Referencia cliente Dismac"
+msgstr "Referencia cliente Dismac"
 
 #. module: purchase_custom_dismac
 #: model:ir.model,name:purchase_custom_dismac.model_sale_order_line
@@ -157,12 +152,22 @@ msgid "Sales Order Line"
 msgstr "Línea de pedido de ventas"
 
 #. module: purchase_custom_dismac
-#: model:ir.actions.act_window,help:purchase_custom_dismac.action_purchase_custom_all
-msgid "This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application."
-msgstr "Este informe realiza un análisis de sus presupuestos y pedidos de venta. El análisis verifica los ingresos de sus ventas y las ordena y agrupa por diferentes criterios (comercial, empresa, producto, etc.). Utilice este informe para analizar sus ventas aun no facturadas. Si desea analizar su facturación, debería utilizar el informe de análisis de facturas de la aplicación de Contabilidad."
+#: model:ir.model.fields,field_description:purchase_custom_dismac.field_purchase_order_supplier_picking_ref
+msgid "Supplier picking refs."
+msgstr "Refs albaranes proveedor"
 
 #. module: purchase_custom_dismac
-#: model:ir.ui.view,arch_db:purchase_custom_dismac.product_template_only_form_view
+#: model:ir.model.fields,field_description:purchase_custom_dismac.field_stock_picking_supplier_ref
+msgid "Supplier reference"
+msgstr "Referencia de proveedor"
+
+#. module: purchase_custom_dismac
+#: model:ir.model,name:purchase_custom_dismac.model_stock_picking
+msgid "Transfer"
+msgstr "Transferir"
+
+#. module: purchase_custom_dismac
+#: model:ir.ui.view,arch_db:purchase_custom_dismac.product_unreceived_items
 msgid "Unreceived Items"
 msgstr "Líneas de compra"
 
