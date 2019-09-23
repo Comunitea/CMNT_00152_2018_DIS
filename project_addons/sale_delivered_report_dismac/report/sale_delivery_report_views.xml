@@ -80,8 +80,7 @@
             <search string="Sales Delivery Status">
                 <filter name="not_delivered" string="Pendientes" domain="[('state', 'in', ('purchase', 'sale', 'done')), ('actual_status', 'in', ('in_progress', 'cancel'))]"/>
                 <filter name="delivered" string="Entregados" domain="[('state', 'in', ('sale', 'done')), ('qty_to_delivered','=', 0)]"/>
-                 <field name="product_id" widget="selection"
-                       context="{'product_id': self}" />
+                 <field name="product_id" widget="selection" />
                 <field name="partner_id" widget="selection" filter_domain = "[('partner_id', 'child_of', self)]"/>
                 <group expand="1" string="Group By">
                     <filter string="Producto" context="{'group_by':'product_id'}"/>
