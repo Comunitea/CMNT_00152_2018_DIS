@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <record id="sale_order_lock.group_lock_manager" model="res.groups">
-        <field name="name">Manage Locks in Sales Orders</field>
-        <field name="category_id" ref="base.module_category_hidden"/>
-    </record>
-</odoo>

@@ -12,8 +12,11 @@
     'depends': [
         'crm',
         'product',
+        'l10n_es_partner',
+        'sale_commission',
         'stock_account_custom',
         'product_catalogue_ref',
+        'account_payment_sale'
     ],
     'data': [
         'views/product.xml',

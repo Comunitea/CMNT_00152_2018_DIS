@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-        <record id="mail_activity_data_validation" model="mail.activity.type">
-            <field name="name">Validation</field>
-            <field name="icon">fa-tasks</field>
-            <field name="days">1</field>
-        </record>
-</odoo>

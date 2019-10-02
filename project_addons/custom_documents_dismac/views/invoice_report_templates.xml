@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <template id="report_invoice_layouted" inherit_id="sale.report_invoice_layouted">
-    </template>
-
-</odoo>

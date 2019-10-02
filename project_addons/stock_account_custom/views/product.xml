@@ -115,13 +115,13 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="stock_account.product_variant_easy_edit_view_inherit"/>
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='%(stock_account.action_view_change_standard_price)d'][1]" position="attributes">
+                <xpath expr="//div[@name='update_cost_price']/button" position="attributes">
                     <attribute name="groups">stock_account_custom.group_cost_manager</attribute>
                 </xpath>
 
-                <xpath expr="//button[@name='%(stock_account.action_view_change_standard_price)d'][2]" position="attributes">
+                <!--xpath expr="//button[@name='%(stock_account.action_view_change_standard_price)d'][2]" position="attributes">
                     <attribute name="groups">stock_account_custom.group_cost_manager</attribute>
-                </xpath>
+                </xpath-->
             </field>
      </record>
 
