@@ -39,5 +39,5 @@
     "data": [
         "views/sale_view.xml",
     ],
-    "installable": False,
+    "installable": True,
 }

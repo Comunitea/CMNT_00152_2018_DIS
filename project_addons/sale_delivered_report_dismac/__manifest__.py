@@ -9,7 +9,7 @@
     'author': 'Comunitea',
     'license': 'AGPL-3',
     'application': False,
-    'installable': False,
+    'installable': True,
     'depends': [
         'order_line_canceled_qty',
         'sale_order_type',

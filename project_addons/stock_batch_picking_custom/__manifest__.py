@@ -20,6 +20,6 @@
         #'wizard/batch_picking_wzd_done.xml',
         'security/ir.model.access.csv',
     ],
-    'installable': False,
+    'installable': True,
     'license': 'AGPL-3',
 }

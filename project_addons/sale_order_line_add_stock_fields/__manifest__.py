@@ -8,7 +8,7 @@
     'website': 'comunitea.com',
     'author': 'Comunitea',
     'license': 'AGPL-3',
-    'installable': False,
+    'installable': True,
     'depends': [
         'sale_order_dates'
     ],

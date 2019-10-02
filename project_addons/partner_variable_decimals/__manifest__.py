@@ -19,5 +19,5 @@
         'views/report_invoice.xml',
         'views/report_sale_order.xml',
     ],
-    'installable': False,
+    'installable': True,
 }

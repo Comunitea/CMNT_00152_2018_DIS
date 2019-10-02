@@ -34,5 +34,5 @@
         'views/invoice_report_templates.xml'
 
     ],
-    'installable': False,
+    'installable': True,
 }
