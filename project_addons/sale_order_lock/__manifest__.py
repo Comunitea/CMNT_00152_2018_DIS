@@ -8,7 +8,7 @@
     'website': 'comunitea.com',
     'author': 'Comunitea',
     'license': 'AGPL-3',
-    'installable': True,
+    'installable': False,
     'depends': [
         'sale',
         'partner_financial_risk',

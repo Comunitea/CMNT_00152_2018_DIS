@@ -17,5 +17,5 @@
         'views/product_template.xml',
         'security/ir.model.access.csv'
     ],
-    'installable': True,
+    'installable': False,
 }

@@ -19,5 +19,5 @@
         'wizard/product_pricelist_import_wzd_view.xml',
         'security/ir.model.access.csv'
     ],
-    'installable': True,
+    'installable': False,
 }

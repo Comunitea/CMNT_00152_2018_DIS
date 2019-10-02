@@ -26,5 +26,5 @@
         'wizard/wizard_settle_view.xml',
         'wizard/change_agent_wzd_view.xml',
     ],
-    'installable': True,
+    'installable': False,
 }

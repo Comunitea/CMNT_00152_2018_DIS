@@ -13,5 +13,5 @@
     'data': [
         'wizard/product_import_wzd_view.xml',
     ],
-    'installable': True,
+    'installable': False,
 }
