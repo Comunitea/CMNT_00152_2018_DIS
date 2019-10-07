@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- sale.order.line.history.add.to.order form view -->
+    <record id="sale_order_line_history_add_to_order_view_form" model="ir.ui.view">
+        <field name="name">sale.order.line.history.add.to.order.view.form</field>
+        <field name="model">sale.order.line.history.add.to.order</field>
+        <field name="arch" type="xml">
+            <form string="Add to order">
+                <group>
+                    <field name="qty"/>
+                </group>
+                <footer>
+                    <button name="add_to_order" string="Add to order" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window name="Add line history to order"
+        res_model="sale.order.line.history.add.to.order"
+        view_id="sale_order_line_history_add_to_order_view_form"
+        view_mode="form"
+        target="new"
+        id="sale_order_line_history_add_to_order_view_action"/>
+
+</odoo>
