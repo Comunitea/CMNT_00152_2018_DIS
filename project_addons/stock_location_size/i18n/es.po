@@ -1,0 +1,152 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* stock_location_size
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-10-07 12:08+0000\n"
+"PO-Revision-Date: 2019-10-07 12:08+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_location_size
+#: model:ir.model.fields,help:stock_location_size.field_stock_quant__volumen_percent
+msgid "% volume in location"
+msgstr "% volumen en ubicación"
+
+#. module: stock_location_size
+#: model_terms:ir.ui.view,arch_db:stock_location_size.view_location_form_size
+msgid "Categorización"
+msgstr "Categorización"
+
+#. module: stock_location_size
+#: model:ir.model.fields,field_description:stock_location_size.field_stock_location__height
+msgid "Height"
+msgstr "Altura"
+
+#. module: stock_location_size
+#: model:ir.model.fields,help:stock_location_size.field_stock_location__height
+msgid "Height (cm)"
+msgstr "Altura (cm)"
+
+#. module: stock_location_size
+#: model:ir.model,name:stock_location_size.model_stock_location
+msgid "Inventory Locations"
+msgstr "Ubicaciones de inventario"
+
+#. module: stock_location_size
+#: model:ir.model.fields,field_description:stock_location_size.field_stock_location__length
+msgid "Length"
+msgstr "Largo"
+
+#. module: stock_location_size
+#: model:ir.model.fields,help:stock_location_size.field_stock_location__length
+msgid "Length (cm)"
+msgstr "Largo (cm)"
+
+#. module: stock_location_size
+#: model_terms:ir.ui.view,arch_db:stock_location_size.view_location_form_size
+msgid "Loc size (l * w * h in cm)"
+msgstr "Tamaño ubicación (l * w * h in cm)"
+
+#. module: stock_location_size
+#: model:ir.model.fields,field_description:stock_location_size.field_stock_location__size
+msgid "Location size"
+msgstr "Tamaño ubicación"
+
+#. module: stock_location_size
+#: model:ir.actions.act_window,name:stock_location_size.action_show_view_location_tree_volumetry
+#: model:ir.ui.menu,name:stock_location_size.menu_action_location_tree_volumetry
+msgid "Locations volumetry"
+msgstr "Volumetría ubicaciones"
+
+#. module: stock_location_size
+#: model:ir.model,name:stock_location_size.model_product_product
+msgid "Product"
+msgstr "Producto"
+
+#. module: stock_location_size
+#: model:ir.model,name:stock_location_size.model_product_template
+msgid "Product Template"
+msgstr "Plantilla de producto"
+
+#. module: stock_location_size
+#: model:ir.model.fields,help:stock_location_size.field_stock_quant__volume
+msgid "Quant volumen in l."
+msgstr "Quant volumen en l."
+
+#. module: stock_location_size
+#: model:ir.model,name:stock_location_size.model_stock_quant
+msgid "Quants"
+msgstr "Quants"
+
+#. module: stock_location_size
+#: model_terms:ir.ui.view,arch_db:stock_location_size.view_location_tree_volumetry
+msgid "Stock Location"
+msgstr "Ubicación de existencias"
+
+#. module: stock_location_size
+#: model:ir.model.fields,help:stock_location_size.field_product_product__volume
+msgid "The volume in m3."
+msgstr "El volumen en m3."
+
+#. module: stock_location_size
+#: model:ir.model.fields,field_description:stock_location_size.field_product_product__volume
+#: model:ir.model.fields,help:stock_location_size.field_stock_location__volume
+#: model:ir.model.fields,help:stock_location_size.field_stock_location__volume_free
+msgid "Volume"
+msgstr "Volumen"
+
+#. module: stock_location_size
+#: model:ir.model.fields,field_description:stock_location_size.field_stock_quant__volume
+#: model:ir.model.fields,field_description:stock_location_size.field_stock_quant__volumen_percent
+msgid "Volume in l."
+msgstr "Volumen en Litros."
+
+#. module: stock_location_size
+#: model:ir.model.fields,field_description:stock_location_size.field_stock_location__volume_unit
+msgid "Volume unit"
+msgstr "Unidad de volumne"
+
+#. module: stock_location_size
+#: model:ir.model.fields,field_description:stock_location_size.field_stock_location__volume
+#: model:ir.model.fields,field_description:stock_location_size.field_stock_location__volume_str
+msgid "Volumen"
+msgstr "Volumen"
+
+#. module: stock_location_size
+#: model:ir.model.fields,field_description:stock_location_size.field_stock_location__volume_free
+msgid "Volumen free"
+msgstr "Volumen libre"
+
+#. module: stock_location_size
+#: model:ir.model.fields,field_description:stock_location_size.field_stock_location__width
+msgid "Width"
+msgstr "Ancho"
+
+#. module: stock_location_size
+#: model:ir.model.fields,help:stock_location_size.field_stock_location__width
+msgid "Width (cm)"
+msgstr "Ancho (cm)"
+
+#. module: stock_location_size
+#: model_terms:ir.ui.view,arch_db:stock_location_size.view_location_form_size
+msgid "cm"
+msgstr "cm"
+
+#. module: stock_location_size
+#: model_terms:ir.ui.view,arch_db:stock_location_size.view_location_form_size
+msgid "cm,"
+msgstr "cm,"
+
+#. module: stock_location_size
+#: model:ir.model.fields,help:stock_location_size.field_stock_location__size
+msgid "if check, this locatin has size limit\n"
+"Length x Width x Height in cm"
+msgstr "Si se marca, esta ubicación tiene un límite de tamaño"
