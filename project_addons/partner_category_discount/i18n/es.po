@@ -16,8 +16,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: partner_category_discount
-#: model:ir.model.fields,field_description:partner_category_discount.field_category_discount_category_id
-#: model:ir.ui.view,arch_db:partner_category_discount.view_category_discount_filter
+#: model:ir.model.fields,field_description:partner_category_discount.field_category_discount__category_id
+#: model_terms:ir.ui.view,arch_db:partner_category_discount.view_category_discount_filter
 msgid "Category"
 msgstr "Categoría"
 
@@ -38,7 +38,7 @@ msgid "Category Discounts"
 msgstr "Descuentos en categoría"
 
 #. module: partner_category_discount
-#: model:ir.actions.act_window,help:partner_category_discount.action_category_discount
+#: model_terms:ir.actions.act_window,help:partner_category_discount.action_category_discount
 msgid "Click to add a new customer category discount."
 msgstr "Haga clik para añadir un nuevo descuento en categoría."
 
@@ -63,13 +63,13 @@ msgid "Created on"
 msgstr "Creado en"
 
 #. module: partner_category_discount
-#: model:ir.model.fields,field_description:partner_category_discount.field_category_discount_partner_id
-#: model:ir.ui.view,arch_db:partner_category_discount.view_category_discount_filter
+#: model:ir.model.fields,field_description:partner_category_discount.field_category_discount__partner_id
+#: model_terms:ir.ui.view,arch_db:partner_category_discount.view_category_discount_filter
 msgid "Customer"
 msgstr "Cliente"
 
 #. module: partner_category_discount
-#: model:ir.model.fields,field_description:partner_category_discount.field_category_discount_discount
+#: model:ir.model.fields,field_description:partner_category_discount.field_category_discount__discount
 msgid "Discount (%)"
 msgstr "Descuento (%)"
 
@@ -104,7 +104,7 @@ msgid "Last Updated on"
 msgstr "Última actualización en"
 
 #. module: partner_category_discount
-#: model:ir.actions.act_window,help:partner_category_discount.action_category_discount
+#: model_terms:ir.actions.act_window,help:partner_category_discount.action_category_discount
 msgid "You can define a specific discount by customer and cateegory."
 msgstr "Puede definir un descuento específico por cliente y categoría."
 
