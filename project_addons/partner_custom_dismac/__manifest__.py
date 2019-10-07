@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
     'name': 'Partner custom Dismac',
-    'version': '12.0.0.0.1',
+    'version': '12.0.1.0.0',
     'summary': 'Allows users to claim ownership over partners after a customizable time.',
     'category': 'Custom',
     'author': 'comunitea',
