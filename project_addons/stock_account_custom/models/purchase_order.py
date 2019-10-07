@@ -8,7 +8,9 @@ class PurchaseOrder(models.Model):
 
     _inherit = 'purchase.order'
 
-    exclude_compute_cost = fields.Boolean('Exclude from compute cost', default=False, help="If true, this purchase is no include in cost computes")
+    exclude_compute_cost = fields.Boolean(
+        'Exclude from compute cost', default=False,
+        help="If true, this purchase is no include in cost computes")
 
 
 class PurchaseOrderLine(models.Model):

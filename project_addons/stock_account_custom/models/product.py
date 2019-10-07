@@ -9,42 +9,45 @@ from dateutil.relativedelta import relativedelta
 
 class ProductPriceRatio(models.Model):
 
-    _name ="product.price.ratio"
+    _name = "product.price.ratio"
 
     name = fields.Char('Name')
-    purchase_ratio = fields.Float('Purchase ratio',
-                    help="Ratio to get reference cost from pricelist_cost",
-                    digits=(16,4))
+    purchase_ratio = fields.Float(
+        'Purchase ratio',
+        help="Ratio to get reference cost from pricelist_cost",
+        digits=(16, 4))
 
 
 class ProductProduct(models.Model):
 
     _inherit = 'product.product'
 
-
     real_stock_cost = fields.Float('Real stock cost',
                                    compute="_get_compute_custom_costs",
                                    digits=dp.get_precision('Product Price'),
                                    groups="stock_account_custom.group_cost_manager",
                                    help="Stock value / Qty")
-    real_stock_cost_fixed = fields.Float('Fixed real stock cost',
-                                   compute="_get_compute_custom_costs",
-                                   digits=dp.get_precision('Product Price'),
-                                   groups="stock_account_custom.group_cost_manager",
-                                   help="Stock value / Qty (without special purchases)")
-    pricelist_cost = fields.Float('Price list cost',
-                                   digits=dp.get_precision('Product Price'),
-                                   groups="stock_account_custom.group_cost_manager",
-                                   help="Cost price used in pricelist (Last "
-                                        "purchase cost manually frozen")
-    reference_cost = fields.Float('Reference cost',
-                                  compute="_get_compute_custom_costs",
-                                   digits=dp.get_precision('Product Price'),
-                                   help="Cost price (reference)")
+    real_stock_cost_fixed = fields.Float(
+        'Fixed real stock cost',
+        compute="_get_compute_custom_costs",
+        digits=dp.get_precision('Product Price'),
+        groups="stock_account_custom.group_cost_manager",
+        help="Stock value / Qty (without special purchases)")
+    pricelist_cost = fields.Float(
+        'Price list cost',
+        digits=dp.get_precision('Product Price'),
+        groups="stock_account_custom.group_cost_manager",
+        help="Cost price used in pricelist (Last purchase cost manually "
+        "frozen")
+    reference_cost = fields.Float(
+        'Reference cost',
+        compute="_get_compute_custom_costs",
+        digits=dp.get_precision('Product Price'),
+        help="Cost price (reference)")
     last_purchase_price_fixed = fields.Float(
-                                    string='Last Purchase Price Fixed',
-                                    compute='_compute_last_purchase_fixed',
-                                    digits=dp.get_precision('Product Price'))
+        string='Last Purchase Price Fixed',
+        compute='_compute_last_purchase_fixed',
+        digits=dp.get_precision('Product Price'))
     force_purchase_price_fixed = fields.Boolean(
         'Force Last Purchase Price Fixed',
         default=False)
@@ -59,8 +62,7 @@ class ProductProduct(models.Model):
                 product.pricelist_cost = product.last_purchase_price_fixed
             if product.cost_method_calc == 'formula':
                 product.pricelist_cost = product.cost_method_product_id. \
-                                             last_purchase_price_fixed * \
-                                         product.cost_method_ratio
+                    last_purchase_price_fixed * product.cost_method_ratio
             if product.cost_method_calc == 'max':
                 product.pricelist_cost = product.get_max_in_period()
 
@@ -79,9 +81,8 @@ class ProductProduct(models.Model):
         pur_prices = lines.mapped('price_unit')
         inv_prices = inv_lines.mapped(
             'price_unit')
-        product_price = max(pur_prices +  inv_prices)
+        product_price = max(pur_prices + inv_prices)
         return product_price
-
 
     def _get_compute_custom_costs_with_context(self, ctx):
         qty_at_date = self.qty_at_date
@@ -97,11 +98,11 @@ class ProductProduct(models.Model):
 
     @api.multi
     def _get_compute_custom_costs(self):
-        ## Real stock_cost: Todos los movimientos
+        # Real stock_cost: Todos los movimientos
         for product in self:
             if product.qty_at_date:
                 product.real_stock_cost = product.stock_value / product.qty_at_date
-        ## Fixed real stock_cost: Solo los movimientos con exclude_compute_cost = False
+        # Fixed real stock_cost: Solo los movimientos con exclude_compute_cost = False
         ctx = self._context.copy()
         ctx.update(exclude_compute_cost=True)
         for product in self:
@@ -116,7 +117,9 @@ class ProductProduct(models.Model):
     def price_compute(self, price_type, uom=False, currency=False, company=False):
 
         if price_type != 'pricelist_cost':
-            return super().price_compute(price_type=price_type, uom=uom, currency=currency, company=company)
+            return super().price_compute(
+                price_type=price_type, uom=uom,
+                currency=currency, company=company)
 
         ##COPIA DE price_compute PERO DOY POR HECHO QUE ES PARA reference_cost
         if not uom and self._context.get('uom'):
@@ -171,24 +174,32 @@ class ProductTemplate(models.Model):
 
     _inherit = 'product.template'
 
-    cost_ratio_id = fields.Many2one('product.price.ratio', 'Price ratio', company_dependent=True, help="Product ranking to get reference cost and product price")
+    cost_ratio_id = fields.Many2one(
+        'product.price.ratio', 'Price ratio',
+        company_dependent=True, help="Product ranking to get reference cost and product price")
     stock_value = fields.Float(
         'Value', compute='_compute_reference_cost')
     qty_at_date = fields.Float(
         'Quantity', compute='_compute_reference_cost')
     reference_cost = fields.Float(
         'Reference cost', compute='_compute_reference_cost',
-        digits=dp.get_precision('Product Price'), groups="stock_account_custom.group_cost_manager", help="Cost price for salesman users (Fixed real stock cost fixed by ratio)")
+        digits=dp.get_precision('Product Price'),
+        groups="stock_account_custom.group_cost_manager",
+        help="Cost price for salesman users (Fixed real stock cost fixed by ratio)")
     pricelist_cost = fields.Float(
         'Pricelist cost',
-        digits=dp.get_precision('Product Price'), groups="stock_account_custom.group_cost_manager", help="Cost price used in pricelist (Fixed real stock cost manually frozen")
+        digits=dp.get_precision('Product Price'),
+        groups="stock_account_custom.group_cost_manager",
+        help="Cost price used in pricelist (Fixed real stock cost manually frozen")
     real_stock_cost = fields.Float(
         'Real stock cost', compute='_compute_reference_cost',
-        digits=dp.get_precision('Product Price'), groups="stock_account_custom.group_cost_manager",
+        digits=dp.get_precision('Product Price'),
+        groups="stock_account_custom.group_cost_manager",
         help="Stock value / Qty")
     real_stock_cost_fixed = fields.Float(
         'Fixed real stock cost', compute='_compute_reference_cost',
-        digits=dp.get_precision('Product Price'), groups="stock_account_custom.group_cost_manager",
+        digits=dp.get_precision('Product Price'),
+        groups="stock_account_custom.group_cost_manager",
         help="Stock value / Qty (without special purchases)")
     cost_method_calc = fields.Selection([
         ('last_cost', 'Last Cost'),
@@ -200,7 +211,7 @@ class ProductTemplate(models.Model):
         help='Calculation method for Pricelist Cost')
     period_max_cost = fields.Integer('Period (Months)')
     cost_method_product_id = fields.Many2one('product.product', 'Cost Product')
-    cost_method_ratio = fields.Float('Ratio', digits=(16,4),default='1')
+    cost_method_ratio = fields.Float('Ratio', digits=(16, 4), default='1')
 
     @api.depends('product_variant_ids', 'product_variant_ids.reference_cost')
     def _compute_reference_cost(self):
@@ -246,8 +257,8 @@ class ProductTemplate(models.Model):
             currency = self.env['res.currency'].\
                 browse(self._context['currency'])
 
-        templates = self.with_context(force_company=company and company.id or self._context.get('force_company',
-                                                                                                    self.env.user.company_id.id)).sudo()
+        templates = self.with_context(
+            force_company=company and company.id or self._context.get('force_company', self.env.user.company_id.id)).sudo()
         prices = dict.fromkeys(self.ids, 0.0)
         for template in templates:
             prices[template.id] = template[price_type] or 0.0
