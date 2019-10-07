@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_agent" model="ir.ui.view">
+        <field name="name">res.partner.form.agent</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="priority" eval="18"/>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales_purchases']//field[@name='user_id']" position="after">
+                <field name="claimable_on"  widget="date" string="Partner release date" groups="sales_team.group_sale_manager" attrs="{'invisible': ['|',('customer', '=', False), ('parent_id', '!=', False)]}"/>
+                <field name="is_claimable" invisible="1"/>
+                <field name="claimed_on" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
