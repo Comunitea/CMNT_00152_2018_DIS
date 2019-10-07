@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="agent_month_goal_tree_view" model="ir.ui.view" >
+        <field name="name">agent_month_goal_tree_view</field>
+        <field name="model">agent.month.goal</field>
+        <field name="arch" type="xml">
+            <tree string="Goals by Month" editable="bottom">
+                <field name="agent_id"/>
+                <field name="month"/>
+                <field name="unit_id"/>
+                <field name="goal_type_id"/>
+                <field name="amount_goal"/>
+                <field name="min_customers"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="agent_month_goal_search_view" model="ir.ui.view">
+        <field name="name">agent_month_goal_search_view</field>
+        <field name="model">agent.month.goal</field>
+        <field name="arch" type="xml">
+            <search string="Goals by Month">
+                <field name="agent_id"/>
+                <field name="month"/>
+                <field name="unit_id"/>
+                <field name="goal_type_id"/>
+                <group expand="1" string="Group By">
+                    <filter string="Agent" name="group_agent" context="{'group_by': 'agent_id'}"/>
+                    <filter string="Month" name="group_month" context="{'group_by': 'month'}"/>
+                    <filter string="Operating Unit" name="group_unit" context="{'group_by': 'unit_id'}"/>
+                    <filter string="Goal Type" name="group_goal" context="{'group_by': 'goal_type_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="goals_by_month" model="ir.actions.act_window" >
+        <field name="name">Goals by month</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">agent.month.goal</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <!-- MENU COMMISSION COMPUTE CUSTOM ROOT -->
+    <menuitem id="menu_commission_compute"
+              name="Commission Compute"
+              parent="sale_commission.menu_sale_commissions_management"
+              sequence="40"/>
+
+    <menuitem id="menu_goals_by_month"
+              name="Goals by Month"
+              parent="menu_commission_compute"
+              groups="sales_team.group_sale_manager"
+              action="goals_by_month"
+              sequence="1"
+    />
+</odoo>

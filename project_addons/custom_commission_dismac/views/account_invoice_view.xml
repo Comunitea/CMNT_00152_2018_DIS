@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="invoice_form_add_sale_purchase_price" model="ir.ui.view">
+        <field name="name">invoice_form_add_sale_purchase_price</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='invoice_line_tax_ids']" position="after">
+                <field name="sale_purchase_price"/>
+            </xpath>
+
+            <field name="amount_untaxed" position="before">
+                <field name="coef" class="oe_subtotal_footer_separator"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- This view is needed for proper visualization of the popup / embedded one2many -->
+    <record id="invoice_line_agent_tree_reduction_per" model="ir.ui.view">
+        <field name="name">account.invoice.line.agent.tree_reduction_per</field>
+        <field name="model">account.invoice.line.agent</field>
+        <field name="inherit_id" ref="sale_commission.invoice_line_agent_tree" />
+        <field name="arch" type="xml">
+            <field name="commission" position="after">
+               <field name="reduction_per"/>
+            </field>
+        </field>
+    </record>
+</odoo>

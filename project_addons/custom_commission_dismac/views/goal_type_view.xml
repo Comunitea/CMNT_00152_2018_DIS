@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- GOAL TYPE -->
+    <record id="goal_type_tree_view" model="ir.ui.view" >
+        <field name="name">goal_type_tree_view</field>
+        <field name="model">goal.type</field>
+        <field name="arch" type="xml">
+            <tree string="Goal Types">
+                <field name="name"/>
+                <field name="type"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="goal_type_form_view" model="ir.ui.view" >
+        <field name="name">goal_type_form_view</field>
+        <field name="model">goal.type</field>
+        <field name="arch" type="xml">
+            <form string="Goal Types">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="type"/>
+                    </group>
+                    <group  attrs="{'invisible': [('type', '!=', 'sale_goal')]}">
+                        <field name="global_units"/>
+                    </group>
+                    <notebook>
+                        <page string="Sale Goal Rules" attrs="{'invisible': [('type', '!=', 'sale_goal')]}">
+                            <group string="Sale Goal Rules">
+                                <field name="by_sale_ids" nolabel="1">
+                                    <tree>
+                                        <field name="goal_per"/>
+                                        <field name="commission"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Coeficient Margin Rules" attrs="{'invisible': [('type', '!=', 'margin_goal')]}">
+                            <group string="Coeficient Margin Rules">
+                                <field name="by_margin_ids" nolabel="1">
+                                    <tree>
+                                        <field name="coef"/>
+                                        <field name="commission"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Min Customers" attrs="{'invisible': [('type', '!=', 'min_customers')]}">
+                            <group>
+                                <group string="Conditions">
+                                    <field name="web_customers"/>
+                                    <field name="mob_unit_id"/>
+                                    <field name="info_unit_id" />
+                                    <field name="num_customers"/>
+                                    <field name="new_customers"/>
+                                </group>
+                                <group string="Commissions (%)">
+                                    <field name="web_com"/>
+                                    <field name="mob_com" />
+                                    <field name="info_com"/>
+                                    <field name="num_customers_com"/>
+                                    <field name="new_customers_com"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="goal_type_search_view" model="ir.ui.view">
+        <field name="name">goal_type_search_view</field>
+        <field name="model">goal.type</field>
+        <field name="arch" type="xml">
+            <search string="Goal Types">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_goal_type" model="ir.actions.act_window" >
+        <field name="name">Goal Types</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">goal.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_goal_type"
+              name="Goal Types"
+              parent="menu_commission_compute"
+              groups="sales_team.group_sale_manager"
+              action="action_goal_type"
+              sequence="2"/>
+
+    <!-- COMISSION BY SALES -->
+
+    <record id="commission_by_sales_tree_view" model="ir.ui.view" >
+        <field name="name">commission_by_sales_tree_view</field>
+        <field name="model">commission.by.sales</field>
+        <field name="arch" type="xml">
+            <tree string="Sale Goal Rules" editable="bottom">
+                <field name="goal_type_id"/>
+                <field name="goal_per"/>
+                <field name="commission"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="commission_by_sales_search_view" model="ir.ui.view">
+        <field name="name">commission_by_sales_search_view</field>
+        <field name="model">commission.by.sales</field>
+        <field name="arch" type="xml">
+            <search string="Sale Goal Rules">
+                <field name="goal_type_id"/>
+                <group expand="1" string="Group By">
+                    <filter string="Goal Type" name="group_goal_type" context="{'group_by': 'goal_type_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_commission_by_sales" model="ir.actions.act_window" >
+        <field name="name">Sale Goal Rules</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">commission.by.sales</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="menu_commission_by_sales"
+              name="Sale Goal Rules"
+              parent="menu_commission_compute"
+              groups="sales_team.group_sale_manager"
+              action="action_commission_by_sales"
+              sequence="3"/>
+
+
+    <!-- COMISSION BY MARGIN -->
+
+    <record id="commission_by_margin_tree_view" model="ir.ui.view" >
+        <field name="name">commission_by_margin_tree_view</field>
+        <field name="model">commission.by.margin</field>
+        <field name="arch" type="xml">
+            <tree string="Coeficient Margin Rules" editable="bottom">
+                <field name="goal_type_id"/>
+                <field name="coef"/>
+                <field name="commission"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="commission_by_margin_search_view" model="ir.ui.view">
+        <field name="name">commission_by_margin_search_view</field>
+        <field name="model">commission.by.margin</field>
+        <field name="arch" type="xml">
+            <search string="Coeficient Margin Rules">
+                <field name="goal_type_id"/>
+                <group expand="1" string="Group By">
+                    <filter string="Goal Type" name="group_goal_type" context="{'group_by': 'goal_type_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_commission_by_margin" model="ir.actions.act_window" >
+        <field name="name">Coeficient Margin Rules</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">commission.by.margin</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="menu_commission_by_margin"
+              name="Coeficient Margin Rules"
+              parent="menu_commission_compute"
+              groups="sales_team.group_sale_manager"
+              action="action_commission_by_margin"
+              sequence="4"/>
+</odoo>
