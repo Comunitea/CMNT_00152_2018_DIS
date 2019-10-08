@@ -123,7 +123,7 @@ class ProductProduct(models.Model):
 
         ##COPIA DE price_compute PERO DOY POR HECHO QUE ES PARA reference_cost
         if not uom and self._context.get('uom'):
-            uom = self.env['product.uom'].browse(self._context['uom'])
+            uom = self.env['uom.uom'].browse(self._context['uom'])
         if not currency and self._context.get('currency'):
             currency = self.env['res.currency'].browse(self._context['currency'])
         products = self.with_context(force_company=company and company.id or self._context.get('force_company',
@@ -252,7 +252,7 @@ class ProductTemplate(models.Model):
                                          currency=currency, company=company)
 
         if not uom and self._context.get('uom'):
-            uom = self.env['product.uom'].browse(self._context['uom'])
+            uom = self.env['uom.uom'].browse(self._context['uom'])
         if not currency and self._context.get('currency'):
             currency = self.env['res.currency'].\
                 browse(self._context['currency'])
