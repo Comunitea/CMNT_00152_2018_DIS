@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_custom_res_partner_view_purchase_account_buttons" model="ir.ui.view">
+        <field name="name">res.partner.view.purchase.account.buttons</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="priority" eval="20"/>
+        <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
+        <field name="arch" type="xml">
+            <button name="toggle_active" position="before">
+                <button string="Purchase lines" icon="fa-sign-in" attrs="{'invisible': [('supplier', '=', False)]}" class="oe_stat_button" name="get_purchase_lines" type="object"></button>
+            </button>
+            <xpath expr="//page[@name='sales_purchases']//field[@name='supplier']" position="after">
+                <!--field name="min_amount_to_serve" string="Min. amount to serve" attrs="{'invisible': [('supplier', '=', False)]}"/-->
+                <field name="customer_ref"  attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="min_amount_for_free_delivery" string="Min. amount for free delivery" attrs="{'invisible': [('supplier', '=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

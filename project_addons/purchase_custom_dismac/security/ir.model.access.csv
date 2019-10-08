@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_custom,purchase_custom,purchase.model_purchase_order,base.group_user,1,0,0,0
+access_purchase_custom_manager,purchase_custom_manager,purchase.model_purchase_order,purchase.group_purchase_manager,1,1,1,1
+access_purchase_custom_product,purchase_custom_product,product.model_product_template,base.group_user,1,0,0,0
+access_purchase_custom_product_manager,purchase_custom_product_manager,product.model_product_template,purchase.group_purchase_manager,1,1,1,1
+access_purchase_custom_res_partner,purchase_custom_res_partner,base.model_res_partner,base.group_user,1,0,0,0
+access_purchase_custom_res_partner_manager,purchase_custom_res_partner_manager,base.model_res_partner,purchase.group_purchase_manager,1,1,1,1
+access_purchase_custom_sale_order,purchase_custom_sale_order,sale.model_sale_order_line,base.group_user,1,0,0,0
+access_purchase_custom_res_sale_order_manager,purchase_custom_sale_order_manager,sale.model_sale_order_line,purchase.group_purchase_manager,1,1,1,1
