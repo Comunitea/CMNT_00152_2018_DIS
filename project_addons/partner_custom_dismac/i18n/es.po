@@ -16,40 +16,40 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: partner_custom_dismac
-#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__claimed_on
-#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_users__claimed_on
+#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__claimed_on
+#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_users__claimed_on
 msgid "Claimed on"
 msgstr "Reclamado el"
 
 #. module: partner_custom_dismac
-#: model:ir.model,name:partner_custom_dismac.model_res_partner
+#: model_terms:ir.model,name:partner_custom_dismac.model_res_partner
 msgid "Contact"
 msgstr "Contacto"
 
 #. module: partner_custom_dismac
-#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__unclaimable_for
-#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_users__unclaimable_for
-#: model:ir.model.fields,field_description:partner_custom_dismac.field_sale_order_type__unclaimable_for
+#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__unclaimable_for
+#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_users__unclaimable_for
+#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_sale_order_type__unclaimable_for
 msgid "Days to claim"
 msgstr "Días para reclamar"
 
 #. module: partner_custom_dismac
-#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__days_without_order_or_quotation
-#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_users__days_without_order_or_quotation
-#: model:ir.model.fields,field_description:partner_custom_dismac.field_sale_order_type__days_without_order_or_quotation
+#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__days_without_order_or_quotation
+#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_users__days_without_order_or_quotation
+#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_sale_order_type__days_without_order_or_quotation
 msgid "Days without order"
 msgstr "Días sin pedidos"
 
 #. module: partner_custom_dismac
-#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__is_claimable
-#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_users__is_claimable
+#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__is_claimable
+#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_users__is_claimable
 msgid "Is the partner claimable?"
 msgstr "¿Es reclamable?"
 
 #. module: partner_custom_dismac
-#: model:ir.model.fields,help:partner_custom_dismac.field_res_partner__days_without_order_or_quotation
-#: model:ir.model.fields,help:partner_custom_dismac.field_res_users__days_without_order_or_quotation
-#: model:ir.model.fields,help:partner_custom_dismac.field_sale_order_type__days_without_order_or_quotation
+#: model_terms:ir.model.fields,help:partner_custom_dismac.field_res_partner__days_without_order_or_quotation
+#: model_terms:ir.model.fields,help:partner_custom_dismac.field_res_users__days_without_order_or_quotation
+#: model_terms:ir.model.fields,help:partner_custom_dismac.field_sale_order_type__days_without_order_or_quotation
 msgid "Number of days with no order or quotation before the partner becomes claimable"
 msgstr "Número de días sin pedidos ni presupuestos antes de que el cliente pueda ser reclamado"
 
@@ -59,20 +59,20 @@ msgid "Partner release date"
 msgstr "Fecha de liberación"
 
 #. module: partner_custom_dismac
-#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__claimable_on
-#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_users__claimable_on
+#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__claimable_on
+#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_users__claimable_on
 msgid "Partner will be claimable on this date"
 msgstr "El cliente podrá ser reclamado en esta fecha"
 
 #. module: partner_custom_dismac
-#: model:ir.model.fields,help:partner_custom_dismac.field_res_partner__unclaimable_for
-#: model:ir.model.fields,help:partner_custom_dismac.field_res_users__unclaimable_for
-#: model:ir.model.fields,help:partner_custom_dismac.field_sale_order_type__unclaimable_for
+#: model_terms:ir.model.fields,help:partner_custom_dismac.field_res_partner__unclaimable_for
+#: model_terms:ir.model.fields,help:partner_custom_dismac.field_res_users__unclaimable_for
+#: model_terms:ir.model.fields,help:partner_custom_dismac.field_sale_order_type__unclaimable_for
 msgid "Partner won't be claimable for this days after being claimed by another user"
 msgstr "El cliente no será reclamable durante estos días tras ser reclamado por otro comercial"
 
 #. module: partner_custom_dismac
-#: model:ir.model,name:partner_custom_dismac.model_sale_order_type
+#: model_terms:ir.model,name:partner_custom_dismac.model_sale_order_type
 msgid "Type of sale order"
 msgstr "Tipo de pedido de venta"
 

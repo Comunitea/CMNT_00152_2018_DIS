@@ -16,29 +16,29 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: product_catalogue_ref
-#: model:ir.ui.view,arch_db:product_catalogue_ref.product_template_search_view_catalogue_code
+#: model_terms:ir.ui.view,arch_db:product_catalogue_ref.product_template_search_view_catalogue_code
 msgid "Cadena Ean13"
 msgstr "Cadena Ean13"
 
 #. module: product_catalogue_ref
-#: model:ir.model.fields,field_description:product_catalogue_ref.field_product_product_catalogue_code
-#: model:ir.model.fields,field_description:product_catalogue_ref.field_product_template_catalogue_code
+#: model_terms:ir.model.fields,field_description:product_catalogue_ref.field_product_product_catalogue_code
+#: model_terms:ir.model.fields,field_description:product_catalogue_ref.field_product_template_catalogue_code
 msgid "Catalogue Reference"
 msgstr "Ref. Serviempresa"
 
 #. module: product_catalogue_ref
-#: model:ir.model.fields,field_description:product_catalogue_ref.field_product_product_ean13_str
-#: model:ir.model.fields,field_description:product_catalogue_ref.field_product_template_ean13_str
+#: model_terms:ir.model.fields,field_description:product_catalogue_ref.field_product_product_ean13_str
+#: model_terms:ir.model.fields,field_description:product_catalogue_ref.field_product_template_ean13_str
 msgid "Ean13 char"
 msgstr "Ean13"
 
 #. module: product_catalogue_ref
-#: model:ir.model,name:product_catalogue_ref.model_product_product
+#: model_terms:ir.model,name:product_catalogue_ref.model_product_product
 msgid "Product"
 msgstr "Producto"
 
 #. module: product_catalogue_ref
-#: model:ir.model,name:product_catalogue_ref.model_product_template
+#: model_terms:ir.model,name:product_catalogue_ref.model_product_template
 msgid "Product Template"
 msgstr "Plantilla de producto"
 

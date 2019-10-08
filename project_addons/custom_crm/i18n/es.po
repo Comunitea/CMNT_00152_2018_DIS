@@ -16,42 +16,42 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: custom_crm
-#: model:ir.actions.act_window,help:custom_crm.action_partner_form
+#: model_terms:ir.actions.act_window,help:custom_crm.action_partner_form
 msgid "Click to add a contact in your address book."
 msgstr "Pulse aquí para agregar un contacto en su directorio."
 
 #. module: custom_crm
-#: model:ir.actions.act_window,help:custom_crm.product_action_crm
+#: model_terms:ir.actions.act_window,help:custom_crm.product_action_crm
 msgid "Click to define a new product."
 msgstr "Clic para definir un nuevo producto."
 
 #. module: custom_crm
-#: model:ir.ui.view,arch_db:custom_crm.res_partner_view_form
+#: model_terms:ir.ui.view,arch_db:custom_crm.res_partner_view_form
 msgid "Company"
 msgstr "Compañía"
 
 #. module: custom_crm
-#: model:ir.model,name:custom_crm.model_res_partner
+#: model_terms:ir.model,name:custom_crm.model_res_partner
 msgid "Contact"
 msgstr "Contacto"
 
 #. module: custom_crm
-#: model:ir.ui.view,arch_db:custom_crm.res_partner_view_form
+#: model_terms:ir.ui.view,arch_db:custom_crm.res_partner_view_form
 msgid "Create company"
 msgstr "Crear compañía"
 
 #. module: custom_crm
-#: model:ir.actions.act_window,name:custom_crm.action_partner_form
+#: model_terms:ir.actions.act_window,name:custom_crm.action_partner_form
 msgid "Customers"
 msgstr "Clientes"
 
 #. module: custom_crm
-#: model:ir.ui.view,arch_db:custom_crm.res_partner_view_form
+#: model_terms:ir.ui.view,arch_db:custom_crm.res_partner_view_form
 msgid "Name"
 msgstr "Nombre"
 
 #. module: custom_crm
-#: model:ir.actions.act_window,help:custom_crm.action_partner_form
+#: model_terms:ir.actions.act_window,help:custom_crm.action_partner_form
 msgid "Odoo helps you easily track all activities related to\n"
 "            a customer: discussions, history of business opportunities,\n"
 "            documents, etc."
@@ -60,29 +60,29 @@ msgstr "Odoo le ayuda a rastrear fácilmente toda la actividad relacionada a\n"
 "documentos, etc."
 
 #. module: custom_crm
-#: model:ir.ui.view,arch_db:custom_crm.res_partner_view_form
+#: model_terms:ir.ui.view,arch_db:custom_crm.res_partner_view_form
 msgid "Partners"
 msgstr "Empresas"
 
 #. module: custom_crm
-#: model:ir.actions.act_window,name:custom_crm.product_action_crm
-#: model:ir.ui.menu,name:custom_crm.menu_products
+#: model_terms:ir.actions.act_window,name:custom_crm.product_action_crm
+#: model_terms:ir.ui.menu,name:custom_crm.menu_products
 msgid "Product Variants"
 msgstr "Variantes de producto"
 
 #. module: custom_crm
-#: model:ir.ui.view,arch_db:custom_crm.res_partner_view_form
+#: model_terms:ir.ui.view,arch_db:custom_crm.res_partner_view_form
 msgid "Sales"
 msgstr "Ventas"
 
 #. module: custom_crm
-#: model:ir.model.fields,field_description:custom_crm.field_res_partner_sales_in_last_six_months
-#: model:ir.model.fields,field_description:custom_crm.field_res_users_sales_in_last_six_months
+#: model_terms:ir.model.fields,field_description:custom_crm.field_res_partner_sales_in_last_six_months
+#: model_terms:ir.model.fields,field_description:custom_crm.field_res_users_sales_in_last_six_months
 msgid "Sales In Last Six Months"
 msgstr "Ventas en los últimos 6 meses"
 
 #. module: custom_crm
-#: model:ir.actions.act_window,help:custom_crm.product_action_crm
+#: model_terms:ir.actions.act_window,help:custom_crm.product_action_crm
 msgid "The product form contains information to simplify the sale\n"
 "            process: price, notes in the quotation, accounting data,\n"
 "            procurement methods, etc."
@@ -91,12 +91,12 @@ msgstr "The product form contains information to simplify the sale\n"
 "            procurement methods, etc."
 
 #. module: custom_crm
-#: model:ir.ui.view,arch_db:custom_crm.res_partner_view_form
+#: model_terms:ir.ui.view,arch_db:custom_crm.res_partner_view_form
 msgid "Trade name"
 msgstr "Nombre comercial"
 
 #. module: custom_crm
-#: model:ir.actions.act_window,help:custom_crm.product_action_crm
+#: model_terms:ir.actions.act_window,help:custom_crm.product_action_crm
 msgid "You must define a product for everything you sell, whether it's\n"
 "            a physical product, a consumable or a service you offer to\n"
 "            customers."

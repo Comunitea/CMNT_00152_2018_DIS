@@ -34,27 +34,27 @@ msgstr "\n"
 "Subtotal reducido: %s"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_account_invoice_line_agent_reduction_per
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_reduction_per
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_sale_commission_line_mixin_reduction_per
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_sale_order_line_agent_reduction_per
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_account_invoice_line_agent_reduction_per
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_reduction_per
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_sale_commission_line_mixin_reduction_per
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_sale_order_line_agent_reduction_per
 msgid "% Over subtotal"
 msgstr "% sobre subtotal"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_agent_id
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_agent
-#: model:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_search_view
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_agent_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_agent
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_search_view
 msgid "Agent"
 msgstr "Agente"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_amount_goal
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_amount_goal
 msgid "Amount Goal"
 msgstr "Importe objetivo"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
 msgid "Apply"
 msgstr "Aplicar"
 
@@ -69,8 +69,8 @@ msgid "August"
 msgstr "Agosto"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_sale_commission_make_settle_by_goals
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_sale_commission_settlement_by_goals
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_sale_commission_make_settle_by_goals
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_sale_commission_settlement_by_goals
 msgid "By Goals"
 msgstr "Por objetivos"
 
@@ -87,86 +87,86 @@ msgstr "COMISIÓN VENTAS INFORMÁTICA\n"
 "Comisión aplicada: %s"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
 msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
 msgid "Change Agent Lines"
 msgstr "Modificar líneas de agentes"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
 msgid "Change Agents"
 msgstr "Modificar líneas de agentes"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_line_ids
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_line_ids
 msgid "Change Agents lines"
 msgstr "Modificar líneas de agentes"
 
 #. module: custom_commission_dismac
-#: model:ir.actions.act_window,name:custom_commission_dismac.action_commission_by_margin
-#: model:ir.ui.menu,name:custom_commission_dismac.menu_commission_by_margin
-#: model:ir.ui.view,arch_db:custom_commission_dismac.commission_by_margin_search_view
-#: model:ir.ui.view,arch_db:custom_commission_dismac.commission_by_margin_tree_view
-#: model:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
+#: model_terms:ir.actions.act_window,name:custom_commission_dismac.action_commission_by_margin
+#: model_terms:ir.ui.menu,name:custom_commission_dismac.menu_commission_by_margin
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.commission_by_margin_search_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.commission_by_margin_tree_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
 msgid "Coeficient Margin Rules"
 msgstr "Reglas por coeficiente de margen"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_commission
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_commission
 msgid "Commission"
 msgstr "Comisión"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_commission
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_commission
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_info_com
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_mob_com
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_new_customers_com
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_num_customers_com
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_web_com
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_commission
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_commission
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_info_com
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_mob_com
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_new_customers_com
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_num_customers_com
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_web_com
 msgid "Commission (%)"
 msgstr "Comisión (%)"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_commission
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_commission
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_commission
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_commission
 msgid "Commission Applied (%)"
 msgstr "Comisión aplicada (%)"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.menu,name:custom_commission_dismac.menu_commission_compute
+#: model_terms:ir.ui.menu,name:custom_commission_dismac.menu_commission_compute
 msgid "Commission Compute"
 msgstr "Calculo comisiones"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_sale_commission_settlement_commission_total
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_sale_commission_settlement_commission_total
 msgid "Commission Total"
 msgstr "Comisión total"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_sale_commission
+#: model_terms:ir.model,name:custom_commission_dismac.model_sale_commission
 msgid "Commission in sales"
 msgstr "Comisión en ventas"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
 msgid "Commissions (%)"
 msgstr "Comisiones (%)"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,help:custom_commission_dismac.field_account_invoice_line_agent_reduction_per
-#: model:ir.model.fields,help:custom_commission_dismac.field_change_agents_lines_wzd_reduction_per
-#: model:ir.model.fields,help:custom_commission_dismac.field_sale_commission_line_mixin_reduction_per
-#: model:ir.model.fields,help:custom_commission_dismac.field_sale_order_line_agent_reduction_per
+#: model_terms:ir.model.fields,help:custom_commission_dismac.field_account_invoice_line_agent_reduction_per
+#: model_terms:ir.model.fields,help:custom_commission_dismac.field_change_agents_lines_wzd_reduction_per
+#: model_terms:ir.model.fields,help:custom_commission_dismac.field_sale_commission_line_mixin_reduction_per
+#: model_terms:ir.model.fields,help:custom_commission_dismac.field_sale_order_line_agent_reduction_per
 msgid "Compute settlement with % reduced over invoices subtotal"
 msgstr "Calcular la liquidación con un % reducido sobre el subtotal de la factura"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_global_units
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_global_units
 msgid "Compute units globally"
 msgstr "Calcular unidades op. globalmente"
 
@@ -187,41 +187,41 @@ msgstr "Coeficiente computado: %s \n"
 "Regla aplicada -> Desde coef. margen %s"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_info_unit_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_info_unit_id
 msgid "Computing Operating Unit"
 msgstr "Unidad Operacional Informática"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
 msgid "Conditions"
 msgstr "Condiciones"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_res_partner
+#: model_terms:ir.model,name:custom_commission_dismac.model_res_partner
 msgid "Contact"
 msgstr "Contacto"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_create_uid
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_create_uid
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_create_uid
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_create_uid
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_create_uid
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_create_uid
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_create_uid
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_create_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_create_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_create_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_create_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_create_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_create_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_create_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_create_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_create_date
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_create_date
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_create_date
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_create_date
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_create_date
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_create_date
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_create_date
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_create_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_create_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_create_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_create_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_create_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_create_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_create_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_create_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_create_date
 msgid "Created on"
 msgstr "Creado en"
 
@@ -231,24 +231,24 @@ msgid "December"
 msgstr "Diciembre"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_form
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_form
 msgid "Delete Settlement by goal"
 msgstr "Borrar comisiones por objetivo"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_name
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_name
 msgid "Description"
 msgstr "Descripción"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_display_name
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_display_name
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_display_name
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_display_name
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_display_name
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_display_name
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_display_name
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_display_name
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_display_name
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_display_name
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_display_name
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_display_name
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_display_name
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_display_name
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_display_name
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
@@ -270,17 +270,17 @@ msgid "February"
 msgstr "Febrero"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_mob_unit_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_mob_unit_id
 msgid "Forniture Operating Unit"
 msgstr "Unidad Operacional Mobiliario"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_goal_per
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_goal_per
 msgid "From % Goal"
 msgstr "Desde % Objetivo"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_coef
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_coef
 msgid "From Margin Coeff"
 msgstr "Desde coef. margen"
 
@@ -297,25 +297,25 @@ msgid "Global settlement by sales"
 msgstr "Liquidación global por ventas"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_goal_line_ids
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_goal_line_ids
 msgid "Goal Lines"
 msgstr "Líneas objetivos"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_goal_type_id
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_goal_type_id
-#: model:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_search_view
-#: model:ir.ui.view,arch_db:custom_commission_dismac.commission_by_margin_search_view
-#: model:ir.ui.view,arch_db:custom_commission_dismac.commission_by_sales_search_view
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_goal_type_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_goal_type_id
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_search_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.commission_by_margin_search_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.commission_by_sales_search_view
 msgid "Goal Type"
 msgstr "Tipo de objetivo"
 
 #. module: custom_commission_dismac
-#: model:ir.actions.act_window,name:custom_commission_dismac.action_goal_type
-#: model:ir.ui.menu,name:custom_commission_dismac.menu_goal_type
-#: model:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
-#: model:ir.ui.view,arch_db:custom_commission_dismac.goal_type_search_view
-#: model:ir.ui.view,arch_db:custom_commission_dismac.goal_type_tree_view
+#: model_terms:ir.actions.act_window,name:custom_commission_dismac.action_goal_type
+#: model_terms:ir.ui.menu,name:custom_commission_dismac.menu_goal_type
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.goal_type_search_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.goal_type_tree_view
 msgid "Goal Types"
 msgstr "Tipos de objetivo"
 
@@ -328,54 +328,54 @@ msgstr "Porcentaje objetivo: %s \n"
 ""
 
 #. module: custom_commission_dismac
-#: model:ir.ui.menu,name:custom_commission_dismac.menu_goals_by_month
-#: model:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_search_view
-#: model:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_tree_view
+#: model_terms:ir.ui.menu,name:custom_commission_dismac.menu_goals_by_month
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_search_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_tree_view
 msgid "Goals by Month"
 msgstr "Objetivos por mes"
 
 #. module: custom_commission_dismac
-#: model:ir.actions.act_window,name:custom_commission_dismac.goals_by_month
-#: model:ir.ui.view,arch_db:custom_commission_dismac.view_partner_form_goals
+#: model_terms:ir.actions.act_window,name:custom_commission_dismac.goals_by_month
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.view_partner_form_goals
 msgid "Goals by month"
 msgstr "Objetivos por mes"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_search_view
-#: model:ir.ui.view,arch_db:custom_commission_dismac.commission_by_margin_search_view
-#: model:ir.ui.view,arch_db:custom_commission_dismac.commission_by_sales_search_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_search_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.commission_by_margin_search_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.commission_by_sales_search_view
 msgid "Group By"
 msgstr "Agrupar por"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_id
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_id
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_id
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_id
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_id
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_id
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_id
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_id
 msgid "ID"
 msgstr "ID (identificación)"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_account_invoice
+#: model_terms:ir.model,name:custom_commission_dismac.model_account_invoice
 msgid "Invoice"
 msgstr "Factura"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_account_invoice_line
+#: model_terms:ir.model,name:custom_commission_dismac.model_account_invoice_line
 msgid "Invoice Line"
 msgstr "Linea de la Factura"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_crm_lead_pointing
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_crm_lead_pointing
 msgid "Is pointing"
 msgstr "Es señalamiento"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
 msgid "It will change line agents globally"
 msgstr "Esto modificará las líneas de agentes globalmente"
 
@@ -395,43 +395,43 @@ msgid "June"
 msgstr "Junio"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal___last_update
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd___last_update
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd___last_update
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin___last_update
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales___last_update
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line___last_update
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type___last_update
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line___last_update
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal___last_update
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd___last_update
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd___last_update
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin___last_update
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales___last_update
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line___last_update
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type___last_update
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line___last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_write_uid
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_write_uid
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_write_uid
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_write_uid
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_write_uid
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_write_uid
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_write_uid
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_write_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_write_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_write_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_write_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_write_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_write_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_write_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_write_uid
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_write_uid
 msgid "Last Updated by"
 msgstr "Última actualización de"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_write_date
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_write_date
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_write_date
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_write_date
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_write_date
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_write_date
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_write_date
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_write_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_write_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_write_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_wzd_write_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_write_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_sales_write_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_write_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_write_date
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_write_date
 msgid "Last Updated on"
 msgstr "Última actualización en"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_crm_lead
+#: model_terms:ir.model,name:custom_commission_dismac.model_crm_lead
 msgid "Lead/Opportunity"
 msgstr "Iniciativa/Oportunidad"
 
@@ -441,7 +441,7 @@ msgid "March"
 msgstr "Marzo"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_account_invoice_coef
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_account_invoice_coef
 msgid "Margin Coef"
 msgstr "Coef. margen"
 
@@ -451,7 +451,7 @@ msgid "Margin Goal"
 msgstr "Objetivo margen"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_by_margin_ids
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_by_margin_ids
 msgid "Margin Rules"
 msgstr "Reglas coef. margen"
 
@@ -462,34 +462,34 @@ msgstr "Mayo"
 
 #. module: custom_commission_dismac
 #: selection:goal.type,type:0
-#: model:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
 msgid "Min Customers"
 msgstr "Min clientes"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_min_customers
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_min_customers
 msgid "Min customers"
 msgstr "Min clientes"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_sale_commission_line_mixin
+#: model_terms:ir.model,name:custom_commission_dismac.model_sale_commission_line_mixin
 msgid "Mixin model for having commission agent lines in any object inheriting from this one"
 msgstr "Modelo mixin para tener líneas de agente de comisiones en cualquier objeto heredando de éste"
 
 #. module: custom_commission_dismac
-#: model:ir.actions.act_window,name:custom_commission_dismac.action_change_agents_wzd
+#: model_terms:ir.actions.act_window,name:custom_commission_dismac.action_change_agents_wzd
 msgid "Modify Line Agents"
 msgstr "Modificar líneas de agentes"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_month
-#: model:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_search_view
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_month
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_search_view
 msgid "Month"
 msgstr "Mes"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_res_partner_agent_goal_ids
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_res_users_agent_goal_ids
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_res_partner_agent_goal_ids
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_res_users_agent_goal_ids
 msgid "Month Objevctives"
 msgstr "Objetivos mensuales"
 
@@ -514,7 +514,7 @@ msgstr "COMISIÓN POR NUEVOS CLIENTES\n"
 "Comisión aplicada: %s"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_name
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_name
 msgid "Name"
 msgstr "Nombre"
 
@@ -573,7 +573,7 @@ msgid "No user related to agent %s"
 msgstr "No hay usuario relaccionado con el agente %s"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_note
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_note
 msgid "Notes"
 msgstr "Notas"
 
@@ -595,17 +595,17 @@ msgstr "COMISIÓN NÚMERO DE CLIENTES\n"
 "Comisión aplicada: %s"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_num_customers
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_num_customers
 msgid "Nº Customers with purchase"
 msgstr "Nº clientes con compra"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_new_customers
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_new_customers
 msgid "Nº new Customers"
 msgstr "Nº clientes nuevos"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_web_customers
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_web_customers
 msgid "Nº new web customers"
 msgstr "Nº cliente web nuevos"
 
@@ -615,14 +615,14 @@ msgid "October"
 msgstr "Octubre"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_unit_id
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_unit_id
-#: model:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_search_view
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal_unit_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_unit_id
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_search_view
 msgid "Operating Unit"
 msgstr "Unidad operacional"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_crm_lead_pointing_per
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_crm_lead_pointing_per
 msgid "Poiting (%)"
 msgstr "Señalamiento (%)"
 
@@ -633,7 +633,7 @@ msgid "Rule applied -> From percentage goal: %s"
 msgstr "Regla aplicada -> Desde porcentaje objetivo: %s"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_account_invoice_line_sale_purchase_price
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_account_invoice_line_sale_purchase_price
 msgid "Sale Cost"
 msgstr "Coste de la venta"
 
@@ -643,17 +643,17 @@ msgid "Sale Goal"
 msgstr "Objetivo venta"
 
 #. module: custom_commission_dismac
-#: model:ir.actions.act_window,name:custom_commission_dismac.action_commission_by_sales
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_by_sale_ids
-#: model:ir.ui.menu,name:custom_commission_dismac.menu_commission_by_sales
-#: model:ir.ui.view,arch_db:custom_commission_dismac.commission_by_sales_search_view
-#: model:ir.ui.view,arch_db:custom_commission_dismac.commission_by_sales_tree_view
-#: model:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
+#: model_terms:ir.actions.act_window,name:custom_commission_dismac.action_commission_by_sales
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_by_sale_ids
+#: model_terms:ir.ui.menu,name:custom_commission_dismac.menu_commission_by_sales
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.commission_by_sales_search_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.commission_by_sales_tree_view
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.goal_type_form_view
 msgid "Sale Goal Rules"
 msgstr "Reglas por objetivo de ventas"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_sale_order_line
+#: model_terms:ir.model,name:custom_commission_dismac.model_sale_order_line
 msgid "Sales Order Line"
 msgstr "Línea de pedido de ventas"
 
@@ -663,35 +663,35 @@ msgid "September"
 msgstr "Septiembre"
 
 #. module: custom_commission_dismac
-#: model:ir.actions.act_window,name:custom_commission_dismac.action_agents_settlement_custom_name
-#: model:ir.ui.menu,name:custom_commission_dismac.custom_menu_agents_settlement
+#: model_terms:ir.actions.act_window,name:custom_commission_dismac.action_agents_settlement_custom_name
+#: model_terms:ir.ui.menu,name:custom_commission_dismac.custom_menu_agents_settlement
 msgid "Settle Wizard"
 msgstr "Asistente de liquidaciones"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_sale_commission_settlement
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_settlement
+#: model_terms:ir.model,name:custom_commission_dismac.model_sale_commission_settlement
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_settlement
 msgid "Settlement"
 msgstr "Liquidación"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_amount
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_amount
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_amount
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_operating_unit_settlement_line_amount
 msgid "Settlement Amount"
 msgstr "Importe liquidación"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_sale_commission_settlement_settlemet_total
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_sale_commission_settlement_settlemet_total
 msgid "Settlement Total"
 msgstr "Liquidación total"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_sale_commission_settlement_unit_line_ids
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_sale_commission_settlement_unit_line_ids
 msgid "Settlement by Operating Unit"
 msgstr "Liquidaciones por unidad operacional"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_form
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_form
 msgid "Settlement by goal"
 msgstr "Liquidaciones por objetivos"
 
@@ -702,12 +702,12 @@ msgid "Settlement in %s"
 msgstr "Liquidación en %s"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_form
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_form
 msgid "Settlements by Goals"
 msgstr "Liquidaciones por objetivos"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_form
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_form
 msgid "Settlements by Operating Unit"
 msgstr "Liquidaciones por unidad operacional"
 
@@ -718,24 +718,24 @@ msgid "The partner related to commercial %s must be a                         pa
 msgstr "El partner relacionado con el comercial %s debe estar marcado como agente"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_tree_custom
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_tree_custom
 msgid "Total by goals"
 msgstr "Total por objetivos"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_tree_custom
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.view_settlement_tree_custom
 msgid "Total without goals"
 msgstr "Total sin objetivos"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_goal_type_id
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_goal_type_id
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_type
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_commission_by_margin_goal_type_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_goal_type_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_type_type
 msgid "Type"
 msgstr "Tipo"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_unit_line_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_goal_settlement_line_unit_line_id
 msgid "Unit Line"
 msgstr "Línea unidad"
 
@@ -752,12 +752,12 @@ msgstr "COMISIÓN VENTAS WEB\n"
 "Comisión aplicada: %s %"
 
 #. module: custom_commission_dismac
-#: model:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_wzd_id
+#: model_terms:ir.model.fields,field_description:custom_commission_dismac.field_change_agents_lines_wzd_wzd_id
 msgid "Wizard"
 msgstr "Asistente"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_sale_commission_make_settle
+#: model_terms:ir.model,name:custom_commission_dismac.model_sale_commission_make_settle
 msgid "Wizard for settling commissions in invoices"
 msgstr "ASsistente para facturar liquidaciones"
 
@@ -769,52 +769,52 @@ msgid "You can not define same, agent, month, operating unit,             and go
 msgstr "No puedes definir el mismo agente, mes, unidad operacional y tipo de objetivo."
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_agent_month_goal
+#: model_terms:ir.model,name:custom_commission_dismac.model_agent_month_goal
 msgid "agent.month.goal"
 msgstr "agent.month.goal"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_change_agents_lines_wzd
+#: model_terms:ir.model,name:custom_commission_dismac.model_change_agents_lines_wzd
 msgid "change.agents.lines.wzd"
 msgstr "change.agents.lines.wzd"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_change_agents_wzd
+#: model_terms:ir.model,name:custom_commission_dismac.model_change_agents_wzd
 msgid "change.agents.wzd"
 msgstr "change.agents.wzd"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_commission_by_margin
+#: model_terms:ir.model,name:custom_commission_dismac.model_commission_by_margin
 msgid "commission.by.margin"
 msgstr "commission.by.margin"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_commission_by_min_customers
+#: model_terms:ir.model,name:custom_commission_dismac.model_commission_by_min_customers
 msgid "commission.by.min.customers"
 msgstr "commission.by.min.customers"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_commission_by_sales
+#: model_terms:ir.model,name:custom_commission_dismac.model_commission_by_sales
 msgid "commission.by.sales"
 msgstr "commission.by.sales"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_goal_settlement_line
+#: model_terms:ir.model,name:custom_commission_dismac.model_goal_settlement_line
 msgid "goal.settlement.line"
 msgstr "goal.settlement.line"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_goal_type
+#: model_terms:ir.model,name:custom_commission_dismac.model_goal_type
 msgid "goal.type"
 msgstr "goal.type"
 
 #. module: custom_commission_dismac
-#: model:ir.model,name:custom_commission_dismac.model_operating_unit_settlement_line
+#: model_terms:ir.model,name:custom_commission_dismac.model_operating_unit_settlement_line
 msgid "operating.unit.settlement.line"
 msgstr "operating.unit.settlement.line"
 
 #. module: custom_commission_dismac
-#: model:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
 msgid "or"
 msgstr "o"
 
