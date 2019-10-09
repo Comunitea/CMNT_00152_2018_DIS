@@ -1,0 +1,221 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* product_pricelist_custom_dismac
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-03-07 15:35+0000\n"
+"PO-Revision-Date: 2019-03-07 15:35+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.product_pricelist_import_wzd_view
+msgid "Applicable On"
+msgstr "Aplicable en"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.actions.act_window,help:product_pricelist_custom_dismac.product_pricelist_action2
+msgid "Click to create a pricelist."
+msgstr "Clic para crear una tarifa."
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_create_uid
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_create_date
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_display_name
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.actions.act_window,help:product_pricelist_custom_dismac.product_pricelist_action2
+msgid "Each rule include a set of applicability criteria (date range,\n"
+"            product category...) and a computation that easily helps to achieve\n"
+"            any kind of pricing."
+msgstr "Cada regla incluye un conjunto de criterios aplicables (intervalo de fechas,\n"
+"            categoría del producto...) y un cálculo que ayuda fácilmente a lograr\n"
+"            cualquier tipo de precio."
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_date_end
+msgid "End Date"
+msgstr "Fecha final"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,help:product_pricelist_custom_dismac.field_product_pricelist_date_end
+msgid "Ending valid for the pricelist item validation"
+msgstr "Finalización válida para la validación del elementos de tarifa de precios"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_error_msg
+msgid "Error Msg"
+msgstr "Mensaje de error"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_error_ids
+msgid "Error items"
+msgstr "Listado de errores"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.product_pricelist_import_wzd_view
+msgid "Errors"
+msgstr "Errores"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_file
+msgid "File"
+msgstr "Archivo"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_id
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_id
+msgid "ID"
+msgstr "ID (identificación)"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error___last_update
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_write_uid
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización de"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_write_date
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_wzd_write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.product_pricelist_import_wzd_view
+msgid "Price"
+msgstr "Precio"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model,name:product_pricelist_custom_dismac.model_product_pricelist
+msgid "Pricelist"
+msgstr "Lista de precios"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_import_error_import_id
+#: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.view_product_pricelist_import_wzd_form
+msgid "Pricelist Import"
+msgstr "Importar"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.product_pricelist_import_wzd_view
+msgid "Pricelist Items"
+msgstr "Items de Lista de precios"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model,name:product_pricelist_custom_dismac.model_product_pricelist_item
+msgid "Pricelist item"
+msgstr "Item de Lista de precios"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.actions.act_window,name:product_pricelist_custom_dismac.action_product_pricelist_import
+#: model:ir.ui.menu,name:product_pricelist_custom_dismac.menu_pricelist_import
+msgid "Pricelist_import"
+msgstr "Importar promoción"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.actions.act_window,name:product_pricelist_custom_dismac.action_product_pricelist_import_error
+msgid "Pricelist_import_error_tree"
+msgstr "Listado de errores de importación"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.ui.menu,name:product_pricelist_custom_dismac.menu_pricelist_import_new
+msgid "Pricelist_import_new"
+msgstr "Nueva importación"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.actions.act_window,name:product_pricelist_custom_dismac.action_product_pricelist_import_tree
+#: model:ir.ui.menu,name:product_pricelist_custom_dismac.menu_pricelist_import_tree
+msgid "Pricelist_import_tree"
+msgstr "Promociones importadas
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.actions.act_window,name:product_pricelist_custom_dismac.product_pricelist_action2
+msgid "Pricelists"
+msgstr "Listas de precios"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.view_product_pricelist_import_error_tree
+msgid "Product Pricelist import error(s)"
+msgstr "Listado de errores en la importación"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.product_pricelist_import_wzd_view
+#: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.product_pricelist_view_tree_wzd
+#: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.view_product_pricelist_import_wzd_form
+msgid "Products Price List"
+msgstr "Tarifa de productos"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.product_pricelist_view_search
+msgid "Promoción"
+msgstr "Promoción"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_is_promotion
+msgid "Promotion"
+msgstr "Promotion"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,field_description:product_pricelist_custom_dismac.field_product_pricelist_date_start
+msgid "Start Date"
+msgstr "Fecha de inicio"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model.fields,help:product_pricelist_custom_dismac.field_product_pricelist_date_start
+msgid "Starting date for the pricelist item validation"
+msgstr "Fecha inicial para la validación del elemento de lista de precios"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.product_pricelist_view_search
+msgid "Tarifa"
+msgstr "Tarifa"
+
+#. module: product_pricelist_custom_dismac
+#: code:addons/product_pricelist_custom_dismac/wizard/product_pricelist_import_wzd.py:90
+#, python-format
+msgid "There are %s products with the catalogue_code: %s. You may check this out.\n"
+""
+msgstr "Existen %s productos con el código de catálogo: %s. Quizá debas revisarlo.\n"
+""
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.ui.view,arch_db:product_pricelist_custom_dismac.product_pricelist_import_wzd_view
+msgid "e.g. USD Retailers"
+msgstr "ej. USD Minoristas"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model,name:product_pricelist_custom_dismac.model_product_pricelist_import_error
+msgid "product.pricelist.import.error"
+msgstr "Listado de errores de importación"
+
+#. module: product_pricelist_custom_dismac
+#: model:ir.model,name:product_pricelist_custom_dismac.model_product_pricelist_import_wzd
+msgid "product.pricelist.import.wzd"
+msgstr "product.pricelist.import.wzd"
+
