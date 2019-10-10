@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_delivery_custom_res_partner_view_purchase_account_buttons" model="ir.ui.view">
+        <field name="name">res.partner.view.purchase.account.buttons</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="priority" eval="20"/>
+        <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
+        <field name="arch" type="xml">
+            <button name="%(sale.act_res_partner_2_sale_order)d" position="after">
+                <button string="Undelivered Items" icon="fa-sign-out" class="oe_stat_button" name="get_undelivered_items" type="object" attrs="{'invisible': [('customer', '=', False)]}"></button>
+            </button>
+        </field>
+    </record>
+</odoo>
