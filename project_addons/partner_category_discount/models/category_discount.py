@@ -6,6 +6,7 @@ import odoo.addons.decimal_precision as dp
 
 class CategoryDiscount(models.Model):
     _name = "category.discount"
+    _description = 'discount categories'
 
     category_id = fields.Many2one('product.category', 'Category', index=1,
                                   required=True)

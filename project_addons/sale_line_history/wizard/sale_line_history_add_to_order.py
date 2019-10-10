@@ -6,6 +6,7 @@ import odoo.addons.decimal_precision as dp
 
 class SaleOrderLineHistoryAddToOrder(models.TransientModel):
     _name = 'sale.order.line.history.add.to.order'
+    _description = 'wizard history order lines'
 
     qty = fields.Float(digits=dp.get_precision('Product Unit of Measure'))
 
