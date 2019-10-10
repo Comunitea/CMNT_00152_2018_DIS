@@ -12,7 +12,7 @@
     'installable': True,
     'depends': [
         'stock',
-        'delivery'
+        'delivery',
         'purchase',
         'purchase_open_qty'
     ],
