@@ -69,6 +69,7 @@
                             <div attrs="{'invisible': [('order_state', 'not in', ['sale', 'done'])]}">
                                 <field name="qty_invoiced" attrs="{'invisible': [('order_state', 'not in', ['sale', 'done'])]}"/>
                             </div>
+                            <field name="route_id" groups="sale_stock.group_route_so_lines" options="{'no_create': True}"/>
                             <field name="price_unit"/>
                             <label for="discount" groups="sale.group_discount_per_so_line"/>
                             <div name="discount" groups="sale.group_discount_per_so_line">

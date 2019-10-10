@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<odoo>
+    
+    <record id="view_sale_order_form_add_Stock_fieldst" model="ir.ui.view">
+             <field name="name">sale.order.form.inherit</field>
+             <field name="model">sale.order</field>
+             <field name="inherit_id" ref="sale.view_order_form" />
+             <field name="arch" type="xml">
+
+                <xpath expr="//tree/field[@name='product_uom_qty']" position="before">
+                    <!--field name="virtual_available" attrs="{'column_invisible': [('parent.state', '=', 'sale')]}"/>
+                    <field name="qty_available" attrs="{'column_invisible': [('parent.state', '=', 'sale')]}"/-->
+
+                    <field name="line_virtual_available" attrs="{'column_invisible': [('parent.state', '!=', 'sale')]}" readonly="1"/>
+                    <field name="line_qty_available" attrs="{'column_invisible': [('parent.state', '!=', 'sale')]}" readonly="1"/>
+
+                </xpath>
+
+                <xpath expr="//label[@for='qty_delivered']" position="before">
+                    <label for="line_qty_available" attrs="{'invisible': [('state', '=', 'sale')]}"/>
+                    <div attrs="{'invisible': [('state', '=', 'sale')]}">
+                        <field name="line_qty_available"/>
+                    </div>
+                    <label for="line_virtual_available" attrs="{'invisible': [('state', '=', 'sale')]}"/>
+                    <div attrs="{'invisible': [('state', '=', 'sale')]}">
+                        <field name="line_virtual_available"/>
+                    </div>
+                    <label for="qty_available" attrs="{'invisible': [('state', '!=', 'sale')]}"/>
+                    <div attrs="{'invisible': [('state', '!=', 'sale')]}">
+                        <field name="qty_available" />
+                    </div>
+                    <label for="virtual_available" attrs="{'invisible': [('state', '!=', 'sale')]}"/>
+                    <div attrs="{'invisible': [('state', '!=', 'sale')]}">
+                        <field name="virtual_available" />
+                    </div>
+                </xpath>
+
+            </field>
+        </record>
+
+
+    <record id="sale_order_line_form_stock_fields_view" model="ir.ui.view">
+            <field name="name">sale.order.line.stock.fields.view.form</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale_order_line_form_button.sale_order_line_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='route_id']" position="before">
+                    <field name="virtual_available" attrs="{'invisible': [('state', '=', 'sale')]}"/>
+                    <field name="qty_available" attrs="{'invisible': [('state', '=', 'sale')]}"/>
+                </xpath>
+            </field>
+    </record>
+</odoo>
+
