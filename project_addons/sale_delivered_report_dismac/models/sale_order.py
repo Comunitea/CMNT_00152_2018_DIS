@@ -17,7 +17,6 @@ class SaleOrderLine(models.Model):
         domain = [('product_id', '=', product_id)]
         unreceived = self.env['sale.delivery.report'].search(domain)
 
-        print (unreceived.mapped('product_id').mapped('display_name'))
         return {
             'name': 'Sales delivery report',
             'type': 'ir.actions.act_window',
@@ -43,7 +42,6 @@ class SaleOrderLine(models.Model):
     @api.multi
     def _get_date_planned(self):
         ctx = self._context.copy()
-        print ("Entro en _get_date_planned con contexcto {}".format(ctx))
 
         to_date = self._context.get('to_date', False)
         for line in self.filtered(lambda x:x.product_id and x.product_id.type == 'product'):
@@ -57,7 +55,6 @@ class SaleOrderLine(models.Model):
 
             if not to_date:
                 to_date = line.order_id.date_order or fields.Datetime.now()
-            print ("Buscando para fecha {}".format(to_date))
             ctx.update(product_id=line.product_id.id, to_date = to_date)
             # COmo puede haber entregas y cantidad cancelada, tendo en cuenta la cantidad pendiente, no la pedida
             product = line.with_context(ctx).product_id
@@ -77,16 +74,12 @@ class SaleOrderLine(models.Model):
 
                 sl_report = self.with_context(ctx).env['sale.delivery.report'].search(domain).filtered(lambda x: x.date_order > to_date)
                 if sl_report:
-                    print('Lineas a considerar: {}'.format(sl_report))
-                    print('Ultima: {}'.format(sl_report[0]))
                     planned_delivery_date =sl_report[0] and (sl_report[0].date_planned)
-            #import ipdb;ipdb.set_trace()
 
             vals = {'sendable': sendable}
             if planned_delivery_date:
                 planned_delivery_date = fields.Datetime.from_string(planned_delivery_date) + dateutil.relativedelta.relativedelta(days=line.product_id.sale_delay)
                 vals.update(planned_delivery_date= fields.Datetime.to_string(planned_delivery_date))
-            print ("Valores de la linea {}".format(vals))
             line.sendable = sendable
             line.planned_delivery_date = fields.Datetime.to_string(planned_delivery_date)
 
