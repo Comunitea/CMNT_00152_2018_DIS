@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <!-- Price unit with the partner decimals, for rounding and presentation -->
+    <template id="report_saleorder_document_add_decimals" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//span[@t-field='line.price_unit']" position="replace">
+            <span t-field="line.price_unit" t-options="{'precision': doc.partner_id.commercial_partner_id.decimals}"/>
+        </xpath>
+    </template>
+</odoo>

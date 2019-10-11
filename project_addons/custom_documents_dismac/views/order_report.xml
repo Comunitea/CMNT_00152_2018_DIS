@@ -76,7 +76,7 @@
                                         <span t-esc="o_line.product_uom_qty - o_line.qty_delivered"/>
                                     </td>
                                     <td>
-                                        <span t-field="o_line.price_unit"/>
+                                        <span t-field="o_line.price_unit" t-options="{'precision': o.partner_id.commercial_partner_id.decimals}"/>
                                     </td>
                                     <td class="text-right">
                                         <span t-field="o_line.tax_id.amount"/>
