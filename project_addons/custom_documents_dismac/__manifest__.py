@@ -11,28 +11,18 @@
         'base',
         'sale',
         'account',
-        'account_due_dates_str'
+        'account_due_dates_str',
+        'partner_variable_decimals'
     ],
     'data': [
         'views/list_reports.xml',
         'views/report_templates.xml',
         'views/stationery_report.xml',
-        # 'views/stationery_iva_report.xml',
-        # 'views/stationery_list_prices_report.xml',
-        # 'views/furniture_report.xml',
-        # 'views/furniture_totals_only_report.xml',
         'views/invoice_report.xml',
-        # ~ 'views/delivery_note_report.xml',
         'views/order_report.xml',
         'views/internal_furniture_report.xml',
-        # 'views/furniture_contests_report.xml',
         'views/sale_proforma_invoice_report.xml',
         'views/furniture_new_report.xml',
-        # 'views/furniture_new_iva_report.xml',
-        # 'views/furniture_new_without_photos_report.xml',
-        # 'views/furniture_new_iva_without_photos_report.xml',
-        # 'views/sales_views.xml', No parece necesario
-        # 'views/invoice_report_templates.xml' No parece necesario
 
     ],
     'installable': True,
