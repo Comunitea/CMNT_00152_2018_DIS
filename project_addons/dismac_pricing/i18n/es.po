@@ -21,23 +21,23 @@ msgid "Contact"
 msgstr "Contacto"
 
 #. module: dismac_pricing
-#: model:ir.ui.view,arch_db:dismac_pricing.res_partner_view_buttons_listprice
+#: model_terms:ir.ui.view,arch_db:dismac_pricing.res_partner_view_buttons_listprice
 msgid "Custom Pricelist"
 msgstr "Lista de precios"
 
 #. module: dismac_pricing
-#: model:ir.model.fields,field_description:dismac_pricing.field_res_partner_fixed_prices
-#: model:ir.model.fields,field_description:dismac_pricing.field_res_users_fixed_prices
+#: model:ir.model.fields,field_description:dismac_pricing.field_res_partner__fixed_prices
+#: model:ir.model.fields,field_description:dismac_pricing.field_res_users__fixed_prices
 msgid "Fixed Prices"
 msgstr "Precios fijos"
 
 #. module: dismac_pricing
-#: model:ir.ui.view,arch_db:dismac_pricing.product_partner_prices
+#: model_terms:ir.ui.view,arch_db:dismac_pricing.product_partner_prices
 msgid "Precios de producto"
 msgstr "Precios de producto"
 
 #. module: dismac_pricing
-#: model:ir.model.fields,field_description:dismac_pricing.field_product_product_price_description
+#: model:ir.model.fields,field_description:dismac_pricing.field_product_product__price_description
 msgid "Price Explanation"
 msgstr "Explicación de precio"
 
@@ -47,6 +47,6 @@ msgid "Product"
 msgstr "Producto"
 
 #. module: dismac_pricing
-#: model:ir.ui.view,arch_db:dismac_pricing.view_order_form
+#: model_terms:ir.ui.view,arch_db:dismac_pricing.view_order_form
 msgid "create custom prices"
 msgstr "Crear precios personalizados"
