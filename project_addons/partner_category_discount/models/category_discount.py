@@ -20,13 +20,18 @@ class CategoryDiscount(models.Model):
                  default=lambda self: self.env.user.company_id.id, index=1)
 
     @api.model
-    def get_customer_discount(self, partner, category):
+    def get_customer_discount(self, partner_id, category):
+        if isinstance(partner_id, (int,)):
+            partner = partner_id
+        else:
+            partner = partner_id.id
+        categ = self.env['product.category'].browse(category)
         categ_ids = {}
-        while category:
-            categ_ids[category.id] = True
-            category = category.parent_id
+        while categ:
+            categ_ids[categ.id] = True
+            categ = categ.parent_id
         categ_ids = list(categ_ids)
-        domain = [('partner_id', '=', partner.id),
+        domain = [('partner_id', '=', partner),
                   ('category_id', 'in', categ_ids),
                   ]
         customer_discount = self.env['category.discount'].\
