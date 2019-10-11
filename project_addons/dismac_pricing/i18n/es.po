@@ -1,0 +1,52 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* dismac_pricing
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-03-07 15:30+0000\n"
+"PO-Revision-Date: 2019-03-07 15:30+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: dismac_pricing
+#: model:ir.model,name:dismac_pricing.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: dismac_pricing
+#: model:ir.ui.view,arch_db:dismac_pricing.res_partner_view_buttons_listprice
+msgid "Custom Pricelist"
+msgstr "Lista de precios"
+
+#. module: dismac_pricing
+#: model:ir.model.fields,field_description:dismac_pricing.field_res_partner_fixed_prices
+#: model:ir.model.fields,field_description:dismac_pricing.field_res_users_fixed_prices
+msgid "Fixed Prices"
+msgstr "Precios fijos"
+
+#. module: dismac_pricing
+#: model:ir.ui.view,arch_db:dismac_pricing.product_partner_prices
+msgid "Precios de producto"
+msgstr "Precios de producto"
+
+#. module: dismac_pricing
+#: model:ir.model.fields,field_description:dismac_pricing.field_product_product_price_description
+msgid "Price Explanation"
+msgstr "Explicación de precio"
+
+#. module: dismac_pricing
+#: model:ir.model,name:dismac_pricing.model_product_product
+msgid "Product"
+msgstr "Producto"
+
+#. module: dismac_pricing
+#: model:ir.ui.view,arch_db:dismac_pricing.view_order_form
+msgid "create custom prices"
+msgstr "Crear precios personalizados"
