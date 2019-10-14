@@ -10,6 +10,7 @@
         'partner_category_discount',
         'customer_price',
         'product_pricelist_custom_dismac',
+        'stock_account_custom'
     ],
     'data': [
         'views/res_partner_view.xml',

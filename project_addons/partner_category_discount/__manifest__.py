@@ -12,7 +12,7 @@
     'installable': True,
     'depends': [
         'product',
-        'sales_team'
+        'sale'
     ],
     'data': [
         'views/category_discount.xml',
