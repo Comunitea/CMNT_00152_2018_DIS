@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="res_partner_view_risk_add_check_lock" model="ir.ui.view" >
+        <field name="name">res.partner.view.risk.add.check.lock</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account_financial_risk.res_partner_view_risk"/>
+        <field name="arch" type="xml">
+            <group name="risk_general" position="before">
+                <group>
+                    <group string="Locking" col="2">
+                        <field name="avoid_locks"/>
+                        <!-- <field name="lock_orders"/> -->
+                        <field name="min_no_shipping"/>
+                        <field name="min_amount_order"/>
+                        <button name="recompute_sale_order_locks" class="oe_link" type="object" string="Recompute locks"/>
+                    </group>
+                </group>
+            </group>
+        </field>
+    </record>
+
+</odoo>
+

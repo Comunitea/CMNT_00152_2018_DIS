@@ -14,4 +14,7 @@ class SaleOrder(models.Model):
     def _get_under_validation_exceptions(self):
         res = super()._get_under_validation_exceptions()
         res.append('access_token')
+        res += [
+            'access_token', 'force_unlock', 'risk_lock', 'unpaid_lock',
+            'margin_lock', 'shipping_lock', 'amount_lock', 'locked']
         return res
