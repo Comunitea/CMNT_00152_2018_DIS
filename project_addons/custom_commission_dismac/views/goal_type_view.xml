@@ -51,8 +51,8 @@
                             <group>
                                 <group string="Conditions">
                                     <field name="web_customers"/>
-                                    <field name="mob_unit_id"/>
-                                    <field name="info_unit_id" />
+                                    <field name="mob_sale_type_id"/>
+                                    <field name="info_sale_type_id" />
                                     <field name="num_customers"/>
                                     <field name="new_customers"/>
                                 </group>

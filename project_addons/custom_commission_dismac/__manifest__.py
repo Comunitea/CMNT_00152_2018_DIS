@@ -10,7 +10,6 @@
         'sale_commission',
         'sales_team',
         'crm',
-        'sale_order_type_operating_unit',
         'stock_account_custom'  # nuevo cálculo purchase price
     ],
     'data': [

@@ -8,9 +8,9 @@ class Settlement(models.Model):
     _inherit = 'sale.commission.settlement'
 
     by_goals = fields.Boolean('By Goals')
-    unit_line_ids = fields.One2many(
-        'operating.unit.settlement.line', 'settlement',
-        'Settlement by Operating Unit', readonly=True)
+    sale_type_line_ids = fields.One2many(
+        'sale.type.settlement.line', 'settlement',
+        'Settlement by Sale Type', readonly=True)
     settlemet_total = fields.Float(
         string='Settlement Total',
         compute="_compute_total",
@@ -25,20 +25,20 @@ class Settlement(models.Model):
     @api.multi
     def _compute_total(self):
         for sett in self:
-            sett.settlemet_total = sum(x.amount for x in sett.unit_line_ids)
+            sett.settlemet_total = sum(x.amount for x in sett.sale_type_line_ids)
             sett.commission_total = \
-                sum(x.commission for x in sett.unit_line_ids)
+                sum(x.commission for x in sett.sale_type_line_ids)
 
     @api.multi
     def delete_settlement_by_goal(self):
         self.ensure_one()
-        self.unit_line_ids.unlink()
+        self.sale_type_line_ids.unlink()
 
     @api.multi
     def settlement_by_goal(self):
         self.ensure_one()
         month_goal_obj = self.env['agent.month.goal']
-        invoices_by_unit = {}  # agrupo las facturas por unidad operacional
+        invoices_by_sale_type = {}  # agrupo las facturas por unidad operacional
         # Conveniente ver el global de todas
         invoices_by_global = {
             'amount': 0.0, 'coef': 0.0, 'num': 0.0,
@@ -48,25 +48,25 @@ class Settlement(models.Model):
         # Agrupo Facturas por unidad operacional, (papelería, mobiliario...)
         for inv in self.lines.mapped('invoice'):
             # Líneas sin tipo de venta no comisionan
-            # if not inv.operating_unit_id:
+            # if not inv.sale_type_id:
             #     continue
             # Obtengo importe total y coeficiente sobre margen
-            if inv.operating_unit_id not in invoices_by_unit:
-                invoices_by_unit[inv.operating_unit_id] = {
+            if inv.sale_type_id_id not in invoices_by_sale_type:
+                invoices_by_sale_type[inv.sale_type_id] = {
                     'amount': 0.0, 'coef': 0.0, 'num': 0.0, 
                     'reduced_amount': 0.0}
-            invoices_by_unit[inv.operating_unit_id]['amount'] += \
+            invoices_by_sale_type[inv.sale_type_id]['amount'] += \
                 inv.amount_untaxed
             invoices_by_global['amount'] += inv.amount_untaxed
-            invoices_by_unit[inv.operating_unit_id]['coef'] += inv.coef
+            invoices_by_sale_type[inv.sale_type_id]['coef'] += inv.coef
             invoices_by_global['coef'] += inv.coef
-            invoices_by_unit[inv.operating_unit_id]['num'] += 1
+            invoices_by_sale_type[inv.sale_type_id]['num'] += 1
             invoices_by_global['num'] += 1
 
             # Si hay comisiones con señalamiento, obtenemos el % de
             # reduction_per definido en la línea de agent
             reduced_amount = inv.get_reduced_amount(self.agent)
-            invoices_by_unit[inv.operating_unit_id]['reduced_amount'] += \
+            invoices_by_sale_type[inv.sale_type_id]['reduced_amount'] += \
                 reduced_amount
             invoices_by_global['reduced_amount'] += reduced_amount
 
@@ -81,13 +81,13 @@ class Settlement(models.Model):
         # Compruebo en el siguiente bucle si tengo que crear líneas para
         # objetivos de este tipo
         visited_month_goal_ids = []
-        for op_unit in invoices_by_unit:
+        for sale_type in invoices_by_sale_type:
             # Busco objetivos para el agente en el mes dado y para la unidad
             # operacional
             domain = [
                 ('month', '=', month),
                 ('agent_id', '=', self.agent.id),
-                ('unit_id', '=', op_unit.id)
+                ('sale_type_id', '=', sale_type.id)
             ]
             month_goals = month_goal_obj.search(domain)
 
@@ -95,7 +95,7 @@ class Settlement(models.Model):
             domain = [
                 ('month', '=', month),
                 ('agent_id', '=', self.agent.id),
-                ('unit_id', '=', False),
+                ('sale_type_id', '=', False),
                 ('id', 'not in', visited_month_goal_ids)
             ]
             global_month_goals = month_goal_obj.search(domain)
@@ -119,17 +119,17 @@ class Settlement(models.Model):
             # aunque sea 0, (esto lo podríamos modificar)
             vals = {
                 'settlement': self.id,
-                'unit_id': op_unit.id,
-                'name': _('Settlement in %s') % op_unit.name
+                'sale_type_id': sale_type.id,
+                'name': _('Settlement in %s') % sale_type.name
             }
-            ousl = self.env['operating.unit.settlement.line'].create(vals)
+            ousl = self.env['sale.type.settlement.line'].create(vals)
 
-            # Añado a unit_info el coeficiente de las facturas y el objetivo
+            # Añado a sale_type_info el coeficiente de las facturas y el objetivo
             # para esa unidad operacional, también para el cálculo global
-            unit_info = invoices_by_unit[op_unit]
-            total_coef = unit_info['coef'] / unit_info['num']
+            sale_type_info = invoices_by_sale_type[sale_type]
+            total_coef = sale_type_info['coef'] / sale_type_info['num']
             amount_goal = month_goals.mapped('amount_goal')[0]
-            unit_info.update({
+            sale_type_info.update({
                 'amount_goal': amount_goal,
                 'total_coef': total_coef
             })
@@ -149,7 +149,7 @@ class Settlement(models.Model):
                     min_goal_types += gt
                     continue
 
-                vals = self.get_sett_goal_line_vals(ousl, gt, unit_info)
+                vals = self.get_sett_goal_line_vals(ousl, gt, sale_type_info)
                 goal_line_vals.append((0, 0, vals))
             ousl.write({'goal_line_ids': goal_line_vals})
 
@@ -161,7 +161,7 @@ class Settlement(models.Model):
         # Líneas iquidación globales del tipo de objetivo de clinetes mínimos
         if len(min_goal_types) >= 1:
             self.create_extra_min_settlement_lines(min_goal_types,
-                                                   invoices_by_unit)
+                                                   invoices_by_sale_type)
         return
 
     def get_sett_goal_line_vals(self, ousl, gt, info_data):
@@ -219,7 +219,7 @@ class Settlement(models.Model):
         settlement_amount = reduced_amount or amount
 
         vals = {
-            'unit_line_id': ousl.id,
+            'sale_type_line_id': ousl.id,
             'goal_type_id': gt.id,
             'note': note,
             'commission': commission,
@@ -228,7 +228,7 @@ class Settlement(models.Model):
         return vals
 
     def create_extra_min_settlement_lines(self, min_goal_types,
-                                          invoices_by_unit):
+                                          invoices_by_sale_type):
         """
         """
         vals = {
@@ -236,11 +236,11 @@ class Settlement(models.Model):
             'unit_id': False,
             'name': _('Global settlement by min customers goal')
         }
-        ousl = self.env['operating.unit.settlement.line'].create(vals)
+        ousl = self.env['sale.type..settlement.line'].create(vals)
 
         goal_line_vals = []
         for gt in min_goal_types:
-            vals = self.get_sett_goal_line_vals(ousl, gt, invoices_by_unit)
+            vals = self.get_sett_goal_line_vals(ousl, gt, invoices_by_sale_type)
             goal_line_vals.append((0, 0, vals))
         ousl.write({'goal_line_ids': goal_line_vals})
         return
@@ -261,7 +261,7 @@ class Settlement(models.Model):
             'unit_id': False,
             'name': _('Global settlement by sales')
         }
-        ousl = self.env['operating.unit.settlement.line'].create(vals)
+        ousl = self.env['sale.type..settlement.line'].create(vals)
 
         goal_line_vals = []
         month = datetime.strptime(self.date_to, '%Y-%m-%d').month
@@ -295,21 +295,22 @@ class Settlement(models.Model):
         return res
 
 
-class OperatingUnitSettlementLine(models.Model):
-    _name = 'operating.unit.settlement.line'
+class SaleTypeSettlementLine(models.Model):
+    _name = 'sale.type.settlement.line'
 
     name = fields.Text('Description')
     settlement = fields.Many2one(
         "sale.commission.settlement", readonly=True, ondelete="cascade",
         required=True)
-    unit_id = fields.Many2one(
-        comodel_name='operating.unit', string='Operating Unit', required=False)
+    sale_type_id = fields.Many2one(
+        comodel_name='sale.order.type', string='Sale Order Type', required=False)
     commission = fields.Float('Commission Applied (%)',
                               compute='_compute_total')
     amount = fields.Float('Settlement Amount',
                           compute='_compute_total')
     goal_line_ids = fields.One2many(
-        'goal.settlement.line', 'unit_line_id', 'Goal Lines', readonly=True)
+        'goal.settlement.line', 'sale_type_line_id', 'Goal Lines',
+        readonly=True)
 
     @api.depends('goal_line_ids', 'goal_line_ids.amount',
                  'goal_line_ids.commission')
@@ -322,8 +323,8 @@ class OperatingUnitSettlementLine(models.Model):
 class GoalSettlementLine(models.Model):
     _name = 'goal.settlement.line'
 
-    unit_line_id = fields.Many2one(
-        "operating.unit.settlement.line", readonly=True, ondelete="cascade",
+    sale_type_line_id = fields.Many2one(
+        "sale.type.settlement.line", readonly=True, ondelete="cascade",
         required=True)
     goal_type_id = fields.Many2one(
         comodel_name='goal.type', string='Type', required=False)

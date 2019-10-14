@@ -31,13 +31,13 @@ class GoalType(models.Model):
     web_com = fields.Float('Commission (%)')
 
     # Objetivo ventas mobiliario mes
-    mob_unit_id = fields.Many2one('operating.unit',
-                                  'Forniture Operating Unit')
+    mob_sale_type_id = fields.Many2one('sale.order.type',
+                                  'Furniture Sale Type')
     mob_com = fields.Float('Commission (%)')
 
     # Objetivo ventas informatica mes
-    info_unit_id = fields.Many2one('operating.unit',
-                                   'Computing Operating Unit')
+    info_sale_type_id = fields.Many2one('ale.order.type',
+                                   'Computing Sale Type')
     info_com = fields.Float('Commission (%)')
 
     # Objetivo Nº Clientes
@@ -80,10 +80,10 @@ class GoalType(models.Model):
         return commission, note
 
     @api.multi
-    def get_margin_goal_commission(self, unit_info):
+    def get_margin_goal_commission(self, sale_type_info):
         commission = 0.0
         note = _('No Margin Commission')
-        coef = unit_info['total_coef']
+        coef = sale_type_info['total_coef']
         domain = [
             ('id', 'in', self.by_margin_ids.ids),
             ('coef', '<=', coef),
@@ -97,7 +97,7 @@ class GoalType(models.Model):
             ) % (coef, line.coef)
         return commission, note
 
-    def get_web_commission(self, units_info, min_data):
+    def get_web_commission(self, sale_types_info, min_data):
         commission = 0.0
         note = _('No Web Commission')
 
@@ -128,26 +128,26 @@ class GoalType(models.Model):
             ) % (self.web_customers, new_web_customers, commission)
         return commission, note
 
-    def get_mob_commission(self, units_info, min_data):
+    def get_mob_commission(self, sale_types_info, min_data):
         commission = 0.0
-        note = _('No Forniture Commission')
-        if self.mob_unit_id and units_info.get(self.mob_unit_id, {}):
-            mob_data = units_info.get(self.mob_unit_id)
+        note = _('No Furniture Commission')
+        if self.mob_sale_type_id and sale_types_info.get(self.mob_sale_type_id, {}):
+            mob_data = sale_types_info.get(self.mob_sale_type_id)
             if mob_data['amount'] >= mob_data['amount_goal']:
                 commission = self.mob_com
                 note = _(
-                   'FORNITURE COMMISSION\n'
+                   'FURNITURE COMMISSION\n'
                    'amount goal : %s \n'
                    'amount : %s \n'
                    'Commission applied: %s'
                 ) % (mob_data['amount_goal'], mob_data['amount'], commission)
         return commission, note
 
-    def get_inf_commission(self, units_info, min_data):
+    def get_inf_commission(self, sale_types_info, min_data):
         commission = 0.0
         note = _('No Computing Commission')
-        if self.info_unit_id and units_info.get(self.info_unit_id, {}):
-            info_data = units_info.get(self.mob_unit_id)
+        if self.info_sale_type_id and sale_types_info.get(self.info_sale_type_id, {}):
+            info_data = sale_types_info.get(self.mob_sale_type_id)
             if info_data['amount'] >= info_data['amount_goal']:
                 commission = self.minfo_om
                 note = _(
@@ -158,7 +158,7 @@ class GoalType(models.Model):
                 ) % (info_data['amount_goal'], info_data['amount'], commission)
         return commission, note
 
-    def get_num_customers_commission(self, units_info, min_data):
+    def get_num_customers_commission(self, sale_types_info, min_data):
         commission = 0.0
         note = _('No Num Customers Commission')
         orders = min_data.get('orders')
@@ -174,7 +174,7 @@ class GoalType(models.Model):
             ) % (self.num_customers, num_customers, commission)
         return commission, note
 
-    def get_new_customers_commission(self, units_info, min_data):
+    def get_new_customers_commission(self, sale_types_info, min_data):
         commission = 0.0
         note = _('No New Customers Commission')
         so = self.env['sale.order']
@@ -208,9 +208,9 @@ class GoalType(models.Model):
         return commission, note
 
     @api.multi
-    def get_min_customers_commission(self, units_info, min_data={}):
+    def get_min_customers_commission(self, sale_types_info, min_data={}):
         """
-        En esta función, units_info es la agrupación por unidades con
+        En esta función, sale_types_info es la agrupación por unidades con
         toda la info necesaria para el cálculo de comisión en lugar
         de directamente la info de una unidad concreta.
         """
@@ -237,45 +237,45 @@ class GoalType(models.Model):
             note = '----------------------------------------------------\n'
             sep = '\n----------------------------------------------------\n'
             # Calculo comisiones por ventas web
-            com2, note2 = self.get_web_commission(units_info, min_data)
+            com2, note2 = self.get_web_commission(sale_types_info, min_data)
             commission += com2
             note += note2 + sep
 
             # Calculo comision por ventas mobiliario
-            com2, note2 = self.get_mob_commission(units_info, min_data)
+            com2, note2 = self.get_mob_commission(sale_types_info, min_data)
             commission += com2
             note += sep + note2 + sep
 
             # Calculo comision por ventas informatica
-            com2, note2 = self.get_inf_commission(units_info, min_data)
+            com2, note2 = self.get_inf_commission(sale_types_info, min_data)
             commission += com2
             note += sep + note2 + sep
 
             # Calculo nº clientes con compra
-            com2, note2 = self.get_num_customers_commission(units_info,
+            com2, note2 = self.get_num_customers_commission(sale_types_info,
                                                             min_data)
             commission += com2
             note += sep + note2 + sep
 
             # Calculo nuevos clientes
-            com2, note2 = self.get_new_customers_commission(units_info,
+            com2, note2 = self.get_new_customers_commission(sale_types_info,
                                                             min_data)
             commission += com2
             note += sep + note2 + sep
         return commission, note
 
     @api.multi
-    def get_commission(self, unit_info,  min_data={}):
+    def get_commission(self, sale_type_info,  min_data={}):
         self.ensure_one()
         commission = 0.0
         note = ''
         if self.type == 'sale_goal':
-            commission, note = self.get_sale_goal_commission(unit_info)
+            commission, note = self.get_sale_goal_commission(sale_type_info)
         elif self.type == 'margin_goal':
-            commission, note = self.get_margin_goal_commission(unit_info)
+            commission, note = self.get_margin_goal_commission(sale_type_info)
         elif self.type == 'min_customers':
             commission, note = \
-                self.get_min_customers_commission(unit_info, min_data)
+                self.get_min_customers_commission(sale_type_info, min_data)
         return commission, note
 
 
