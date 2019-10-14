@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-08 06:39+0000\n"
-"PO-Revision-Date: 2019-07-08 06:39+0000\n"
+"POT-Creation-Date: 2019-10-14 11:21+0000\n"
+"PO-Revision-Date: 2019-10-14 11:21+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgid "Company"
 msgstr "Compañía"
 
 #. module: custom_crm
-#: model_terms:ir.model,name:custom_crm.model_res_partner
+#: model:ir.model,name:custom_crm.model_res_partner
 msgid "Contact"
 msgstr "Contacto"
 
@@ -41,7 +41,7 @@ msgid "Create company"
 msgstr "Crear compañía"
 
 #. module: custom_crm
-#: model_terms:ir.actions.act_window,name:custom_crm.action_partner_form
+#: model:ir.actions.act_window,name:custom_crm.action_partner_form
 msgid "Customers"
 msgstr "Clientes"
 
@@ -65,8 +65,8 @@ msgid "Partners"
 msgstr "Empresas"
 
 #. module: custom_crm
-#: model_terms:ir.actions.act_window,name:custom_crm.product_action_crm
-#: model_terms:ir.ui.menu,name:custom_crm.menu_products
+#: model:ir.actions.act_window,name:custom_crm.product_action_crm
+#: model:ir.ui.menu,name:custom_crm.menu_products
 msgid "Product Variants"
 msgstr "Variantes de producto"
 
@@ -76,8 +76,8 @@ msgid "Sales"
 msgstr "Ventas"
 
 #. module: custom_crm
-#: model_terms:ir.model.fields,field_description:custom_crm.field_res_partner_sales_in_last_six_months
-#: model_terms:ir.model.fields,field_description:custom_crm.field_res_users_sales_in_last_six_months
+#: model:ir.model.fields,field_description:custom_crm.field_res_partner__sales_in_last_six_months
+#: model:ir.model.fields,field_description:custom_crm.field_res_users__sales_in_last_six_months
 msgid "Sales In Last Six Months"
 msgstr "Ventas en los últimos 6 meses"
 
@@ -86,9 +86,7 @@ msgstr "Ventas en los últimos 6 meses"
 msgid "The product form contains information to simplify the sale\n"
 "            process: price, notes in the quotation, accounting data,\n"
 "            procurement methods, etc."
-msgstr "The product form contains information to simplify the sale\n"
-"            process: price, notes in the quotation, accounting data,\n"
-"            procurement methods, etc."
+msgstr ""
 
 #. module: custom_crm
 #: model_terms:ir.ui.view,arch_db:custom_crm.res_partner_view_form
@@ -100,7 +98,4 @@ msgstr "Nombre comercial"
 msgid "You must define a product for everything you sell, whether it's\n"
 "            a physical product, a consumable or a service you offer to\n"
 "            customers."
-msgstr "You must define a product for everything you sell, whether it's\n"
-"            a physical product, a consumable or a service you offer to\n"
-"            customers."
-
+msgstr ""
