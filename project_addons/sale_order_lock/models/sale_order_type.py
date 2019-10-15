@@ -5,10 +5,9 @@
 from odoo import fields, models, api
 
 
-class OperatingUnit(models.Model):
+class SaleOrderType(models.Model):
 
-    _inherit = 'operating.unit'
-    _description = 'Operating Unit'
+    _inherit = "sale.order.type"
 
     min_margin = fields.Float('Min Margin', help="If Margin of sale order \
         is below the min_margin the order will be locked")
@@ -18,9 +17,9 @@ class OperatingUnit(models.Model):
         """
         Get orders to recompute the lock checkboxes
         """
-        for op in self:
+        for sale_type in self:
             domain = [
-                ('type_id.operating_unit_id', '=', op.id),
+                ('type_id', '=', sale_type.id),
                 ('state', 'not in', ['done, cancel'])
             ]
             sale_objs = self.env['sale.order'].search(domain)
@@ -32,7 +31,7 @@ class OperatingUnit(models.Model):
         When update the avoid_lock check we must recompute the
         related_sale_orders
         """
-        res = super(OperatingUnit, self).write(vals)
+        res = super().write(vals)
         if 'min_margin' in vals:
             self.recompute_sale_order_locks()
         return res

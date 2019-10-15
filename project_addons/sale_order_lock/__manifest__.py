@@ -16,15 +16,14 @@
         'partner_risk_insurance',
         'sale_margin',
         'sale_margin_percentage',
-        'operating_unit',
-        'sale_order_type_operating_unit',
+        'sale_order_type',
         'delivery'
     ],
     'data': [
         'security/sale_security.xml',
         'views/res_partner_view.xml',
         'views/sale_order_view.xml',
-        'views/operating_unit_view.xml',
+        'views/sale_order_type.xml',
         'data/ir_cron.xml',
     ],
 }

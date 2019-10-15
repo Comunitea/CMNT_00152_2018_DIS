@@ -5,22 +5,6 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
-class SaleOrderType(models.Model):
-
-    _inherit = 'sale.order.type'
-
-    @api.multi
-    def write(self, vals):
-        """
-        When update the operating unit, recompute sale orders
-        """
-        res = super(SaleOrderType, self).write(vals)
-        if 'operating_unit_id' in vals:
-            op_units = self.mapped('operating_unit_id')
-            op_units.recompute_sale_order_locks()
-        return res
-
-
 class SaleOrder(models.Model):
 
     _inherit = 'sale.order'
@@ -87,8 +71,8 @@ class SaleOrder(models.Model):
         if self.partner_id.avoid_locks:
             return False
 
-        if self.type_id and self.type_id.operating_unit_id:
-            min_margin = self.type_id.operating_unit_id.min_margin
+        if self.type_id:
+            min_margin = self.type_id.min_margin
             if min_margin and self.margin_perc < min_margin:
                 res = True
         return res

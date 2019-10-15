@@ -3,4 +3,4 @@
 
 from . import res_partner
 from . import sale_order
-from . import operating_unit
+from . import sale_order_type
