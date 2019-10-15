@@ -7,7 +7,7 @@
             <tree string="Goals by Month" editable="bottom">
                 <field name="agent_id"/>
                 <field name="month"/>
-                <field name="unit_id"/>
+                <field name="sale_type_id"/>
                 <field name="goal_type_id"/>
                 <field name="amount_goal"/>
                 <field name="min_customers"/>
@@ -22,12 +22,12 @@
             <search string="Goals by Month">
                 <field name="agent_id"/>
                 <field name="month"/>
-                <field name="unit_id"/>
+                <field name="sale_type_id"/>
                 <field name="goal_type_id"/>
                 <group expand="1" string="Group By">
                     <filter string="Agent" name="group_agent" context="{'group_by': 'agent_id'}"/>
                     <filter string="Month" name="group_month" context="{'group_by': 'month'}"/>
-                    <filter string="Operating Unit" name="group_unit" context="{'group_by': 'unit_id'}"/>
+                    <filter string="Operating Unit" name="group_unit" context="{'group_by': 'sale_type_id'}"/>
                     <filter string="Goal Type" name="group_goal" context="{'group_by': 'goal_type_id'}"/>
                 </group>
             </search>

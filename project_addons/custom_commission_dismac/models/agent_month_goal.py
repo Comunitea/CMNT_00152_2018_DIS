@@ -15,14 +15,14 @@ class AgentMonthGoal(models.Model):
         (5, 'May'), (6, 'June'), (7, 'July'), (8, 'August'),
         (9, 'September'), (10, 'October'), (11, 'November'), (12, 'December')],
         string='Month', required=True)
-    unit_id = fields.Many2one('operating.unit', 'Operating Unit')
+    sale_type_id = fields.Many2one('sale.order.type', 'Sale Order Type')
     amount_goal = fields.Float('Amount Goal')
     min_customers = fields.Integer('Min customers')
     goal_type_id = fields.Many2one('goal.type', 'Goal Type')
 
     _sql_constraints = [
         ('unique_partner_month',
-         'unique(agent_id, month, unit_id, goal_type_id)',
-         _("You can not define same, agent, month, operating unit, \
+         'unique(agent_id, month, sale_type_id, goal_type_id)',
+         _("You can not define same, agent, month, sale order type, \
             and goal type")),
     ]
