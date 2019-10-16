@@ -8,4 +8,4 @@ class ResPartner(models.Model):
 
     _inherit = "res.partner"
 
-    decimals = fields.Integer('Document Decimals', default=4)
+    decimals = fields.Integer("Document Decimals", default=4)

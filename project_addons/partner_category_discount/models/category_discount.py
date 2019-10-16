@@ -6,18 +6,26 @@ import odoo.addons.decimal_precision as dp
 
 class CategoryDiscount(models.Model):
     _name = "category.discount"
-    _description = 'discount categories'
+    _description = "discount categories"
 
-    category_id = fields.Many2one('product.category', 'Category', index=1,
-                                  required=True)
-    partner_id = fields.Many2one('res.partner', 'Customer', required=True,
-                                 index=1)
+    category_id = fields.Many2one(
+        "product.category", "Category", index=1, required=True
+    )
+    partner_id = fields.Many2one(
+        "res.partner", "Customer", required=True, index=1
+    )
     discount = fields.Float(
-        'Discount (%)', default=0.0, digits=dp.get_precision('Product Price'),
-        required=True)
-    company_id = fields.\
-        Many2one('res.company', 'Company',
-                 default=lambda self: self.env.user.company_id.id, index=1)
+        "Discount (%)",
+        default=0.0,
+        digits=dp.get_precision("Product Price"),
+        required=True,
+    )
+    company_id = fields.Many2one(
+        "res.company",
+        "Company",
+        default=lambda self: self.env.user.company_id.id,
+        index=1,
+    )
 
     @api.model
     def get_customer_discount(self, partner_id, category):
@@ -25,17 +33,19 @@ class CategoryDiscount(models.Model):
             partner = partner_id
         else:
             partner = partner_id.id
-        categ = self.env['product.category'].browse(category)
+        categ = self.env["product.category"].browse(category)
         categ_ids = {}
         while categ:
             categ_ids[categ.id] = True
             categ = categ.parent_id
         categ_ids = list(categ_ids)
-        domain = [('partner_id', '=', partner),
-                  ('category_id', 'in', categ_ids),
-                  ]
-        customer_discount = self.env['category.discount'].\
-            search(domain, limit=1)
+        domain = [
+            ("partner_id", "=", partner),
+            ("category_id", "in", categ_ids),
+        ]
+        customer_discount = self.env["category.discount"].search(
+            domain, limit=1
+        )
         if customer_discount:
             return customer_discount
         return False

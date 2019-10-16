@@ -5,6 +5,6 @@ from odoo import models, fields
 
 class StockProductionLot(models.Model):
 
-    _inherit = 'stock.production.lot'
+    _inherit = "stock.production.lot"
 
-    related_lots = fields.Text('Related Lots')
+    related_lots = fields.Text("Related Lots")

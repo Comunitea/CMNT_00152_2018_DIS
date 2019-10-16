@@ -2,25 +2,19 @@
 {
     "name": "Sale - Button to open sale order lines in form view",
     "version": "12.0.1.0.0",
-    "depends": [
-        "sale",
-        "sale_stock",
-        "sale_commission"
-    ],
+    "depends": ["sale", "sale_stock", "sale_commission"],
     "author": "OdooMRP team,"
-              "AvanzOSC,"
-              "Serv. Tecnol. Avanzados - Pedro M. Baeza",
+    "AvanzOSC,"
+    "Serv. Tecnol. Avanzados - Pedro M. Baeza",
     "website": "http://www.odoomrp.com",
     "contributors": [
         "Oihane Crucelaegui <oihanecrucelaegi@avanzosc.es>",
         "Pedro M. Baeza <pedro.baeza@serviciosbaeza.com>",
         "Ana Juaristi <anajuaristi@avanzosc.es>",
-        "Daniel Campos <danielcampos@avanzosc.es>"
+        "Daniel Campos <danielcampos@avanzosc.es>",
     ],
     "category": "Custom Module",
     "summary": "",
-    "data": [
-        "views/sale_view.xml",
-    ],
+    "data": ["views/sale_view.xml"],
     "installable": True,
 }

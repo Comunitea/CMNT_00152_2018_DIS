@@ -7,4 +7,4 @@ from odoo import fields, models
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    category_discount_ids = fields.One2many('category.discount', 'partner_id')
+    category_discount_ids = fields.One2many("category.discount", "partner_id")

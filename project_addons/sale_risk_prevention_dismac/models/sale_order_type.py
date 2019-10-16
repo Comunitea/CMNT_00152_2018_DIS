@@ -4,6 +4,6 @@ from odoo import fields, models
 
 
 class SaleOrderType(models.Model):
-    _inherit = 'sale.order.type'
+    _inherit = "sale.order.type"
 
-    opt_prevention_risk = fields.Boolean(string='Opt Prevention Risk')
+    opt_prevention_risk = fields.Boolean(string="Opt Prevention Risk")

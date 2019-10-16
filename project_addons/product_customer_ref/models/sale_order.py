@@ -6,10 +6,10 @@ from odoo import models, fields, api
 
 class SaleOrder(models.Model):
 
-    _inherit = 'sale.order'
+    _inherit = "sale.order"
 
     @api.multi
-    @api.onchange('partner_id')
+    @api.onchange("partner_id")
     def onchange_partner_id(self):
         res = super().onchange_partner_id()
 
@@ -17,27 +17,28 @@ class SaleOrder(models.Model):
             for line in self.order_line:
                 if line.product_id:
                     line.update_product_customer_name(
-                        self.partner_id.id, line.product_id.id)
+                        self.partner_id.id, line.product_id.id
+                    )
         return res
 
 
 class SaleOrderLine(models.Model):
 
-    _inherit = 'sale.order.line'
+    _inherit = "sale.order.line"
 
     @api.multi
     def update_product_customer_name(self, partner_id, product_id):
         domain = [
-            ('partner_id', '=', partner_id),
-            ('product_id', '=', product_id)]
-        value = self.env['product.customer.value'].search(domain, limit=1)
+            ("partner_id", "=", partner_id),
+            ("product_id", "=", product_id),
+        ]
+        value = self.env["product.customer.value"].search(domain, limit=1)
         if value:
             self.name = value.name_get()[0][1]
         return
 
-
     @api.multi
-    @api.onchange('product_id')
+    @api.onchange("product_id")
     def product_id_change(self):
         res = super().product_id_change()
         partner_id = self.order_id.partner_id

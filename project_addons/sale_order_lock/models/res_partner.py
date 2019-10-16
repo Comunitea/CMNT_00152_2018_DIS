@@ -6,12 +6,12 @@ from odoo import models, fields, api
 
 class ResPartner(models.Model):
 
-    _inherit = 'res.partner'
+    _inherit = "res.partner"
 
-    avoid_locks = fields.Boolean('Avoid locks')
+    avoid_locks = fields.Boolean("Avoid locks")
     # lock_orders = fields.Boolean('Lock Orders', compute='_compute_locks')
-    min_no_shipping = fields.Float('Min No Shipping Cost')
-    min_amount_order = fields.Float('Min Amount Order')
+    min_no_shipping = fields.Float("Min No Shipping Cost")
+    min_amount_order = fields.Float("Min Amount Order")
 
     # @api.multi
     # def _compute_locks(self):
@@ -24,14 +24,13 @@ class ResPartner(models.Model):
         """
         Get orders to recompute the lock checkboxes
         """
-        sale_objs = self.env['sale.order']
+        sale_objs = self.env["sale.order"]
         for partner in self:
             domain = [
-                ('partner_id', 'child_of',
-                 partner.commercial_partner_id.id),
-                ('state', 'not in', ['done, cancel'])
+                ("partner_id", "child_of", partner.commercial_partner_id.id),
+                ("state", "not in", ["done, cancel"]),
             ]
-            sale_objs += self.env['sale.order'].search(domain)
+            sale_objs += self.env["sale.order"].search(domain)
         if sale_objs:
             sale_objs.check_locks()
 
@@ -42,7 +41,10 @@ class ResPartner(models.Model):
         related_sale_orders
         """
         res = super(ResPartner, self).write(vals)
-        if 'avoid_locks' in vals or 'min_no_shipping' in vals \
-                or 'min_amount_order' in vals:
+        if (
+            "avoid_locks" in vals
+            or "min_no_shipping" in vals
+            or "min_amount_order" in vals
+        ):
             self.recompute_sale_order_locks()
         return res

@@ -5,17 +5,20 @@ import odoo.addons.decimal_precision as dp
 
 
 class SaleOrderLineHistoryAddToOrder(models.TransientModel):
-    _name = 'sale.order.line.history.add.to.order'
-    _description = 'wizard history order lines'
+    _name = "sale.order.line.history.add.to.order"
+    _description = "wizard history order lines"
 
-    qty = fields.Float(digits=dp.get_precision('Product Unit of Measure'))
+    qty = fields.Float(digits=dp.get_precision("Product Unit of Measure"))
 
     def add_to_order(self):
-        original_line_id = self._context.get('active_id')
-        original_line = self.env['sale.order.line'].browse(original_line_id)
-        line_values = {'product_id': original_line.product_id.id,
-                       'order_id': self._context.get('order_id'),
-                       'product_uom_qty': self.qty}
-        vals = self.env['sale.order.line'].play_onchanges(
-            line_values, ['product_id', 'product_uom_qty'])
-        self.env['sale.order.line'].create(vals)
+        original_line_id = self._context.get("active_id")
+        original_line = self.env["sale.order.line"].browse(original_line_id)
+        line_values = {
+            "product_id": original_line.product_id.id,
+            "order_id": self._context.get("order_id"),
+            "product_uom_qty": self.qty,
+        }
+        vals = self.env["sale.order.line"].play_onchanges(
+            line_values, ["product_id", "product_uom_qty"]
+        )
+        self.env["sale.order.line"].create(vals)

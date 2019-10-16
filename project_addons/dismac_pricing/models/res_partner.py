@@ -11,17 +11,19 @@ class ResPartner(models.Model):
     @api.multi
     def show_partner_prices(self, context=None):
         product_context = dict(self.env.context)
-        product_context.update({
-            'partner': self.id,
-            'pricelist': self.property_product_pricelist.id,
-        })
-        data_obj = self.env.ref('dismac_pricing.product_partner_prices')
+        product_context.update(
+            {
+                "partner": self.id,
+                "pricelist": self.property_product_pricelist.id,
+            }
+        )
+        data_obj = self.env.ref("dismac_pricing.product_partner_prices")
         return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'product.product',
-            'view_type': 'form',
-            'view_mode': 'tree',
-            'view_id': [data_obj.id],
-            'target': 'current',
-            'context': product_context,
+            "type": "ir.actions.act_window",
+            "res_model": "product.product",
+            "view_type": "form",
+            "view_mode": "tree",
+            "view_id": [data_obj.id],
+            "target": "current",
+            "context": product_context,
         }

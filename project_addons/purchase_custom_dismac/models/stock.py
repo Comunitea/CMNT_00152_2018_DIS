@@ -5,6 +5,6 @@ from odoo import fields, models
 
 class StockPicking(models.Model):
 
-    _inherit = 'stock.picking'
+    _inherit = "stock.picking"
 
-    supplier_ref = fields.Char('Supplier reference', copy=False)
+    supplier_ref = fields.Char("Supplier reference", copy=False)

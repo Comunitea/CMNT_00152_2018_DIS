@@ -4,7 +4,7 @@ from odoo import fields, models
 
 
 class SaleOrderType(models.Model):
-    _inherit = 'sale.order.type'
+    _inherit = "sale.order.type"
 
     need_approval = fields.Boolean(default=False)
-    use_partner_agent = fields.Boolean('Use partner commercial')
+    use_partner_agent = fields.Boolean("Use partner commercial")

@@ -6,15 +6,17 @@ from odoo import models, fields, api
 
 class PurchaseOrder(models.Model):
 
-    _inherit = 'purchase.order'
+    _inherit = "purchase.order"
 
     exclude_compute_cost = fields.Boolean(
-        'Exclude from compute cost', default=False,
-        help="If true, this purchase is no include in cost computes")
+        "Exclude from compute cost",
+        default=False,
+        help="If true, this purchase is no include in cost computes",
+    )
 
 
 class PurchaseOrderLine(models.Model):
-    _inherit = 'purchase.order.line'
+    _inherit = "purchase.order.line"
 
     @api.multi
     def _prepare_stock_moves(self, picking):

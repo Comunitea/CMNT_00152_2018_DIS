@@ -4,6 +4,6 @@ from odoo import fields, models
 
 
 class SaleOrderType(models.Model):
-    _inherit = 'sale.order.type'
+    _inherit = "sale.order.type"
 
-    telesale = fields.Boolean('Use in telesale')
+    telesale = fields.Boolean("Use in telesale")

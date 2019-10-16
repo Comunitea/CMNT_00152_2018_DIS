@@ -6,11 +6,12 @@ from odoo.addons import decimal_precision as dp
 
 class AccountInvoiceLine(models.Model):
 
-    _inherit = 'account.invoice.line'
+    _inherit = "account.invoice.line"
 
     # TODO Falta el calculo para cuando se crea factura manual?
     sale_purchase_price = fields.Float(
-        string='Sale Cost', digits=dp.get_precision('Product Price'))
+        string="Sale Cost", digits=dp.get_precision("Product Price")
+    )
 
 
 class AccountInvoicer(models.Model):
@@ -18,16 +19,21 @@ class AccountInvoicer(models.Model):
 
     coef = fields.Monetary(
         string="Margin Coef",
-        compute='_get_coef', currency_field='currency_id',
-        digits=dp.get_precision('Product Price'))
+        compute="_get_coef",
+        currency_field="currency_id",
+        digits=dp.get_precision("Product Price"),
+    )
 
     @api.multi
     def _get_coef(self):
         for inv in self:
-            cost = \
-                sum([x.sale_purchase_price * x.quantity
-                     for x in inv.invoice_line_ids])
-            sale = sum(inv.invoice_line_ids.mapped('price_subtotal'))
+            cost = sum(
+                [
+                    x.sale_purchase_price * x.quantity
+                    for x in inv.invoice_line_ids
+                ]
+            )
+            sale = sum(inv.invoice_line_ids.mapped("price_subtotal"))
             coef = 1
             if cost:
                 coef = sale / cost
@@ -43,8 +49,9 @@ class AccountInvoicer(models.Model):
         """
         res = self.amount_untaxed
         self.ensure_one()
-        agent_lines = self.invoice_line_ids.mapped('agents').filtered(
-            lambda a: a.agent == agent)
+        agent_lines = self.invoice_line_ids.mapped("agents").filtered(
+            lambda a: a.agent == agent
+        )
         if agent_lines:
             per = agent_lines[0].reduction_per
             res = self.amount_untaxed * (per / 100.0)

@@ -6,6 +6,6 @@ from odoo import models, fields
 
 class PartnerZone(models.Model):
 
-    _name = 'partner.zone'
+    _name = "partner.zone"
 
-    name = fields.Char('Name', required=True)
+    name = fields.Char("Name", required=True)

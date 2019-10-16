@@ -5,8 +5,9 @@ from odoo import models, fields
 
 class ResPartner(models.Model):
 
-    _inherit = 'res.partner'
+    _inherit = "res.partner"
 
     own_product_codes = fields.Boolean(
-        'Own product codes',
-        help="If checked, product description is searched in customer code for sale orders")
+        "Own product codes",
+        help="If checked, product description is searched in customer code for sale orders",
+    )

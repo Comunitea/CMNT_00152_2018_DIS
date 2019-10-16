@@ -7,4 +7,4 @@ from odoo import models, fields
 class SaleCommission(models.Model):
     _inherit = "sale.commission"
 
-    commission_type = fields.Selection(selection_add=[('goal', 'By Goal')])
+    commission_type = fields.Selection(selection_add=[("goal", "By Goal")])

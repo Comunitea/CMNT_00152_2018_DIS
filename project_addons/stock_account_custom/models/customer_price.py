@@ -8,17 +8,17 @@ import time
 class CustomerPrice(models.Model):
     _inherit = "customer.price"
 
-    price_coef = fields.Float('Margin Coeff', compute="_price_coef",
-                              store=True)
+    price_coef = fields.Float("Margin Coeff", compute="_price_coef", store=True)
 
-    @api.depends('product_id.reference_cost', 'price')
+    @api.depends("product_id.reference_cost", "price")
     @api.model
     def _price_coef(self):
         for price_item in self:
             if price_item.product_id:
                 if price_item.product_id.reference_cost:
-                    price_item.price_coef = price_item.price / \
-                                       price_item.product_id.reference_cost
+                    price_item.price_coef = (
+                        price_item.price / price_item.product_id.reference_cost
+                    )
                 else:
                     price_item.price_coef = 0
             else:

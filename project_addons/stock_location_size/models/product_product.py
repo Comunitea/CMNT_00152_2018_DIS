@@ -6,6 +6,6 @@ from odoo.addons import decimal_precision as dp
 
 
 class ProductProduct(models.Model):
-    _inherit = 'product.product'
+    _inherit = "product.product"
 
-    volume = fields.Float(digits=dp.get_precision('Stock Volume'))
+    volume = fields.Float(digits=dp.get_precision("Stock Volume"))

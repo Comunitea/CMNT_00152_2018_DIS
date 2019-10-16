@@ -7,19 +7,23 @@ from odoo.exceptions import UserError
 
 class SaleOrder(models.Model):
 
-    _inherit = 'sale.order'
+    _inherit = "sale.order"
 
     # lock_allow_edit = fields.Boolean(string='Can i unlock?',
     #                                  compute='_compute_lock_allow_edit')
-    force_unlock = fields.Boolean('Force Unlock', readonly=True, copy=False)
+    force_unlock = fields.Boolean("Force Unlock", readonly=True, copy=False)
 
     # Lock Checkboxes
-    risk_lock = fields.Boolean('Locked by risk', readonly=True, copy=False)
-    unpaid_lock = fields.Boolean('Locked by unpaid', readonly=True, copy=False)
-    margin_lock = fields.Boolean('Locked by margin', readonly=True, copy=False)
-    shipping_lock = fields.Boolean('Locked by shipping costs', readonly=True, copy=False)
-    amount_lock = fields.Boolean('Locked by min amount', readonly=True, copy=False)
-    locked = fields.Boolean('Locked', readonly=True, copy=False)
+    risk_lock = fields.Boolean("Locked by risk", readonly=True, copy=False)
+    unpaid_lock = fields.Boolean("Locked by unpaid", readonly=True, copy=False)
+    margin_lock = fields.Boolean("Locked by margin", readonly=True, copy=False)
+    shipping_lock = fields.Boolean(
+        "Locked by shipping costs", readonly=True, copy=False
+    )
+    amount_lock = fields.Boolean(
+        "Locked by min amount", readonly=True, copy=False
+    )
+    locked = fields.Boolean("Locked", readonly=True, copy=False)
 
     # @api.multi
     # def _compute_lock_allow_edit(self):
@@ -41,10 +45,11 @@ class SaleOrder(models.Model):
         if self.partner_id.avoid_locks:
             return False
 
-        if (not self.partner_id.risk_invoice_unpaid_include or
-                self.partner_id.risk_invoice_unpaid <=
-                self.partner_id.risk_invoice_unpaid_limit) and \
-                self.partner_id.risk_exception:
+        if (
+            not self.partner_id.risk_invoice_unpaid_include
+            or self.partner_id.risk_invoice_unpaid
+            <= self.partner_id.risk_invoice_unpaid_limit
+        ) and self.partner_id.risk_exception:
             res = True
         return res
 
@@ -58,9 +63,11 @@ class SaleOrder(models.Model):
         if self.partner_id.avoid_locks:
             return False
 
-        if self.partner_id.risk_invoice_unpaid_include \
-                and self.partner_id.risk_invoice_unpaid > \
-                self.partner_id.risk_invoice_unpaid_limit:
+        if (
+            self.partner_id.risk_invoice_unpaid_include
+            and self.partner_id.risk_invoice_unpaid
+            > self.partner_id.risk_invoice_unpaid_limit
+        ):
             res = True
         return res
 
@@ -81,19 +88,21 @@ class SaleOrder(models.Model):
     def check_shipping_lock(self):
         self.ensure_one()
         res = False
-        delivery_lines = self.order_line.filtered('is_delivery')
+        delivery_lines = self.order_line.filtered("is_delivery")
         if self.partner_id.avoid_locks or delivery_lines:
             return False
 
-        if self.partner_id.min_no_shipping and \
-                self.amount_total < self.partner_id.min_no_shipping:
+        if (
+            self.partner_id.min_no_shipping
+            and self.amount_total < self.partner_id.min_no_shipping
+        ):
             res = True
         return res
 
     def _create_delivery_line(self, carrier, price_unit):
         res = super(SaleOrder, self)._create_delivery_line(carrier, price_unit)
         shipping_lock = self.check_shipping_lock()
-        self.write({'shipping_lock': shipping_lock})
+        self.write({"shipping_lock": shipping_lock})
         return res
 
     @api.multi
@@ -103,8 +112,10 @@ class SaleOrder(models.Model):
         if self.partner_id.avoid_locks:
             return False
 
-        if self.partner_id.min_amount_order and \
-                self.amount_total < self.partner_id.min_amount_order:
+        if (
+            self.partner_id.min_amount_order
+            and self.amount_total < self.partner_id.min_amount_order
+        ):
             res = True
         return res
 
@@ -115,7 +126,7 @@ class SaleOrder(models.Model):
         setted. It also write the value for the individual lock checks
         """
         # Avoid infinity recursion because of the write method.
-        if self._context.get('skip_check_locks', False):
+        if self._context.get("skip_check_locks", False):
             return
 
         for order in self:
@@ -127,17 +138,24 @@ class SaleOrder(models.Model):
             shipping_lock = order.check_shipping_lock()
             amount_lock = order.check_amount_lock()
 
-            locked = any([risk_lock, margin_lock, shipping_lock, unpaid_lock,
-                          amount_lock])
+            locked = any(
+                [
+                    risk_lock,
+                    margin_lock,
+                    shipping_lock,
+                    unpaid_lock,
+                    amount_lock,
+                ]
+            )
 
             # Writing the value of locking checks
             vals = {
-                'risk_lock': risk_lock,
-                'unpaid_lock': unpaid_lock,
-                'margin_lock': margin_lock,
-                'shipping_lock': shipping_lock,
-                'amount_lock': amount_lock,
-                'locked': locked,
+                "risk_lock": risk_lock,
+                "unpaid_lock": unpaid_lock,
+                "margin_lock": margin_lock,
+                "shipping_lock": shipping_lock,
+                "amount_lock": amount_lock,
+                "locked": locked,
             }
             ctx = self._context.copy()
             ctx.update(skip_check_locks=True)
@@ -145,35 +163,39 @@ class SaleOrder(models.Model):
 
             # SEND NOTIFICATION IF ANY CHANGE IN LOCK STATUS
             pids = [order.env.user.partner_id.id]
-            body = ''
+            body = ""
             # Send message of order was locked
             if not order_was_locked and locked:
                 reason_list = []
                 if risk_lock:
-                    reason_list.append(_('Risk'))
+                    reason_list.append(_("Risk"))
                 if unpaid_lock:
-                    reason_list.append(_('Unpaid'))
+                    reason_list.append(_("Unpaid"))
                 if margin_lock:
-                    reason_list.append(_('Margin'))
+                    reason_list.append(_("Margin"))
                 if shipping_lock:
-                    reason_list.append(_('No reach shipping min'))
+                    reason_list.append(_("No reach shipping min"))
                 if shipping_lock:
-                    reason_list.append(_('No reach min amount order'))
+                    reason_list.append(_("No reach min amount order"))
 
-                reasons = ', '.join(reason_list)
+                reasons = ", ".join(reason_list)
                 if not reason_list:
-                    reasons = _('Unknow')
-                body = _("Order %s has been locked because of: %s") %\
-                         (order.name, reasons)
+                    reasons = _("Unknow")
+                body = _("Order %s has been locked because of: %s") % (
+                    order.name,
+                    reasons,
+                )
 
             # Send message of order was unlocked
             elif order_was_locked and not locked:
                 body = _("Order %s has been unlocked") % order.name
 
             if body:
-                order.sudo().message_post(body=body,
-                                          partner_ids=[(4, pids[0])],
-                                          subtype='mail.mt_note')
+                order.sudo().message_post(
+                    body=body,
+                    partner_ids=[(4, pids[0])],
+                    subtype="mail.mt_note",
+                )
 
     @api.model
     def create(self, vals):
@@ -201,10 +223,7 @@ class SaleOrder(models.Model):
         """
         Function called by the cron
         """
-        domain = [
-            ('locked', '=', True),
-            ('state', 'not in', ['done' 'cancel'])
-        ]
+        domain = [("locked", "=", True), ("state", "not in", ["done" "cancel"])]
         sale_objs = self.search(domain)
         sale_objs.check_locks()
         return True
@@ -212,33 +231,33 @@ class SaleOrder(models.Model):
     @api.multi
     def force_unlock_btn(self):
         self.ensure_one()
-        self.write({'force_unlock': True})
+        self.write({"force_unlock": True})
         pids = [self.env.user.partner_id.id]
-        user_name = self.env['res.users'].search([('id', '=', self._uid)]).name
+        user_name = self.env["res.users"].search([("id", "=", self._uid)]).name
         # Send message of order was unlocked
         body = _("Unlock forced applied by %s") % (user_name)
-        self.sudo().message_post(body=body,
-                                    partner_ids=[(4, pids[0])],
-                                    subtype='mail.mt_note')
+        self.sudo().message_post(
+            body=body, partner_ids=[(4, pids[0])], subtype="mail.mt_note"
+        )
 
     @api.multi
     def unforce_unlock_btn(self):
         self.ensure_one()
-        self.write({'force_unlock': False})
+        self.write({"force_unlock": False})
         pids = [self.env.user.partner_id.id]
-        user_name = self.env['res.users'].search([('id', '=', self._uid)]).name
+        user_name = self.env["res.users"].search([("id", "=", self._uid)]).name
         # Send message of order was unlocked
         body = _("No force unlock applied by %s") % user_name
-        self.sudo().message_post(body=body,
-                                    partner_ids=[(4, pids[0])],
-                                    subtype='mail.mt_note')
+        self.sudo().message_post(
+            body=body, partner_ids=[(4, pids[0])], subtype="mail.mt_note"
+        )
 
     # *********************** LOCKING FUNCTIONS *******************************
     @api.multi
     def action_draft(self):
         for order in self:
             if order.locked and order.force_unlock is False:
-                msg = _('This order can not be in draft becaused is locked')
+                msg = _("This order can not be in draft becaused is locked")
                 raise UserError(msg)
         res = super(SaleOrder, self).action_draft()
         return res
@@ -247,7 +266,7 @@ class SaleOrder(models.Model):
     def action_cancel(self):
         for order in self:
             if order.locked and order.force_unlock is False:
-                msg = _('This order can not be cancelled becaused is locked')
+                msg = _("This order can not be cancelled becaused is locked")
                 raise UserError(msg)
         res = super(SaleOrder, self).action_cancel()
         return res
@@ -256,7 +275,7 @@ class SaleOrder(models.Model):
     def action_confirm(self):
         for order in self:
             if order.locked and order.force_unlock is False:
-                msg = _('This order can not be confirmed becaused is locked')
+                msg = _("This order can not be confirmed becaused is locked")
                 raise UserError(msg)
         res = super(SaleOrder, self).action_confirm()
         return res
@@ -265,7 +284,7 @@ class SaleOrder(models.Model):
     def action_done(self):
         for order in self:
             if order.locked and order.force_unlock is False:
-                msg = _('This order can not be finished becaused is locked')
+                msg = _("This order can not be finished becaused is locked")
                 raise UserError(msg)
         res = super(SaleOrder, self).action_done()
         return res
@@ -274,7 +293,7 @@ class SaleOrder(models.Model):
     def action_unlock(self):
         for order in self:
             if order.locked and order.force_unlock is False:
-                msg = _('This order can not be unlocked becaused is locked')
+                msg = _("This order can not be unlocked becaused is locked")
                 raise UserError(msg)
         res = super(SaleOrder, self).action_unlock()
         return res
@@ -283,8 +302,9 @@ class SaleOrder(models.Model):
     def action_invoice_create(self, grouped=False, final=False):
         for order in self:
             if order.locked and order.force_unlock is False:
-                msg = _('This order can not be invoiced becaused is locked')
+                msg = _("This order can not be invoiced becaused is locked")
                 raise UserError(msg)
-        res = super(SaleOrder, self).action_invoice_create(grouped=grouped,
-                                                           final=final)
+        res = super(SaleOrder, self).action_invoice_create(
+            grouped=grouped, final=final
+        )
         return res

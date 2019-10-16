@@ -6,6 +6,6 @@ from odoo import models, fields
 
 class DeliveryRoute(models.Model):
 
-    _name = 'delivery.route'
+    _name = "delivery.route"
 
-    name = fields.Char('Name', required=True)
+    name = fields.Char("Name", required=True)

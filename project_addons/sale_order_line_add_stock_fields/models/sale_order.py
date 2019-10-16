@@ -6,54 +6,68 @@ from odoo.addons import decimal_precision as dp
 
 class SaleOrderLine(models.Model):
 
-    _inherit = 'sale.order.line'
+    _inherit = "sale.order.line"
 
-    @api.depends('product_id', 'order_id.commitment_date', 'order_id.date_order')
+    @api.depends(
+        "product_id", "order_id.commitment_date", "order_id.date_order"
+    )
     def get_line_qties(self):
         for line in self:
             if not line.product_id:
-                self.write({'virtual_available': 0.00, 'qty_available': 0.00})
+                self.write({"virtual_available": 0.00, "qty_available": 0.00})
                 continue
             order = line.order_id
             to_date = order.commitment_date or order.date_order
             qties = line.product_id._compute_quantities_dict(
-                self._context.get('lot_id'),
-                self._context.get('owner_id'),
-                self._context.get('package_id'),
-                self._context.get('from_date'),
-                to_date=to_date)
+                self._context.get("lot_id"),
+                self._context.get("owner_id"),
+                self._context.get("package_id"),
+                self._context.get("from_date"),
+                to_date=to_date,
+            )
             vals = {
-                'virtual_available': qties[line.product_id.id]['virtual_available'],
-                'qty_available': qties[line.product_id.id]['qty_available']}
+                "virtual_available": qties[line.product_id.id][
+                    "virtual_available"
+                ],
+                "qty_available": qties[line.product_id.id]["qty_available"],
+            }
             line.update(vals)
 
     qty_available = fields.Float(
-        'Quantity On Hand', compute='get_line_qties',
-        digits=dp.get_precision('Product Unit of Measure'))
+        "Quantity On Hand",
+        compute="get_line_qties",
+        digits=dp.get_precision("Product Unit of Measure"),
+    )
     virtual_available = fields.Float(
-        'Forecast Quantity', compute='get_line_qties',
-        digits=dp.get_precision('Product Unit of Measure'))
+        "Forecast Quantity",
+        compute="get_line_qties",
+        digits=dp.get_precision("Product Unit of Measure"),
+    )
 
     line_qty_available = fields.Float(
-        'Line Quantity Available',
-        digits=dp.get_precision('Product Unit of Measure'),
-        help="Stock quantity of product at order line create time.\n")
+        "Line Quantity Available",
+        digits=dp.get_precision("Product Unit of Measure"),
+        help="Stock quantity of product at order line create time.\n",
+    )
 
     line_virtual_available = fields.Float(
-        'Line Quantity On Hand',
-        digits=dp.get_precision('Product Unit of Measure'),
-        help="Available quantity of product at order line create time.\n")
+        "Line Quantity On Hand",
+        digits=dp.get_precision("Product Unit of Measure"),
+        help="Available quantity of product at order line create time.\n",
+    )
 
 
 class SaleOrder(models.Model):
 
-    _inherit = 'sale.order'
+    _inherit = "sale.order"
 
     @api.multi
     def action_confirm(self):
         ctx = self._context.copy()
         for sale in self:
-            to_date = fields.Datetime.from_string(sale.commitment_date or sale.date_order)
+            to_date = fields.Datetime.from_string(
+                sale.commitment_date or sale.date_order
+            )
             ctx.update(to_date=to_date)
             for line in sale.with_context(ctx).order_line:
                 line.line_qty_available = line.qty_available

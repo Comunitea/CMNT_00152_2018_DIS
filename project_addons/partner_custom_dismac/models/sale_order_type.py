@@ -4,13 +4,15 @@ from odoo import models, fields
 
 
 class SaleOrderType(models.Model):
-    _inherit = 'sale.order.type'
+    _inherit = "sale.order.type"
 
     unclaimable_for = fields.Integer(
-        'Days to claim',
+        "Days to claim",
         help="Partner won't be claimable for this days after being claimed by another user",
-        default=90)
+        default=90,
+    )
     days_without_order_or_quotation = fields.Integer(
-        'Days without order',
+        "Days without order",
         help="Number of days with no order or quotation before the partner becomes claimable",
-        default=180)
+        default=180,
+    )

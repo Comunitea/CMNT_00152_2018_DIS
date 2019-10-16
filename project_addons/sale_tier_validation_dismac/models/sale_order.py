@@ -6,15 +6,22 @@ from odoo import api, models
 
 class SaleOrder(models.Model):
     _name = "sale.order"
-    _inherit = ['sale.order', 'tier.validation']
-    _state_from = ['draft', 'sent']
-    _state_to = ['sale', 'done']
+    _inherit = ["sale.order", "tier.validation"]
+    _state_from = ["draft", "sent"]
+    _state_to = ["sale", "done"]
 
     @api.model
     def _get_under_validation_exceptions(self):
         res = super()._get_under_validation_exceptions()
-        res.append('access_token')
+        res.append("access_token")
         res += [
-            'access_token', 'force_unlock', 'risk_lock', 'unpaid_lock',
-            'margin_lock', 'shipping_lock', 'amount_lock', 'locked']
+            "access_token",
+            "force_unlock",
+            "risk_lock",
+            "unpaid_lock",
+            "margin_lock",
+            "shipping_lock",
+            "amount_lock",
+            "locked",
+        ]
         return res

@@ -11,33 +11,39 @@ class PurchaseUndeliveredLinkReport(models.Model):
     _name = "purchase.undelivered.link.report"
     _description = "Purchase to undelivered link report"
     _auto = False
-    _rec_name = 'sale_order_id'
-    _order = 'date_order asc'
+    _rec_name = "sale_order_id"
+    _order = "date_order asc"
 
-    product_id = fields.Many2one('product.product', readonly=True)
-    partner_id = fields.Many2one('res.partner', readonly=True)
+    product_id = fields.Many2one("product.product", readonly=True)
+    partner_id = fields.Many2one("res.partner", readonly=True)
 
-    sale_order_id = fields.Many2one('sale.order', readonly=True)
-    sale_line_id = fields.Many2one('sale.order.line', readonly=True)
+    sale_order_id = fields.Many2one("sale.order", readonly=True)
+    sale_line_id = fields.Many2one("sale.order.line", readonly=True)
 
     so_state = fields.Char("Order state", readonly=True)
     sm_state = fields.Char("Move state", readonly=True)
     date_order = fields.Datetime("Order date", readonly=True)
     product_uom_qty = fields.Float(
-        'Qty Ordered', readonly=True,
-        digits=dp.get_precision('Product Unit of Measure'))
+        "Qty Ordered",
+        readonly=True,
+        digits=dp.get_precision("Product Unit of Measure"),
+    )
     product_uom = fields.Many2one(
-        'uom.uom', string='Product Unit of Measure', required=True)
-    qty_delivered = fields.Float('Qty delivered', readonly=True)
-    qty_to_delivered = fields.Float('Qty to delivered', readonly=True)
+        "uom.uom", string="Product Unit of Measure", required=True
+    )
+    qty_delivered = fields.Float("Qty delivered", readonly=True)
+    qty_to_delivered = fields.Float("Qty to delivered", readonly=True)
     qty_cancelled = fields.Float(
-        'Qty Canceled', readonly=True,
-        digits=dp.get_precision('Product Unit of Measure'))
-    picking_id = fields.Many2one('stock.picking', readonly=True)
-    company_id = fields.Many2one('res.company', readonly=1)
+        "Qty Canceled",
+        readonly=True,
+        digits=dp.get_precision("Product Unit of Measure"),
+    )
+    picking_id = fields.Many2one("stock.picking", readonly=True)
+    company_id = fields.Many2one("res.company", readonly=1)
 
     def _select(self):
-        select_str = """
+        select_str = (
+            """
             WITH currency_rate as (%s)
              select
              min(sol.id) as id,
@@ -56,7 +62,9 @@ class PurchaseUndeliveredLinkReport(models.Model):
              sm.state as sm_state,
              so.state as so_state
 
-        """ % self.env['res.currency']._select_companies_rates()
+        """
+            % self.env["res.currency"]._select_companies_rates()
+        )
         return select_str
 
     def _from(self):
@@ -105,5 +113,11 @@ class PurchaseUndeliveredLinkReport(models.Model):
             WHERE ( %s )
             %s
             order by so.date_order)
-            """ % (self._table, self._select(), self._from(), self._where(), self._group_by())
+            """ % (
+            self._table,
+            self._select(),
+            self._from(),
+            self._where(),
+            self._group_by(),
+        )
         self.env.cr.execute(sql)

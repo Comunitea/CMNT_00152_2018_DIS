@@ -6,7 +6,7 @@ from odoo.exceptions import UserError
 
 class SaleOrderLine(models.Model):
 
-    _inherit = 'sale.order.line'
+    _inherit = "sale.order.line"
 
     @api.multi
     def _prepare_invoice_line(self, qty):
@@ -16,13 +16,23 @@ class SaleOrderLine(models.Model):
         También paso el porcentaje de señalamiento.
         """
         res = super()._prepare_invoice_line(qty)
-        res.update({
-            'sale_purchase_price': self.purchase_price,
-            'agents': [(0, 0, {
-                'agent': x.agent.id,
-                'commission': x.commission.id,
-                'reduction_per': x.reduction_per}) for x in self.agents]
-        })
+        res.update(
+            {
+                "sale_purchase_price": self.purchase_price,
+                "agents": [
+                    (
+                        0,
+                        0,
+                        {
+                            "agent": x.agent.id,
+                            "commission": x.commission.id,
+                            "reduction_per": x.reduction_per,
+                        },
+                    )
+                    for x in self.agents
+                ],
+            }
+        )
         return res
 
     @api.model
@@ -37,18 +47,28 @@ class SaleOrderLine(models.Model):
         if opp and opp.pointing:
             if not opp.user_id.partner_id.agent:
                 raise UserError(
-                    _('The partner related to commercial %s must be a \
-                        partner') % opp.user_id.name
+                    _(
+                        "The partner related to commercial %s must be a \
+                        partner"
+                    )
+                    % opp.user_id.name
                 )
             new_agent = opp.user_id.partner_id
             pointing_per = opp.pointing_per
-            res.agents.write({
-                'reduction_per': 100.0 - pointing_per
-            })
-            res.write({
-                'agents': [(0, 0, {
-                    'agent': new_agent.id,
-                    'commission': new_agent.commission.id,
-                    'reduction_per': pointing_per})]
-            })
+            res.agents.write({"reduction_per": 100.0 - pointing_per})
+            res.write(
+                {
+                    "agents": [
+                        (
+                            0,
+                            0,
+                            {
+                                "agent": new_agent.id,
+                                "commission": new_agent.commission.id,
+                                "reduction_per": pointing_per,
+                            },
+                        )
+                    ]
+                }
+            )
         return res
