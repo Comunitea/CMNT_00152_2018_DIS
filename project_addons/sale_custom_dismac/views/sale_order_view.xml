@@ -1,5 +1,25 @@
 <?xml version="1.0"?>
 <odoo>
+    <record id="action_product_sale_list" model="ir.actions.act_window">
+            <field name="name">Sale Order Lines</field>
+            <field name="res_model">sale.order.line</field>
+            <field name="context">{'search_default_product_id': [active_id], 'default_product_id': active_id}</field>
+            <field name="domain">[('state', 'in', ['sale', 'done'])]</field>
+        </record>
+    <record model="ir.ui.view" id="product_form_view_sale_order_button">
+            <field name="name">product.product.sale.order</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="sale.product_form_view_sale_order_button"/>
+            <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+            <field name="arch" type="xml">
+                <button name="action_view_sales" position="before">
+                    <button class="oe_stat_button" name="%(sale_custom_dismac.action_product_sale_list)d"
+                        type="action" icon="fa-usd">
+                        <field string="Sales" name="sales_count" widget="statinfo" />
+                    </button>
+                </button>
+            </field>
+    </record>
 
     <record id="sale_order_form_custom" model="ir.ui.view" >
         <field name="name">sale.order.form.custom</field>
