@@ -21,7 +21,7 @@
 
 from odoo import fields, models, api, _
 
-API_PARAMS = ['api_key', 'api_string']
+API_PARAMS = ['api_key', 'api_string', 'api_partner']
 
 class ConfigAPIData(models.TransientModel):
 
@@ -29,6 +29,7 @@ class ConfigAPIData(models.TransientModel):
 
     api_key = fields.Char('API KEY', help="API KEY for token authentication")
     api_string = fields.Char('API String', help="API String for token authentication")
+    api_partner = fields.Char('API Partner ID', help="Allowed Partner ID")    
 
     @api.model
     def get_values(self):

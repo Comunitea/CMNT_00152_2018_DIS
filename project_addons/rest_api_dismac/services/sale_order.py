@@ -24,6 +24,7 @@
 
 import base64
 from odoo.addons.component.core import Component
+from odoo import _
 
 
 class SaleOrderService(Component):
@@ -52,9 +53,9 @@ class SaleOrderService(Component):
 
         res = {
             "id": "%s" % sale_order.id,
-            "id_ente": "%s" % sale_order.partner_id.company_id.id,
+            "id_ente": "%s" % sale_order.partner_id.parent_id.id,
             "id_usuario": "%s" % sale_order.partner_id.id,
-            "nombre": "%s" % sale_order.user_id.partner_id.name,
+            "nombre": "%s" % sale_order.partner_id.name,
             "fecha": "%s" % sale_order.date_order.strftime("%Y%m%d%H%M%S"),
             # "refcli": ref del pedido en el sistema de UVigo // Opcional
             "precio_total": "{:.2f}".format(sale_order.amount_untaxed),

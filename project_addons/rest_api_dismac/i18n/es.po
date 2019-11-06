@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-05 13:46+0000\n"
-"PO-Revision-Date: 2019-11-05 13:46+0000\n"
+"POT-Creation-Date: 2019-11-06 08:22+0000\n"
+"PO-Revision-Date: 2019-11-06 08:22+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,6 +26,11 @@ msgid "API KEY for token authentication"
 msgstr "API KEY para el token de identificación"
 
 #. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_res_config_settings__api_partner
+msgid "API Partner ID"
+msgstr "API Partner ID"
+
+#. module: rest_api_dismac
 #: model:ir.model.fields,field_description:rest_api_dismac.field_res_config_settings__api_string
 msgid "API String"
 msgstr "Cadena del API"
@@ -36,6 +41,11 @@ msgid "API String for token authentication"
 msgstr "Cadena para el token de identificación"
 
 #. module: rest_api_dismac
+#: model:ir.model.fields,help:rest_api_dismac.field_res_config_settings__api_partner
+msgid "Allowed Partner ID"
+msgstr "Partner ID Permitido"
+
+#. module: rest_api_dismac
 #: model_terms:ir.ui.view,arch_db:rest_api_dismac.res_config_settings_view_form
 msgid "Api configuration"
 msgstr "Configuración API"
@@ -44,4 +54,46 @@ msgstr "Configuración API"
 #: model:ir.model,name:rest_api_dismac.model_res_config_settings
 msgid "Config Settings"
 msgstr "Opciones de Configuración"
+
+#. module: rest_api_dismac
+#: code:addons/rest_api_dismac/controllers/main.py:99
+#: code:addons/rest_api_dismac/controllers/main.py:101
+#, python-format
+msgid "REST API access not allowed to this order."
+msgstr "Acceso no permitido."
+
+#. module: rest_api_dismac
+#: code:addons/rest_api_dismac/controllers/main.py:75
+#: code:addons/rest_api_dismac/controllers/main.py:77
+#, python-format
+msgid "REST API called with a invalid token."
+msgstr "El token enviado no es válido."
+
+#. module: rest_api_dismac
+#: code:addons/rest_api_dismac/controllers/main.py:48
+#: code:addons/rest_api_dismac/controllers/main.py:50
+#, python-format
+msgid "REST API called with no credentials"
+msgstr "No se han enviado credenciales de acceso."
+
+#. module: rest_api_dismac
+#: code:addons/rest_api_dismac/controllers/main.py:83
+#: code:addons/rest_api_dismac/controllers/main.py:85
+#, python-format
+msgid "REST API called without order id."
+msgstr "No se ha facilitado un id de pedido."
+
+#. module: rest_api_dismac
+#: code:addons/rest_api_dismac/controllers/main.py:91
+#: code:addons/rest_api_dismac/controllers/main.py:93
+#, python-format
+msgid "REST API could not find that order number."
+msgstr "No se ha encontrado el pedido."
+
+#. module: rest_api_dismac
+#: code:addons/rest_api_dismac/controllers/main.py:65
+#: code:addons/rest_api_dismac/controllers/main.py:67
+#, python-format
+msgid "REST API values not configured."
+msgstr "El acceso no está configurado."
 
