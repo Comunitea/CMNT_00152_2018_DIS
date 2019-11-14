@@ -9,6 +9,15 @@ class SaleOrder(models.Model):
 
     _inherit = "sale.order"
 
+    # @api.multi
+    # @api.depends('order_line')
+    # def _compute_sale_order_lines_count(self):
+    #     for order in self:
+    #         order.order_lines_count = len(order.order_line)
+
+    # order_lines_count = fields.Integer(
+    #     'Line count', compute='_compute_sale_order_lines_count')
+
     need_approval = fields.Boolean(
         related="type_id.need_approval", readonly=True
     )
@@ -59,3 +68,48 @@ class SaleOrder(models.Model):
     @api.onchange("type_id")
     def onchange_type_id_user_id(self):
         self.set_user_id()
+    
+    # @api.multi
+    # def action_view_order_lines(self):
+    #     self.ensure_one()
+    
+
+    #     # model_data = self.env['ir.model.data']
+    #     # tree_view = model_data.get_object_reference(
+    #     #     'sale_custom_dismac', 'sale_order_line_tree_view')
+    #     tree_view_name = 'sale_custom_dismac.sale_order_line_tree_view'
+    #     tree_view = self.env.ref(tree_view_name)
+
+
+    #     action = self.env.ref(
+    #         'sale_custom_dismac.sale_order_line_tree_view_action').read()[0]
+
+    #     action['views'] = {
+    #         (tree_view and tree_view.id or False, 'tree')}
+
+    #     action['domain'] = [('order_id', '=', self.id)]
+
+    #     action['context'] = {
+    #         'default_order_id': self.id,
+    #         'partner_id': self.partner_id.id,
+    #         'pricelist': self.pricelist_id,
+    #         'company_id': self.company_id.id,
+    #         'type_id': self.type_id.id,
+    #     }
+    #     action.update(
+    #         {'tax_id': {'domain': [('type_tax_use', '=', 'sale'),
+    #                                ('company_id', '=', self.company_id)]}}
+    #          )
+
+
+    #     return action
+
+
+class SaleOrderLine(models.Model):
+
+    _inherit = "sale.order.line"
+
+    @api.multi
+    def duplicate_line(self):
+        self.ensure_one()
+        self.copy({'order_id': self.order_id.id})
