@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-14 12:27+0000\n"
-"PO-Revision-Date: 2019-11-14 12:27+0000\n"
+"POT-Creation-Date: 2019-11-14 15:25+0000\n"
+"PO-Revision-Date: 2019-11-14 15:25+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,8 +17,9 @@ msgstr ""
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__notes
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_order_form_custom
 msgid "Advanced Description"
-msgstr "Descripción detallada"
+msgstr ""
 
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
@@ -33,7 +34,7 @@ msgstr "Aplicar descuento global"
 #. module: sale_custom_dismac
 #: model:ir.actions.act_window,name:sale_custom_dismac.apply_global_discount_action
 msgid "Apply global discount"
-msgstr "Aplicar descuento global"
+msgstr ""
 
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
@@ -68,7 +69,7 @@ msgstr "Ruta de entrega"
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__discount
 msgid "Discount(%)"
-msgstr "Descuento (%)"
+msgstr ""
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__display_name
@@ -115,19 +116,19 @@ msgstr "Nombre"
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order__need_approval
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_type__need_approval
 msgid "Need Approval"
-msgstr "Necesita aprovación"
+msgstr ""
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__no_valued_picking
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users__no_valued_picking
 msgid "No valued picking"
-msgstr "Sin albarán valorado"
+msgstr ""
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__require_num_order
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users__require_num_order
 msgid "Requires num order"
-msgstr "Requieres num pedido"
+msgstr ""
 
 #. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_sale_order
@@ -137,7 +138,7 @@ msgstr "Pedido de venta"
 #. module: sale_custom_dismac
 #: model:ir.actions.act_window,name:sale_custom_dismac.action_product_sale_list
 msgid "Sale Order Lines"
-msgstr "Líneas de venta"
+msgstr ""
 
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.product_form_view_sale_order_button
@@ -153,7 +154,7 @@ msgstr "Línea de pedido de venta"
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__whole_orders
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users__whole_orders
 msgid "Shipping Whole orders"
-msgstr "Envíar pedido entero"
+msgstr ""
 
 #. module: sale_custom_dismac
 #: code:addons/sale_custom_dismac/models/sale_order.py:35
@@ -174,17 +175,18 @@ msgstr ""
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__zone_id
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users__zone_id
-msgid "Zona"
+msgid "Zone"
+msgstr ""
 
 #. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_apply_global_discount
 msgid "apply.global.discount"
-msgstr "apply.global.discount"
+msgstr ""
 
 #. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_delivery_route
 msgid "delivery.route"
-msgstr "delivery.route"
+msgstr ""
 
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
@@ -194,5 +196,5 @@ msgstr "o"
 #. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_partner_zone
 msgid "partner.zone"
-msgstr "partner.zone"
+msgstr ""
 
