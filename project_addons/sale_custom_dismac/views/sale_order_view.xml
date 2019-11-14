@@ -32,8 +32,129 @@
             <xpath expr="//field[@name='order_line']/tree//field[@name='analytic_tag_ids']" position="attributes">
                 <attribute name="attrs">{'column_invisible': True}</attribute>
             </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='price_subtotal']" position="after">
+                <button name="duplicate_line"
+                        icon="fa-copy"
+                        type="object"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/form//field[@name='name']" position="after">
+                <label for="notes" string="Advanced Description"/>
+                <field name="notes" widget="html"/>
+            </xpath>
+
+            <!-- Smart button ver líneas comentado-->
+            <!-- <div name="button_box" position="inside">
+                <button name="action_view_order_lines" type="object" class="oe_stat_button"
+                    icon="fa-address-card-o" attrs="{'invisible': [('order_lines_count', '=', 0)]}">
+                    <field name="order_lines_count" widget="statinfo" string="Order lines"/>
+                </button>
+            </div> -->
         </field>
     </record>
+
+    <!-- <record id="sale_order_line_tree_view" model="ir.ui.view">
+        <field name="name">sale.order.line.tree</field>
+        <field name="model">sale.order.line</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Sales Order Lines" editable="bottom" decoration-info="invoice_status=='to invoice'">
+                <field name="sequence" widget="handle" />
+                <field name="display_type" invisible="1"/>
+
+                <field name="product_updatable" invisible="1"/>
+                <field
+                    name="product_id"
+                    attrs="{
+                        'readonly': [('product_updatable', '=', False)],
+                        'required': [('display_type', '=', False)],
+                    }"
+                    force_save="1"
+                    context="{
+                        'partner_id': parent.partner_id,
+                        'quantity': product_uom_qty,
+                        'pricelist': parent.pricelist_id,
+                        'uom':product_uom,
+                        'company_id': parent.company_id,
+                        'default_lst_price': price_unit,
+                        'default_description_sale': name
+                    }"
+                />
+                <field name="product_custom_attribute_value_ids" invisible="1" />
+                <field name="product_no_variant_attribute_value_ids" invisible="1" />
+                <field name="name" widget="section_and_note_text"/>
+                <field
+                    name="product_uom_qty"
+                    string="Ordered Qty"
+                    context="{
+                        'partner_id': parent.partner_id,
+                        'quantity': product_uom_qty,
+                        'pricelist': parent.pricelist_id,
+                        'uom': product_uom,
+                        'company_id': parent.company_id
+                    }"
+                />
+                <field
+                    name="qty_delivered"
+                    attrs="{
+                        'column_invisible': [('parent.state', 'not in', ['sale', 'done'])],
+                        'readonly': [('qty_delivered_method', '!=', 'manual')]
+                    }"
+                />
+                <field name="qty_delivered_manual" invisible="1"/>
+                <field name="qty_delivered_method" invisible="1"/>
+                <field
+                    name="qty_invoiced"
+                    attrs="{'column_invisible': [('parent.state', 'not in', ['sale', 'done'])]}"
+                />
+                <field name="qty_to_invoice" invisible="1"/>
+                <field
+                    name="product_uom"
+                    force_save="1"
+                    attrs="{
+                        'readonly': [('state', 'in', ('sale','done', 'cancel'))],
+                        'required': [('display_type', '=', False)],
+                    }"
+                    context="{'company_id': parent.company_id}"
+                    groups="uom.group_uom"
+                    options='{"no_open": True}'
+                />
+                <field
+                    name="analytic_tag_ids"
+                    groups="analytic.group_analytic_tags"
+                    widget="many2many_tags"
+                    options="{'color_field': 'color'}"
+                />
+                <field
+                    name="price_unit"
+                    attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"
+                />
+                <field
+                    name="tax_id"
+                    widget="many2many_tags"
+                    options="{'no_create': True}"
+                    domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
+                    attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"
+                />
+                <field name="discount" groups="sale.group_discount_per_so_line"/>
+                <field name="price_subtotal" widget="monetary" groups="account.group_show_line_subtotals_tax_excluded"/>
+                <field name="price_total" widget="monetary" groups="account.group_show_line_subtotals_tax_included"/>
+                <field name="state" invisible="1"/>
+                <field name="invoice_status" invisible="1"/>
+                <field name="customer_lead" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="price_tax" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sale_order_line_tree_view_action" model="ir.actions.act_window">
+        <field name="name">Order lines</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="sale.view_sales_order_line_filter"/>
+    </record> -->
 
     <record model="ir.ui.view" id="sale_margin_sale_order_line_form_not_visible">
         <field name="name">sale.order.line.tree.margin.invisible.view.form</field>
