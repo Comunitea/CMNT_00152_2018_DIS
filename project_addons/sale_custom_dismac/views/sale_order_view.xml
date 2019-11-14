@@ -38,6 +38,11 @@
                         type="object"/>
             </xpath>
 
+            <xpath expr="//field[@name='order_line']/form//field[@name='name']" position="after">
+                <label for="notes" string="Advanced Description"/>
+                <field name="notes" widget="html"/>
+            </xpath>
+
             <!-- Smart button ver líneas comentado-->
             <!-- <div name="button_box" position="inside">
                 <button name="action_view_order_lines" type="object" class="oe_stat_button"

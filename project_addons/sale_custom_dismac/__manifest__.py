@@ -23,5 +23,6 @@
         "views/res_partner_view.xml",
         "views/sale_order_view.xml",
         "views/sale_order_type.xml",
+        "views/report_sale_order.xml",
     ],
 }

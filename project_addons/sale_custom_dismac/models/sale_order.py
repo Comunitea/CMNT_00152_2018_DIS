@@ -109,6 +109,8 @@ class SaleOrderLine(models.Model):
 
     _inherit = "sale.order.line"
 
+    notes = fields.Text('Advanced Description')
+
     @api.multi
     def duplicate_line(self):
         self.ensure_one()
