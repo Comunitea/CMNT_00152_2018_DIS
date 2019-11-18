@@ -97,7 +97,7 @@ class SaleOrder(models.Model):
     def _compute_urls(self):
         if self.uvigo_url:
             self.uvigo_pdf = "{}/pdf".format(self.uvigo_url)
-            self.uvigo_zip = "{}/pdf".format(self.uvigo_url)
+            self.uvigo_zip = "{}/zip".format(self.uvigo_url)
 
     def _check_owner(self):
         api_partner_id = self.env['ir.config_parameter'].sudo().get_param('rest_api_dismac.api_partner', False)
