@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+
+        <record id="contactus_menu" model="website.menu">
+            <field name="name">Contact us</field>
+            <field name="url">http://www.dismacpruebas.es.mialias.net/contacto/</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" type="int">120</field>
+            <field name="website_id" ref="website_base.dismac_website"/>
+            <field name="user_logged">False</field>
+            <field name="user_not_logged">True</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,60 @@
+/* Body */
+body {
+    font-family: @main-font-family;
+}
+
+/* Links */
+a {
+    color: @color-secondary;
+    &:hover, &:focus {
+        color: @color-secondary;
+    }
+}
+
+/* Buttons */
+.btn, .btn-primary, .btn-secondary, .btn-link {
+    color: @color-white;
+    border-color: @color-main;
+    background-color: @color-secondary;
+    &:hover, &:focus {
+        color: @color-secondary;
+        background-color: @color-white;
+        border-color: @color-secondary;
+        box-shadow: 0 0 0 0.5px @color-secondary;
+    }
+}
+
+/* Pagination */
+.page-item.active .page-link {
+    background-color: @color-secondary;
+    border-color: @color-secondary;
+}
+.pagination > li > a, .pagination > li > span {
+    color: @color-main;
+    padding: 6px 10px;
+}
+.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+    color: @color-secondary;
+}
+
+/* ECommerce categories*/
+#o_shop_collapse_category li i.fa {
+    color: @color-secondary;
+}
+
+/*Labels */
+.label-primary, .badge-primary {
+    background-color: @color-secondary;
+    color: @color-white;
+}
+
+/* fa icons */
+a {
+    & .fa-trash, .fa-trash-o {
+        color: @color-red;
+    }
+}
+
+.text-primary {
+    color: @color-secondary !important;
+}

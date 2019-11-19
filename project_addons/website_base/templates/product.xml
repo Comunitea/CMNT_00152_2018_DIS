@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- Product template -->
+    <template id="website_sale_product" name="Product Base" inherit_id="website_sale.product">
+
+         <!-- Remove the product breadcrumb's bar -->
+        <xpath expr="//ol[hasclass('breadcrumb')]" position="attributes">
+            <attribute name="t-if">True == False</attribute>
+        </xpath>
+
+        <!-- Image URL and attributes -->
+        <xpath expr="//div[hasclass('carousel-inner')]/div[2]" position="replace">
+            <div t-attf-class="item#{'' if variant_img else ' active'}">
+                <img t-att-alt="product.name" t-att-title="product.name" class="product_detail_img js_variant_img"
+                     t-attf-src="/website/image/product.template/{{product.id}}/image/" data-zoom="1"
+                     t-attf-data-zoom-image="/website/image/product.template/{{product.id}}/image/"/>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('carousel-inner')]/t/div[hasclass('item')]" position="replace">
+            <div class="item">
+                <img t-att-alt="pimg.name" t-att-title="pimg.name" class="product_detail_img"
+                     t-attf-src="/web/image/product.image/{{pimg.id}}/image/" data-zoom="1"
+                     t-attf-data-zoom-image="/web/image/product.image/{{pimg.id}}/image/"/>
+            </div>
+        </xpath>
+
+        <!-- Hide guarantee-->
+        <xpath expr="//div[@id='product_details']//hr[last()]" position="replace"/>
+        <xpath expr="//div[@id='product_details']/p[last()]" position="replace"/>
+
+        <!-- Add short product description-->
+        <xpath expr="//div[@id='product_details']//hr[@t-if='product.description_sale']" position="attributes">
+            <attribute name="t-if">product.description_short</attribute>
+        </xpath>
+        <xpath expr="//div[@id='product_details']//div[hasclass('o_not_editable')]/p" position="attributes">
+            <attribute name="t-field">product.description_short</attribute>
+        </xpath>
+
+        <!-- Add full product HTML description-->
+        <xpath expr="//div[@id='product_full_description']" position="replace">
+            <div class="oe_structure mt16 mb16" id="product_full_description" t-if="product.description">
+                <div class="container" t-if="len(product.description) > 15" itemprop="description">
+                    <div class="row">
+                        <div class="col-md-12" t-field="product.description"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+    </template>
+
+    <template id="website_sale_products_add_to_cart" name="Add to Cart Base" inherit_id="website_sale.products_add_to_cart">
+        <!-- Replace add to cart miniature -->
+        <xpath expr="//t[2]/a" position="attributes">
+            <attribute name="t-att-href">keep('/product/{}', page=(pager['page']['num'] if pager['page']['num']&gt;1 else None)).format(product.slug) if product.slug else keep('/shop/product/%s' % slug(product), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))</attribute>
+        </xpath>
+
+        <!-- Replace add to cart miniature. Force product without variants to multi add to cart -->
+        <xpath expr="//div[hasclass('product_price')]//t[1]/a" position="replace">
+            <a class="btn btn-default btn-xs" t-att-href="keep('/product/{}', page=(pager['page']['num'] if pager['page']['num']&gt;1 else None)).format(product.slug) if product.slug else keep('/shop/product/%s' % slug(product), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))">
+                <span class="fa fa-shopping-cart" />
+            </a>
+        </xpath>
+    </template>
+
+</odoo>

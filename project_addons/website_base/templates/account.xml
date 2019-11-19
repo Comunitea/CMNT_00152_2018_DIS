@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="web_login" name="Login Legal Base" inherit_id="web.login">
+        <xpath expr="//div[hasclass('form-group', 'field-password')]" position="after">
+            <t t-call="website_base.acceptance_full_legal_terms_with_check"/>
+        </xpath>
+    </template>
+
+</odoo>
