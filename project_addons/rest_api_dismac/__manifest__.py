@@ -35,7 +35,8 @@
     ],
     "depends": ["base_rest", "component", "sale"],
     "data": [
-        'views/res_config.xml'
+        'views/res_config.xml',
+        'views/sale_order.xml'
     ],
     "demo": [],
     "external_dependencies": {"python": ["jsondiff"]},

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-06 08:22+0000\n"
-"PO-Revision-Date: 2019-11-06 08:22+0000\n"
+"POT-Creation-Date: 2019-11-18 11:41+0000\n"
+"PO-Revision-Date: 2019-11-18 11:41+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 #. module: rest_api_dismac
 #: model:ir.model.fields,field_description:rest_api_dismac.field_res_config_settings__api_key
 msgid "API KEY"
-msgstr "API KEY"
+msgstr ""
 
 #. module: rest_api_dismac
 #: model:ir.model.fields,help:rest_api_dismac.field_res_config_settings__api_key
@@ -28,7 +28,7 @@ msgstr "API KEY para el token de identificación"
 #. module: rest_api_dismac
 #: model:ir.model.fields,field_description:rest_api_dismac.field_res_config_settings__api_partner
 msgid "API Partner ID"
-msgstr "API Partner ID"
+msgstr ""
 
 #. module: rest_api_dismac
 #: model:ir.model.fields,field_description:rest_api_dismac.field_res_config_settings__api_string
@@ -54,6 +54,16 @@ msgstr "Configuración API"
 #: model:ir.model,name:rest_api_dismac.model_res_config_settings
 msgid "Config Settings"
 msgstr "Opciones de Configuración"
+
+#. module: rest_api_dismac
+#: model_terms:ir.ui.view,arch_db:rest_api_dismac.sale_order_form_custom
+msgid "Connect"
+msgstr "Conectar"
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order__is_from_uvigo
+msgid "Is From Uvigo"
+msgstr "Pedido UVigo"
 
 #. module: rest_api_dismac
 #: code:addons/rest_api_dismac/controllers/main.py:99
@@ -96,4 +106,34 @@ msgstr "No se ha encontrado el pedido."
 #, python-format
 msgid "REST API values not configured."
 msgstr "El acceso no está configurado."
+
+#. module: rest_api_dismac
+#: model:ir.model,name:rest_api_dismac.model_sale_order
+msgid "Sale Order"
+msgstr "Pedido de venta"
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order__uvigo_pdf
+msgid "UVigo order PDF"
+msgstr "PDF UVigo"
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order__uvigo_url
+msgid "UVigo order URL"
+msgstr "UVigo URL"
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order__uvigo_zip
+msgid "UVigo order ZIP"
+msgstr "ZIP UVigo"
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order__uvigo_order
+msgid "UVigo order number"
+msgstr "Número pedido UVigo"
+
+#. module: rest_api_dismac
+#: model_terms:ir.ui.view,arch_db:rest_api_dismac.sale_order_form_custom
+msgid "Unv. Vigo"
+msgstr "Unv. de Vigo"
 
