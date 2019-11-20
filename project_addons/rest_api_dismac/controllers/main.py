@@ -41,7 +41,8 @@ class BaseRestUVigoApiController(main.RestController):
         if service_name == 'pedidos' or service_name == 'sale.order':
             service_name = 'sale.order'
             token = params.get('token', False)
-            timestamp = params.get('timestamp', False)
+            timestamp = params.get('timestamp', False) or datetime.now().timestamp()
+            
             if not params or not token or not timestamp:
 
                 _logger.error(
