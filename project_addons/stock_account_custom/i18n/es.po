@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-16 16:52+0000\n"
-"PO-Revision-Date: 2019-04-16 16:52+0000\n"
+"POT-Creation-Date: 2019-11-21 15:47+0000\n"
+"PO-Revision-Date: 2019-11-21 15:47+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,78 +16,117 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_product_cost_method_calc
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_template_cost_method_calc
+#: selection:product.pricelist.item,applied_on:0
+msgid " Product Category"
+msgstr "Categoría de producto"
+
+#. module: stock_account_custom
+#: selection:product.pricelist.item,applied_on:0
+msgid " Product Type"
+msgstr "Tipo de producto"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_pricelist_item__applied_on
+msgid "Apply On"
+msgstr "Aplicar Sobre"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,help:stock_account_custom.field_product_pricelist_item__base
+msgid "Base price for computation.\n"
+"Public Price: The base price will be the Sale/public Price.\n"
+"Cost Price : The base price will be the cost price.\n"
+"Other Pricelist : Computation of the base price based on another Pricelist.\n"
+"Pricelist Cost : The base price will be the pricelist cost."
+msgstr "Precio base para el cálculo.\n"
+"Precio al público: El precio base será el  precio de venta/público.\n"
+"Precio de coste : El precio base será el precio de coste.\n"
+"Otra tarifa : El cálculo del precio base está basado en otra tarifa.\n"
+"Tarifa de coste : El precio base será la tarifa de coste."
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_pricelist_item__base
+msgid "Based on"
+msgstr "Basado en"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product__cost_method_calc
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_template__cost_method_calc
 msgid "Calculation method"
 msgstr "Método de cálculo"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,help:stock_account_custom.field_product_product_cost_method_calc
-#: model_terms:ir.model.fields,help:stock_account_custom.field_product_template_cost_method_calc
+#: model:ir.model.fields,help:stock_account_custom.field_product_product__cost_method_calc
+#: model:ir.model.fields,help:stock_account_custom.field_product_template__cost_method_calc
 msgid "Calculation method for Pricelist Cost"
-msgstr "Método de cálculo para coste de tarifa"
+msgstr "Método de cálculo para la tarifa de coste"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_product_cost_method_product_id
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_template_cost_method_product_id
+#: model:ir.model.fields,field_description:stock_account_custom.field_sale_order_line__purchase_price
+#: selection:product.pricelist.item,base:0
+msgid "Cost"
+msgstr "Coste"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product__cost_method_product_id
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_template__cost_method_product_id
 msgid "Cost Product"
 msgstr "Coste de producto"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,help:stock_account_custom.field_product_product_reference_cost
+#: model:ir.model.fields,help:stock_account_custom.field_product_product__reference_cost
 msgid "Cost price (reference)"
 msgstr "Precio de coste (referencia)"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,help:stock_account_custom.field_product_template_reference_cost
+#: model:ir.model.fields,help:stock_account_custom.field_product_template__reference_cost
 msgid "Cost price for salesman users (Fixed real stock cost fixed by ratio)"
-msgstr "Precio de coste par acomerciales (Coste real modificado corregido con ratio)"
+msgstr "Precio de coste (comercial - Coste real de stock corregido con ratio)"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,help:stock_account_custom.field_product_template_pricelist_cost
+#: model:ir.model.fields,help:stock_account_custom.field_product_template__pricelist_cost
 msgid "Cost price used in pricelist (Fixed real stock cost manually frozen"
-msgstr "Precio de coste usado en tarifa (Precio real modificado fijado manualmente"
+msgstr "Precio de coste usado en tarifas (Coste de stock real corregido y manualmente fijado)"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,help:stock_account_custom.field_product_product_pricelist_cost
+#: model:ir.model.fields,help:stock_account_custom.field_product_product__pricelist_cost
 msgid "Cost price used in pricelist (Last purchase cost manually frozen"
-msgstr "Precio de coste usado en tarifa(Precio de compra fijado manualmente)"
+msgstr "Precio de coste usado en tarifas (Coste de última compra manualmente fijado)"
 
 #. module: stock_account_custom
-#: model_terms:res.groups,name:stock_account_custom.group_cost_manager
+#: model:res.groups,name:stock_account_custom.group_cost_manager
 msgid "Costs: Manager"
-msgstr "Costes: Administrador"
+msgstr "Costes: Gestor"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_create_uid
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_create_date
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio__create_date
 msgid "Created on"
-msgstr "Creado en"
+msgstr "Creado el"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_display_name
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_purchase_order_exclude_compute_cost
+#: model:ir.model.fields,field_description:stock_account_custom.field_purchase_order__exclude_compute_cost
 msgid "Exclude from compute cost"
-msgstr "Excluir de coste de referencia"
+msgstr "Excluído del cálculo de costes"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_product_real_stock_cost_fixed
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_template_real_stock_cost_fixed
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product__real_stock_cost_fixed
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_template__real_stock_cost_fixed
 msgid "Fixed real stock cost"
-msgstr "Coste real corregido"
+msgstr "Coste de stock real corregido"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_product_force_purchase_price_fixed
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product__force_purchase_price_fixed
 msgid "Force Last Purchase Price Fixed"
-msgstr "Forzar el precio de últ. compra corregido"
+msgstr "Precio de última compra forzado corregido"
 
 #. module: stock_account_custom
 #: selection:product.template,cost_method_calc:0
@@ -95,19 +134,24 @@ msgid "Formula"
 msgstr "Fórmula"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_id
+#: selection:product.pricelist.item,applied_on:0
+msgid "Global"
+msgstr "Global"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio__id
 msgid "ID"
-msgstr "ID (identificación)"
+msgstr ""
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,help:stock_account_custom.field_stock_move_exclude_compute_cost
+#: model:ir.model.fields,help:stock_account_custom.field_stock_move__exclude_compute_cost
 msgid "If true, this move is from a purchase, no include in cost computes"
-msgstr "Si está marcado, este movimiento viene de una compra marcado como no incluida en cálculos de costes de referencia"
+msgstr "Si es verdadero, este movimiento es de una compra, no incluido en el cálculo de costes"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,help:stock_account_custom.field_purchase_order_exclude_compute_cost
+#: model:ir.model.fields,help:stock_account_custom.field_purchase_order__exclude_compute_cost
 msgid "If true, this purchase is no include in cost computes"
-msgstr "Si está marcado, esta compra no será incluida en cálculos de costes de referencia"
+msgstr "Si es verdadero, esta compra no influye en el cálculo de costes"
 
 #. module: stock_account_custom
 #: selection:product.template,cost_method_calc:0
@@ -115,29 +159,29 @@ msgid "Last Cost"
 msgstr "Último coste"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio___last_update
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio____last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_product_last_purchase_price_fixed
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product__last_purchase_price_fixed
 msgid "Last Purchase Price Fixed"
-msgstr "Precio últ. compra corregido"
+msgstr "Precio de última compra corregido"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_product_last_purchase_price_fixed_alternative
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product__last_purchase_price_fixed_alternative
 msgid "Last Purchase Price Fixed Alternative"
-msgstr "Precio de últ. compra corregido forzado"
+msgstr "Precio de última compra corregido alternativo"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_write_uid
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio__write_uid
 msgid "Last Updated by"
-msgstr "Última actualización de"
+msgstr "Última actualización por"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_write_date
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio__write_date
 msgid "Last Updated on"
-msgstr "Última actualización en"
+msgstr "Última actualización el"
 
 #. module: stock_account_custom
 #: selection:product.template,cost_method_calc:0
@@ -145,9 +189,14 @@ msgid "Manual"
 msgstr "Manual"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_customer_price_price_coef
+#: model:ir.model.fields,field_description:stock_account_custom.field_sale_order_line__margin
+msgid "Margin"
+msgstr "Margen"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_customer_price__price_coef
 msgid "Margin Coeff"
-msgstr "Coef. de margen"
+msgstr "Coef margen"
 
 #. module: stock_account_custom
 #: selection:product.template,cost_method_calc:0
@@ -155,156 +204,228 @@ msgid "Max in Period"
 msgstr "Máx. en período"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_name
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio__name
 msgid "Name"
 msgstr "Nombre"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_stock_move_exclude_compute_cost
+#: model:ir.model.fields,field_description:stock_account_custom.field_stock_move__exclude_compute_cost
 msgid "Not include in costs"
-msgstr "Excluir de costes de referencia"
+msgstr "No incluído en costes"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_product_period_max_cost
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_template_period_max_cost
+#: selection:product.pricelist.item,base:0
+msgid "Other Pricelist"
+msgstr "Otra tarifa"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product__period_max_cost
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_template__period_max_cost
 msgid "Period (Months)"
-msgstr "Periodo (Meses)"
+msgstr "Período(Meses)"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_product_pricelist_cost
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product__pricelist_cost
 msgid "Price list cost"
 msgstr "Coste de tarifa"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_product_cost_ratio_id
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_template_cost_ratio_id
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product__cost_ratio_id
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_template__cost_ratio_id
 msgid "Price ratio"
 msgstr "Coeficiente de referencia"
 
 #. module: stock_account_custom
-#: model_terms:ir.model,name:stock_account_custom.model_product_pricelist
+#: model:ir.model,name:stock_account_custom.model_product_pricelist
 msgid "Pricelist"
-msgstr "Lista de precios"
+msgstr "Tarifa"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_template_pricelist_cost
+#: selection:product.pricelist.item,base:0
+msgid "Pricelist Cost"
+msgstr "Coste de tarifa"
+
+#. module: stock_account_custom
+#: model:ir.model,name:stock_account_custom.model_product_pricelist_item
+msgid "Pricelist Item"
+msgstr "Elemento de tarifa"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,help:stock_account_custom.field_product_pricelist_item__applied_on
+msgid "Pricelist Item applicable on selected option"
+msgstr "Elemento de tarifa aplicable a la opción seleccionada"
+
+#. module: stock_account_custom
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_template__pricelist_cost
 msgid "Pricelist cost"
 msgstr "Coste de tarifa"
 
 #. module: stock_account_custom
-#: model_terms:ir.model,name:stock_account_custom.model_product_pricelist_item
-msgid "Pricelist item"
-msgstr "Item de Lista de precios"
-
-#. module: stock_account_custom
-#: model_terms:ir.model,name:stock_account_custom.model_product_product
+#: model:ir.model,name:stock_account_custom.model_product_product
+#: selection:product.pricelist.item,applied_on:0
 msgid "Product"
 msgstr "Producto"
 
 #. module: stock_account_custom
-#: model_terms:ir.model,name:stock_account_custom.model_product_template
+#: model:ir.model,name:stock_account_custom.model_product_template
 msgid "Product Template"
 msgstr "Plantilla de producto"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_pricelist_item_cost_ratio_id
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_pricelist_item__cost_ratio_id
 msgid "Product Type"
 msgstr "Tipo de producto"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,help:stock_account_custom.field_product_pricelist_item_cost_ratio_id
-#: model_terms:ir.model.fields,help:stock_account_custom.field_product_product_cost_ratio_id
-#: model_terms:ir.model.fields,help:stock_account_custom.field_product_template_cost_ratio_id
-msgid "Product ranking to get reference cost and product price"
-msgstr "Clasificación de los coeficientes aplicables a los costes de referencia"
+#: selection:product.pricelist.item,applied_on:0
+msgid "Product Variant"
+msgstr "Variante de producto"
 
 #. module: stock_account_custom
-#: model_terms:ir.model,name:stock_account_custom.model_purchase_order
+#: model:ir.model.fields,help:stock_account_custom.field_product_pricelist_item__cost_ratio_id
+#: model:ir.model.fields,help:stock_account_custom.field_product_product__cost_ratio_id
+#: model:ir.model.fields,help:stock_account_custom.field_product_template__cost_ratio_id
+msgid "Product ranking to get reference cost and product price"
+msgstr "Coeficiente de producto para obtener coste y precio de producto"
+
+#. module: stock_account_custom
+#: selection:product.pricelist.item,base:0
+msgid "Public Price"
+msgstr "Precio al público"
+
+#. module: stock_account_custom
+#: model:ir.model,name:stock_account_custom.model_purchase_order
 msgid "Purchase Order"
 msgstr "Pedido de compra"
 
 #. module: stock_account_custom
-#: model_terms:ir.model,name:stock_account_custom.model_purchase_order_line
+#: model:ir.model,name:stock_account_custom.model_purchase_order_line
 msgid "Purchase Order Line"
-msgstr "Línea de pedido de compra"
+msgstr "Línea pedido de compra"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio_purchase_ratio
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_price_ratio__purchase_ratio
 msgid "Purchase ratio"
-msgstr "Coeficiente de compras"
+msgstr "Coeficiente de compra"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_template_qty_at_date
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_template__qty_at_date
 msgid "Quantity"
 msgstr "Cantidad"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_product_cost_method_ratio
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_template_cost_method_ratio
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product__cost_method_ratio
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_template__cost_method_ratio
 msgid "Ratio"
-msgstr "Ratio"
+msgstr "Coeficiente"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,help:stock_account_custom.field_product_price_ratio_purchase_ratio
+#: model:ir.model.fields,help:stock_account_custom.field_product_price_ratio__purchase_ratio
 msgid "Ratio to get reference cost from pricelist_cost"
-msgstr "Coeficiente para obtener el coste de referencia desde el coste de tarifa"
+msgstr "Coeficiente para obtener coste del coste de tarifa"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_product_real_stock_cost
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_template_real_stock_cost
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product__real_stock_cost
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_template__real_stock_cost
 msgid "Real stock cost"
-msgstr "Coste real de stock"
+msgstr "Coste de stock real"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_product_reference_cost
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_template_reference_cost
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_product__reference_cost
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_template__reference_cost
 msgid "Reference cost"
 msgstr "Coste de referencia"
 
 #. module: stock_account_custom
-#: model_terms:ir.model,name:stock_account_custom.model_sale_order_line
+#: model:ir.model,name:stock_account_custom.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Línea de pedido de ventas"
+msgstr "Línea de pedido de venta"
 
 #. module: stock_account_custom
-#: model_terms:ir.model,name:stock_account_custom.model_stock_move
+#: model:ir.model,name:stock_account_custom.model_stock_move
 msgid "Stock Move"
-msgstr "Movimiento de Stock"
+msgstr "Movimiento de existencias"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,help:stock_account_custom.field_product_product_real_stock_cost
-#: model_terms:ir.model.fields,help:stock_account_custom.field_product_template_real_stock_cost
+#: model:ir.model.fields,help:stock_account_custom.field_product_product__real_stock_cost
+#: model:ir.model.fields,help:stock_account_custom.field_product_template__real_stock_cost
 msgid "Stock value / Qty"
-msgstr "Valor de stock / Cantidad"
+msgstr "Valor de stock / Cant."
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,help:stock_account_custom.field_product_product_real_stock_cost_fixed
-#: model_terms:ir.model.fields,help:stock_account_custom.field_product_template_real_stock_cost_fixed
+#: model:ir.model.fields,help:stock_account_custom.field_product_product__real_stock_cost_fixed
+#: model:ir.model.fields,help:stock_account_custom.field_product_template__real_stock_cost_fixed
 msgid "Stock value / Qty (without special purchases)"
-msgstr "Valor de stock / Cantidad (Sin compras especiales)"
+msgstr "Valor de stock / Cant. (sin compras especiales)"
 
 #. module: stock_account_custom
-#: model_terms:res.groups,comment:stock_account_custom.group_cost_manager
+#: model:res.groups,comment:stock_account_custom.group_cost_manager
 msgid "The cost group for custom costs"
-msgstr "Grupo para administradores de costes"
+msgstr "El grupo de coste para costes personalizados"
 
 #. module: stock_account_custom
-#: model_terms:ir.actions.server,name:stock_account_custom.action_update_pricelist_cost
+#: model:ir.actions.server,name:stock_account_custom.action_update_pricelist_cost
 msgid "Update Pricelist Cost"
 msgstr "Actualizar coste de tarifa"
 
 #. module: stock_account_custom
-#: model_terms:ir.model.fields,field_description:stock_account_custom.field_product_template_stock_value
+#: model:ir.model.fields,field_description:stock_account_custom.field_product_template__stock_value
 msgid "Value"
 msgstr "Valor"
 
 #. module: stock_account_custom
-#: model_terms:ir.model,name:stock_account_custom.model_customer_price
-msgid "customer.price"
-msgstr "customer.price"
+#: model:ir.model,name:stock_account_custom.model_customer_price
+msgid "customer price"
+msgstr "Tarifa personalizada"
 
 #. module: stock_account_custom
-#: model_terms:ir.model,name:stock_account_custom.model_product_price_ratio
+#: model:ir.ui.view,name:stock_account_custom.customer_price_add_coef_tree
+msgid "customer.price.add.coeff.tree"
+msgstr ""
+
+#. module: stock_account_custom
+#: model:ir.ui.view,name:stock_account_custom.product_easy_edit_stcok_account_custom
+msgid "product.easy_edit.stock_account.custom"
+msgstr ""
+
+#. module: stock_account_custom
+#: model:ir.ui.view,name:stock_account_custom.product_last_purchase_info_fixed_form_view
+msgid "product.last.purchase.info.fixed.form"
+msgstr ""
+
+#. module: stock_account_custom
+#: model:ir.model,name:stock_account_custom.model_product_price_ratio
 msgid "product.price.ratio"
-msgstr "Clasificación de ratios de referencia"
+msgstr ""
+
+#. module: stock_account_custom
+#: model:ir.ui.view,name:stock_account_custom.product_pricelist_form_view_custom
+msgid "product.pricelist.form.custom"
+msgstr ""
+
+#. module: stock_account_custom
+#: model:ir.ui.view,name:stock_account_custom.product_pricelist_item_form_view_custom
+msgid "product.pricelist.item.form.custom"
+msgstr ""
+
+#. module: stock_account_custom
+#: model:ir.ui.view,name:stock_account_custom.product_pricelist_item_tree_view_custom
+msgid "product.pricelist.item.tree.custom"
+msgstr ""
+
+#. module: stock_account_custom
+#: model:ir.ui.view,name:stock_account_custom.product_template_form_view_costs_custom
+#: model:ir.ui.view,name:stock_account_custom.view_template_property_form
+msgid "product.template.form.stock_account.custom"
+msgstr ""
+
+#. module: stock_account_custom
+#: model:ir.ui.view,name:stock_account_custom.product_variant_easy_edit_view_inherit
+msgid "product.view.form.easy.inherit.custom"
+msgstr ""
+
+#. module: stock_account_custom
+#: model:ir.ui.view,name:stock_account_custom.purchase_order_form_custom_cost
+msgid "purchase_order_form.custom.cost"
+msgstr ""
 
