@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-04 08:41+0000\n"
-"PO-Revision-Date: 2019-06-04 08:41+0000\n"
+"POT-Creation-Date: 2019-11-21 10:24+0000\n"
+"PO-Revision-Date: 2019-11-21 10:24+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,14 +16,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_actual_status
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__actual_status
 msgid "Actual Status"
-msgstr "Estado Actual"
+msgstr "Estado actual"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_tree
+#: model_terms:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_tree
 msgid "Available to deliver"
-msgstr "Disponible para envío"
+msgstr "Disponible para enviar"
 
 #. module: sale_delivered_report_dismac
 #: selection:sale.delivery.report,actual_status:0
@@ -37,7 +37,7 @@ msgid "Cancelled"
 msgstr "Cancelado"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_search
+#: model_terms:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_search
 msgid "Cliente"
 msgstr "Cliente"
 
@@ -47,7 +47,7 @@ msgid "Contact"
 msgstr "Contacto"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,help:sale_delivered_report_dismac.field_sale_delivery_report_qty_available
+#: model:ir.model.fields,help:sale_delivered_report_dismac.field_sale_delivery_report__qty_available
 msgid "Current quantity of products.\n"
 "In a context with a single Stock Location, this includes goods stored at this Location, or any of its children.\n"
 "In a context with a single Warehouse, this includes goods stored in the Stock Location of this Warehouse, or any of its children.\n"
@@ -59,37 +59,37 @@ msgstr "Cantidad actual de los productos.\n"
 "En cualquier otro caso, esto incluye los bienes almacenados en cualquier ubicación de Stock de tipo 'Interna'."
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,help:sale_delivered_report_dismac.field_sale_delivery_report_date_available
+#: model:ir.model.fields,help:sale_delivered_report_dismac.field_sale_delivery_report__date_available
 msgid "Data with available stock"
-msgstr "Datos con stock disponible"
+msgstr "Fecha con stock disponible"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_date_available
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__date_available
 msgid "Date Available"
-msgstr "Fecha de disponibilidad"
+msgstr "Fecha disponible"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_date_expected
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__date_expected
 msgid "Date Expected"
 msgstr "Fecha esperada"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_date_order
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__date_order
 msgid "Date Order"
-msgstr "Fecha de pedido"
+msgstr "Fecha pedido"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_date_planned
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__date_planned
 msgid "Date Planned"
-msgstr "Fecha prevista"
+msgstr "Fecha planificada"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_qty_delivered
-msgid "Delivered"
-msgstr "Entregado"
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__qty_delivered
+msgid "Delivered Quantity"
+msgstr "Cantidad Entregada"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_display_name
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
@@ -114,7 +114,7 @@ msgid "En proceso"
 msgstr "En proceso"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_search
+#: model_terms:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_search
 msgid "Entregados"
 msgstr "Entregados"
 
@@ -129,44 +129,44 @@ msgid "Enviado"
 msgstr "Enviado"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_search
+#: model_terms:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_search
 msgid "Estado actual"
 msgstr "Estado actual"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_order_line_planned_delivery_date
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_order_line__planned_delivery_date
 msgid "Estimated delivery date"
-msgstr "Fecha estimada de envío"
+msgstr "Fecha estimada de entrega"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_line_virtual_available
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__line_virtual_available
 msgid "Forecast Quantity"
 msgstr "Cantidad prevista"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_search
+#: model_terms:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_search
 msgid "Group By"
 msgstr "Agrupar por"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_id
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__id
 msgid "ID"
-msgstr "ID (identificación)"
+msgstr ""
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report___last_update
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report____last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,help:sale_delivered_report_dismac.field_sale_delivery_report_date_expected
+#: model:ir.model.fields,help:sale_delivered_report_dismac.field_sale_delivery_report__date_expected
 msgid "Move date. If no moves:\n"
 " Requested date in sales or Date planned in purchases"
-msgstr "Fecha de movimiento. Si no hay movimientos:\n"
-"Fecha de solicitud en ventas o fecha planificada en compras"
+msgstr "Fecha del movimiento. Si no hay fecha:\n"
+" Fecha solicitada en ventas o fecha planificada en compras"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_name
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__name
 msgid "Name"
 msgstr "Nombre"
 
@@ -176,7 +176,7 @@ msgid "Order Done"
 msgstr "Pedido hecho"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,help:sale_delivered_report_dismac.field_sale_delivery_report_date_order
+#: model:ir.model.fields,help:sale_delivered_report_dismac.field_sale_delivery_report__date_order
 msgid "Order date."
 msgstr "Fecha de pedido."
 
@@ -186,96 +186,91 @@ msgid "Partially Available"
 msgstr "Parcialmente disponible"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_partner_id
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__partner_id
 msgid "Partner"
 msgstr "Empresa"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_search
+#: model_terms:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_search
 msgid "Pendientes"
 msgstr "Pendientes"
 
 #. module: sale_delivered_report_dismac
 #: model:ir.model,name:sale_delivered_report_dismac.model_product_product
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_product_id
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__product_id
 msgid "Product"
 msgstr "Producto"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model,name:sale_delivered_report_dismac.model_product_template
-msgid "Product Template"
-msgstr "Plantilla de producto"
-
-#. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_product_uom
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__product_uom
 msgid "Product Unit of Measure"
 msgstr "Unidad de medida del producto"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_search
+#: model_terms:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_search
 msgid "Producto"
 msgstr "Producto"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_tree
+#: model_terms:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_tree
 msgid "Products Price List"
 msgstr "Tarifa de productos"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_purchase_order_id
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_purchase_order_ids
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__purchase_order_id
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__purchase_order_ids
 #: selection:sale.delivery.report,state:0
 msgid "Purchase Order"
 msgstr "Pedido de compra"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_purchase_order_line_id
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__purchase_order_line_id
 msgid "Purchase Order Line"
-msgstr "Línea de pedido de compra"
+msgstr "Línea pedido de compra"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_purchase_order_group
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__purchase_order_group
 msgid "Purchase group"
 msgstr "Grupo de compra"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_qty_available_after_delivered
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__qty_available_after_delivered
 msgid "Qty Available After Delivered"
-msgstr "Disponible después de envío"
+msgstr "Ctdad. disponible después de enviar"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_qty_available_to_delivered
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__qty_available_to_delivered
 msgid "Qty Available To Delivered"
-msgstr "Disponible para entrega"
+msgstr "Ctdad. disponible a enviar"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_qty_cancelled
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__qty_cancelled
 msgid "Qty Canceled"
-msgstr "Ctdad Cancelada"
+msgstr "Ctdad. cancelada"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_product_uom_qty
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__product_uom_qty
 msgid "Qty Ordered"
-msgstr "Ctdad. pedida"
+msgstr "Ctdad. ordenada"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_qty_reserved
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__qty_reserved
 msgid "Qty Reserved"
-msgstr "Reservado"
+msgstr "Ctdad. reservada"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_qty_to_delivered
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__qty_to_delivered
 msgid "Qty To Delivered"
-msgstr "Para entregar"
+msgstr "Ctdad. a enviar"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_qty_to_receive
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__qty_to_receive
 msgid "Qty To Receive"
-msgstr "A recibir"
+msgstr "Ctdad. a recibir"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_line_qty_available
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_qty_available
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__line_qty_available
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__qty_available
 msgid "Quantity On Hand"
 msgstr "Cantidad a mano"
 
@@ -290,20 +285,20 @@ msgid "Ready"
 msgstr "Preparado"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_sale_order_id
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__sale_order_id
 msgid "Sale Order"
 msgstr "Pedido de venta"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_sale_order_line_id
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__sale_order_line_id
 msgid "Sale Order Line"
-msgstr "Sale Order Line"
+msgstr "Línea pedido de venta"
 
 #. module: sale_delivered_report_dismac
 #: model:ir.actions.act_window,name:sale_delivered_report_dismac.action_delivery_report_all
 #: model:ir.model,name:sale_delivered_report_dismac.model_sale_delivery_report
-#: model:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_form
-#: model:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_search
+#: model_terms:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_form
+#: model_terms:ir.ui.view,arch_db:sale_delivered_report_dismac.view_delivery_report_search
 msgid "Sales Delivery Status"
 msgstr "Estado del envío de pedidos"
 
@@ -315,40 +310,40 @@ msgstr "Pedido de ventas"
 #. module: sale_delivered_report_dismac
 #: model:ir.model,name:sale_delivered_report_dismac.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Línea de pedido de ventas"
+msgstr "Línea de pedido de venta"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_sendable
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_order_line_sendable
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__sendable
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_order_line__sendable
 msgid "Sendable"
-msgstr "Enviable"
+msgstr "A enviar"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_sl_from
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__sl_from
 msgid "Sl From"
-msgstr "Sl From"
+msgstr ""
 
 #. module: sale_delivered_report_dismac
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_sm_state
-#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report_state
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__sm_state
+#: model:ir.model.fields,field_description:sale_delivered_report_dismac.field_sale_delivery_report__state
 msgid "Status"
 msgstr "Estado"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.actions.act_window,help:sale_delivered_report_dismac.action_delivery_report_all
+#: model_terms:ir.actions.act_window,help:sale_delivered_report_dismac.action_delivery_report_all
 msgid "This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application."
-msgstr "Este informe realiza un análisis de sus presupuestos y pedidos de venta. El análisis verifica los ingresos de sus ventas y las ordena y agrupa por diferentes criterios (comercial, empresa, producto, etc.). Utilice este informe para analizar sus ventas aun no facturadas. Si desea analizar su facturación, debería utilizar el informe de análisis de facturas de la aplicación de Contabilidad."
+msgstr "Este informe realiza un análisis de sus presupuestos y pedidos de venta. El análisis verifica los ingresos de sus ventas y las ordena por diferentes grupos de criterios (comercial, empresa, producto, etc.). Utilice este informe para realizar un análisis sobre sus ventas todavía no facturadas. Si desea analizar sus ingresos, debería utilizar el informe de análisis de facturas en la aplicación de Contabilidad."
 
 #. module: sale_delivered_report_dismac
 #: model:ir.model,name:sale_delivered_report_dismac.model_stock_picking
 msgid "Transfer"
-msgstr "Transferir"
+msgstr "Albarán"
 
 #. module: sale_delivered_report_dismac
-#: model:ir.ui.view,arch_db:sale_delivered_report_dismac.product_undelivered_items
-#: model:ir.ui.view,arch_db:sale_delivered_report_dismac.sale_delivery_custom_res_partner_view_purchase_account_buttons
+#: model_terms:ir.ui.view,arch_db:sale_delivered_report_dismac.product_undelivered_items
+#: model_terms:ir.ui.view,arch_db:sale_delivered_report_dismac.sale_delivery_custom_res_partner_view_purchase_account_buttons
 msgid "Undelivered Items"
-msgstr "Artículos sin enviar"
+msgstr "No enviados"
 
 #. module: sale_delivered_report_dismac
 #: selection:sale.delivery.report,sm_state:0
@@ -359,4 +354,39 @@ msgstr "En espera"
 #: selection:sale.delivery.report,sm_state:0
 msgid "Waiting Another Operation"
 msgstr "Esperando otra operación"
+
+#. module: sale_delivered_report_dismac
+#: model:ir.ui.view,name:sale_delivered_report_dismac.product_undelivered_items
+msgid "product.undelivered.items"
+msgstr ""
+
+#. module: sale_delivered_report_dismac
+#: model:ir.ui.view,name:sale_delivered_report_dismac.sale_delivery_custom_res_partner_view_purchase_account_buttons
+msgid "res.partner.view.purchase.account.buttons"
+msgstr ""
+
+#. module: sale_delivered_report_dismac
+#: model:ir.ui.view,name:sale_delivered_report_dismac.view_delivery_report_form
+msgid "sale.delivery.report.form"
+msgstr ""
+
+#. module: sale_delivered_report_dismac
+#: model:ir.ui.view,name:sale_delivered_report_dismac.view_delivery_report_search
+msgid "sale.delivery.report.search"
+msgstr ""
+
+#. module: sale_delivered_report_dismac
+#: model:ir.ui.view,name:sale_delivered_report_dismac.view_delivery_report_tree
+msgid "sale.delivery.report.tree"
+msgstr ""
+
+#. module: sale_delivered_report_dismac
+#: model:ir.ui.view,name:sale_delivered_report_dismac.sale_custom_sale_order_form
+msgid "sale.order.form.delivery_report.amount"
+msgstr ""
+
+#. module: sale_delivered_report_dismac
+#: model_terms:ir.ui.view,arch_db:sale_delivered_report_dismac.sale_custom_sale_order_form
+msgid "unreceived"
+msgstr "No recibidos"
 
