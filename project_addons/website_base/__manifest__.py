@@ -14,7 +14,7 @@
     ],
     'depends': [
         'ecommerce_base',
-        # 'seo_base',
+        'seo_base',
         'breadcrumbs_base_tmp',
         # 'website_blog_base',
         # 'follow_us_base',
@@ -22,7 +22,7 @@
         # 'mass_mailing',
         # 'website_form_builder',
         # 'website_sale_product_brand',
-        # 'payment_redsys',
+        'payment_redsys',
         # 'website_sale_hide_price',
         # 'rest_api_dismac',
     ],
