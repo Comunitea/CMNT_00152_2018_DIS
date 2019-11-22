@@ -3,7 +3,7 @@
 
     <!-- Accept terms of use -->
     <template id="acceptance_full_legal_terms_with_check" name="Acceptance Full Legal Terms With Check Base">
-        <div class="form-group field-legal mb0" t-if="website.env.user == request.website.user_id">
+        <div class="form-group field-legal mb0 small">
             <label for="privacy_policy">
                 <input type="checkbox" value="accepted" id="privacy_policy" name="privacy_policy" required="required"/>
 <!--                <t t-call="website_legal_page.acceptance_full"/>-->
