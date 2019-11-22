@@ -16,6 +16,7 @@
         "sale_commission",
         "sale_margin",
         "sale_order_revision",
+        "sale_order_line_form_button",
     ],
     "data": [
         "security/ir.model.access.csv",
