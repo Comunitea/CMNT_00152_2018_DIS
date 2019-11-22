@@ -43,7 +43,9 @@
                 <label for="notes" string="Advanced Description"/>
                 <field name="notes" widget="html"/>
             </xpath>
-
+            <field name="expected_date" position="before">
+                <field name="priority" attrs="{'readonly': [('state', 'in', ('sale','done','cancel'))]}"/>
+            </field>
             <!-- Smart button ver líneas comentado-->
             <!-- <div name="button_box" position="inside">
                 <button name="action_view_order_lines" type="object" class="oe_stat_button"

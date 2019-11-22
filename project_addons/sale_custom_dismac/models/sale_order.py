@@ -3,7 +3,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-
+from .res_partner import PROCUREMENT_PRIORITIES
 
 class SaleOrder(models.Model):
 
@@ -21,6 +21,7 @@ class SaleOrder(models.Model):
     need_approval = fields.Boolean(
         related="type_id.need_approval", readonly=True
     )
+    priority = fields.Selection(PROCUREMENT_PRIORITIES, 'Priority', default='1')
 
     @api.multi
     def action_confirm(self):
@@ -60,8 +61,12 @@ class SaleOrder(models.Model):
         Look at the partner for changing the invoice policy
         """
         res = super().onchange_partner_id()
-        if self.partner_id and self.partner_id.whole_orders:
-            self.update({"picking_policy": "one"})
+        val = {}
+        if self.partner_id:
+            if self.partner_id.whole_orders:
+                val["picking_policy"] = "one"
+            val["priority"] = self.partner_id.priority
+        self.update(val)
         self.set_user_id()
         return res
 

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-14 15:25+0000\n"
-"PO-Revision-Date: 2019-11-14 15:25+0000\n"
+"POT-Creation-Date: 2019-11-22 09:41+0000\n"
+"PO-Revision-Date: 2019-11-22 09:41+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__notes
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_order_form_custom
-msgid "Advanced Description"
+msgid "Descripción avanzada"
 msgstr ""
 
 #. module: sale_custom_dismac
@@ -29,12 +29,12 @@ msgstr "Aplicar descuento"
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_order_form_custom
 msgid "Apply discount to all lines"
-msgstr "Aplicar descuento global"
+msgstr "Aplicar descuento a las líneas"
 
 #. module: sale_custom_dismac
 #: model:ir.actions.act_window,name:sale_custom_dismac.apply_global_discount_action
 msgid "Apply global discount"
-msgstr ""
+msgstr "Aplicar descuento global"
 
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
@@ -69,7 +69,7 @@ msgstr "Ruta de entrega"
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__discount
 msgid "Discount(%)"
-msgstr ""
+msgstr "Descuento %"
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__display_name
@@ -116,19 +116,38 @@ msgstr "Nombre"
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order__need_approval
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_type__need_approval
 msgid "Need Approval"
-msgstr ""
+msgstr "Necesita aprovación"
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__no_valued_picking
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users__no_valued_picking
 msgid "No valued picking"
-msgstr ""
+msgstr "Albarán no valorado"
+
+#. module: sale_custom_dismac
+#: selection:res.partner,priority:0
+#: selection:sale.order,priority:0
+msgid "Normal"
+msgstr "Normal"
+
+#. module: sale_custom_dismac
+#: selection:res.partner,priority:0
+#: selection:sale.order,priority:0
+msgid "Not urgent"
+msgstr "No urgente"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__priority
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users__priority
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order__priority
+msgid "Priority"
+msgstr "Prioridad"
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__require_num_order
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users__require_num_order
 msgid "Requires num order"
-msgstr ""
+msgstr "Requiere Nº de orden"
 
 #. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_sale_order
@@ -138,7 +157,7 @@ msgstr "Pedido de venta"
 #. module: sale_custom_dismac
 #: model:ir.actions.act_window,name:sale_custom_dismac.action_product_sale_list
 msgid "Sale Order Lines"
-msgstr ""
+msgstr "Lineas de venta"
 
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.product_form_view_sale_order_button
@@ -154,10 +173,15 @@ msgstr "Línea de pedido de venta"
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__whole_orders
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users__whole_orders
 msgid "Shipping Whole orders"
-msgstr ""
+msgstr "Enviar todas las ordenes"
 
 #. module: sale_custom_dismac
-#: code:addons/sale_custom_dismac/models/sale_order.py:35
+#: model:ir.model,name:sale_custom_dismac.model_stock_rule
+msgid "Stock Rule"
+msgstr "Regla de Inventario"
+
+#. module: sale_custom_dismac
+#: code:addons/sale_custom_dismac/models/sale_order.py:36
 #, python-format
 msgid "The customer for this order requires a customer                         reference number"
 msgstr "El cliente de este pedido obliga a que haya un número de referencia del cliente"
@@ -168,15 +192,27 @@ msgid "Type of sale order"
 msgstr "Tipo de pedido de venta"
 
 #. module: sale_custom_dismac
+#: selection:res.partner,priority:0
+#: selection:sale.order,priority:0
+msgid "Urgent"
+msgstr "Urgente"
+
+#. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_type__use_partner_agent
 msgid "Use partner commercial"
-msgstr ""
+msgstr "Usa nombre comercial"
+
+#. module: sale_custom_dismac
+#: selection:res.partner,priority:0
+#: selection:sale.order,priority:0
+msgid "Very Urgent"
+msgstr "Muy urgente"
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__zone_id
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users__zone_id
 msgid "Zone"
-msgstr ""
+msgstr "Zona"
 
 #. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_apply_global_discount
