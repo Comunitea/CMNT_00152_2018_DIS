@@ -14,8 +14,6 @@
                 <field name="social_linkedin">https://www.linkedin.com/company/dismac</field>
                 <field name="social_default_image" type="base64" file="website_base/static/img/dismac_logo_web.png"/>
                 <field name="base_url">http://dismac</field>
-                <field name="recaptcha_key_site">6LekA4wUAAAAAO0RZhCCEnDaxcZd9Wa709XRk6yA</field>
-                <field name="recaptcha_key_secret">6LekA4wUAAAAAF96AO4d02557PcVqTClnz2iexBU</field>
                 <field name="specific_user_account">True</field>
                 <field name="auth_signup_uninvited">b2c</field>
                 <field name="show_line_subtotals_tax_selection">tax_included</field>
@@ -36,8 +34,6 @@
                 <field name="social_linkedin">https://www.linkedin.com</field>
                 <field name="social_default_image" type="base64" file="website_base/static/img/papeldat_logo.png"/>
                 <field name="base_url">http://papeldat</field>
-                <field name="recaptcha_key_site">6LekA4wUAAAAAO0RZhCCEnDaxcZd9Wa709XRk6yA</field>
-                <field name="recaptcha_key_secret">6LekA4wUAAAAAF96AO4d02557PcVqTClnz2iexBU</field>
                 <field name="specific_user_account">True</field>
                 <field name="auth_signup_uninvited">b2b</field>
                 <field name="show_line_subtotals_tax_selection">tax_excluded</field>
