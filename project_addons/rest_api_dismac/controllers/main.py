@@ -26,7 +26,7 @@ from odoo.addons.base_rest.controllers import main
 from werkzeug.exceptions import BadRequest
 from odoo import http, _
 from odoo.http import request
-from datetime import datetime
+from datetime import datetime, timedelta
 import hashlib
 import logging
 
@@ -42,20 +42,46 @@ class BaseRestUVigoApiController(main.RestController):
             service_name = 'sale.order'
             token = params.get('token', False)
             timestamp = params.get('timestamp', False) or datetime.now().timestamp()
+
+            _logger.info(("Tratando de acceder a la API con timestamp: {}.").format(datetime.strptime(timestamp, '%Y%m%d%H%M%S')))
+
+            log_entry = request.env['api.access.log'].sudo().create({
+                'access_type': "send",
+                'timestamp': timestamp,
+                'token': token,
+                'order_id': _id,
+                'error': False
+            })
+
+            if timedelta(minutes=5) < datetime.now() - datetime.strptime(timestamp, '%Y%m%d%H%M%S'):
+                _logger.error(
+                    _("REST API called with a timestamp older than 5 minutes.")
+                )
+                
+                log_entry.sudo().write({
+                    'error': True,
+                    'error_msg': _("REST API called with a timestamp older than 5 minutes.")
+                })
+
+                raise BadRequest(_("REST API called with a timestamp older than 5 minutes."))
             
             if not params or not token or not timestamp:
 
                 _logger.error(
                     _("REST API called with no credentials")
                 )
+                log_entry.sudo().update({
+                    'error': True,
+                    'error_msg': _("REST API called with no credentials")
+                })
                 raise BadRequest(_("REST API called with no credentials"))
             else:
-                self._api_check_access(_id)
-                self._api_authentication(token, timestamp)
+                self._api_check_access(_id, log_entry)
+                self._api_authentication(token, timestamp, log_entry)
 
         return super(BaseRestUVigoApiController, self)._process_method(service_name, method_name, _id, params)
 
-    def _api_authentication(self, token, timestamp):
+    def _api_authentication(self, token, timestamp, log_entry):
         
         api_key = request.env['ir.config_parameter'].sudo().get_param('rest_api_dismac.api_key', False)
         api_string = request.env['ir.config_parameter'].sudo().get_param('rest_api_dismac.api_string', False)
@@ -65,6 +91,10 @@ class BaseRestUVigoApiController(main.RestController):
             _logger.error(
                 _("REST API values not configured.")
             )
+            log_entry.sudo().update({
+                'error': True,
+                'error_msg': _("REST API values not configured.")
+            })
             raise BadRequest(_("REST API values not configured."))
 
         self_token = "{}{}{}".format(api_string, timestamp, api_key)
@@ -75,30 +105,46 @@ class BaseRestUVigoApiController(main.RestController):
             _logger.error(
                 _("REST API called with a invalid token.")
             )
+            log_entry.sudo().update({
+                'error': True,
+                'error_msg': _("REST API called with a invalid token.")
+            })
             raise BadRequest(_("REST API called with a invalid token."))
 
-    def _api_check_access(self, _id):
+    def _api_check_access(self, _id, log_entry):
         api_partner = request.env['ir.config_parameter'].sudo().get_param('rest_api_dismac.api_partner', False)
         if not _id:
             _logger.error(
                 _("REST API called without order id.")
             )
+            log_entry.sudo().update({
+                'error': True,
+                'error_msg': _("REST API called without order id.")
+            })
             raise BadRequest(_("REST API called without order id."))
 
         sale_order = request.env['sale.order'].sudo().search([('id', '=', _id)])
 
         if not sale_order:
             _logger.error(
-                    _("REST API could not find that order number.")
-                )
+                _("REST API could not find that order number.")
+            )
+            log_entry.sudo().update({
+                'error': True,
+                'error_msg': _("REST API could not find that order number.")
+            })
             raise BadRequest(_("REST API could not find that order number."))
 
         api_partner_obj = request.env['res.partner'].browse(int(api_partner))
         
         if not (api_partner_obj == sale_order.partner_id or api_partner_obj == sale_order.partner_id.parent_id):
             _logger.error(
-                    _("REST API access not allowed to this order.")
-                )
+                _("REST API access not allowed to this order.")
+            )
+            log_entry.sudo().update({
+                'error': True,
+                'error_msg': _("REST API access not allowed to this order.")
+            })
             raise BadRequest(_("REST API access not allowed to this order."))
             
         return True

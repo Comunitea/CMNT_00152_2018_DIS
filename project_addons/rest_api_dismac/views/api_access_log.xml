@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record model="ir.ui.view" id="rest_api_dismac_api_access_log_form">
+        <field name="name">rest.api.dismac.api.access.log.form</field>
+        <field name="model">api.access.log</field>
+        <field name="arch" type="xml">
+            <form string="Api access log">
+                <sheet>
+                    <group>
+                        <field name="id"/>
+                        <field name="create_date"/>
+                        <field name="timestamp"/>
+                        <field name="token"/>
+                        <field name="error"/>
+                        <field name="error_msg"/>
+                        <field name="order_id"/>
+                        <field name="access_type"/>
+                        <field name="url"/>
+                        <field name="uvigo_order"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="rest_api_dismac_api_access_log_search">
+        <field name="name">rest.api.dismac.api.access.log.search</field>
+        <field name="model">api.access.log</field>
+        <field name="arch" type="xml">
+            <search string="Api Access Log">
+                <field name="create_date"/>
+                <field name="error"/>
+                <field name="order_id"/>
+                <field name="access_type"/>
+                <field name="uvigo_order"/>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="rest_api_dismac_api_access_log_tree">
+        <field name="name">rest.api.dismac.api.access.log.tree</field>
+        <field name="model">api.access.log</field>
+        <field name="arch" type="xml">
+            <tree string="Api Access Log">
+                <field name="id"/>
+                <field name="create_date"/>
+                <field name="timestamp"/>
+                <field name="error"/>
+                <field name="error_msg"/>
+                <field name="order_id"/>
+                <field name="access_type"/>
+                <field name="uvigo_order"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_rest_api_dismac_api_access_log_view" model="ir.actions.act_window">
+        <field name="name">api.access.log.action</field>
+        <field name="res_model">api.access.log</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('rest_api_dismac.rest_api_dismac_api_access_log_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('rest_api_dismac.rest_api_dismac_api_access_log_form')})]"/>
+        <field name="search_view_id" ref="rest_api_dismac_api_access_log_search"/>
+    </record>
+
+    <menuitem id="menu_rest_api_dismac_api_access_log" name="API Access Log" parent="sale.menu_sale_config" action="rest_api_dismac.action_rest_api_dismac_api_access_log_view"  groups="sales_team.group_sale_manager"/>
+
+</odoo>

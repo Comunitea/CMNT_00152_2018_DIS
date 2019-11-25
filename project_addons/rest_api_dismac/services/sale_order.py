@@ -109,12 +109,21 @@ class SaleOrder(models.Model):
                 self.is_from_uvigo = True
 
     def read_json_data(self):
+        log_entry = self.env['api.access.log'].sudo().create({
+            'access_type': "get",
+            'order_id': self.id,
+            'error': False,
+            'url': "{}/json".format(self.uvigo_url)
+        })
         _logger.info("Recuperando datos del pedido con id: {}".format(self.id))
         json_url = "{}/json".format(self.uvigo_url)
         with urllib.request.urlopen(json_url) as url:
             data = json.loads(url.read().decode())
             self.uvigo_order = data['datos_pedido']['numero']
             self.observations = data['datos_pedido']['observaciones']
+            log_entry.sudo().update({
+                'uvigo_order': self.uvigo_order
+            })
 
             if data['lineas_detalle']:
                 _logger.info("Eliminando líneas originales del pedido con id: {}".format(self.id))

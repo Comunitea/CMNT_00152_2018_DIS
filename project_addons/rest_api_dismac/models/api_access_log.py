@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
-#
-# License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-#
 ##############################################################################
-#
-#    Copyright (C) 2018 Comunitea Servicios Tecnológicos S.L. All Rights Reserved
+#    License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
+#    Copyright (C) 2019 Comunitea Servicios Tecnológicos S.L. All Rights Reserved
 #    Vicente Ángel Gutiérrez Fernández <vicente@comunitea.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -21,30 +18,21 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    "name": "Rest Api Dismac",
-    'version': '1.0',
-    "summary": "Rest Api for Dismac based on OCA's rest-framework module",
-    'description': '',
-    'category': 'Custom',
-    'author': 'Comunitea',
-    'website': 'http://www.comunitea.com',
-    "license": "LGPL-3",
-    'contributors': [
-        'Vicente Ángel Gutiérrez Fernández <vicente@comunitea.com>',
-    ],
-    "depends": ["base_rest", "component", "sale"],
-    "data": [
-        'views/res_config.xml',
-        'views/sale_order.xml',
-        'views/api_access_log.xml',
-        'security/ir.model.access.csv'
-    ],
-    "demo": [],
-    "external_dependencies": {"python": ["zeep"]},
-    'images': [
-        '/static/description/icon.png',
-    ],
-    'installable': True,
-    'application': False,
-}
+
+from odoo import models, fields, _
+
+
+class ApiAccessLog(models.Model):
+
+    _name = "api.access.log"
+
+    timestamp = fields.Char("timestamp")
+    token = fields.Char("token")
+    error = fields.Boolean(string='Error')
+    error_msg = fields.Char(string='Error Message')
+    order_id = fields.Many2one(
+        'sale.order', string='Order',
+        ondelete='cascade')
+    access_type = fields.Char('access_type')
+    url = fields.Char('access url')
+    uvigo_order = fields.Char('uvigo order')
