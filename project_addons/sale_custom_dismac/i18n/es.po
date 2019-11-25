@@ -6,13 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
 "POT-Creation-Date: 2019-11-22 09:41+0000\n"
 "PO-Revision-Date: 2019-11-22 09:41+0000\n"
-=======
-"POT-Creation-Date: 2019-11-22 09:31+0000\n"
-"PO-Revision-Date: 2019-11-22 09:31+0000\n"
->>>>>>> b6b713bfdf5f7f2459a3ef38c595892e828aee57
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,14 +18,13 @@ msgstr ""
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__notes
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_order_form_custom
-<<<<<<< HEAD
 msgid "Descripción avanzada"
 msgstr ""
-=======
+
+#. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_order_line_form_view_custom
 msgid "Advanced Description"
 msgstr "Descripción detallada"
->>>>>>> b6b713bfdf5f7f2459a3ef38c595892e828aee57
 
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
@@ -80,11 +74,7 @@ msgstr "Ruta de entrega"
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__discount
 msgid "Discount(%)"
-<<<<<<< HEAD
-msgstr "Descuento %"
-=======
 msgstr "Descuento (%)"
->>>>>>> b6b713bfdf5f7f2459a3ef38c595892e828aee57
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__display_name
@@ -131,17 +121,12 @@ msgstr "Nombre"
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order__need_approval
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_type__need_approval
 msgid "Need Approval"
-<<<<<<< HEAD
-msgstr "Necesita aprovación"
-=======
 msgstr "Necesita aprobación"
->>>>>>> b6b713bfdf5f7f2459a3ef38c595892e828aee57
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__no_valued_picking
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users__no_valued_picking
 msgid "No valued picking"
-<<<<<<< HEAD
 msgstr "Albarán no valorado"
 
 #. module: sale_custom_dismac
@@ -162,19 +147,12 @@ msgstr "No urgente"
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order__priority
 msgid "Priority"
 msgstr "Prioridad"
-=======
-msgstr "No hay albarán valorado"
->>>>>>> b6b713bfdf5f7f2459a3ef38c595892e828aee57
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__require_num_order
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users__require_num_order
 msgid "Requires num order"
-<<<<<<< HEAD
-msgstr "Requiere Nº de orden"
-=======
 msgstr "Requiere nº pedido"
->>>>>>> b6b713bfdf5f7f2459a3ef38c595892e828aee57
 
 #. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_sale_order
@@ -184,11 +162,7 @@ msgstr "Pedido de venta"
 #. module: sale_custom_dismac
 #: model:ir.actions.act_window,name:sale_custom_dismac.action_product_sale_list
 msgid "Sale Order Lines"
-<<<<<<< HEAD
 msgstr "Lineas de venta"
-=======
-msgstr "Líneas pedido"
->>>>>>> b6b713bfdf5f7f2459a3ef38c595892e828aee57
 
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.product_form_view_sale_order_button
@@ -204,11 +178,7 @@ msgstr "Línea de pedido de venta"
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__whole_orders
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users__whole_orders
 msgid "Shipping Whole orders"
-<<<<<<< HEAD
-msgstr "Enviar todas las ordenes"
-=======
 msgstr "Entregar todo el pedido"
->>>>>>> b6b713bfdf5f7f2459a3ef38c595892e828aee57
 
 #. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_stock_rule
@@ -235,7 +205,6 @@ msgstr "Urgente"
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_type__use_partner_agent
 msgid "Use partner commercial"
-<<<<<<< HEAD
 msgstr "Usa nombre comercial"
 
 #. module: sale_custom_dismac
@@ -243,9 +212,6 @@ msgstr "Usa nombre comercial"
 #: selection:sale.order,priority:0
 msgid "Very Urgent"
 msgstr "Muy urgente"
-=======
-msgstr "Usar partner comercial"
->>>>>>> b6b713bfdf5f7f2459a3ef38c595892e828aee57
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__zone_id
