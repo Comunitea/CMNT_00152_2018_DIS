@@ -25,7 +25,7 @@
 from odoo.addons.base_rest.controllers import main
 from werkzeug.exceptions import BadRequest
 from odoo import http, _
-from odoo.http import request
+from odoo.http import request, Response
 from datetime import datetime, timedelta
 import hashlib
 import logging
@@ -37,13 +37,13 @@ class BaseRestUVigoApiController(main.RestController):
     _collection_name = "base.rest.uvigo.services"
     _default_auth = "public"
 
+    # Si da problemas de CORS probar con cors='*' en _process_method
+
     def _process_method(self, service_name, method_name, _id=None, params=None):
         if service_name == 'pedidos' or service_name == 'sale.order':
             service_name = 'sale.order'
             token = params.get('token', False)
             timestamp = params.get('timestamp', False) or datetime.now().timestamp()
-
-            _logger.info(("Tratando de acceder a la API con timestamp: {}.").format(datetime.strptime(timestamp, '%Y%m%d%H%M%S')))
 
             log_entry = request.env['api.access.log'].sudo().create({
                 'access_type': "send",
@@ -53,7 +53,18 @@ class BaseRestUVigoApiController(main.RestController):
                 'error': False
             })
 
+            if not params or not token or not timestamp:
+                _logger.error(
+                    _("REST API called with no credentials")
+                )
+                log_entry.sudo().update({
+                    'error': True,
+                    'error_msg': _("REST API called with no credentials")
+                })
+                raise BadRequest(_("REST API called with no credentials"))
+            
             if timedelta(minutes=5) < datetime.now() - datetime.strptime(timestamp, '%Y%m%d%H%M%S'):
+
                 _logger.error(
                     _("REST API called with a timestamp older than 5 minutes.")
                 )
@@ -64,17 +75,7 @@ class BaseRestUVigoApiController(main.RestController):
                 })
 
                 raise BadRequest(_("REST API called with a timestamp older than 5 minutes."))
-            
-            if not params or not token or not timestamp:
 
-                _logger.error(
-                    _("REST API called with no credentials")
-                )
-                log_entry.sudo().update({
-                    'error': True,
-                    'error_msg': _("REST API called with no credentials")
-                })
-                raise BadRequest(_("REST API called with no credentials"))
             else:
                 self._api_check_access(_id, log_entry)
                 self._api_authentication(token, timestamp, log_entry)

@@ -60,12 +60,12 @@ class SaleOrderService(Component):
             "id_usuario": "%s" % sale_order.partner_id.id,
             "nombre": "%s" % sale_order.partner_id.name,
             "fecha": "%s" % sale_order.date_order.strftime("%Y%m%d%H%M%S"),
-            "refcli": "%s" % sale_order.uvigo_order or '',
+            "refcli": "%s" % sale_order.uvigo_order if sale_order.uvigo_order else '',
             "precio_total": "{:.2f}".format(sale_order.amount_untaxed),
             "precio_total_iva": "{:.2f}".format(sale_order.amount_total),
             "iva_valor": "{:.2f}".format(sale_order.amount_tax),
             "pdf": "%s" % base64.b64encode(pdf) if pdf else False,
-            "observaciones": "%s" % sale_order.observations,
+            "observaciones": "%s" % sale_order.observations if sale_order.observations else '',
             "lineas_pedido": []
         }
 
@@ -74,7 +74,7 @@ class SaleOrderService(Component):
                 line_data = {
                     "id": "%s" % line.id,
                     "cantidad": "%s" % line.product_uom_qty,
-                    "codigo": "%s" % line.product_id.default_code,
+                    "codigo": "%s" % line.product_id.default_code if line.product_id.default_code else '',
                     "importe": "{:.4f}".format(line.price_subtotal),
                     "precio": "{:.4f}".format(line.price_total),
                     "iva_porcentaje": "{:.2f}".format(line.tax_id.amount),
