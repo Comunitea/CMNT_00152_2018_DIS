@@ -16,14 +16,15 @@
         'website_base',
     ],
     'data': [
+        'data/website_data.xml',
         'data/menu_data.xml',
         'data/page_data.xml',
-        'data/website_data.xml',
         'templates/forms.xml',
         'templates/cookies.xml',
         'templates/account.xml',
         'templates/footer.xml',
         'templates/header.xml',
+        'templates/pages.xml',
     ],
     'images': [
         '/static/description/icon.png',
