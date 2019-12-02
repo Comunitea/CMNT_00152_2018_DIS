@@ -1,5 +1,5 @@
-Base Module Website
-===================
+Dismac Website
+==============
 
 .. |badge1| image:: https://img.shields.io/badge/maturity-Production-green.png
     :target: https://odoo-community.org/page/development-status
@@ -11,10 +11,10 @@ Base Module Website
     :target: https://github.com/Comunitea/
     :alt: Comunitea
 .. |badge4| image:: https://img.shields.io/badge/github-Comunitea%2FDismac-lightgray.png?logo=github
-    :target: https://github.com/Comunitea/CMNT_00152_2018_DIS/tree/12.0/master/project-addons/website_base
+    :target: https://github.com/Comunitea/CMNT_00152_2018_DIS/tree/12.0/master/project-addons/website_dismac
     :alt: Comunitea / Dismac
 .. |badge5| image:: https://img.shields.io/badge/Spanish-Translated-F47D42.png
-    :target: https://github.com/Comunitea/CMNT_00152_2018_DIS/tree/12.0/master/project-addons/website_base/i18n/es.po
+    :target: https://github.com/Comunitea/CMNT_00152_2018_DIS/tree/12.0/master/project-addons/website_dismac/i18n/es.po
     :alt: Spanish Translated
 
 
@@ -25,10 +25,10 @@ Base Module Website
 .. contents::
    :local:
 
-Customization for All Websites
--------------------------------
+Customization for Dismac Website
+---------------------------------
 
-This module contains all common base configuration for all companies and their websites, including their Themes.
+This module contains all configuration for website Dismac including to apply the Theme Dismac.
 
 Author
 ------

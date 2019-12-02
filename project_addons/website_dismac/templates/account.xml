@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- Legal acceptance on register -->
+    <template id="auth_signup_fields" name="Auth Signup/ResetPassword form fields Dismac" inherit_id="website_base.auth_signup_fields">
+       <xpath expr="//div[last()]" position="replace">
+            <t t-call="website_dismac.acceptance_full_legal_terms_with_check"/>
+        </xpath>
+    </template>
+
+</odoo>
