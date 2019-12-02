@@ -40,7 +40,7 @@ class GoalType(models.Model):
     mob_com = fields.Float("Commission (%)")
 
     # Objetivo ventas informatica mes
-    info_sale_type_id = fields.Many2one("ale.order.type", "Computing Sale Type")
+    info_sale_type_id = fields.Many2one("sale.order.type", "Computing Sale Type")
     info_com = fields.Float("Commission (%)")
 
     # Objetivo Nº Clientes
