@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- Custom cookies message -->
+    <template id="website_cookie_notice_message" name="Cookies notice" inherit_id="website_cookie_notice.message">
+       <xpath expr="//div[hasclass('row')]" position="replace">
+             <div class="row">
+                 <div class="col-sm-10 text-right">
+                     <p class="mt8">Esta página utiliza cookies y otras tecnologías para que podamos mejorar tu experiencia en nuestro sitio:
+                         <a href="http://www.dismacpruebas.es.mialias.net/politica-de-cookies" alt="Enlace política de cookies" title="Política de Cookies" rel="nofollow" target="_blank">Más información.</a>
+                     </p>
+                 </div>
+                <div class="col-sm-1 text-center">
+                    <a class="btn btn-primary" href="#">Aceptar</a>
+                </div>
+                <div class="col-sm-1 text-center">
+                    <a class="btn btn-primary" href="http://www.dismacpruebas.es.mialias.net/#catapultCookieRechazar">Rechazar</a>
+                </div>
+             </div>
+        </xpath>
+    </template>
+
+</odoo>

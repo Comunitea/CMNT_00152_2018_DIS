@@ -3,29 +3,23 @@
 
     <!-- Accept terms of use -->
     <template id="acceptance_full_legal_terms_with_check" name="Acceptance Full Legal Terms With Check Base">
-        <div class="form-group field-legal mb0" t-if="website.env.user == request.website.user_id">
+        <div class="form-group field-legal mb0 small terms-with-check">
             <label for="privacy_policy">
                 <input type="checkbox" value="accepted" id="privacy_policy" name="privacy_policy" required="required"/>
-<!--                <t t-call="website_legal_page.acceptance_full"/>-->
-                <span class="acceptance_full">
-                    Acepto los <a href="http://www.dismacpruebas.es.mialias.net/avisos-legales" alt="Enlace avisos legales" title="Avisos Legales" rel="nofollow" target="_blank">avisos legales</a>
-                    , la <a href="http://www.dismacpruebas.es.mialias.net/politica-de-cookies" alt="Enlace política de cookies" title="Política de Cookies" rel="nofollow" target="_blank">política de cookies</a>
-                    , y la <a href="http://www.dismacpruebas.es.mialias.net/politica-de-privacidad" alt="Enlace política de privacidad" title="Política de Privacidad" rel="nofollow" target="_blank">política de privacidad</a>
-                    de este sitio web.
-                </span>
+                <t t-call="website_legal_page.acceptance_full"/>
             </label>
         </div>
     </template>
 
     <!-- Google recaptcha -->
-<!--    <template id="google_recaptcha_contact_form" name="Contact Form Captcha Base">-->
-<!--        <div class="form-group form-field o_website_form_required_custom">-->
-<!--            <label class="col-md-3 col-sm-4 control-label" for="g-recaptcha-response">Is human?</label>-->
-<!--            <div class="col-md-7 col-sm-8">-->
-<!--                <span class="o_website_form_recaptcha" />-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </template>-->
+    <template id="google_recaptcha_contact_form" name="Contact Form Captcha Base">
+        <div class="form-group form-field o_website_form_required_custom">
+            <label class="col-md-3 col-sm-4 control-label" for="g-recaptcha-response">Is human?</label>
+            <div class="col-md-7 col-sm-8">
+                <span class="o_website_form_recaptcha" />
+            </div>
+        </div>
+    </template>
 
     <!-- Terms of use without checkbox -->
     <template id="acceptance_full_legal_terms_without_check" name="Acceptance Full Legal Terms Without Check Base">
@@ -92,26 +86,26 @@
     </template>
 
     <!-- Default contact form with google recapthca and terms of use-->
-<!--    <template id="default_contact_form" name="Default Contact Form Base">-->
-<!--        <form action="/website_form/" method="post" data-model_name="crm.lead" data-success_page="/contactus-thank-you" class="s_website_form form-horizontal container-fluid mt32" enctype="multipart/form-data" data-editable-form="false">-->
-<!--            <input type="hidden" name="name" value="Nueva solicitud de contacto" />-->
-<!--            <t t-call="website_base.default_fields_forms"/>-->
-<!--            <t t-call="website_base.google_recaptcha_contact_form"/>-->
-<!--            <t t-call="website_base.acceptance_full_legal_terms_with_check"/>-->
-<!--            <t t-call="website_base.default_send_forms"/>-->
-<!--        </form>-->
-<!--    </template>-->
+    <template id="default_contact_form" name="Default Contact Form Base">
+        <form action="/website_form/" method="post" data-model_name="crm.lead" data-success_page="/contactus-thank-you" class="s_website_form form-horizontal container-fluid mt32" enctype="multipart/form-data" data-editable-form="false">
+            <input type="hidden" name="name" value="Solicitud de contacto" />
+            <t t-call="website_base.default_fields_forms"/>
+            <t t-call="website_base.google_recaptcha_contact_form"/>
+            <t t-call="website_base.acceptance_full_legal_terms_with_check"/>
+            <t t-call="website_base.default_send_forms"/>
+        </form>
+    </template>
 
     <!-- Work contact form with google recapthca and terms of use-->
-<!--    <template id="work_contact_form" name="Work With Us Form Base">-->
-<!--        <form action="/website_form/" method="post" data-model_name="crm.lead" data-success_page="/contactus-thank-you" class="s_website_form form-horizontal container-fluid mt32" enctype="multipart/form-data" data-editable-form="false">-->
-<!--            <input type="hidden" name="name" value="Nueva solicitud de trabajo" />-->
-<!--            <t t-call="website_base.default_fields_forms"/>-->
-<!--            <t t-call="website_base.default_file_forms"/>-->
-<!--            <t t-call="website_base.google_recaptcha_contact_form"/>-->
-<!--            <t t-call="website_base.acceptance_full_legal_terms_with_check"/>-->
-<!--            <t t-call="website_base.default_send_forms"/>-->
-<!--        </form>-->
-<!--    </template>-->
+    <template id="work_contact_form" name="Work With Us Form Base">
+        <form action="/website_form/" method="post" data-model_name="crm.lead" data-success_page="/contactus-thank-you" class="s_website_form form-horizontal container-fluid mt32" enctype="multipart/form-data" data-editable-form="false">
+            <input type="hidden" name="name" value="Solicitud de trabajo" />
+            <t t-call="website_base.default_fields_forms"/>
+            <t t-call="website_base.default_file_forms"/>
+            <t t-call="website_base.google_recaptcha_contact_form"/>
+            <t t-call="website_base.acceptance_full_legal_terms_with_check"/>
+            <t t-call="website_base.default_send_forms"/>
+        </form>
+    </template>
 
 </odoo>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <!-- Open website on install -->
+        <record id="action_website" model="ir.actions.act_url">
+            <field name="name">Website</field>
+            <field name="url">/shop</field>
+            <field name="target">self</field>
+        </record>
+        <record id="base.open_menu" model="ir.actions.todo">
+            <field name="action_id" ref="action_website"/>
+            <field name="state">open</field>
+        </record>
+
+        <!-- Delete default menus -->
+        <delete id="website.menu_home" model="website.menu"/>
+        <delete id="website.menu_shop" model="website.menu"/>
+        <delete id="website.menu_contactus" model="website.menu"/>
+        <delete id="website.main_menu" model="website.menu"/>
+
+        <!-- Default Menu to store module menus for new website -->
+        <record id="main_menu" model="website.menu">
+            <field name="name">Dismac Main Menu</field>
+            <field name="url">/dismac-main-menu</field>
+            <field name="sequence" type="int">0</field>
+            <field name="website_id" ref="website_dismac.dismac_website"/>
+            <field name="user_logged">False</field>
+            <field name="user_not_logged">False</field>
+        </record>
+
+        <!-- Menus -->
+        <record id="menu_shop" model="website.menu">
+            <field name="name">Tienda</field>
+            <field name="url">/shop</field>
+            <field name="parent_id" ref="website_dismac.main_menu"/>
+            <field name="sequence" type="int">20</field>
+            <field name="website_id" ref="website_dismac.dismac_website"/>
+            <field name="user_logged">True</field>
+            <field name="user_not_logged">True</field>
+        </record>
+
+        <record id="menu_pricelist" model="website.menu">
+            <field name="name">Tarifas</field>
+            <field name="url">/tarifas</field>
+            <field name="parent_id" ref="website_dismac.main_menu"/>
+            <field name="sequence" type="int">30</field>
+            <field name="website_id" ref="website_dismac.dismac_website"/>
+            <field name="user_logged">True</field>
+            <field name="user_not_logged">True</field>
+        </record>
+
+        <record id="menu_offers" model="website.menu">
+            <field name="name">Ofertas</field>
+            <field name="url">/category/ofertas</field>
+            <field name="parent_id" ref="website_dismac.main_menu"/>
+            <field name="sequence" type="int">40</field>
+            <field name="website_id" ref="website_dismac.dismac_website"/>
+            <field name="user_logged">True</field>
+            <field name="user_not_logged">True</field>
+        </record>
+
+        <record id="menu_catalog" model="website.menu">
+            <field name="name">Catálogos</field>
+            <field name="url">/catalogos</field>
+            <field name="parent_id" ref="website_dismac.main_menu"/>
+            <field name="sequence" type="int">50</field>
+            <field name="website_id" ref="website_dismac.dismac_website"/>
+            <field name="user_logged">True</field>
+            <field name="user_not_logged">True</field>
+        </record>
+
+        <record id="menu_quote" model="website.menu">
+            <field name="name">Presupuestos</field>
+            <field name="url">/presupuestos</field>
+            <field name="parent_id" ref="website_dismac.main_menu"/>
+            <field name="sequence" type="int">60</field>
+            <field name="website_id" ref="website_dismac.dismac_website"/>
+            <field name="user_logged">True</field>
+            <field name="user_not_logged">True</field>
+        </record>
+
+        <record id="menu_contactus" model="website.menu">
+            <field name="name">Contacto</field>
+            <field name="url">http://www.dismacpruebas.es.mialias.net/contacto/</field>
+            <field name="parent_id" ref="website_dismac.main_menu"/>
+            <field name="sequence" type="int">70</field>
+            <field name="website_id" ref="website_dismac.dismac_website"/>
+            <field name="user_logged">True</field>
+            <field name="user_not_logged">True</field>
+        </record>
+
+    </data>
+</odoo>

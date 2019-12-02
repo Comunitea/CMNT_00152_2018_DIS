@@ -25,8 +25,8 @@ Base Module Website
 .. contents::
    :local:
 
-BackEnd customization for All Websites
---------------------------------------
+Customization for All Websites
+-------------------------------
 
 This module contains all common base configuration for all companies and their websites, including their Themes.
 
