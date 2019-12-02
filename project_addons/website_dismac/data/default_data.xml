@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <!--Delete default website-->
-        <delete id="website.default_website" model="website"/>
 
         <!-- Delete default menus -->
         <delete id="website.menu_home" model="website.menu"/>
@@ -19,5 +17,9 @@
         <delete id="website_legal_page.advise_page" model="website.page"/>
         <delete id="website_legal_page.privacy_page" model="website.page"/>
         <delete id="website_legal_page.terms_page" model="website.page"/>
+
+        <!--Delete default website-->
+        <delete id="website.default_website" model="website"/>
+
     </data>
 </odoo>
