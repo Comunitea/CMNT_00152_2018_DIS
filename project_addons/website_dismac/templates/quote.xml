@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- Legal acceptance on register -->
+    <template id="quote" name="Quote Page Dismac">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container">
+                    <h1>Quotes</h1>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

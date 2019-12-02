@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- ============= Activate or Deactivate Customizable views to prevent changes on updates ================== -->
+
+    <!-- Ecommerce Category -->
+    <record id="website_sale.products_categories" model="ir.ui.view">
+        <field name="active">True</field>
+    </record>
+
+    <!-- Ecommerce Category list -->
+    <record id="website_sale.categories_recursive" model="ir.ui.view">
+        <field name="active">True</field>
+    </record>
+
+    <!-- Ecommerce Collapsible Category List -->
+    <record id="website_sale.option_collapse_products_categories" model="ir.ui.view">
+        <field name="active">True</field>
+    </record>
+
+    <!-- Ecommerce Collapse Category Recursive -->
+    <record id="website_sale.option_collapse_categories_recursive" model="ir.ui.view">
+        <field name="active">True</field>
+    </record>
+
+    <!-- Add to Cart -->
+    <record id="website_sale.products_add_to_cart" model="ir.ui.view">
+        <field name="active">True</field>
+    </record>
+
+</odoo>
