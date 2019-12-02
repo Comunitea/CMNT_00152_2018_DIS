@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
         <data>
-            <!--Delete default website-->
-            <delete id="website.default_website" model="website"/>
 
             <!--Create Website Dismac-->
             <record id="dismac_website" model="website">

@@ -12,12 +12,6 @@
             <field name="state">open</field>
         </record>
 
-        <!-- Delete default menus -->
-        <delete id="website.menu_home" model="website.menu"/>
-        <delete id="website.menu_shop" model="website.menu"/>
-        <delete id="website.menu_contactus" model="website.menu"/>
-        <delete id="website.main_menu" model="website.menu"/>
-
         <!-- Default Menu to store module menus for new website -->
         <record id="main_menu" model="website.menu">
             <field name="name">Dismac Main Menu</field>
@@ -41,7 +35,7 @@
 
         <record id="menu_pricelist" model="website.menu">
             <field name="name">Tarifas</field>
-            <field name="url">/tarifas</field>
+            <field name="url">/page/tarifas</field>
             <field name="parent_id" ref="website_dismac.main_menu"/>
             <field name="sequence" type="int">30</field>
             <field name="website_id" ref="website_dismac.dismac_website"/>
@@ -51,7 +45,7 @@
 
         <record id="menu_offers" model="website.menu">
             <field name="name">Ofertas</field>
-            <field name="url">/category/ofertas</field>
+            <field name="url">/page/ofertas</field>
             <field name="parent_id" ref="website_dismac.main_menu"/>
             <field name="sequence" type="int">40</field>
             <field name="website_id" ref="website_dismac.dismac_website"/>
@@ -61,7 +55,7 @@
 
         <record id="menu_catalog" model="website.menu">
             <field name="name">Catálogos</field>
-            <field name="url">/catalogos</field>
+            <field name="url">/page/catalogos</field>
             <field name="parent_id" ref="website_dismac.main_menu"/>
             <field name="sequence" type="int">50</field>
             <field name="website_id" ref="website_dismac.dismac_website"/>
@@ -69,11 +63,21 @@
             <field name="user_not_logged">True</field>
         </record>
 
-        <record id="menu_quote" model="website.menu">
-            <field name="name">Presupuestos</field>
-            <field name="url">/presupuestos</field>
+        <record id="menu_history" model="website.menu">
+            <field name="name">Historial</field>
+            <field name="url">/page/historial</field>
             <field name="parent_id" ref="website_dismac.main_menu"/>
             <field name="sequence" type="int">60</field>
+            <field name="website_id" ref="website_dismac.dismac_website"/>
+            <field name="user_logged">True</field>
+            <field name="user_not_logged">True</field>
+        </record>
+
+        <record id="menu_quote" model="website.menu">
+            <field name="name">Presupuestos</field>
+            <field name="url">/page/presupuestos</field>
+            <field name="parent_id" ref="website_dismac.main_menu"/>
+            <field name="sequence" type="int">70</field>
             <field name="website_id" ref="website_dismac.dismac_website"/>
             <field name="user_logged">True</field>
             <field name="user_not_logged">True</field>
@@ -83,7 +87,7 @@
             <field name="name">Contacto</field>
             <field name="url">http://www.dismacpruebas.es.mialias.net/contacto/</field>
             <field name="parent_id" ref="website_dismac.main_menu"/>
-            <field name="sequence" type="int">70</field>
+            <field name="sequence" type="int">80</field>
             <field name="website_id" ref="website_dismac.dismac_website"/>
             <field name="user_logged">True</field>
             <field name="user_not_logged">True</field>
