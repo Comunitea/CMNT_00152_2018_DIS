@@ -19,9 +19,15 @@ odoo.define('website_dismac.sale_order_portal_content_website_dismac', function(
 
         ajax.jsonRpc("/shop/cart/update_json", 'call', {
             'product_id': parseInt(product_id, 10),
-            'set_qty': 1
+            'add_qty': 1
         }).then(function (data) {
-            console.log(data);
+            var $q = $(".my_cart_quantity");
+            if (data.cart_quantity) {
+                $q.text(data.cart_quantity);
+            }
+            else {
+                window.location = '/shop/cart';
+            }
         });
 
     });

@@ -1,0 +1,335 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* website_dismac
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-04 09:06+0000\n"
+"PO-Revision-Date: 2019-12-04 09:06+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
+msgid ", la"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
+msgid ", y la"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_layout_footer_copyright
+msgid "<span class=\"text-uppercase\"> Dismac. Todos los derechos reservados.</span>"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_layout_footer_copyright
+msgid "<span>&amp;copy; </span>"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_products_item_website_dismac_history
+msgid "<strong>Historical ordered quantity:</strong>"
+msgstr "<strong>Cantidad total pedida:</strong>"
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.acceptance_full_legal_terms_with_check
+msgid "Acceptance Full Legal Terms With Check Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_cookie_notice_message
+msgid "Aceptar"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
+msgid "Acepto los"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.auth_signup_fields
+msgid "Auth Signup/ResetPassword form fields Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Avisos Legales"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.catalog
+#: model_terms:website.page,arch_db:website_dismac.catalog_page
+msgid "Catalog"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.catalog
+msgid "Catalog Page Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model:website.menu,name:website_dismac.menu_catalog
+#: model:website.page,name:website_dismac.catalog_page
+msgid "Catálogos"
+msgstr ""
+
+#. module: website_dismac
+#: model:website.menu,name:website_dismac.menu_contactus
+msgid "Contacto"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.website_cookie_notice_message
+msgid "Cookies notice"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model:website.menu,name:website_dismac.main_menu
+msgid "Dismac Main Menu"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Enlace avisos legales"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_cookie_notice_message
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Enlace política de cookies"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Enlace política de privacidad"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_cookie_notice_message
+msgid "Esta página utiliza cookies y otras tecnologías para que podamos mejorar tu experiencia en nuestro sitio:"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Facebook"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.website_layout_footer_copyright
+msgid "Footer Copyright Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.website_footer_custom
+msgid "Footer Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model:website.menu,name:website_dismac.menu_history
+#: model:website.page,name:website_dismac.history_page
+msgid "Historial"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.history
+#: model_terms:website.page,arch_db:website_dismac.history_page
+msgid "History"
+msgstr "Historial"
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.history
+msgid "History Page Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Instagram"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Linkedin"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Logo Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Menu"
+msgstr "Menú"
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_cookie_notice_message
+msgid "Más información."
+msgstr ""
+
+#. module: website_dismac
+#: model:website.menu,name:website_dismac.menu_offers
+#: model:website.page,name:website_dismac.offer_page
+msgid "Ofertas"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.offer
+msgid "Offer Page Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.offer
+#: model_terms:website.page,arch_db:website_dismac.offer_page
+msgid "Offers"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.sale_order_portal_content_website_dismac
+msgid "Options"
+msgstr "Opciones"
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_cookie_notice_message
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Política de Cookies"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Política de Privacidad"
+msgstr ""
+
+#. module: website_dismac
+#: model:website.menu,name:website_dismac.menu_quote
+#: model:website.page,name:website_dismac.quote_page
+msgid "Presupuestos"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.pricelist
+#: model_terms:website.page,arch_db:website_dismac.pricelist_page
+msgid "Pricelist"
+msgstr "Tarifa"
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.pricelist
+msgid "Pricelist Page Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.model,name:website_dismac.model_product_template
+msgid "Product Template"
+msgstr "Plantilla de producto"
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.quote
+msgid "Quote Page Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.quote
+#: model_terms:website.page,arch_db:website_dismac.quote_page
+msgid "Quotes"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_cookie_notice_message
+msgid "Rechazar"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.sale_order_portal_content_website_dismac
+msgid "Sales Order Portal Content Website Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.website_logo_add_logo_to_website
+msgid "Show website Logo Base"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Síganos"
+msgstr ""
+
+#. module: website_dismac
+#: model:website.menu,name:website_dismac.menu_pricelist
+#: model:website.page,name:website_dismac.pricelist_page
+msgid "Tarifas"
+msgstr ""
+
+#. module: website_dismac
+#: model:website.menu,name:website_dismac.menu_shop
+msgid "Tienda"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Twitter"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.actions.act_url,name:website_dismac.action_website
+msgid "Website"
+msgstr "Sitio web"
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.website_sale_products_item_website_dismac_history
+msgid "Website Sale Products Item Website Dismac History"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Youtube"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
+msgid "avisos legales"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
+msgid "de este sitio web."
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
+msgid "política de cookies"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
+msgid "política de privacidad"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_logo_add_logo_to_website
+msgid "website.name"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.website_dismac_website_assets_frontend
+msgid "website_dismac_website_assets_frontend"
+msgstr ""
+
