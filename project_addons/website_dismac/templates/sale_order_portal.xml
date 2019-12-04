@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="sale_order_portal_content_website_dismac" name="Sales Order Portal Content Website Dismac" inherit_id="sale.sale_order_portal_content">
+    <xpath expr="//table[@id='sales_order_table']/thead/tr/th[last()]" position="after">
+        <th>Options</th>
+    </xpath>
+    <xpath expr="//table[@id='sales_order_table']/tbody//tr" position="inside">
+        <td>
+            <input name="product_id" t-att-value="line.product_id.id" type="hidden"/>
+            <a t-attf-href="#" class="mb8 input-group-addon js_add_cart_json_sale_order_portal_content hidden-xs">
+                <i class="fa fa-shopping-cart"/>
+            </a>
+        </td>
+    </xpath>
+</template>
+
+</odoo>

@@ -31,6 +31,8 @@
         'templates/quote.xml',
         'templates/pages.xml',
         'views/customize_views.xml',
+        'templates/sale_order_portal.xml',
+        'templates/head.xml'
     ],
     'images': [
         '/static/description/icon.png',

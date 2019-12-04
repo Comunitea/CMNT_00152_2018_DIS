@@ -12,4 +12,16 @@
         </t>
     </template>
 
+    <!-- Add Line to Historial Product Lists -->
+
+    <template id="website_sale_products_item_website_dismac_history" name="Website Sale Products Item Website Dismac History" inherit_id="website_sale.products_item">
+        <xpath expr="//form/div[@itemscope='itemscope']/section/div" position="after">
+            <t t-if="list_type and list_type=='historial'">
+                <div>
+                    <strong>Historical ordered quantity:</strong> <span t-esc="product._get_product_historical_ordered_qty(request.env.user)" />
+                </div>
+            </t>
+        </xpath>        
+    </template>
+
 </odoo>
