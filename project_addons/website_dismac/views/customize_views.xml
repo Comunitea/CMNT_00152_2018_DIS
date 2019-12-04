@@ -28,4 +28,9 @@
         <field name="active">True</field>
     </record>
 
+    <!-- Shop - Product List View -->
+    <record id="website_sale.products_list_view" model="ir.ui.view">
+        <field name="active">True</field>
+    </record>
+
 </odoo>
