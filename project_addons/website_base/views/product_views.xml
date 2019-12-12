@@ -132,16 +132,6 @@
         </field>
     </record>
 
-    <!-- Catalog sub-menus -->
-    <menuitem id="menu_catalog_offers" name="Offers"
-              action="product_offer_action"
-              parent="website_sale.menu_catalog" sequence="5"/>
-
-    <!-- Configuration sub-menus -->
-    <menuitem id="menu_product_offers"
-              action="product_offer_action"
-              parent="website_sale.menu_product_settings" sequence="4"/>
-
     <!-- Category Offers -->
     <record id="product_offers_view" model="ir.ui.view">
         <field name="name">product.offers.view</field>
@@ -301,22 +291,6 @@
         </field>
     </record>
 
-    <record id="product_offer_action" model="ir.actions.act_window">
-        <field name="name">Offers</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">product.offer</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">kanban,tree,form</field>
-        <field name="view_id" eval="False"/>
-        <field name="view_id" ref="product_offer_kanban_view"/>
-        <field name="search_view_id" ref="product_offer_search_view"/>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">
-                Click to define a new offer.
-            </p>
-        </field>
-    </record>
-
     <record model="ir.ui.view" id="view_product_offer_image_form">
         <field name="name">product.offer.image.form</field>
         <field name="model">product.offer.image</field>
@@ -337,5 +311,31 @@
             </form>
         </field>
     </record>
+
+    <record id="product_offer_action" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.offer</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" eval="False"/>
+        <field name="view_id" ref="product_offer_kanban_view"/>
+        <field name="search_view_id" ref="product_offer_search_view"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new offer.
+            </p>
+        </field>
+    </record>
+
+    <!-- Catalog sub-menus -->
+    <menuitem id="menu_catalog_offers" name="Offers"
+              action="product_offer_action"
+              parent="website_sale.menu_catalog" sequence="5"/>
+
+    <!-- Configuration sub-menus -->
+    <menuitem id="menu_product_offers"
+              action="product_offer_action"
+              parent="website_sale.menu_product_settings" sequence="4"/>
 
 </odoo>
