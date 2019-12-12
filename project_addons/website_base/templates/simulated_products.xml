@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- Show simulated products like products shop -->
+    <template id="simulate_products" name="Simulate Products Base">
+        <t t-call="website.layout">
+            <div id="wrap" class="js_sale">
+                <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
+                <div class="container py-2 oe_website_sale">
+                    <div class="products_pager form-inline justify-content-center">
+                        <form t-attf-action="#{url_simulated_products}" role="search" method="get">
+                            <t t-call="website.website_search_box" />
+                        </form>
+                        <t t-call="website_sale.pricelist_list">
+                            <t t-set="_classes">ml-2</t>
+                        </t>
+                        <t t-call="website.pager">
+                            <t t-set="_classes">ml-2</t>
+                        </t>
+                    </div>
+                    <div class="row mt-3">
+                        <t t-if="request.env.ref('website_sale.products_categories').active">
+                            <div class="col-lg-3 col-md-4 col-12" id="products_grid_before"/>
+                        </t>
+                        <t t-else="">
+                            <div class="d-none" id="products_grid_before"/>
+                        </t>
+                        <t t-if="request.env.ref('website_sale.products_categories').active">
+                            <div class="col-lg-9 col-md-8 mt16 mb32" id="products_grid"/>
+                        </t>
+                        <t t-else="">
+                            <div class="col-lg-12 mb32" id="products_grid"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Show collapsed categories -->
+    <template id="simulate_option_collapse_categories_recursive" name="Simulate Collapse Category Recursive Base">
+        <li class="nav-item">
+            <i t-if="c.child_id" t-attf-class="text-primary fa #{'fa-chevron-down' if c.parent_id else 'fa-chevron-right'}"
+               t-attf-title="#{'Unfold' if c.parent_id else 'Fold'}"
+               t-attf-aria-label="#{'Unfold' if c.parent_id else 'Fold'}" role="img"/>
+            <a t-att-href="keep('/category/%s' % c.slug if c.slug else '/shop/category/%s' % slug(c), category=0)" t-attf-class="nav-link" t-field="c.name"/>
+            <ul t-if="c.child_id" class="nav nav-pills flex-column nav-hierarchy" t-att-style="'display:block;' if c.parent_id else 'display:none;'">
+                <t t-foreach="c.child_id" t-as="c">
+                    <t t-call="website_base.simulate_option_collapse_categories_recursive" />
+                </t>
+            </ul>
+        </li>
+    </template>
+
+    <!-- Show categories -->
+    <template id="simulate_products_categories" name="eCommerce Categories Base" inherit_id="website_base.simulate_products">
+        <xpath expr="//div[@id='products_grid_before']" position="inside">
+            <ul class="nav nav-pills flex-column mt16" id="o_shop_collapse_category">
+                <li class="nav-item">
+                    <a href="keep('/shop', category=0)" class="nav-link active o_not_editable">Todos los productos</a>
+                </li>
+                <t t-foreach="all_categories" t-as="c">
+                    <t t-call="website_base.simulate_option_collapse_categories_recursive" />
+                </t>
+            </ul>
+        </xpath>
+    </template>
+
+    <!-- Sort simulated products -->
+    <template id="simulate_sort" name="Simulate Show Sort by Base" inherit_id="website_base.simulate_products">
+        <xpath expr="//div[hasclass('products_pager')]/t[@t-call][last()]" position="after">
+            <t t-set="name_asc_label">Nombre - A to Z</t>
+            <t t-set="name_desc_label">Nombre - Z to A</t>
+            <t t-set="website_sale_sortable" t-value="[
+                (name_asc_label, 'name asc'),
+                (name_desc_label, 'name desc')
+            ]"/>
+            <t t-set="sortable_current" t-value="[sort for sort in website_sale_sortable if sort[1]==request.params.get('order', '')]"/>
+            <div class="dropdown ml-2 dropdown_sorty_by">
+                <a role="button" href="#" class="dropdown-toggle btn btn-secondary" data-toggle="dropdown">
+                    <t t-if='len(sortable_current)'>
+                        <span>Ordenado por: <t t-raw='sortable_current[0][0]'/></span>
+                    </t>
+                    <t t-else='1'>
+                        <span>Ordenar por:</span>
+                    </t>
+                </a>
+                <div class="dropdown-menu" role="menu">
+                    <t t-foreach="website_sale_sortable" t-as="sortby">
+                        <form t-attf-action="#{url_simulated_products}" role="search" method="get">
+                            <a role="menuitem" rel="noindex,nofollow" t-attf-href="#{url_simulated_products}" class="dropdown-item">
+                                <input type="hidden" name="order" t-attf-value="#{sortby[1]}"/>
+                                <button type="hidden" class="btn btn-secondary" ><span t-raw="sortby[0]"/></button>
+                            </a>
+                        </form>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Simulated Product Items -->
+    <template id="simulate_products_item" name="Simulate Products item Base">
+        <t t-set="url_href" t-value="'/product/' if product._get_combination_info() else url_simulated_product_templates"/>
+        <t t-set="product_href" t-value="keep('{}{}'.format(url_href, product.slug) if product.slug else '{}{}'.format(''/product/shop/'', slug(product)), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))" />
+        <!--<t t-set="combination_info" t-value="product._get_combination_info(only_template=True, add_qty=add_qty or 1, pricelist=pricelist)"/>-->
+        <form t-attf-action="#{url_simulated_products}" method="get">
+            <!--            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />-->
+            <div itemscope="itemscope" itemtype="http://schema.org/Product">
+                <div class="ribbon-wrapper">
+                    <a href="#" role="button" class="ribbon btn btn-danger">Oferta</a>
+                </div>
+                <div class="oe_product_image">
+                    <a itemprop="url" t-att-href="product_href">
+                        <span t-field="product.image" t-options="{'widget': 'image', 'resize': None if product_image_big else '300x300'}"/>
+                    </a>
+                </div>
+                <t t-if="show_publish">
+                    <div id="website_published_button" class="" groups="sales_team.group_sale_manager">
+                        <t t-call="website.publish_management">
+                            <t t-set="object" t-value="product" />
+                            <t t-set="publish_edit" t-value="True" />
+                            <t t-set="action" t-value="'product.product_template_action'" />
+                        </t>
+                    </div>
+                </t>
+                <section>
+                    <h6>
+                        <a itemprop="name" t-att-href="product_href" t-att-content="product.name" t-field="product.name" />
+                        <a role="button" t-if="not show_publish and not product.website_published" t-att-href="product_href" class="btn btn-secondary btn-sm btn-danger" title="This product is unpublished.">No publicado</a>
+                    </h6>
+                    <!--                    <div itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer" class="product_price">-->
+                    <!--                        <b>-->
+                    <!--                            <t t-if="True">&lt;!&ndash; compatibility 12.0 &ndash;&gt;-->
+                    <!--                                <del t-attf-class="text-danger mr8 {{'' if combination_info['has_discounted_price'] else 'd-none'}}" style="white-space: nowrap;" t-esc="combination_info['list_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}" />-->
+                    <!--                            </t>-->
+                    <!--                            <span t-if="combination_info['price']" t-esc="combination_info['price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>-->
+                    <!--                            <span itemprop="price" style="display:none;" t-esc="combination_info['price']" />-->
+                    <!--                            <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name" />-->
+                    <!--                        </b>-->
+                    <!--                    </div>-->
+                </section>
+            </div>
+        </form>
+    </template>
+
+    <!-- Simulated Product Table view -->
+    <template id="simulate_products_table_view" name="Simulate Products Grid Table Base">
+        <table width="100%">
+            <tbody>
+                <tr t-ignore="true">
+                    <td t-foreach="range(0,rows)" t-as="row" t-attf-width="#{100/rows}%"/>
+                </tr>
+                <tr t-foreach="bins" t-as="tr_product">
+                    <t t-foreach="tr_product" t-as="td_product">
+                        <t t-if="td_product">
+                            <t t-set="product" t-value="td_product['product']" />
+                            <td t-att-colspan="td_product['x'] != 1 and td_product['x']" t-att-rowspan="td_product['y'] != 1 and td_product['y']" t-attf-class="oe_product oe_grid oe-height-#{td_product['y']*2} #{ td_product['class'] }">
+                                <div class="oe_product_cart" t-att-data-publish="product.website_published and 'on' or 'off'">
+                                    <t t-set="product_image_big" t-value="td_product['x']+td_product['y'] &gt; 2" />
+                                    <t t-call="website_base.simulate_products_item" />
+                                </div>
+                            </td>
+                        </t>
+                        <td t-if="not td_product" class="oe-height-2" />
+                    </t>
+                </tr>
+            </tbody>
+        </table>
+        <t t-if="not bins">
+            <div class="text-center text-muted oe_product">
+                <h3 class="css_editable_display mt8">No hay ofertas disponibles.</h3>
+                <t t-if="search">
+                    <p>
+                        No se han encontrado resultados para: "<strong t-esc='search'/>".
+                    </p>
+                </t>
+                <p groups="sales_team.group_sale_manager">Click <i>'Nuevo'</i> en la esquina superior derecha para crear su oferta.</p>
+            </div>
+        </t>
+    </template>
+
+    <!-- Simulated Product List View -->
+    <template id="simulate_products_list_view" name="Simulate Products Grid List Base">
+        <t t-foreach="simulated_products" t-as="product" t-if="simulated_products">
+            <div class="oe_product oe_list oe_product_cart" t-att-data-publish="product.website_published and 'on' or 'off'">
+                <t t-call="website_base.simulate_products_item">
+                    <t t-set="show_publish" t-value="True" />
+                </t>
+            </div>
+        </t>
+        <t t-foreach="simulated_product_templates" t-as="product" t-if="simulated_product_templates">
+            <div class="oe_product oe_list oe_product_cart" t-att-data-publish="product.website_published and 'on' or 'off'">
+                <t t-call="website_base.simulate_products_item">
+                    <t t-set="show_publish" t-value="True" />
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <!-- Simulated product structure into simulated shop products -->
+    <template id="simulate_product" name="Simulate Product Base">
+        <t t-set="additional_title" t-value="product.name" />
+        <div itemscope="itemscope" itemtype="http://schema.org/Product" id="wrap" class="js_sale">
+            <!--<section t-attf-class="container py-2 oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''}" id="product_detail">-->
+            <section t-attf-class="container py-2 oe_website_sale" id="product_detail">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div id="o-carousel-product" class="carousel slide" data-ride="carousel" data-interval="0">
+                            <div class="carousel-outer">
+                                <div class="carousel-inner">
+                                    <div t-if="variant_img" class="carousel-item active" t-field="product_variant.image" t-options="{'widget': 'image', 'class': 'product_detail_img js_variant_img', 'alt-field': 'name', 'zoom': 'image', 'unique': str(product['__last_update']) + (str(product_variant['__last_update']) or ''), 'itemprop': 'image'}"/>
+                                    <div t-attf-class="carousel-item#{'' if variant_img else ' active'}" t-field="product.image" t-options="{'widget': 'image', 'class': 'product_detail_img', 'alt-field': 'name', 'zoom': 'image', 'unique': product['__last_update'], 'itemprop': 'image'}"/>
+                                    <t t-if="len(image_ids)" t-foreach="image_ids" t-as="pimg">
+                                        <div class="carousel-item" t-field="pimg.image" t-options='{"widget": "image", "class": "product_detail_img", "alt-field": "name", "zoom": "image", "itemprop": "image"}'/>
+                                    </t>
+                                </div>
+
+                                <t t-if="len(image_ids) or variant_img">
+                                    <a class="carousel-control-prev" href="#o-carousel-product" role="button" data-slide="prev" >
+                                        <span class="fa fa-chevron-left" role="img" aria-label="Previous" title="Previous"/>
+                                    </a>
+                                    <a class="carousel-control-next" href="#o-carousel-product" role="button" data-slide="next">
+                                        <span class="fa fa-chevron-right" role="img" aria-label="Next" title="Next"/>
+                                    </a>
+                                </t>
+                            </div>
+
+                            <ol class="carousel-indicators" t-if="len(image_ids) or variant_img">
+                                <li t-if="variant_img" data-target="#o-carousel-product" data-slide-to="0" class="active">
+                                    <t t-set="url_type" t-value="'product' if product._get_combination_info() else 'offer'"/>
+                                    <img class="img img-fluid js_variant_img_small" t-attf-src="/website/image/product.{{url_type}}/{{product_variant.id}}/image/90x90" t-att-alt="product.name" t-att-title="product.name"/>
+                                </li>
+<!--                                <li data-target="#o-carousel-product" t-att-data-slide-to="1 if variant_img else '0'" t-att-class="'' if variant_img else 'active'">-->
+<!--                                    <t t-set="url_type" t-value="'product' if product._get_combination_info() else 'offer'"/>-->
+<!--                                    <img class="img img-fluid" t-attf-src="/website/image/product.{{url_type}}/{{product.id}}/image/90x90" t-att-alt="product.name" t-att-title="product.name"/>-->
+<!--                                </li>-->
+                                <t t-if="len(image_ids)" t-foreach="image_ids" t-as="pimg">
+                                    <li data-target="#o-carousel-product" t-att-data-slide-to="pimg_index + (variant_img and 2 or 1)">
+                                        <img class="img img-fluid" t-attf-src="/website/image/product.offer.image/{{pimg.id}}/image/90x90" t-att-alt="pimg.name" t-att-title="pimg.name"/>
+                                    </li>
+                                </t>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <h2 itemprop="name" t-field="product.name">Nombre de producto</h2>
+                        <hr t-if="product.subtitle" />
+                        <div class="o_not_editable">
+                            <p class="text-uppercase"><strong><span t-esc="product.subtitle"/></strong></p>
+                        </div>
+                        <hr t-if="product.description" />
+                        <div class="o_not_editable">
+                            <p t-field="product.description"/>
+                        </div>
+                        <hr t-if="product.attachment_id" />
+                        <div class="o_not_editable">
+                            <h6 class="mb16"><strong>DOCUMENTOS RELACIONADOS</strong></h6>
+                            <t t-set="attachment" t-value="product.att_id"/>
+                            <a t-att-href="'/web/content/%s?download=true' % (attachment.id)" target="_blank">
+                                <div class='oe_attachment_embedded o_image' t-att-title="attachment.name" t-att-data-mimetype="attachment.mimetype" t-att-data-src="'/web/image/%s/100x80' % (attachment.id)"/>
+                                <div class='oe_attachment_name text-truncate'><i class="fa fa-download"/> <t t-raw='attachment.name' /></div>
+                            </a>
+                        </div>
+                        <t t-set="url_href" t-value="'product/' if product._get_combination_info() else url_simulated_product_templates"/>
+                        <t t-set="product_href" t-value="keep('{}{}'.format(url_href, product.slug) if product.slug else '{}{}'.format('product/shop/', slug(product)), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))" />
+                        <span itemprop="url" style="display:none;" t-esc="'%s%s' % (request.httprequest.url_root, product_href[1:])"/>
+                        <form t-if="product._get_combination_info() and product._is_add_to_cart_possible()" action="/shop/cart/update" method="POST">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                            <div class="js_product js_main_product">
+                                <t t-placeholder="select">
+                                    <input type="hidden" class="product_id" name="product_id" t-att-value="product_variant.id" />
+                                    <input type="hidden" class="product_template_id" name="product_template_id" t-att-value="product.id" />
+                                    <t t-if="first_possible_combination" t-call="sale.variants">
+                                        <t t-set="ul_class" t-value="'flex-column'" />
+                                        <t t-set="parent_combination" t-value="None" />
+                                    </t>
+                                    <t t-else="">
+                                        <ul class="d-none js_add_cart_variants" t-att-data-attribute_exclusions="{'exclusions: []'}"/>
+                                    </t>
+                                </t>
+                                <t t-call="website_sale.product_price" />
+                                <p t-if="True" class="css_not_available_msg alert alert-warning">Esta combinación no existe.</p>
+                                <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#">Añadir al carrito</a>
+                            </div>
+                        </form>
+                        <p t-if="not product.active" class="alert alert-warning">This product is no longer available.</p>
+                        <!--                <p t-else="" class="alert alert-warning">This product has no valid combination.</p>-->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </template>
+
+</odoo>

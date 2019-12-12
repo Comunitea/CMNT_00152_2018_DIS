@@ -28,7 +28,12 @@
         'templates/account.xml',
         'templates/forms.xml',
         'templates/header.xml',
+        'templates/simulated_products.xml',
+        'templates/offer.xml',
         # 'templates/product.xml',
+        'views/product_views.xml',
+        'views/assets.xml',
+        'security/ir.model.access.csv',
     ],
     'images': [
         '/static/description/icon.png',

@@ -11,7 +11,7 @@
 
     <record id="offer_page" model="website.page">
         <field name="name">Ofertas</field>
-        <field name="url">/page/ofertas</field>
+        <field name="url">/ofertas</field>
         <field name="website_published">True</field>
         <field name="website_id" ref="website_dismac.dismac_website"/>
         <field name="view_id" ref="offer"/>
@@ -19,7 +19,7 @@
 
     <record id="catalog_page" model="website.page">
         <field name="name">Catálogos</field>
-        <field name="url">/page/catalogos</field>
+        <field name="url">/catalogos</field>
         <field name="website_published">True</field>
         <field name="website_id" ref="website_dismac.dismac_website"/>
         <field name="view_id" ref="catalog"/>
@@ -35,7 +35,7 @@
 
     <record id="quote_page" model="website.page">
         <field name="name">Presupuestos</field>
-        <field name="url">/page/presupuestos</field>
+        <field name="url">/presupuesto</field>
         <field name="website_published">True</field>
         <field name="website_id" ref="website_dismac.dismac_website"/>
         <field name="view_id" ref="quote"/>

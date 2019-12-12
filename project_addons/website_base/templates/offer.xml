@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- Show simulate Product like simulated products shop -->
+    <template id="simulate_product_offer" name="Simulate Product Offer Base" inherit_id="website_base.simulate_products">
+        <xpath expr="//div[@id='products_grid']" position="inside">
+            <t t-call="website_base.product_offers" t-if="offer_list">
+                <t t-set="url_simulated_products" t-value="url_simulated_products"/>
+                <t t-set="url_simulated_product_templates" t-value="url_simulated_product_templates"/>
+            </t>
+            <t t-call="website_base.product_offer" t-else=""/>
+        </xpath>
+    </template>
+
+    <!-- List offers -->
+    <template id="product_offers" name="Product Offers Base">
+        <t t-set="additional_title">Ofertas</t>
+        <div class="simulated-product-title">
+            <h1 class="mt8">Ofertas</h1>
+        </div>
+        <p class="mb4"><strong>Filtrar ofertas:</strong></p>
+        <p class="mb16">
+            <a role="button" t-attf-href="/ofertas" class="btn btn-secondary">Todas</a>
+            <t t-foreach="offer_categories" t-as="offer_cat">
+                <a role="button" t-attf-href="/ofertas?category=#{offer_cat.id}" class="btn btn-secondary"><span t-esc="offer_cat.name"/></a>
+            </t>
+        </p>
+        <t t-call="website_base.simulate_products_list_view" t-if="len(request.env['ir.ui.view'].search([('name', '=', 'List View')])) &gt; 1"/>
+        <t t-call="website_base.simulate_products_table_view" t-else=""/>
+    </template>
+
+    <!-- Offer Detail -->
+    <template id="product_offer" name="Product Offer Base">
+        <t t-set="additional_title">Oferta <span t-esc="offer.name"/></t>
+        <div class="simulated-product-title mb4">
+            <span>Oferta activa desde: <span t-esc="offer.start_date"/></span>
+            <h1><span t-esc="offer.category_id.name"/></h1>
+        </div>
+        <t t-call="website_base.simulate_product">
+<!--        <t t-set="first_possible_combination" t-value="product._get_first_possible_combination()"/>-->
+            <t t-set="first_possible_combination" t-value="False"/>
+<!--        <t t-set="combination_info" t-value="product._get_combination_info(first_possible_combination, add_qty=add_qty or 1, pricelist=pricelist)"/>-->
+            <t t-set="combination_info" t-value="False"/>
+<!--        <t t-set="product_variant" t-value="product.env['product.product'].browse(combination_info['product_id'])"/>-->
+            <t t-set="product_variant" t-value="offer"/>
+<!--            <t t-set="variant_img" t-value="product_variant and product_variant.image_variant"/>-->
+            <t t-set="variant_img" t-value="product_variant and product_variant.image"/>
+<!--            <t t-set="image_ids"  t-value="product.product_image_ids"/>-->
+            <t t-set="image_ids"  t-value="offer.offer_image_ids"/>
+            <t t-set="product" t-value="offer"/>
+        </t>
+    </template>
+
+
+</odoo>
