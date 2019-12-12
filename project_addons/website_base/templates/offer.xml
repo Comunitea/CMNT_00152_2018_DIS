@@ -18,7 +18,7 @@
         <div class="simulated-product-title">
             <h1 class="mt8">Ofertas</h1>
         </div>
-        <p class="mb4"><strong>Filtrar ofertas:</strong></p>
+        <h6 class="mt8 mb8"><strong>Filtrar ofertas:</strong></h6>
         <p class="mb16">
             <a role="button" t-attf-href="/ofertas" class="btn btn-secondary">Todas</a>
             <t t-foreach="offer_categories" t-as="offer_cat">
