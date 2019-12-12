@@ -50,11 +50,8 @@ class ProductOffer(models.Model):
     website_published = fields.Boolean(string=_('Published'), default=True,
                                        help=_("Only published offers are visible on the website"))
     slug = fields.Char(_("Friendly URL"))
-    # TODO: Do improve it to use ir.attachment in view forms
     attachment_id = fields.Binary(string=_("Attachment"), attachment=True)
-    # attachment_id = fields.Many2one('ir.attachment', string="Attachment")
     attachment_filename = fields.Char(string=_("Attachment Filename"))
-    att_id = fields.Many2one('ir.attachment', compute='get_att_id')
     start_date = fields.Date(required=True, default=fields.Date.context_today)
     end_date = fields.Date()
     # TODO: Include them in xml offer views to set by settings
@@ -63,12 +60,11 @@ class ProductOffer(models.Model):
     # TODO: Create styles for offers and include them in xml offer views
     website_style_ids = fields.Many2many('product.style', string='Styles')
 
-    def get_att_id(self):
-        for x in self:
-            self.env.cr.execute("select attachment_id from product_offer where id = %s" % x.id)
-            res = self.env.cr.fetchone()
-            if res:
-                x.att_id = res[0]
+    @api.multi
+    def get_attachment_id(self):
+        self.ensure_one()
+        domain = [('res_model', '=', self._name), ('res_field', '=', 'attachment_id'), ('res_id', '=', self.id), ]
+        return self.env['ir.attachment'].sudo().search(domain)
 
     def _default_website_sequence(self):
         self._cr.execute("SELECT MIN(website_sequence) FROM %s" % self._table)
