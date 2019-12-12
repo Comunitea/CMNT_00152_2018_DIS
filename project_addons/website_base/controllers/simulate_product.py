@@ -51,6 +51,8 @@ class SimulateProductController(http.Controller):
                     domain_offer_products += ['|', '|', ('name', 'ilike', srch), ('description', 'ilike', srch),
                                               ('description_short', 'ilike', srch), ]
             offer_products = offer_products.search(domain_offer_products + request.website.website_domain())
+            product_categories = offer_products.mapped('public_categ_ids')
+            offer_categories += product_categories
             bins_table += offer_products
         bins = TableCompute().process(bins_table, ppg)
         search_count = len(bins_table)
