@@ -28,32 +28,33 @@ class SimulateProductController(http.Controller):
             for srch in shlex.split(search):
                 domain_offers += ['|', '|', ('name', 'ilike', srch), ('subtitle', 'ilike', srch),
                                   ('description', 'ilike', srch), ]
-        if category:
-            domain_offers += [('category_id', '=', int(category))]
         offers = Offer.search(domain_offers, order=order if order else 'website_sequence desc')
+        offer_categories = offers.mapped('category_id')
+        if category:
+            offers = offers.filtered(lambda x: x.category_id.id == int(category))
         bins_table = []
         bins_table += offers
 
         # Categories for Categories Menu
         Category = request.env['product.public.category']
         # TODO: Hide offers with categories unpublished?? Show this categories??
-        domain_category = [('website_published', '=', True), ] + request.website.website_domain()
-        all_categories = Category.search([('parent_id', '=', False)] + request.website.website_domain())
-        offer_categories = Category.search(domain_category).filtered(lambda x: x.offer_ids in offers)
+        domain_category = [('parent_id', '=', False), ('website_published', '=', True), ] \
+            + request.website.website_domain()
+        all_categories = Category.search(domain_category)
 
         # Products templates within offers
         Product = request.env['product.template']
         domain_offer_products = [('website_style_ids', '!=', False)]
+        if search:
+            for srch in shlex.split(search):
+                domain_offer_products += ['|', '|', ('name', 'ilike', srch), ('description', 'ilike', srch),
+                                          ('description_short', 'ilike', srch), ]
         offer_products = Product.search(domain_offer_products + request.website.website_domain())
-        if offer_products:
-            if search:
-                for srch in shlex.split(search):
-                    domain_offer_products += ['|', '|', ('name', 'ilike', srch), ('description', 'ilike', srch),
-                                              ('description_short', 'ilike', srch), ]
-            offer_products = offer_products.search(domain_offer_products + request.website.website_domain())
-            product_categories = offer_products.mapped('public_categ_ids')
-            offer_categories += product_categories
-            bins_table += offer_products
+        product_categories = offer_products.mapped('public_categ_ids')
+        if category:
+            offer_products = offer_products.search([('public_categ_ids', 'in', int(category))])
+        offer_categories += product_categories
+        bins_table += offer_products
         bins = TableCompute().process(bins_table, ppg)
         search_count = len(bins_table)
 
@@ -74,9 +75,8 @@ class SimulateProductController(http.Controller):
         pager = request.website.pager(url=url_simulated_products, total=search_count, page=page, step=ppg, scope=7, url_args=post)
 
         # Values to render
-        values = {'simulated_products': offers,  # simulated_products
+        values = {'simulated_products': bins_table,  # simulated_products
                   'url_simulated_products': url_simulated_products,
-                  'simulated_product_templates': offer_products,  # simulated_product_templates
                   'url_simulated_product_templates': url_simulated_product_templates,
                   'categories': all_categories,
                   'category': category,

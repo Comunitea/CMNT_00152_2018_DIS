@@ -193,13 +193,6 @@
                 </t>
             </div>
         </t>
-        <t t-foreach="simulated_product_templates" t-as="product" t-if="simulated_product_templates">
-            <div class="oe_product oe_list oe_product_cart" t-att-data-publish="product.website_published and 'on' or 'off'">
-                <t t-call="website_base.simulate_products_item">
-                    <t t-set="show_publish" t-value="True" />
-                </t>
-            </div>
-        </t>
     </template>
 
     <!-- Simulated product structure into simulated shop products -->
