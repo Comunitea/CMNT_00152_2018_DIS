@@ -29,7 +29,7 @@ class SimulateProductController(http.Controller):
                 domain_offers += ['|', '|', ('name', 'ilike', srch), ('subtitle', 'ilike', srch),
                                   ('description', 'ilike', srch), ]
         offers = Offer.search(domain_offers, order=order if order else 'website_sequence desc')
-        offer_categories = offers.mapped('category_id')
+        offer_categories = set(offers.mapped('category_id'))
         if category:
             offers = offers.filtered(lambda x: x.category_id.id == int(category))
         bins_table = []
@@ -53,7 +53,7 @@ class SimulateProductController(http.Controller):
         product_categories = offer_products.mapped('public_categ_ids')
         if category:
             offer_products = offer_products.search([('public_categ_ids', 'in', int(category))])
-        offer_categories += product_categories
+        offer_categories.add(product_categories)
         bins_table += offer_products
         bins = TableCompute().process(bins_table, ppg)
         search_count = len(bins_table)
