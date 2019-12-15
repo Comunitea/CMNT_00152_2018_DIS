@@ -181,4 +181,14 @@
         </xpath>
 
     </template>
+
+    <template id="website_sale_products" name="Products Base" inherit_id="website_sale.products">
+        <xpath expr="//div[@id='products_grid']/table" position="before">
+            <div class="simulated-product-title mt16 mb32">
+                <span class="text-uppercase" t-esc="category.parent_id.name if category and category.parent_id else 'Bienvenido a Dismac, {}'.format(request.env.user.name)"/>
+                <h1><span class="text-uppercase" t-esc="category.name if category else 'Tienda'"/></h1>
+            </div>
+        </xpath>
+    </template>
+
 </odoo>

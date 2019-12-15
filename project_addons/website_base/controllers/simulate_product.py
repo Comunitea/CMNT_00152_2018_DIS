@@ -53,6 +53,8 @@ class SimulateProductController(http.Controller):
         product_categories = offer_products.mapped('public_categ_ids')
         if category:
             offer_products = offer_products.search([('public_categ_ids', 'in', int(category))])
+
+        # Final data
         offer_categories.update(offer_categories, product_categories)
         bins_table += offer_products
         bins = TableCompute().process(bins_table, ppg)
