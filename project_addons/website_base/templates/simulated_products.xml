@@ -35,7 +35,7 @@
                t-attf-aria-label="#{'Unfold' if c.parent_id else 'Fold'}" role="img"/>
             <a t-att-href="keep('/category/%s' % c.slug if c.slug else '/shop/category/%s' % slug(c), category=0)"
                t-attf-class="nav-link#{' active' if c.id == int(category or 0) else ''}" t-field="c.name"/>
-            <ul t-if="c.child_id" class="nav nav-pills flex-column nav-hierarchy" t-att-style="'display:block;' if c.parent_id or product_category and product_category.category_id.parent_id else 'display:none;'">
+            <ul t-if="c.child_id" class="nav nav-pills flex-column nav-hierarchy" t-att-style="'display:block;' if category or c.parent_id or product_category and product_category.category_id.parent_id else 'display:none;'">
                 <t t-foreach="c.child_id" t-as="c">
                     <t t-call="website_base.simulate_option_collapse_categories_recursive" />
                 </t>
