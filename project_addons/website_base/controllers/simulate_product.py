@@ -78,7 +78,8 @@ class SimulateProductController(http.Controller):
                   'url_simulated_products': url_simulated_products,
                   'simulated_product_templates': offer_products,  # simulated_product_templates
                   'url_simulated_product_templates': url_simulated_product_templates,
-                  'all_categories': all_categories,
+                  'categories': all_categories,
+                  'category': category,
                   'offer_categories': offer_categories,
                   'search': search,
                   'search_count': search_count,
@@ -94,7 +95,9 @@ class SimulateProductController(http.Controller):
             offers = request.env['product.offer']
             offer = offers.search([('slug', '=', path)], limit=1)
             if offer:
-                values.update({'offer': offer, 'offer_list': False, })
+                values.update({'offer': offer, 'product_category': offer, 'offer_list': False, })
+                if not category and offer.category_id:
+                    values.update({'category': offer.category_id.id, })
             else:
                 return request.env['ir.http'].reroute('/404')
 

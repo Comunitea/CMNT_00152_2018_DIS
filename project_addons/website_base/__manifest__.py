@@ -30,9 +30,9 @@
         'templates/header.xml',
         'templates/simulated_products.xml',
         'templates/offer.xml',
-        # 'templates/product.xml',
+        'templates/product.xml',
         'views/product_views.xml',
-        'views/assets.xml',
+        # 'views/assets.xml',
         'security/ir.model.access.csv',
     ],
     'images': [

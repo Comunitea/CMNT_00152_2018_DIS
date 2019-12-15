@@ -34,7 +34,7 @@
         <t t-set="additional_title">Oferta <span t-esc="offer.name"/></t>
         <div class="simulated-product-title mb4">
             <span>Oferta activa desde: <span t-esc="offer.start_date"/></span>
-            <h1><span t-esc="offer.category_id.name"/></h1>
+            <h1><span t-esc="offer.category_id.name if offer.category_id else offer.name"/></h1>
         </div>
         <t t-call="website_base.simulate_product">
 <!--        <t t-set="first_possible_combination" t-value="product._get_first_possible_combination()"/>-->
