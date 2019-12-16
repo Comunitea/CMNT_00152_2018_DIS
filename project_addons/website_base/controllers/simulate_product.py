@@ -19,16 +19,21 @@ class SimulateProductController(http.Controller):
     @http.route(['/ofertas', '/ofertas/page/<int:page>', '/ofertas/oferta/<path:path>',
                  ], type='http', auth='public', website=True)
     def get_offers(self, page=0, category=None, search='', order='', path='', ppg=False, **post):
-        # Offers
+        # Offers only published, with validate dates and published categories
         Offer = request.env['product.offer']
         current_date = datetime.date.today()
-        domain_offers = [('website_published', '=', True), ('end_date', '>=', current_date), ] \
-            + request.website.website_domain()
+        domain_offers = [('website_published', '=', True), ('end_date', '>=', current_date),
+                         ('start_date', '<=', current_date), ] + request.website.website_domain()
         if search:
             for srch in shlex.split(search):
                 domain_offers += ['|', '|', ('name', 'ilike', srch), ('subtitle', 'ilike', srch),
                                   ('description', 'ilike', srch), ]
         offers = Offer.search(domain_offers, order=order if order else 'website_sequence desc')
+        # Catch not published offer categories if their child are published
+        offers = offers.filtered(
+            lambda x: x.category_id.website_published if x.category_id.website_published is True or (
+                    x.category_id.child_id and x.category_id.child_id.website_published is True) else None)
+        # Set is needed to prevent catch the same category on product categories after
         offer_categories = set(offers.mapped('category_id'))
         if category:
             offers = offers.filtered(lambda x: x.category_id.id == int(category))
@@ -37,12 +42,11 @@ class SimulateProductController(http.Controller):
 
         # Categories for Categories Menu
         Category = request.env['product.public.category']
-        # TODO: Hide offers with categories unpublished?? Show this categories??
         domain_category = [('parent_id', '=', False), ('website_published', '=', True), ] \
             + request.website.website_domain()
         all_categories = Category.search(domain_category)
 
-        # Products templates within offers
+        # Products templates within offer
         Product = request.env['product.template']
         domain_offer_products = [('website_style_ids', '!=', False)]
         if search:
@@ -50,13 +54,16 @@ class SimulateProductController(http.Controller):
                 domain_offer_products += ['|', '|', ('name', 'ilike', srch), ('description', 'ilike', srch),
                                           ('description_short', 'ilike', srch), ]
         offer_products = Product.search(domain_offer_products + request.website.website_domain())
-        product_categories = offer_products.mapped('public_categ_ids')
+        # Catch not published product categories if their child are published
+        product_categories = offer_products.mapped('public_categ_ids').filtered(
+            lambda x: x.website_published if x.website_published is True or (
+                    x.child_id and x.child_id.website_published is True) else None)
         if category:
             offer_products = offer_products.search([('public_categ_ids', 'in', int(category))])
 
         # Final data
         offer_categories.update(offer_categories, product_categories)
-        bins_table += offer_products
+        bins_table += offer_products  # Put offers and products on the same row
         bins = TableCompute().process(bins_table, ppg)
         search_count = len(bins_table)
 
@@ -76,7 +83,7 @@ class SimulateProductController(http.Controller):
             ppg = PPG
         pager = request.website.pager(url=url_simulated_products, total=search_count, page=page, step=ppg, scope=7, url_args=post)
 
-        # Values to render
+        # Values to render by default with offer and product list
         values = {'simulated_products': bins_table,  # simulated_products
                   'url_simulated_products': url_simulated_products,
                   'url_simulated_product_templates': url_simulated_product_templates,
@@ -92,7 +99,7 @@ class SimulateProductController(http.Controller):
                   'offer_list': True,
                   }
 
-        # For single offer page
+        # Values to render for single offer
         if path:
             offers = request.env['product.offer']
             offer = offers.search([('slug', '=', path)], limit=1)

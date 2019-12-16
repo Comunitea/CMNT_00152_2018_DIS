@@ -10,9 +10,22 @@
     <!--        </xpath>-->
 <!--        </template>-->
 
+    <template id="website_sale_option_collapse_categories_recursive" inherit_id="website_sale.option_collapse_categories_recursive" name="Collapse Category Recursive Product Base">
+        <xpath expr="//i" position="attributes">
+            <attribute name="t-if" add="and categ.child_id.website_published" separator=" "/>
+        </xpath>
+        <xpath expr="//ul" position="attributes">
+            <attribute name="t-if" add="and categ.child_id.website_published" separator=" "/>
+        </xpath>
+<!--        <xpath expr="//t[@t-call='website_sale.option_collapse_categories_recursive']" position="attributes">-->
+<!--            <attribute name="t-if">categ.website_published</attribute>-->
+<!--        </xpath>-->
+    </template>
+
+    <!-- Catch not published categories if their child are published -->
     <template id="product_simulate_option_collapse_categories_recursive" name="Simulate Collapse Category Recursive Product Base">
         <li class="nav-item">
-            <i t-if="c.child_id" t-attf-class="text-primary fa #{'fa-chevron-down' if c.parent_id else 'fa-chevron-right'}"
+            <i t-if="c.child_id and c.child_id.website_published" t-attf-class="text-primary fa #{'fa-chevron-down' if c.parent_id else 'fa-chevron-right'}"
                t-attf-title="#{'Unfold' if c.parent_id else 'Fold'}"
                t-attf-aria-label="#{'Unfold' if c.parent_id else 'Fold'}" role="img"/>
             <a t-att-href="keep('/category/%s' % c.slug if c.slug else '/shop/category/%s' % slug(c), category=0)"
@@ -20,14 +33,14 @@
                t-field="c.name"/>
             <ul t-if="c.child_id" class="nav nav-pills flex-column nav-hierarchy" t-att-style="'display:block;' if product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0 else 'display:none;'">
                 <t t-foreach="c.child_id" t-as="c">
-                    <t t-call="website_base.product_simulate_option_collapse_categories_recursive" />
+                    <t t-call="website_base.product_simulate_option_collapse_categories_recursive" t-if="c.website_published or (not c.website_published and c.child_id.website_published)"/>
                 </t>
             </ul>
         </li>
     </template>
 
     <template id="website_sale_product" name="Product Base" inherit_id="website_sale.product">
-        <!-- Add SKU into product detail view-->
+        <!-- Add SKU into product detail view without replace all product detail template -->
         <!--        <xpath expr="//div[@id='product_details']/h1" position="after">-->
 <!--                    <div class="product_details-sku" t-if="product.default_code">-->
 <!--                        <strong>SKU: </strong><span itemprop="sku" t-esc="product.default_code"/>-->
@@ -54,11 +67,12 @@
                              id="products_grid_before">
                             <ul class="nav nav-pills flex-column mt16" id="o_shop_collapse_category">
                                 <li class="nav-item">
-                                    <a href="keep('/shop', category=0)" t-attf-class="nav-link#{'' if category or (product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0) else ' active'} o_not_editable">Todos los productos</a>
+                                    <a t-att-href="keep('/shop', category=0)" t-attf-class="nav-link#{'' if category or (product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0) else ' active'} o_not_editable">Todos los productos</a>
                                 </li>
                                 <t t-foreach="categories" t-as="c">
                                     <li class="nav-item">
-                                        <t t-call="website_base.product_simulate_option_collapse_categories_recursive" />
+                                        <!-- Catch not published categories if their child are published -->
+                                        <t t-call="website_base.product_simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
                                     </li>
                                 </t>
                             </ul>
@@ -88,7 +102,6 @@
                                                             <div class="carousel-item" t-field="pimg.image" t-options='{"widget": "image", "class": "product_detail_img", "alt-field": "name", "zoom": "image", "itemprop": "image"}'/>
                                                         </t>
                                                     </div>
-
                                                     <t t-if="len(image_ids) or variant_img">
                                                         <a class="carousel-control-prev" href="#o-carousel-product" role="button" data-slide="prev" >
                                                             <span class="fa fa-chevron-left" role="img" aria-label="Previous" title="Previous"/>
@@ -124,7 +137,7 @@
                                                 <p itemprop="description" t-field="product.description_short" class="text-muted" />
                                                 <hr/>
                                             </div>
-                                            <span itemprop="url" style="display:none;" t-esc="'%sshop/product/%s' % (request.httprequest.url_root, slug(product))"/>
+                                            <span itemprop="url" style="display:none;" t-esc="keep('%sproduct/%s' % (request.httprequest.url_root, product.slug)) if product.slug else keep('%sshop/product/%s' % slug(request.httprequest.url_root, slug(product)))"/>
                                             <form t-if="product._is_add_to_cart_possible()" action="/shop/cart/update" method="POST">
                                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                                 <div class="js_product js_main_product">
@@ -152,6 +165,8 @@
                                             </form>
                                             <p t-elif="not product.active" class="alert alert-warning">This product is no longer available.</p>
                                             <p t-else="" class="alert alert-warning">This product has no valid combination.</p>
+                                            <!-- TODO: Pending to change and fix when quote form are ready -->
+                                            <!-- Send to quote form page -->
                                             <div class="producto-solicitud-presupuesto">
                                                 <form action="https://www.dismac.es/tienda/socket.php" name="form-presupuesto" method="post">
                                                     <input type="hidden" name="page" value="presupuesto"/>
