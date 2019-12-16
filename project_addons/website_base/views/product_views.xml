@@ -338,4 +338,7 @@
               action="product_offer_action"
               parent="website_sale.menu_product_settings" sequence="4"/>
 
+    <!-- Sales Menu -->
+    <menuitem id="product_offer_menu_catalog" name="Offers" action="product_offer_action" parent="sale.product_menu_catalog" sequence="9" groups="sales_team.group_sale_salesman"/>
+
 </odoo>
