@@ -12,26 +12,26 @@
 
     <template id="website_sale_option_collapse_categories_recursive" inherit_id="website_sale.option_collapse_categories_recursive" name="Collapse Category Recursive Product Base">
         <xpath expr="//i" position="attributes">
-            <attribute name="t-if" add="and categ.child_id.website_published" separator=" "/>
+            <attribute name="t-if" add="and (categ.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" separator=" "/>
         </xpath>
         <xpath expr="//ul" position="attributes">
-            <attribute name="t-if" add="and categ.child_id.website_published" separator=" "/>
+            <attribute name="t-if" add="and (categ.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" separator=" "/>
         </xpath>
-<!--        <xpath expr="//t[@t-call='website_sale.option_collapse_categories_recursive']" position="attributes">-->
-<!--            <attribute name="t-if">categ.website_published</attribute>-->
-<!--        </xpath>-->
+        <xpath expr="//t[@t-call='website_sale.option_collapse_categories_recursive']" position="attributes">
+            <attribute name="t-if">categ.website_published or (not categ.website_published and categ.child_id.website_published)</attribute>
+        </xpath>
     </template>
 
     <!-- Catch not published categories if their child are published -->
     <template id="product_simulate_option_collapse_categories_recursive" name="Simulate Collapse Category Recursive Product Base">
         <li class="nav-item">
-            <i t-if="c.child_id and c.child_id.website_published" t-attf-class="text-primary fa #{'fa-chevron-down' if c.parent_id else 'fa-chevron-right'}"
+            <i t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" t-attf-class="text-primary fa #{'fa-chevron-down' if c.parent_id else 'fa-chevron-right'}"
                t-attf-title="#{'Unfold' if c.parent_id else 'Fold'}"
                t-attf-aria-label="#{'Unfold' if c.parent_id else 'Fold'}" role="img"/>
             <a t-att-href="keep('/category/%s' % c.slug if c.slug else '/shop/category/%s' % slug(c), category=0)"
                t-attf-class="nav-link#{' active' if c.id == int(product.public_categ_ids[0].id) else ''}"
                t-field="c.name"/>
-            <ul t-if="c.child_id" class="nav nav-pills flex-column nav-hierarchy" t-att-style="'display:block;' if product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0 else 'display:none;'">
+            <ul t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" class="nav nav-pills flex-column nav-hierarchy" t-att-style="'display:block;' if product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0 else 'display:none;'">
                 <t t-foreach="c.child_id" t-as="c">
                     <t t-call="website_base.product_simulate_option_collapse_categories_recursive" t-if="c.website_published or (not c.website_published and c.child_id.website_published)"/>
                 </t>
