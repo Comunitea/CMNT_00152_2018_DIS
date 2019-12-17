@@ -24,16 +24,10 @@
         'templates/account.xml',
         'templates/footer.xml',
         'templates/header.xml',
-        'templates/pricelist.xml',
-        'templates/offer.xml',
-        'templates/catalog.xml',
-        'templates/history.xml',
-        'templates/quote.xml',
         'templates/product.xml',
-        'templates/pages.xml',
         'views/customize_views.xml',
         'templates/sale_order_portal.xml',
-        'templates/head.xml'
+        'templates/head.xml',
     ],
     'images': [
         '/static/description/icon.png',

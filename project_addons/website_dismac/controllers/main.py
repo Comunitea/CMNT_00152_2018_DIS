@@ -65,16 +65,16 @@ class WebsiteSaleContext(WebsiteSale):
         ctx = request.env.context.copy()
 
         if list_type == 'pricelist':
-            url = "/page/tarifas"
+            url = "/tarifas"
             if category:
-                url = "/page/tarifas/%s" % category
+                url = "/tarifas/%s" % category
             ctx.update(customer_prices=True)
             request.env.context= ctx
 
         elif list_type == 'historial':
-            url = "/page/historial"
+            url = "/historial"
             if category:
-                url = "/page/historial/%s" % category
+                url = "/historial/%s" % category
             ctx.update(customer_historial=True)
             request.env.context= ctx
 
@@ -113,14 +113,14 @@ class WebsiteSaleContext(WebsiteSale):
 
 
     @http.route([
-        '/page/tarifas'
+        '/tarifas'
     ], type='http', auth="public", website=True)
     def customer_prices_shop(self, page=0, category=None, search='', ppg=False, **post):
         return self.recalculate_product_list(list_type='pricelist', page=page, category=category, search=search, ppg=ppg, **post)
 
     
     @http.route([
-        '/page/historial'
+        '/historial'
     ], type='http', auth="public", website=True)
     def customer_historial_shop(self, page=0, category=None, search='', ppg=False, **post):
         return self.recalculate_product_list(list_type='historial', page=page, category=category, search=search, ppg=ppg, **post)
