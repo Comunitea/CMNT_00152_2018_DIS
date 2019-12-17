@@ -135,6 +135,16 @@ class BaseRestUVigoApiController(main.RestController):
                 'error_msg': _("REST API could not find that order number.")
             })
             raise NotFound(_("REST API could not find that order number."))
+        
+        if sale_order.state != 'sale':
+            _logger.error(
+                _("REST API access not allowed to this order.")
+            )
+            log_entry.sudo().update({
+                'error': True,
+                'error_msg': _("REST API access not allowed to this order.")
+            })
+            raise NotAcceptable(_("REST API access not allowed to this order."))
 
         api_partner_obj = request.env['res.partner'].browse(int(api_partner))
         
