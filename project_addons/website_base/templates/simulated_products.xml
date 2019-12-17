@@ -34,8 +34,9 @@
                t-attf-title="#{'Unfold' if c.parent_id else 'Fold'}"
                t-attf-aria-label="#{'Unfold' if c.parent_id else 'Fold'}" role="img"/>
             <a t-att-href="keep('/category/%s' % c.slug if c.slug else '/shop/category/%s' % slug(c), category=0)"
-               t-attf-class="nav-link#{' active' if c.id == int(category or 0) else ''}" t-field="c.name"/>
-            <ul t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" class="nav nav-pills flex-column nav-hierarchy" t-att-style="'display:block;' if category or c.parent_id or product_category and product_category.category_id.parent_id else 'display:none;'">
+               t-attf-class="nav-link#{' active' if c.id == int(category or 0) or (product and product.public_categ_ids and c.id in product.public_categ_ids.mapped('id')) else ''}" t-field="c.name"/>
+            <ul t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" class="nav nav-pills flex-column nav-hierarchy"
+                t-att-style="'display:block;' if category or c.parent_id or product_category and product_category.category_id.parent_id or (product and product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0) else 'display:none;'">
                 <t t-foreach="c.child_id" t-as="c">
                     <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
                 </t>

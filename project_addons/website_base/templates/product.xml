@@ -10,6 +10,7 @@
     <!--        </xpath>-->
 <!--        </template>-->
 
+    <!-- Catch not published categories if their child are published -->
     <template id="website_sale_option_collapse_categories_recursive" inherit_id="website_sale.option_collapse_categories_recursive" name="Collapse Category Recursive Product Base">
         <xpath expr="//i" position="attributes">
             <attribute name="t-if" add="and (categ.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" separator=" "/>
@@ -20,23 +21,6 @@
         <xpath expr="//t[@t-call='website_sale.option_collapse_categories_recursive']" position="attributes">
             <attribute name="t-if">categ.website_published or (not categ.website_published and categ.child_id.website_published)</attribute>
         </xpath>
-    </template>
-
-    <!-- Catch not published categories if their child are published -->
-    <template id="product_simulate_option_collapse_categories_recursive" name="Simulate Collapse Category Recursive Product Base">
-        <li class="nav-item">
-            <i t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" t-attf-class="text-primary fa #{'fa-chevron-down' if c.parent_id else 'fa-chevron-right'}"
-               t-attf-title="#{'Unfold' if c.parent_id else 'Fold'}"
-               t-attf-aria-label="#{'Unfold' if c.parent_id else 'Fold'}" role="img"/>
-            <a t-att-href="keep('/category/%s' % c.slug if c.slug else '/shop/category/%s' % slug(c), category=0)"
-               t-attf-class="nav-link#{' active' if c.id == int(product.public_categ_ids[0].id) else ''}"
-               t-field="c.name"/>
-            <ul t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" class="nav nav-pills flex-column nav-hierarchy" t-att-style="'display:block;' if product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0 else 'display:none;'">
-                <t t-foreach="c.child_id" t-as="c">
-                    <t t-call="website_base.product_simulate_option_collapse_categories_recursive" t-if="c.website_published or (not c.website_published and c.child_id.website_published)"/>
-                </t>
-            </ul>
-        </li>
     </template>
 
     <template id="website_sale_product" name="Product Base" inherit_id="website_sale.product">
@@ -72,26 +56,34 @@
                                 <t t-foreach="categories" t-as="c">
                                     <li class="nav-item">
                                         <!-- Catch not published categories if their child are published -->
-                                        <t t-call="website_base.product_simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
+                                        <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
                                     </li>
                                 </t>
                             </ul>
                         </div>
                         <div t-att-class="'col-lg-9 col-md-8 mt16 mb32' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'col-lg-12 mb32'"
                              id="products_grid">
+
                             <t t-set="first_possible_combination" t-value="product._get_first_possible_combination()"/>
                             <t t-set="combination_info" t-value="product._get_combination_info(first_possible_combination, add_qty=add_qty or 1, pricelist=pricelist)"/>
                             <t t-set="product_variant" t-value="product.env['product.product'].browse(combination_info['product_id'])"/>
                             <t t-set="additional_title" t-value="product.name" />
                             <t t-set="variant_img" t-value="product_variant and product_variant.image_variant"/>
                             <t t-set="image_ids"  t-value="product.product_image_ids"/>
+
+                            <!-- Product head -->
                             <div class="simulated-product-title mb4 text-uppercase">
+
                                 <h6 t-esc="product.public_categ_ids[0].parent_id.name if product.public_categ_ids and product.public_categ_ids[0].parent_id else product.public_categ_ids[0].name if product.public_categ_ids and product.public_categ_ids[0] else 'Producto'"/>
                                 <h4><span t-esc="product.public_categ_ids[0].name if product.public_categ_ids and product.public_categ_ids[0] else product.name"/></h4>
                             </div>
+
+                            <!-- Product content -->
                             <div itemscope="itemscope" itemtype="http://schema.org/Product" class="js_sale">
                                 <section t-attf-class="container py-2 oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''}" id="product_detail">
                                     <div class="row">
+
+                                        <!-- Product Image -->
                                         <div class="col-md-6">
                                             <div id="o-carousel-product" class="carousel slide" data-ride="carousel" data-interval="0">
                                                 <div class="carousel-outer">
@@ -126,6 +118,8 @@
                                                 </ol>
                                             </div>
                                         </div>
+
+                                        <!-- Product detail -->
                                         <div class="col-md-6 col-xl-4 offset-xl-2" id="product_details">
                                             <h4 itemprop="name" t-field="product.name">Product Name</h4>
                                             <hr/>
@@ -165,6 +159,7 @@
                                             </form>
                                             <p t-elif="not product.active" class="alert alert-warning">This product is no longer available.</p>
                                             <p t-else="" class="alert alert-warning">This product has no valid combination.</p>
+
                                             <!-- TODO: Pending to change and fix when quote form are ready -->
                                             <!-- Send to quote form page -->
                                             <div class="producto-solicitud-presupuesto">
@@ -199,6 +194,7 @@
 
     <template id="website_sale_products" name="Products Base" inherit_id="website_sale.products">
         <xpath expr="//div[@id='products_grid']/table" position="before">
+            <!-- Product list head -->
             <div class="simulated-product-title mt16 mb32">
                 <span class="text-uppercase" t-esc="category.parent_id.name if category and category.parent_id else 'Bienvenido a Dismac, {}'.format(request.env.user.name)"/>
                 <h1><span class="text-uppercase" t-esc="category.name if category else 'Tienda'"/></h1>
