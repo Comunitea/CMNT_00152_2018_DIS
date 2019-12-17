@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Add purchase orders to refund -->
+    <record id="view_invoice_supplier_purchase_form_spbc" model="ir.ui.view">
+        <field name="name">account.invoice.supplier.spbc</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="groups_id" eval="[(4,ref('purchase.group_purchase_user'))]"/>
+        <field name="arch" type="xml">
+            <field name="vendor_bill_id" position="after">
+                <field name="vendor_batch_id"
+                       attrs="{'invisible': ['|', '|', ('state','not in',['draft']), ('state', '=', 'purchase'), ('type', '=', 'in_refund')]}"
+                       class="oe_edit_only"
+                       domain="[('picking_ids.partner_id','child_of',[partner_id])]"
+                       placeholder="Select an incoming batch picking order"
+                       options="{'no_create': True, 'no_open': True}"/>
+            </field>
+        </field>
+    </record>
+
+
+
+</odoo>

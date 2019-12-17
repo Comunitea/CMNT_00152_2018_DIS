@@ -33,26 +33,36 @@ class BatchPickingGroupMove(models.Model):
     batch_id = fields.Many2one("stock.picking.batch")
     product_uom = fields.Many2one(related="product_id.uom_id")
 
+
     @api.multi
     def action_apply_qties(self):
 
-        if self.qty_done == sum(x.product_uom_qty for x in self.move_line_ids):
-            for move_line in self.move_line_ids:
-                move_line.qty_done = move_line.product_uom_qty
+        if self._context.get('fill_qty_done', False):
+            for line in self:
+                for sm_id in line.move_line_ids:
+                    sm_id.qty_done = sm_id.product_uom_qty
+                line.qty_done = sum(x.qty_done for x in line.move_line_ids)
         else:
-            moves_sorted = self.move_line_ids.sorted(
-                lambda x: x.sale_order.date_order
-            )
-            qty_available = self.qty_done
-            for move_line in moves_sorted:
-                if qty_available >= move_line.product_uom_qty:
-                    move_line.qty_done = move_line.product_uom_qty
+            for line in self:
+                if line.qty_done == sum(x.product_uom_qty for x in line.move_line_ids):
+                    for move_line in line.move_line_ids:
+                        move_line.qty_done = move_line.product_uom_qty
                 else:
-                    move_line.qty_done = qty_available
-                qty_available -= move_line.qty_done
+                    moves_sorted = line.move_line_ids.sorted(
+                        lambda x: x.sale_order.date_order
+                    )
+                    qty_available = line.qty_done
+                    for move_line in moves_sorted:
+                        if qty_available >= move_line.product_uom_qty:
+                            move_line.qty_done = move_line.product_uom_qty
+                        else:
+                            move_line.qty_done = qty_available
+                        qty_available -= move_line.qty_done
 
-                if qty_available < 0.00:
-                    break
+                        if qty_available < 0.00:
+                            break
+
+
 
     def action_show_details(self):
 
@@ -91,48 +101,53 @@ class StockBatchPicking(models.Model):
 
     _inherit = "stock.picking.batch"
 
-    @api.depends("picking_ids.picking_type_id")
-    @api.multi
-    def _get_picking_type(self):
-        for batch in self:
-            batch.picking_type_id = (
-                batch.picking_ids
-                and batch.picking_ids[0].picking_type_id
-                or False
-            )
-
     def get_move_done(self):
 
         data = self.env[
             "report.stock_picking_batch_custom.report_batch_picking_custom"
         ]._get_grouped_data(self)
 
+        lines={}
+        #import pdb; pdb.set_trace()
+        print (data)
         for pasillo in data:
+            print(pasillo)
             for item in pasillo["l1_items"]:
-                product_uom_qty = item["product_uom_qty"]
-                op_ids = item["operations"].ids
-                operations = [(6, 0, op_ids)]
-                product_id = item["product"].id
-                location_id = item["operations"][0].location_id.id
-                val = {
-                    "qty_done": 0,
-                    "move_line_ids": operations,
-                    "product_id": product_id,
-                    "location_id": location_id,
-                    "product_uom_qty": product_uom_qty,
-                    "group": True,
-                    "batch_id": self.id,
-                }
-                self.move_grouped_ids.create(val)
+                print (item)
+                product_id = item["product"]
+                location_id = item['location_id']#item["operations"][0].location_id.id
+                line_name = '{}.{}'.format(product_id.id, location_id.id)#, lot_id and lot_id.id or 0, package_id and package_id.id or 0)
+                if line_name in lines.keys():
+                    lines[line_name]['product_uom_qty'] += item["product_uom_qty"]
+                    lines[line_name]['op_ids'] += item["operations"].ids
+                else:
+                    lines[line_name] = {
+                        "qty_done": 0,
+                        'op_ids':  item["operations"].ids,
+                        "product_id": product_id.id,
+                        "location_id": location_id.id,
+                        "product_uom_qty": item["product_uom_qty"],
+                        "group": True,
+                        "batch_id": self.id,
+                    }
 
-        self.moves_all_count = len(self.move_grouped_ids)
+
+        for item in lines.keys():
+            val = lines[item]
+            val['move_line_ids'] = [(6,0, val['op_ids'])]
+            self.move_grouped_ids.create(val)
+
         return
 
-    picking_type_id = fields.Many2one("stock.picking.type", "Picking type")
+    @api.multi
+    def get_moves_count(self):
+        for batch in self:
+            batch.moves_all_count = len(batch.move_grouped_ids)
+
     move_grouped_ids = fields.One2many(
         "batch.picking.group.move", "batch_id", domain=[("group", "=", True)]
     )
-    moves_all_count = fields.Integer("Moves count")
+    moves_all_count = fields.Integer("Moves count", compute=get_moves_count)
     qty_applied = fields.Boolean(default=False)
 
     @api.model
@@ -156,8 +171,25 @@ class StockBatchPicking(models.Model):
         for batch in self.filtered(lambda x: x.moves_all_count == 0):
             self.get_move_done()
             self.moves_all_count = len(batch.move_grouped_ids)
-
         return
+
+
+    def action_show_moves_kanban(self):
+        self.ensure_one()
+        view = self.env.ref(
+            "stock.view_stock_move_line_kanban"
+        )
+        return {
+            "name": _("Detailed Operations"),
+            "type": "ir.actions.act_window",
+            "view_type": "kanban",
+            "view_mode": "form",
+            "res_model": "stock.move.line",
+            "views": [(view.id, "kanban")],
+            "view_id": view.id,
+            "context": dict(self.env.context),
+            "domain": [('id', 'in', self.move_line_ids.ids)]
+        }
 
     @api.multi
     def action_get_moves_done(self):
