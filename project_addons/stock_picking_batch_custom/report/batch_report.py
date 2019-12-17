@@ -39,7 +39,10 @@ class ReportPrintBatchPicking(models.AbstractModel):
     @api.model
     def new_level_1(self, operation):
         return {
+            'location_id': operation.move_id.location_id,
             "product": operation.product_id,
+            'lot_id': operation.lot_id,
+            'package_id': operation.package_id,
             "product_qty": operation.product_qty or operation.qty_done,
             "product_uom_qty": operation.product_uom_qty,
             "operations": operation,

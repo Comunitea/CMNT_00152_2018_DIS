@@ -2,4 +2,5 @@
 
 from . import stock_picking_batch
 from . import stock_move
-from . import picking_batch_creator
+from . import account_invoice
+
