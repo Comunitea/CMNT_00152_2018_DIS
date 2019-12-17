@@ -23,7 +23,7 @@
 ##############################################################################
 
 from odoo.addons.base_rest.controllers import main
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, NotAcceptable, NotFound, Unauthorized
 from odoo import http, _
 from odoo.http import request, Response
 from datetime import datetime, timedelta
@@ -74,7 +74,7 @@ class BaseRestUVigoApiController(main.RestController):
                     'error_msg': _("REST API called with a timestamp older than 5 minutes.")
                 })
 
-                raise BadRequest(_("REST API called with a timestamp older than 5 minutes."))
+                raise Unauthorized(_("REST API called with a timestamp older than 5 minutes."))
 
             else:
                 self._api_check_access(_id, log_entry)
@@ -110,7 +110,7 @@ class BaseRestUVigoApiController(main.RestController):
                 'error': True,
                 'error_msg': _("REST API called with a invalid token.")
             })
-            raise BadRequest(_("REST API called with a invalid token."))
+            raise Unauthorized(_("REST API called with a invalid token."))
 
     def _api_check_access(self, _id, log_entry):
         api_partner = request.env['ir.config_parameter'].sudo().get_param('rest_api_dismac.api_partner', False)
@@ -134,7 +134,7 @@ class BaseRestUVigoApiController(main.RestController):
                 'error': True,
                 'error_msg': _("REST API could not find that order number.")
             })
-            raise BadRequest(_("REST API could not find that order number."))
+            raise NotFound(_("REST API could not find that order number."))
 
         api_partner_obj = request.env['res.partner'].browse(int(api_partner))
         
@@ -146,6 +146,6 @@ class BaseRestUVigoApiController(main.RestController):
                 'error': True,
                 'error_msg': _("REST API access not allowed to this order.")
             })
-            raise BadRequest(_("REST API access not allowed to this order."))
+            raise NotFound(_("REST API access not allowed to this order."))
             
         return True
