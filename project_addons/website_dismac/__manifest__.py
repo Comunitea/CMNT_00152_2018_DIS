@@ -29,6 +29,7 @@
         'templates/catalog.xml',
         'templates/history.xml',
         'templates/quote.xml',
+        'templates/product.xml',
         'templates/pages.xml',
         'views/customize_views.xml',
         'templates/sale_order_portal.xml',
