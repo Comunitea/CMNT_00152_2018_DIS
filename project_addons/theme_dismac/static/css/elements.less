@@ -11,18 +11,66 @@ a {
     }
 }
 
-/* Buttons */
-.btn, .btn-primary, .btn-secondary, .btn-link {
+/********** Buttons ***********/
+.btn, .btn-primary, .btn-secondary, .btn-link, .btn .btn-secondary, bg-light {
     color: @color-white;
-    border-color: @color-main;
+    border-color: @color-secondary;
     background-color: @color-secondary;
-    &:hover {
+    &:hover, &:focus {
         color: @color-secondary;
         background-color: @color-white;
         border-color: @color-secondary;
         box-shadow: 0 0 0 0.5px @color-secondary;
     }
 }
+
+/* Ribbon Buttons */
+// Secondary Style
+.ribbon.btn.btn-danger {
+    &:hover {
+        background-color: @color-secondary;
+        border-color: @color-secondary;
+        color: #fff;
+        box-shadow: None;
+    }
+}
+// Danger Style
+// .ribbon.btn.btn-danger {
+//     background-color: #dc3545;
+//     border-color: #dc3545;
+//     color: #fff;
+//     &:hover {
+//         background-color: #dc3545;
+//         border-color: #dc3545;
+//         color: #fff;
+//         box-shadow: None;
+//     }
+// }
+
+/* Disabled buttons */
+.btn-link.disabled {
+    color: @color-white;
+}
+
+/* Dropdown buttons */
+.btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active, .show > .btn-secondary.dropdown-toggle {
+    color: @color-secondary;
+    background-color: @color-white;
+    border-color: @color-secondary;
+    box-shadow: 0 0 0 0.5px @color-secondary;
+}
+
+.btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus, .show > .btn-secondary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.5px @color-secondary;
+}
+.dropdown-item {
+    color: @color-secondary;
+    &:hover {
+        color: @color-white;
+        background-color: @color-secondary;
+    }
+}
+/********** End Buttons ***********/
 
 /* Pagination */
 .page-item.active .page-link {
@@ -58,3 +106,22 @@ a {
 .text-primary {
     color: @color-secondary !important;
 }
+
+/* Carousel */
+.carousel-control-prev, .carousel-control-next {
+    color: @color-secondary;
+    opacity: .5;
+    &:hover, &:focus {
+         color: @color-secondary;
+         font-weight: bold;
+         font-size: large;
+         opacity: 1;
+    }
+}
+
+#o-carousel-product .carousel-indicators li img {
+    &:hover {
+        padding: 0.3rem;
+    }
+}
+
