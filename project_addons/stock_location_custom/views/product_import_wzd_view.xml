@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_quant_package_formpi" model="ir.ui.view">
+            <field name="name">	stock.quant.package.form.pi</field>
+            <field name="model">stock.quant.package</field>
+            <field name="inherit_id" ref="stock.view_quant_package_form"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="before">
+                    <field name="import_name"/>
+                    <field name="import_product_id"/>
+                </field>
+            </field>
+    </record>
+
+    <record id="view_location_form_pi" model="ir.ui.view">
+            <field name="name">	stock.location.form.pi</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <field name="usage" position="before">
+                    <field name="import_name" readonly="1" attrs="{'invisible': [('usage','=','internal')]}"/>
+                </field>
+                <field name="posx" position="before">
+                    <field name="building"/>
+                    <field name="floor"/>
+                </field>
+            </field>
+    </record>
+
+
+    <record id="view_template_property_form_pi" model="ir.ui.view">
+            <field name="name">product.template.stock.property.form.pi</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.view_template_property_form"/>
+            <field name="arch" type="xml">
+                <field name="property_stock_inventory" position="after">
+                    <field name="import_location_str" />
+                </field>
+            </field>
+    </record>
+
+    <record id="view_product_import_wzd_form" model="ir.ui.view">
+        <field name="name">view.product.import.wzd.form</field>
+        <field name="model">product.import.wzd</field>
+        <field name="arch" type="xml">
+            <form string="Import Stocks">
+                <div name="help">
+                    <h2>Select file to import</h2>
+                    Recuerda crear Planta 0, Planta 1 y Palets
+                </div>
+                <group>
+                    <field name="name"/>
+                    <field name="location_id"/>
+
+                    <field name="file" filename="filename"/>
+                    <field name="start_line"/>
+                    <field name="end_line"/>
+                </group>
+                <footer>
+                    <button name="import_products" type="object" class="btn-primary" string="Import Products"/>
+                    <button special="cancel" string="Cancel" class="oe_link"/>
+                </footer> 
+            </form>
+        </field>
+    </record>
+
+   
+    <record id="action_import_products" model="ir.actions.act_window">
+        <field name="name">Import Products</field>
+        <field name="res_model">product.import.wzd</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem id="menu_import_product" name="Import Products"
+              action="action_import_products"
+              parent="stock.menu_stock_warehouse_mgmt"
+
+              sequence="99" />
+    
+    
+</odoo>
