@@ -49,7 +49,7 @@ class BaseRestUVigoApiController(main.RestController):
                 'access_type': "send",
                 'timestamp': timestamp,
                 'token': token,
-                'order_id': _id,
+                'requested_id': _id,
                 'error': False
             })
 
@@ -135,6 +135,10 @@ class BaseRestUVigoApiController(main.RestController):
                 'error_msg': _("REST API could not find that order number.")
             })
             raise NotFound(_("REST API could not find that order number."))
+        else:
+            log_entry.sudo().update({
+                'order_id': _id
+            })
         
         if sale_order.state != 'sale':
             _logger.error(
