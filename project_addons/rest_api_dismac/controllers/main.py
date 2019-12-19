@@ -77,8 +77,8 @@ class BaseRestUVigoApiController(main.RestController):
                 raise Unauthorized(_("REST API called with a timestamp older than 5 minutes."))
 
             else:
-                self._api_check_access(_id, log_entry)
                 self._api_authentication(token, timestamp, log_entry)
+                self._api_check_access(_id, log_entry)
 
         return super(BaseRestUVigoApiController, self)._process_method(service_name, method_name, _id, params)
 
