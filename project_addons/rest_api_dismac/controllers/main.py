@@ -29,6 +29,7 @@ from odoo.http import request, Response
 from datetime import datetime, timedelta
 import hashlib
 import logging
+import re
 
 _logger = logging.getLogger(__name__)
 
@@ -43,7 +44,7 @@ class BaseRestUVigoApiController(main.RestController):
         if service_name == 'pedidos' or service_name == 'sale.order':
             service_name = 'sale.order'
             token = params.get('token', False)
-            timestamp = params.get('timestamp', False) or datetime.now().timestamp()
+            timestamp = params.get('timestamp', False)
 
             log_entry = request.env['api.access.log'].sudo().create({
                 'access_type': "send",
@@ -63,24 +64,40 @@ class BaseRestUVigoApiController(main.RestController):
                 })
                 raise BadRequest(_("REST API called with no credentials"))
             
-            if timedelta(minutes=5) < datetime.now() - datetime.strptime(timestamp, '%Y%m%d%H%M%S'):
-
-                _logger.error(
-                    _("REST API called with a timestamp older than 5 minutes.")
-                )
-                
-                log_entry.sudo().write({
-                    'error': True,
-                    'error_msg': _("REST API called with a timestamp older than 5 minutes.")
-                })
-
-                raise Unauthorized(_("REST API called with a timestamp older than 5 minutes."))
-
-            else:
-                self._api_authentication(token, timestamp, log_entry)
-                self._api_check_access(_id, log_entry)
+            self._api_timestamp_check(timestamp, log_entry)
+            self._api_authentication(token, timestamp, log_entry)
+            self._api_check_access(_id, log_entry)
 
         return super(BaseRestUVigoApiController, self)._process_method(service_name, method_name, _id, params)
+
+    def _api_timestamp_check(self, timestamp, log_entry):
+        if not re.match("^[0-9]{14,14}$", timestamp):
+            _logger.error(
+                _("REST API called with an incorrect timestamp format.")
+            )
+            
+            log_entry.sudo().write({
+                'error': True,
+                'error_msg': _("REST API called with an incorrect timestamp format.")
+            })
+
+            raise BadRequest(_("REST API called with an incorrect timestamp format."))
+
+
+        now = datetime.now() + timedelta(minutes=60)
+
+        if timedelta(minutes=5) < now - datetime.strptime(timestamp, '%Y%m%d%H%M%S') or \
+            timedelta(minutes=5) < datetime.strptime(timestamp, '%Y%m%d%H%M%S') - now:
+            _logger.error(
+                _("REST API called with an incorrect timestamp date")
+            )
+            
+            log_entry.sudo().write({
+                'error': True,
+                'error_msg': _("REST API called with an incorrect timestamp date")
+            })
+
+            raise Unauthorized(_("REST API called with an incorrect timestamp date"))
 
     def _api_authentication(self, token, timestamp, log_entry):
         
@@ -113,6 +130,8 @@ class BaseRestUVigoApiController(main.RestController):
             raise Unauthorized(_("REST API called with a invalid token."))
 
     def _api_check_access(self, _id, log_entry):
+        # If multiwebsite we need to set a different domain for the search
+        request.website = request.env['website'].search([], limit=1)
         api_partner = request.env['ir.config_parameter'].sudo().get_param('rest_api_dismac.api_partner', False)
         if not _id:
             _logger.error(
