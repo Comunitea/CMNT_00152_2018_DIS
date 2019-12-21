@@ -4,6 +4,8 @@
     <!-- Show simulated products like products shop -->
     <template id="simulate_products" name="Simulate Products Base">
         <t t-call="website.layout">
+            <t t-set="title">Dismac | Tienda</t>
+            <t t-set="description">Revise y compre todos nuestros productos</t>
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
                 <div class="container py-2 oe_website_sale">

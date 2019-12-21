@@ -15,6 +15,8 @@
     <!-- Change prodduct detail view to convert like a shop view and include ecommerce categories -->
     <template id="website_sale_product" name="Product Dismac" inherit_id="website_sale.product">
         <xpath expr="//div[@id='wrap']" position="replace">
+            <t t-set="title">Dismac | Product | <t t-esc="product.name"/></t>
+            <t t-set="description"><t t-raw="product.description_short or product.description[0:20]"/></t>
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
                 <div class="container py-2 oe_website_sale">
@@ -169,6 +171,8 @@
 
     <template id="website_sale_products" name="Products Dismac" inherit_id="website_sale.products">
         <xpath expr="//div[@id='products_grid']/table" position="before">
+            <t t-set="title">Dismac | Tienda</t>
+            <t t-set="description">Revise y compre todos nuestros productos</t>
             <!-- Product list head -->
             <div class="simulated-product-title mt16 mb32">
                 <t t-if="list_type and list_type == 'pricelist'">
