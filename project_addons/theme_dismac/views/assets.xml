@@ -6,13 +6,14 @@
         <xpath expr="link[last()]" position="after">
             <!-- Theme Dismac -->
             <link href="/theme_dismac/static/css/_general.less" rel="stylesheet" type="text/less"/>
+            <link href="/theme_dismac/static/css/cookies.less" rel="stylesheet" type="text/less"/>
             <link href="/theme_dismac/static/css/elements.less" rel="stylesheet" type="text/less"/>
             <link href="/theme_dismac/static/css/footer.less" rel="stylesheet" type="text/less"/>
             <link href="/theme_dismac/static/css/header.less" rel="stylesheet" type="text/less"/>
 <!--            <link href="/theme_dismac/static/css/media.less" rel="stylesheet" type="text/less"/>-->
             <link href="/theme_dismac/static/css/product.less" rel="stylesheet" type="text/less"/>
+            <link href="/theme_dismac/static/css/quote.less" rel="stylesheet" type="text/less"/>
             <link href="/theme_dismac/static/css/shop.less" rel="stylesheet" type="text/less"/>
-            <link href="/theme_dismac/static/css/cookies.less" rel="stylesheet" type="text/less"/>
 
             <!-- Theme Common -->
 <!--            <link rel="stylesheet" type="text/scss" href="/theme_common/static/src/scss/s_discount.scss"/>-->

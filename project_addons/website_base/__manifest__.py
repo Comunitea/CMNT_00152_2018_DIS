@@ -10,7 +10,6 @@
     'license': 'AGPL-3',
     'contributors': [
         'Rubén Seijas <ruben@comunitea.com>',
-        'Vicente Gutiérrez, <vicente@comunitea.com>',
     ],
     'depends': [
         'ecommerce_base',
@@ -28,11 +27,12 @@
         'templates/account.xml',
         'templates/forms.xml',
         'templates/header.xml',
-        'templates/simulated_products.xml',
         'templates/offer.xml',
         'templates/product.xml',
+        'templates/quote.xml',
+        'templates/simulated_products.xml',
         'views/product_views.xml',
-        # 'views/assets.xml',
+        'views/quote_views.xml',
         'security/ir.model.access.csv',
     ],
     'images': [

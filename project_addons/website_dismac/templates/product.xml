@@ -32,7 +32,7 @@
                     <div class="row mt-3">
                         <div t-att-class="'col-lg-3 col-md-4 col-12' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'd-none'"
                              id="products_grid_before">
-                            <ul class="nav nav-pills flex-column mt16" id="o_shop_collapse_category">
+                            <ul class="nav nav-pills flex-column mt16 pt4" id="o_shop_collapse_category">
                                 <li class="nav-item">
                                     <a t-att-href="keep('/shop', category=0)" t-attf-class="nav-link#{'' if category or (product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0) else ' active'} o_not_editable">Todos los productos</a>
                                 </li>
@@ -78,10 +78,10 @@
                                                         </t>
                                                     </div>
                                                     <t t-if="len(image_ids) or variant_img">
-                                                        <a class="carousel-control-prev" href="#o-carousel-product" role="button" data-slide="prev" >
+                                                        <a class="carousel-control-prev" href="#o-carousel-product" role="button" data-slide="prev" rel="noindex, nofollow">
                                                             <span class="fa fa-chevron-left" role="img" aria-label="Previous" title="Previous"/>
                                                         </a>
-                                                        <a class="carousel-control-next" href="#o-carousel-product" role="button" data-slide="next">
+                                                        <a class="carousel-control-next" href="#o-carousel-product" role="button" data-slide="next" rel="noindex, nofollow">
                                                             <span class="fa fa-chevron-right" role="img" aria-label="Next" title="Next"/>
                                                         </a>
                                                     </t>
@@ -131,11 +131,11 @@
                                                     </t>
                                                     <t t-call="website_sale.product_price" />
                                                     <p t-if="True" class="css_not_available_msg alert alert-warning">This combination does not exist.</p>
-                                                    <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#">Add to Cart</a>
+                                                    <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#" rel="noindex, nofollow">Add to Cart</a>
 
                                                     <t t-if="request.website.viewref('website_sale_comparison.add_to_compare').active">
                                                         <t t-set="product_variant" t-value="product_variant or product._create_first_product_variant()"/>
-                                                        <button t-if="product_variant" type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-lg mt8 o_add_compare_dyn" title="Compare" aria-label="Compare" t-att-data-product-product-id="product_variant.id" data-action="o_comparelist"><span class="fa fa-exchange"></span></button>
+                                                        <button t-if="product_variant" type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-lg mt8 o_add_compare_dyn" title="Compare" aria-label="Compare" t-att-data-product-product-id="product_variant.id" data-action="o_comparelist"><span class="fa fa-exchange"/></button>
                                                     </t>
 
                                                 </div>
@@ -143,15 +143,12 @@
                                             <p t-elif="not product.active" class="alert alert-warning">This product is no longer available.</p>
                                             <p t-else="" class="alert alert-warning">This product has no valid combination.</p>
 
-                                            <!-- TODO: Pending to change and fix when quote form are ready -->
                                             <!-- Send to quote form page -->
                                             <div class="product-quote-request">
-                                                <form action="/website_form" method="post" class="s_website_form container-fluid" enctype="multipart/form-data" data-force_action="/solicitud/presupuesto" data-model_name="sale.order" data-success_page="/presupuesto/enviado">
-                                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                                    <input type="hidden" name="user" t-att-value="request.env.user"/>
-                                                    <input type="hidden" name="product" t-att-value="product"/>
-                                                    <label class="mt16 text-muted"><strong>Si desea añadir este producto a una petición de presupuesto especial, pulse <a href="/presupuestos">aquí</a>.</strong></label>
-                                                </form>
+                                                <label class="mt16 text-muted">
+                                                    <strong>Si desea añadir este producto a una petición de presupuesto especial, pulse
+                                                        <a t-att-href="'/presupuestos?add_product=%s' % product.id" class="o_website_form_send" rel="noindex, nofollow">aquí</a>.</strong>
+                                                </label>
                                             </div>
                                         </div>
                                     </div>

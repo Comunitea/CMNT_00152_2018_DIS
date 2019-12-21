@@ -30,6 +30,9 @@ Customization for All Websites
 
 This module contains all common base configuration for all companies and their websites, including their Themes.
 
+Credits
+=======
+
 Author
 ------
 
@@ -37,8 +40,6 @@ Developer: Comunitea, info@comunitea.com
 
 Contributors
 ~~~~~~~~~~~~
-
-Vicente Gutiérrez, vicente@comunitea.com
 
 Rubén Seijas, ruben@comunitea.com
 
@@ -49,8 +50,12 @@ This module is maintained by Comunitea.
 
 For support and more information, please visit https://comunitea.com.
 
+.. image:: https://comunitea.com/wp-content/uploads/2016/01/logocomunitea3.png
+   :alt: Comunitea
+   :target: https://comunitea.com
+
 Disclaimer of Warranties
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Attention!**
 

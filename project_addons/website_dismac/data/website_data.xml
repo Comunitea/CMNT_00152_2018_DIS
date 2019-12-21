@@ -20,6 +20,7 @@
                 <field name="group_activity_statement">True</field>
                 <field name="default_aging_type">days</field>
                 <field name="email">info@dismac.es</field>
+                <field name="website_form_enable_metadata">True</field>
             </record>
 
         </data>
