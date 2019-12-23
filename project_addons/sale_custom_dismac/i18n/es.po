@@ -16,6 +16,16 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__apply_in_price_unit
+msgid "Apply In Price Unit"
+msgstr "Aplicar en precio unitario"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__discount
+msgid "Discount(%)"
+msgstr "Descuento(%)"
+
+#. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__notes
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_order_form_custom
 msgid "Descripción avanzada"

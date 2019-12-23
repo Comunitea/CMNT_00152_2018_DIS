@@ -63,16 +63,6 @@
             <field name="user_not_logged">True</field>
         </record>
 
-        <record id="menu_history" model="website.menu">
-            <field name="name">Historial</field>
-            <field name="url">/historial</field>
-            <field name="parent_id" ref="website_dismac.main_menu"/>
-            <field name="sequence" type="int">60</field>
-            <field name="website_id" ref="website_dismac.dismac_website"/>
-            <field name="user_logged">True</field>
-            <field name="user_not_logged">True</field>
-        </record>
-
         <record id="menu_quote" model="website.menu">
             <field name="name">Presupuestos</field>
             <field name="url">/presupuestos</field>

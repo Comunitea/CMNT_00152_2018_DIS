@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <template id="portal_my_history" name="My Purchases history">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">History</t>
+            </t>
+            <t t-if="not products">
+                <p>There are currently no products for your account.</p>
+            </t>
+            <t t-if="products" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>
+                            <span class='d-none d-md-inline'>Products #</span>
+                            <span class='d-block d-md-none'>Ref.</span>
+                        </th>
+                        <th class="text-center">Total</th>
+                        <th class="text-right">Options</th>
+                    </tr>
+                </thead>
+                <t t-foreach="products" t-as="product">
+                    <tr>
+                        <td><a t-att-href="product._compute_website_url()"><t t-esc="product.display_name"/></a></td>
+                        <td class="text-center"><span t-field="product.historical_ordered_qty"/></td>
+                        <td class="text-right">
+                            <input name="product_id" t-att-value="product.id" type="hidden"/>
+                            <a t-attf-href="#" class="mb8 input-group-addon js_add_cart_json_sale_order_portal_content hidden-xs">
+                                <i class="fa fa-shopping-cart"/>
+                            </a>
+                        </td>
+                    </tr>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

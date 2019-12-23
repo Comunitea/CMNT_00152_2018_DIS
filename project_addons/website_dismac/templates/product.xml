@@ -226,7 +226,7 @@
                     <h1>Tarifa Bienvenida</h1>
                     <p>Esta es la Tarifa bienvenida, donde ver los artículos con el precio de cliente Dismac. Si lo desea puede ordenar también el listado en función de los códigos de producto</p>
                 </t>
-                <t t-elif="list_type and list_type == 'historial'">
+                <t t-elif="list_type and list_type == 'history'">
                     <h1>Mi historial</h1>
                     <p>Su historial de pedidos muestra los artículos que nos solicita más frecuentemente, la lista se muestra ordenada en función de la frecuencia, mostrando en primer lugar los productos más habituales. Si lo desea puede ordenar el listado pulsando en cada uno de los títulos de las columnas</p>
                 </t>
