@@ -30,6 +30,9 @@ FrontEnd customization for Dismac Website
 
 This is a theme module that contains styles and layout elements for front-end part.
 
+Credits
+=======
+
 Author
 ------
 
@@ -37,8 +40,6 @@ Developer: Comunitea, info@comunitea.com
 
 Contributors
 ~~~~~~~~~~~~
-
-Vicente Gutiérrez, vicente@comunitea.com
 
 Rubén Seijas, ruben@comunitea.com
 

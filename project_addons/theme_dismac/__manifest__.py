@@ -9,10 +9,14 @@
     'website': 'http://www.comunitea.com',
     'license': 'AGPL-3',
     'contributors': [
-        'Vicente Gutiérrez, <vicente@comunitea.com>',
         'Rubén Seijas <ruben@comunitea.com>',
     ],
-    'depends': ['theme_common', 'website_animate', 'breadcrumbs_base_tmp', ],
+    'depends': [
+        'theme_common',
+        'website_animate',
+        'breadcrumbs_base_tmp',
+        'muk_website_scroll_up',
+    ],
     'data': [
         'data/theme_dismac_data.xml',
         'views/assets.xml',

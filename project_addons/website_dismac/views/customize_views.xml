@@ -33,4 +33,19 @@
         <field name="active">True</field>
     </record>
 
+    <!-- Shop - Scroll-->
+    <record id="sgeede_infinite_scroll.products_infinite_scroll" model="ir.ui.view">
+        <field name="active">True</field>
+    </record>
+
+    <!-- Search Box - Show # found -->
+    <record id="website_sale.search count" model="ir.ui.view">
+        <field name="active">True</field>
+    </record>
+
+     <!-- Checkout - Extra Step Option -->
+    <record id="website_sale.extra_info_option" model="ir.ui.view">
+        <field name="active">True</field>
+    </record>
+
 </odoo>

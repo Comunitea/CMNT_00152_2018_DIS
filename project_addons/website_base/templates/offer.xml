@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- Show simulate Product like simulated products shop -->
+    <template id="simulate_product_offer" name="Simulate Product Offer Base" inherit_id="website_base.simulate_products">
+        <xpath expr="//div[@id='products_grid']" position="inside">
+            <t t-set="title" t-if="offer_list">Dismac | Ofertas</t>
+            <t t-set="title" t-else="">Dismac | Oferta | <t t-esc="offer.name"/></t>
+            <t t-set="description" t-if="offer_list">Revise, descargue, compre o haga una solicitud de presupuesto de nuestras ofertas</t>
+            <t t-set="description" t-else=""><t t-esc="offer.subtitle or offer.description[0:20]"/></t>
+            <t t-call="website_base.product_offers" t-if="offer_list">
+                <t t-set="url_simulated_products" t-value="url_simulated_products"/>
+                <t t-set="url_simulated_product_templates" t-value="url_simulated_product_templates"/>
+            </t>
+            <t t-call="website_base.product_offer" t-else=""/>
+        </xpath>
+    </template>
+
+    <!-- List offers -->
+    <template id="product_offers" name="Product Offers Base">
+        <t t-set="additional_title">Ofertas</t>
+        <div class="simulated-product-title">
+            <h1 class="mt8">Ofertas</h1>
+        </div>
+        <h6 class="mt8 mb8"><strong>Filtrar ofertas:</strong></h6>
+        <p class="mb16">
+            <a role="button" t-attf-href="/ofertas" class="btn btn-secondary">Todas</a>
+            <t t-foreach="offer_categories" t-as="offer_cat">
+                <a role="button" t-attf-href="/ofertas?category=#{offer_cat.id}" t-attf-class="btn btn-secondary #{'active' if category and int(category) == offer_cat.id else ''}"><span t-esc="offer_cat.name"/></a>
+            </t>
+        </p>
+        <t t-call="website_base.simulate_products_list_view" t-if="len(request.env['ir.ui.view'].search([('name', '=', 'List View')])) &gt; 1"/>
+        <t t-call="website_base.simulate_products_table_view" t-else=""/>
+    </template>
+
+    <!-- Offer Detail -->
+    <template id="product_offer" name="Product Offer Base">
+        <div class="simulated-product-title mb4">
+            <span>Oferta activa desde: <span t-esc="offer.start_date"/></span>
+            <h1><span t-esc="offer.category_id.name if offer.category_id else offer.name"/></h1>
+        </div>
+        <t t-call="website_base.simulate_product">
+<!--        <t t-set="first_possible_combination" t-value="product._get_first_possible_combination()"/>-->
+            <t t-set="first_possible_combination" t-value="False"/>
+<!--        <t t-set="combination_info" t-value="product._get_combination_info(first_possible_combination, add_qty=add_qty or 1, pricelist=pricelist)"/>-->
+            <t t-set="combination_info" t-value="False"/>
+<!--        <t t-set="product_variant" t-value="product.env['product.product'].browse(combination_info['product_id'])"/>-->
+            <t t-set="product_variant" t-value="offer"/>
+<!--            <t t-set="variant_img" t-value="product_variant and product_variant.image_variant"/>-->
+            <t t-set="variant_img" t-value="product_variant and product_variant.image"/>
+<!--            <t t-set="image_ids"  t-value="product.product_image_ids"/>-->
+            <t t-set="image_ids"  t-value="offer.offer_image_ids"/>
+            <t t-set="product" t-value="offer"/>
+        </t>
+    </template>
+
+
+</odoo>

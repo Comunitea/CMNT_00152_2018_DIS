@@ -33,7 +33,7 @@
     'contributors': [
         'Vicente Ángel Gutiérrez Fernández <vicente@comunitea.com>',
     ],
-    "depends": ["base_rest", "component", "sale"],
+    "depends": ["base_rest", "component", "sale", "website"],
     "data": [
         'views/res_config.xml',
         'views/sale_order.xml',

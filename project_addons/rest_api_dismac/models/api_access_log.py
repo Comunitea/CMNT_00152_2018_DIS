@@ -30,6 +30,7 @@ class ApiAccessLog(models.Model):
     token = fields.Char("token")
     error = fields.Boolean(string='Error')
     error_msg = fields.Char(string='Error Message')
+    requested_id = fields.Integer(string='Requested ID')
     order_id = fields.Many2one(
         'sale.order', string='Order',
         ondelete='cascade')

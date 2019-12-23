@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
+<!--        <template id="website_sale_products_item" name="Product Item Base" inherit_id="website_sale.products_item">-->
     <!-- Add SKU into product list and product grid views-->
-    <template id="website_sale_products_item" name="Product Item Base" inherit_id="website_sale.products_item">
-        <xpath expr="//section/h5" position="before">
-            <div class="product_details-sku" t-if="product.default_code">
-                <strong>SKU: </strong><span itemprop="sku" t-esc="product.default_code"/>
-            </div>
+    <!--        <xpath expr="//section/h5" position="before">-->
+    <!--            <div class="product_details-sku" t-if="product.default_code">-->
+    <!--                <strong>SKU: </strong><span itemprop="sku" t-esc="product.default_code"/>-->
+    <!--            </div>-->
+    <!--        </xpath>-->
+<!--        </template>-->
+
+    <!-- Catch not published categories if their child are published -->
+    <template id="website_sale_option_collapse_categories_recursive" inherit_id="website_sale.option_collapse_categories_recursive" name="Collapse Category Recursive Product Base">
+        <xpath expr="//i" position="attributes">
+            <attribute name="t-if" add="and (categ.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" separator=" "/>
+        </xpath>
+        <xpath expr="//ul" position="attributes">
+            <attribute name="t-if" add="and (categ.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" separator=" "/>
+        </xpath>
+        <xpath expr="//t[@t-call='website_sale.option_collapse_categories_recursive']" position="attributes">
+            <attribute name="t-if">categ.website_published or (not categ.website_published and categ.child_id.website_published)</attribute>
         </xpath>
     </template>
 
-    <!-- Add SKU into product detail view-->
-    <template id="website_sale_product" name="Product Base" inherit_id="website_sale.product">
-        <xpath expr="//div[@id='product_details']/h1" position="after">
-            <div class="product_details-sku" t-if="product.default_code">
-                <strong>SKU: </strong><span itemprop="sku" t-esc="product.default_code"/>
-            </div>
-        </xpath>
-    </template>
+<!--    <template id="website_sale_product" name="Product Base" inherit_id="website_sale.product">-->
+        <!-- Add SKU into product detail view without replace all product detail template -->
+        <!--        <xpath expr="//div[@id='product_details']/h1" position="after">-->
+<!--                    <div class="product_details-sku" t-if="product.default_code">-->
+<!--                        <strong>SKU: </strong><span itemprop="sku" t-esc="product.default_code"/>-->
+<!--                    </div>-->
+        <!--        </xpath>-->
+<!--    </template>-->
 
 </odoo>

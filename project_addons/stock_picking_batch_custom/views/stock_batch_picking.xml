@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-     <record id="view_picking_form" model="ir.ui.view">
-        <field name="name">stock.picking.form.batch.custom</field>
-        <field name="model">stock.picking</field>
-        <field name="inherit_id" ref="stock_picking_batch_extended.view_picking_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='batch_id']" position="attributes">
-                     <attribute name="domain">[('picking_type_id', '=', picking_type_id)]</attribute>
-                         <attribute name="context">{'default_picking_type_id': picking_type_id}</attribute>
-                </xpath>
-
-        </field>
-    </record>
-
-
     <!-- stock.picking.batch form view -->
         <record id="view_stock_move_line_operation_tree_batch_custom" model="ir.ui.view">
             <field name="name">Move Line Operations</field>
@@ -28,24 +14,79 @@
             </field>
         </record>
 
+        <record id="view_stock_move_line_kanban_spbc" model="ir.ui.view">
+            <field name="name">stock.move.line.kanban.spbc</field>
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="stock.view_stock_move_line_kanban"/>
+            <field name="arch" type="xml">
+                <field name="picking_id" position="attributes">
+                     <attribute name="invisible">1</attribute>
+                </field>
+                <field name="qty_done" position="after">
+                    /<field name="product_uom_qty"/>
+                </field>
+
+                <!--field name="product_id" position="attributes">
+                <attribute name="options"> {
+                    "fg_color": "green: p_color=='green'; orange: p_color=='orange'"
+                }</attribute>
+              </field>
+                <xpath expr="//div[hasclass('row')]" position="attributes">
+                    <attribute name="t-attf-class">oe_kanban_color_#{kanban_getcolor(record.p_color.raw_value)}</attribute>
+                </xpath-->
+                <xpath expr="//templates/t/div" position="attributes">
+                    <attribute name="t-attf-class"> oe_kanban_card oe_kanban_global_click oe_kanban_color_#{kanban_getcolor(record.p_color.raw_value)}</attribute>
+                </xpath>
+
+
+                <xpath expr="//field[@name='date']/.." position="attributes">
+                    <attribute name="class">col-12 text-right</attribute>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='lot_id']/.." position="before">
+                      <div class="col-3 text-right">
+                                <field name="p_color" invisible="1"/>
+                    <button name="action_change_qty" context="{'inc': -1}"  string="Disminuir cantidad lots, packs, location"
+                             class="o_icon_button fa fa-minus-circle" style="font-size: x-large"
+                             type="object"
+                             options="{&quot;warn&quot;: true}"/>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='product_uom_id']/.." position="after">
+                    <div class="col-3">
+                     <button name="action_change_qty" context="{'inc': 1}" string="Aumentar cantidad lots, packs, location"
+                             class="o_icon_button fa fa-plus-circle text-right" style="font-size: x-large"
+                             type="object"
+                             options="{&quot;warn&quot;: true}"/>
+                    </div>
+
+                </xpath>
+
+            </field>
+        </record>
 
         <record id="view_stock_group_move_tree_operations" model="ir.ui.view">
             <field name="name">stock.move.group.operations.tree</field>
             <field name="model">batch.picking.group.move</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree create="false" delete="false" editable="top"
+                <tree editable="top"
                         decoration-muted="product_uom_qty == 0"
                         decoration-danger="qty_done&lt;product_uom_qty and qty_done&gt;0 "
                         decoration-success="qty_done==product_uom_qty">
-                         <field name="product_id"/>
+                        <field name="product_id"/>
+                        <button name="action_apply_qties"
+                                attrs="{'invisible': [('qty_done', '!=', 0)]}" context="{'fill_qty_done': True}"
+                            type="object" icon="fa-cart-arrow-down" aria-label="Show details" title="Marcar realizado"/>
+                        <button name="action_apply_qties"
+                                attrs="{'invisible': ['|', ('qty_done', '=', 0), ('qty_done', '=', 'product_uom_qty') ]}"
+                                type="object" icon="fa-edit" aria-label="Show details" title="Repartir cantidad realizada realizado"/>
                          <field name="location_id"/>
                          <field name="product_uom_qty"/>
                          <field name="qty_done" />
                          <button name="action_show_details"
                                  type="object" icon="fa-list" aria-label="Show details" title="Show details"/>
-                         <button name="action_apply_qties"
-                            type="object" icon="fa-edit" aria-label="Show details" title="Show details"/>
+
 
                 </tree>
                 </field>
@@ -96,12 +137,9 @@
         <field name="inherit_id" ref="stock_picking_batch_extended.stock_batch_picking_form"/>
         <field name="arch" type="xml">
             <field name="user_id" position="before">
-                <field name="picking_type_id"/>
                 <field name="qty_applied" invisible="1"/>
             </field>
-            <xpath expr="//field[@name='picking_ids']" position="attributes">
-                <attribute name="domain">[('state', 'not in', ('done', 'cancel')), ('picking_type_id', '=', picking_type_id)]</attribute>
-            </xpath>
+
 
             <button name="action_assign" position="after">
                 <button name="action_apply_qty" class="oe_highlight" string="Apply qties"
@@ -114,25 +152,29 @@
             <xpath expr="//field[@name='move_line_ids']/tree/field[@name='product_id']" position="before">
                     <field name="sale_order"/>
             </xpath>
-             <xpath expr="//div[hasclass('oe_title')]" position="before">
-                     <div class="oe_button_box" name="button_box">
+             <xpath expr="//div[@name='button_box']" position="inside">
+                        <button name="action_show_moves_kanban"
+                                string="Operations"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-list"/>
                             <button name="action_get_moves_done"
                                 type="object"
                                 class="oe_stat_button"
                                 icon="fa-pencil-square-o">
                             <field name="moves_all_count" widget="statinfo" string="Grouped moves"/>
                         </button>
-                     </div>
+
 
             </xpath>
-            <xpath expr="//page/field[@name='move_lines']/.." position="attributes">
+            <!--xpath expr="//page/field[@name='move_lines']/.." position="attributes">
                     <attribute name="attrs">{'invisible': [('moves_all_count', '!=', 0)]}</attribute>
 
                 </xpath>
                      <xpath expr="//page/field[@name='move_line_ids']/.." position="attributes">
                     <attribute name="attrs">{'invisible': [('moves_all_count', '!=', 0)]}</attribute>
 
-                </xpath>
+                </xpath-->
 
             <xpath expr="//notebook" position="inside">
 
@@ -145,7 +187,7 @@
                             name="reset_qty_done"  type="object" string="↳Reset qty done"
                             attrs="{'invisible':[('state','!=', 'assigned')]}"/>
                     </div>
-                     <field name="move_grouped_ids" nolabel="1"  attrs="{'readonly': [('state', '=', 'done')]}">
+                     <field name="move_grouped_ids" nolabel="1" invisible="1" attrs="{'readonly': [('state', '=', 'done')]}">
                         <tree create="0" delete="0" editable="top"
                             decoration-muted="product_uom_qty == 0"
                             decoration-danger="qty_done&lt;product_uom_qty and qty_done&gt;0 "
@@ -173,34 +215,9 @@
 
         </field>
     </record>
-    <record model="ir.ui.view" id="stock_batch_picking_tree_custom">
-        <field name="name">stock.picking.batch.tree.custom</field>
-        <field name="model">stock.picking.batch</field>
-        <field name="inherit_id" ref="stock_picking_batch_extended.stock_batch_picking_tree"/>
-        <field name="arch" type="xml">
-            <field name="user_id" position="before">
-                <field name="picking_type_id"/>
-            </field>
-        </field>
-    </record>
-
-     <record id="stock_batch_picking_search_custom" model="ir.ui.view">
-        <field name="name">batch.picking.search.custom</field>
-        <field name="model">stock.picking.batch</field>
-         <field name="inherit_id" ref="stock_picking_batch_extended.stock_batch_picking_search"/>
-        <field name="arch" type="xml">
-
-                <field name="user_id" position="before">
-                    <field name="picking_type_id"/>
-                </field>
-                <xpath expr="//filter[@name='user_id']" position="before">
-                    <filter name="picking_type_id" string="Picking type" context="{'group_by':'picking_type_id'}"/>
-                </xpath>
 
 
 
-        </field>
-    </record>
 
 
     <record id="batch_picking_done_form" model="ir.ui.view">

@@ -13,7 +13,7 @@
             <t t-call="web.internal_layout">
                     <t t-foreach="docs" t-as="doc">
                         <div class="page">
-                            <div class="row mt32 mb32">
+                            <div class="row" style="margin: 5px">
                                 <div class="col-3">
                                     <strong>Date:</strong>
                                     <span t-esc="now()" t-options="{'widget': 'datetime'}"/>
@@ -35,22 +35,16 @@
                         <br/>
                             <t t-foreach="get_grouped_data(doc)" t-as="l0_data">
                                 <table class="table table-condensed">
-                                    <!--caption>
-                                        <b>
-                                            <u>
-                                                <span t-esc="l0_data['name']"/>
-                                            </u>
-                                        </b>
-                                    </caption-->
                                     <thead>
-                                        <th width="80%">
+                                        <th width="60%" style="padding: 3px">
                                             <b><u>
                                                 <span t-esc="l0_data['name']"/>
                                             </u></b>
                                         </th>
-                                        <th width="12%"><span>Location</span>
+                                        <th width="20%" style="padding: 3px"></th>
+                                        <th width="12%" style="padding: 3px" ><span></span>
                                         </th>
-                                        <th width="8%" class="text-right"><span>Qty</span>
+                                        <th width="8%" class="text-right" style="padding: 3px"><span></span>
                                         </th>
                                     </thead>
                                     <tbody>
@@ -59,21 +53,24 @@
                                             <t t-set="product" t-value="l1_item['product']"/>
                                             <t t-set="location" t-value="l1_item['operations'][:1].location_id"/>
                                             <t t-set="qty" t-value="l1_item['product_qty']"/>
+                                            <t t-set="ordered_qty" t-value="l1_item['product_uom_qty']"/>
                                             <t t-set="total_qty" t-value="total_qty + qty"/>
                                             <t t-set="carrier" t-value="l1_item['operations'][:1].picking_id.carrier_id"/>
-
-                                            <tr>
-                                                <td>
+                                            <tr style="font-size: x-small;">
+                                                <td style="padding: 3px">
                                                     <span t-field="product.display_name"/>
                                                 </td>
-                                                <td class="text-left">
+                                                <td class="text-right" style="padding: 3px">
+                                                    <span t-field="product.import_location_str"/>
+                                                </td>
+                                                <td class="text-left" style="padding: 3px">
                                                     <span t-esc="location.name"/>
                                                 </td>
-                                                <td class="text-right">
-                                                    <span t-esc="qty"/>
+                                                <td class="text-right" style="padding: 3px">
+                                                    <span t-esc="qty"/>(<span t-esc="ordered_qty"/>)
                                                 </td>
                                                 <tr align="left" t-if="product.description_warehouse">
-                                                    <td colspan="4">
+                                                    <td colspan="4" style="padding: 3px">
                                                         <pre class="description ">
                                                             <span t-esc="product.description_warehouse"></span>
                                                         </pre>
@@ -82,17 +79,17 @@
                                             </tr>
                                         </t>
                                     </tbody>
-                                    <tfoot>
+                                    <!--tfoot>
                                         <tr>
-                                            <td/>
-                                            <td id="total_label" class="text-left">
+                                            <td  style="padding: 3px"/>
+                                            <td id="total_label" class="text-left" style="padding: 3px">
                                                 <strong>Total:</strong>
                                             </td>
-                                            <td id="total_qty" class="text-right">
+                                            <td id="total_qty" class="text-right" style="padding: 3px">
                                                 <strong t-esc="total_qty"/>
                                             </td>
                                         </tr>
-                                    </tfoot>
+                                    </tfoot-->
                                 </table>
                             </t>
                         </div>
