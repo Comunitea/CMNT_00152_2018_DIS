@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
-    <!-- Add Line to Historial Product Lists -->
-    <template id="website_sale_products_item_website_dismac_history" name="Website Sale Products Item Website Dismac History" inherit_id="website_sale.products_item">
+    <template id="website_sale_products_list_view" inherit_id="website_sale.products_list_view" name="List View Dismac">
+        <!-- Enable ribbon on list view -->
+        <xpath expr="//t[@t-call='website_sale.products_item']" position="inside">
+            <t t-set="show_list" t-value="True" />
+        </xpath>
+    </template>
+
+    <template id="website_sale_products_item" name="Products Item Dismac" inherit_id="website_sale.products_item">
+        <!-- Enable ribbon on list view -->
+        <xpath expr="//div[@class='ribbon-wrapper']" position="replace">
+            <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{'oe_ribbon_promo' if product.website_style_ids else ''}">
+                <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">Oferta</a>
+            </div>
+        </xpath>
+
+        <!-- Add Line to Historial Product Lists -->
         <xpath expr="//form/div[@itemscope='itemscope']/section/div" position="after">
             <t t-if="list_type and list_type=='historial'">
                 <div>

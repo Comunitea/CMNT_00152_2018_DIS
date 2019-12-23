@@ -115,8 +115,8 @@
         <form t-attf-action="#{url_simulated_products}" method="get">
             <!--            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />-->
             <div itemscope="itemscope" itemtype="http://schema.org/Product">
-                <div class="ribbon-wrapper">
-                    <a href="#" role="button" class="ribbon btn btn-danger">Oferta</a>
+                <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{'oe_ribbon_promo' if product.website_style_ids else ''}">
+                    <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">Oferta</a>
                 </div>
                 <div class="oe_product_image">
                     <a itemprop="url" t-att-href="product_href">
@@ -207,6 +207,7 @@
             <div class="oe_product oe_list oe_product_cart" t-att-data-publish="product.website_published and 'on' or 'off'">
                 <t t-call="website_base.simulate_products_item">
                     <t t-set="show_publish" t-value="True" />
+                    <t t-set="show_list" t-value="True" />
                 </t>
             </div>
         </t>
