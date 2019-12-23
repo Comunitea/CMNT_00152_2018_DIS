@@ -32,13 +32,25 @@
     <!-- Show collapsed categories and Catch not published categories if their child are published -->
     <template id="simulate_option_collapse_categories_recursive" name="Simulate Collapse Category Recursive Base">
         <li class="nav-item">
-            <i t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" t-attf-class="text-primary fa #{'fa-chevron-down' if c.parent_id else 'fa-chevron-right'}"
-               t-attf-title="#{'Unfold' if c.parent_id else 'Fold'}"
-               t-attf-aria-label="#{'Unfold' if c.parent_id else 'Fold'}" role="img"/>
-            <a t-att-href="keep('/category/%s' % c.slug if c.slug else '/shop/category/%s' % slug(c), category=0)"
-               t-attf-class="nav-link#{' active' if c.id == int(category or 0) or (product and product.public_categ_ids and c.id in product.public_categ_ids.mapped('id')) else ''}" t-field="c.name"/>
-            <ul t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" class="nav nav-pills flex-column nav-hierarchy"
-                t-att-style="'display:block;' if category or c.parent_id or product_category and product_category.category_id.parent_id or (product and product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0) else 'display:none;'">
+            <div class="category-menu-img float-left">
+                <img class="img img-responsive" t-attf-src="/website/image/product.public.category/{{c.id}}/image/45x45" t-att-alt="c.name"/>
+            </div>
+            <div class="category-menu-name float-left ml-2">
+                <i t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))"
+                   t-attf-class="text-primary fa #{'fa-chevron-down' if c.id in parent_category_ids else 'fa-chevron-right'}"
+                   t-attf-title="#{'Unfold' if c.id in parent_category_ids else 'Fold'}"
+                   t-attf-aria-label="#{'Unfold' if c.id in parent_category_ids else 'Fold'}" role="img"/>
+                <a t-att-href="keep('/category/%s' % c.slug if c.slug else '/shop/category/%s' % slug(c), category=0)" t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))"
+                   t-attf-class="pt4 pb0 text-uppercase nav-link#{' active mb4 pl-2' if c.id == int(category or 0) or (product and product.public_categ_ids and c.id in product.public_categ_ids.mapped('id')) else ''}">
+                    <strong t-esc="c.name"/>
+                </a>
+                <a t-att-href="keep('/category/%s' % c.slug if c.slug else '/shop/category/%s' % slug(c), category=0)" t-else=""
+                   t-attf-class="pt4 pb0 text-uppercase nav-link#{' active mb4 pl-2' if c.id == int(category or 0) or (product and product.public_categ_ids and c.id in product.public_categ_ids.mapped('id')) else ''}"
+                   t-esc="c.name"/>
+            </div>
+            <ul t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))"
+                class="nav nav-pills flex-column nav-hierarchy parent-category"
+                t-att-style="'display:block;' if c.id in parent_category_ids or product_category and product_category.category_id in parent_category_ids else 'width: inherit; display:none;'">
                 <t t-foreach="c.child_id" t-as="c">
                     <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
                 </t>
@@ -49,9 +61,10 @@
     <!-- Show categories and Catch not published categories if their child are published -->
     <template id="simulate_products_categories" name="eCommerce Categories Base" inherit_id="website_base.simulate_products">
         <xpath expr="//div[@id='products_grid_before']" position="inside">
-            <ul class="nav nav-pills flex-column mt16" id="o_shop_collapse_category">
+            <ul class="nav nav-pills flex-column menu-category mt16" id="o_shop_collapse_category">
                 <li class="nav-item">
-                    <a t-att-href="keep('/shop', category=0)" t-attf-class="nav-link#{'' if category or product_category and product_category.category_id else ' active'} o_not_editable">Todos los productos</a>
+                    <a t-att-href="keep('/shop', category=0)"
+                       t-attf-class="pt8 pb0 text-uppercase nav-link#{'' if category or product_category and product_category.category_id else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
                 </li>
                 <t t-foreach="categories" t-as="c">
                     <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published or (not c.website_published and c.child_id.website_published)"/>

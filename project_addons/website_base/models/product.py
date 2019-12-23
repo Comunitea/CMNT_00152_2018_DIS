@@ -14,6 +14,15 @@ class ProductPublicCategory(models.Model):
     offer_ids = fields.One2many('product.offer', 'category_id', string='Product Offers',
                                 help=_("Offers that contains this category"))
 
+    def get_parent_categories(self, category):
+        new_category = self.search([('id', '=', int(category))])
+        parent_category_ids = [new_category.id]
+        current_category = new_category
+        while current_category.parent_id:
+            parent_category_ids.append(current_category.parent_id.id)
+            current_category = current_category.parent_id
+        return parent_category_ids
+
 
 class ProductOffer(models.Model):
     _name = "product.offer"

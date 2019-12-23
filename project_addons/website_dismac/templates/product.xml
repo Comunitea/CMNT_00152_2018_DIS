@@ -12,6 +12,54 @@
         </xpath>
     </template>
 
+    <template id="website_sale_categories_recursive" name="Category list Dismac" inherit_id="website_sale.categories_recursive">
+        <xpath expr="//li//a" position="attributes">
+            <attribute name="t-attf-class" add="text-uppercase" separator=" "/>
+        </xpath>
+    </template>
+
+    <template id="website_sale_products_categories" inherit_id="website_sale.products_categories" name="eCommerce Categories Dismac">
+        <xpath expr="//ul" position="attributes">
+            <attribute name="class" add="menu-category" separator=" "/>
+        </xpath>
+        <xpath expr="//ul//li//a" position="attributes">
+            <attribute name="t-attf-class" add="text-uppercase mt8" separator=" "/>
+        </xpath>
+    </template>
+
+    <template id="website_sale_option_collapse_categories_recursive" name="Collapse Category Recursive Dismac" inherit_id="website_sale.option_collapse_categories_recursive">
+        <xpath expr="//li//i" position="replace"/>
+        <xpath expr="//li//a" position="replace">
+            <div class="category-menu-img float-left">
+                <img class="img img-responsive" t-attf-src="/website/image/product.public.category/{{categ.id}}/image/45x45" t-att-alt="categ.name"/>
+            </div>
+            <div t-attf-class="category-menu-name float-left ml-2">
+                <i t-if="categ.child_id" t-attf-class="text-primary fa #{'fa-chevron-down' if categ.id in parent_category_ids else 'fa-chevron-right'}"
+               t-attf-title="#{'Unfold' if categ.id in parent_category_ids else 'Fold'}"
+               t-attf-aria-label="#{'Unfold' if categ.id in parent_category_ids else 'Fold'}" role="img"/>
+                <a t-att-href="keep('/category/%s' % categ.slug if categ.slug else '/shop/category/%s' % slug(categ), category=0)" t-if="categ.child_id and (categ.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))"
+                   t-attf-class="pt4 pb0 text-uppercase nav-link#{' active mb4 pl-2 pr2' if categ.id == int(category or 0) or (product and product.public_categ_ids and categ.id in product.public_categ_ids.mapped('id')) else ''}">
+                    <strong t-esc="categ.name"/>
+                </a>
+                <a t-att-href="keep('/category/%s' % categ.slug if categ.slug else '/shop/category/%s' % slug(categ), category=0)" t-else=""
+                   t-attf-class=" pt4 pb0 text-uppercase nav-link#{' active mb4 pl-2' if categ.id == int(category or 0) or (product and product.public_categ_ids and categ.id in product.public_categ_ids.mapped('id')) else ''}"
+                   t-field="categ.name"/>
+            </div>
+        </xpath>
+        <xpath expr="//ul" position="attributes">
+            <attribute name="class" add="parent-category" separator=" "/>
+        </xpath>
+    </template>
+
+    <template id="website_sale_option_collapse_products_categories" name="Collapsible Category List Dismac" inherit_id="website_sale.option_collapse_products_categories">
+        <xpath expr="//ul//li//a" position="attributes">
+            <attribute name="t-attf-class">pb0 text-uppercase nav-link#{'' if category else ' active mb4 pl-2 pr-2'} o_not_editable</attribute>
+        </xpath>
+        <xpath expr="//t[@t-call='website_sale.option_collapse_categories_recursive']" position="attributes">
+            <attribute name="t-if">categ.website_published or (not categ.website_published and categ.child_id.website_published)</attribute>
+        </xpath>
+    </template>
+
     <!-- Change prodduct detail view to convert like a shop view and include ecommerce categories -->
     <template id="website_sale_product" name="Product Dismac" inherit_id="website_sale.product">
         <xpath expr="//div[@id='wrap']" position="replace">
@@ -34,15 +82,14 @@
                     <div class="row mt-3">
                         <div t-att-class="'col-lg-3 col-md-4 col-12' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'd-none'"
                              id="products_grid_before">
-                            <ul class="nav nav-pills flex-column mt16 pt4" id="o_shop_collapse_category">
+                            <t t-set="parent_category_ids" t-value="request.env['product.public.category'].get_parent_categories(category or product.public_categ_ids[0] if product.public_categ_ids else 0)"/>
+                            <ul class="nav nav-pills flex-column menu-category mt16 pt8" id="o_shop_collapse_category">
                                 <li class="nav-item">
-                                    <a t-att-href="keep('/shop', category=0)" t-attf-class="nav-link#{'' if category or (product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0) else ' active'} o_not_editable">Todos los productos</a>
+                                    <a t-att-href="keep('/shop', category=0)" t-attf-class="pt8 pb0 text-uppercase nav-link#{'' if category or (product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0) else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
                                 </li>
                                 <t t-foreach="categories" t-as="c">
-                                    <li class="nav-item">
-                                        <!-- Catch not published categories if their child are published -->
-                                        <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
-                                    </li>
+                                    <!-- Catch not published categories if their child are published -->
+                                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published or (not c.website_published and c.child_id.website_published)"/>
                                 </t>
                             </ul>
                         </div>

@@ -16,9 +16,24 @@ PPR = 4   # Products Per Row
 
 class SimulateProductController(http.Controller):
 
+    def get_parent_categories(self, category):
+        Category = request.env['product.public.category']
+        new_category = Category.search([('id', '=', int(category))])
+        parent_category_ids = [new_category.id]
+        current_category = new_category
+        while current_category.parent_id:
+            parent_category_ids.append(current_category.parent_id.id)
+            current_category = current_category.parent_id
+        return parent_category_ids
+
     @http.route(['/ofertas', '/ofertas/page/<int:page>', '/ofertas/oferta/<path:path>',
                  ], type='http', auth='public', website=True)
     def get_offers(self, page=0, category=None, search='', order='', path='', ppg=False, **post):
+        # Catch parent categories for categories menu
+        parent_category_ids = []
+        if category:
+            parent_category_ids = self.get_parent_categories(category)
+
         # Offers only published, with validate dates and published categories
         Offer = request.env['product.offer']
         current_date = datetime.date.today()
@@ -97,6 +112,7 @@ class SimulateProductController(http.Controller):
                   'rows': PPR,
                   'keep': keep,
                   'offer_list': True,
+                  'parent_category_ids': parent_category_ids,
                   }
 
         # Values to render for single offer
