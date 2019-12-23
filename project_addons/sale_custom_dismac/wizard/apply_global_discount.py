@@ -8,6 +8,7 @@ class ApplyGlobalDiscount(models.TransientModel):
     _name = "apply.global.discount"
 
     discount = fields.Float("Discount(%)")
+    apply_in_price_unit = fields.Boolean()
 
     @api.multi
     def apply_discount(self):
@@ -22,10 +23,14 @@ class ApplyGlobalDiscount(models.TransientModel):
         elif self._context["active_model"] == "account.invoice":
             lines = obj.invoice_line_ids
         for line in lines:
-            if self.discount != 0:
-                line.discount = self.discount
+            if self.apply_in_price_unit:
+                if self.discount != 0:
+                    line.price_unit = line.price_unit * (self.discount / 100)
             else:
-                line.discount = 0
+                if self.discount != 0:
+                    line.discount = self.discount
+                else:
+                    line.discount = 0
         if self._context["active_model"] == "account.invoice":
             obj.compute_taxes()
         return {"type": "ir.actions.act_window_close"}
