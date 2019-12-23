@@ -115,3 +115,21 @@ class ProductOfferImage(models.Model):
     name = fields.Char(_('Name'), translate=True)
     image = fields.Binary(_('Image'), attachment=True)
     offer_id = fields.Many2one('product.offer', 'Related Offer', copy=True)
+
+
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    historical_ordered_qty = fields.Integer(compute="_get_product_historical_ordered_qty")
+
+    def _get_product_historical_ordered_qty(self):
+
+        context = self._context
+        current_uid = context.get('uid')
+        user = self.env['res.users'].browse(current_uid)
+        
+        customer_domain = [('partner_id', '=', user.partner_id.id), ('state', '=', 'sale'), ('product_tmpl_id', '=', self.id)]
+        
+        customer_product_data = self.env['sale.report'].sudo().read_group(customer_domain, ['product_uom_qty'], ['product_tmpl_id', 'partner_id'])
+
+        self.historical_ordered_qty = customer_product_data[0]['product_uom_qty']

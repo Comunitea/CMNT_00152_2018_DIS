@@ -22,8 +22,10 @@
         # 'website_sale_product_brand',
         'payment_redsys',
         # 'website_sale_hide_price',
+        'website_sale'
     ],
     'data': [
+        'templates/head.xml',
         'templates/account.xml',
         'templates/forms.xml',
         'templates/header.xml',
@@ -31,6 +33,7 @@
         'templates/offer.xml',
         'templates/product.xml',
         'templates/quote.xml',
+        'templates/portal_history.xml',
         'views/product_views.xml',
         'views/quote_views.xml',
         'security/ir.model.access.csv',
