@@ -78,7 +78,7 @@
     <template id="website_sale_product" name="Product Dismac" inherit_id="website_sale.product">
         <xpath expr="//div[@id='wrap']" position="replace">
             <t t-set="title">Dismac | Product | <t t-esc="product.name"/></t>
-            <t t-set="description"><t t-raw="product.description_short or product.description[0:20]"/></t>
+            <t t-set="description"><t t-raw="product.description_short or product.description and product.description[0:20]"/></t>
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
                 <div class="container py-2 oe_website_sale">
