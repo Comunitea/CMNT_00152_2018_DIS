@@ -152,13 +152,26 @@
                         <t t-set="in_wish" t-value="product._is_in_wishlist()"/>
                         <input name="product_id" t-att-value="product_variant_id" type="hidden"/>
                         <t t-if="product_variant_id and len(request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_add_to_cart')])) &gt; 1">
-
                             <a href="#" role="button" class="btn btn-secondary btn-sm a-submit" aria-label="Shopping cart" title="Shopping cart">
                                 <span class="fa fa-shopping-cart" />
                             </a>
                         </t>
-                        <button t-if="product_variant_id and len(request.env['ir.ui.view'].search([('key', '=', 'website_sale_wishlist.add_to_wishlist')])) &gt; 1" type="button" role="button" class="btn btn-secondary btn-sm o_add_wishlist" t-att-disabled='in_wish or None' title="Add to Wishlist" t-att-data-product-template-id="product.id" t-att-data-product-product-id="product_variant_id" data-action="o_wishlist"><span class="fa fa-heart" role="img" aria-label="Add to wishlist"></span></button>
-                        <button t-if="product_variant_id and  len(request.env['ir.ui.view'].search([('key', '=', 'website_sale_comparison.add_to_compare')])) &gt; 1" type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-sm o_add_compare" title="Compare" aria-label="Compare" t-att-data-product-product-id="product_variant_id" data-action="o_comparelist"><span class="fa fa-exchange"></span></button>
+                        <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
+                        <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
+                           t-attf-class="d-md-inline-block btn btn-secondary btn-sm o_website_form_send #{'disabled' if current_quote and product in current_quote.product_ids else 'a'}"
+                           title="Add to request quote" aria-label="Add to request quote" rel="noindex, nofollow">
+                            <span class="fa fa-file-text-o"/>
+                        </a>
+                        <button t-if="product_variant_id and len(request.env['ir.ui.view'].search([('key', '=', 'website_sale_wishlist.add_to_wishlist')])) &gt; 1"
+                                type="button" role="button" class="btn btn-secondary btn-sm o_add_wishlist" t-att-disabled='in_wish or None' title="Add to Wishlist"
+                                t-att-data-product-template-id="product.id" t-att-data-product-product-id="product_variant_id" data-action="o_wishlist">
+                            <span class="fa fa-heart" role="img" aria-label="Add to wishlist"/>
+                        </button>
+                        <button t-if="product_variant_id and len(request.env['ir.ui.view'].search([('key', '=', 'website_sale_comparison.add_to_compare')])) &gt; 1"
+                                type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-sm o_add_compare" title="Compare" aria-label="Compare"
+                                t-att-data-product-product-id="product_variant_id" data-action="o_comparelist">
+                            <span class="fa fa-exchange"/>
+                        </button>
                     </div>
                 </section>
             </div>
@@ -295,7 +308,13 @@
                                 </t>
                                 <t t-call="website_sale.product_price" />
                                 <p t-if="True" class="css_not_available_msg alert alert-warning">Esta combinación no existe.</p>
-                                <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#">Añadir al carrito</a>
+                                <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#"><span class="fa fa-shopping-cart" /></a>
+                                <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
+                                <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
+                                   t-attf-class="btn btn-secondary mt8 btn-lg o_website_form_send #{'disabled' if current_quote and product in current_quote.product_ids else 'a'}"
+                                   title="Add to request quote" aria-label="Add to request quote" rel="noindex, nofollow">
+                                    <span class="fa fa-file-text-o"/>
+                                </a>
                             </div>
                         </form>
                         <p t-if="not product.active" class="alert alert-warning">This product is no longer available.</p>

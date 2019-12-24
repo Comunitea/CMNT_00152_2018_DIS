@@ -57,6 +57,14 @@ a {
     color: @color-white;
 }
 
+.btn-secondary:disabled, .btn-secondary.disabled {
+    background-color: @color-secondary;
+    border-color: @color-secondary;
+    &:hover {
+        color: @color-white;
+    }
+}
+
 /* Dropdown buttons */
 .btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active, .show > .btn-secondary.dropdown-toggle {
     color: @color-secondary;

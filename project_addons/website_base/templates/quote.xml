@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
+    <template id="quote_header_link" inherit_id="website.layout" name="Header Quotes Link Dismac">
+        <xpath expr="//header//ul[@id='top_menu']/li" position="before">
+            <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
+            <li class="nav-item divider d-none"/> <!-- Make sure the cart and related menus are not folded (see autohideMenu) -->
+            <li id="my_current_quote" t-attf-class="nav-item#{'' if current_quote and len(current_quote.product_ids) &gt; 0 else ' d-none'}">
+                <a href="/presupuestos" class="nav-link">
+                    <i class="fa fa-file-text-o"/>
+                    <sup t-attf-class="my_current_quote_quantity badge badge-primary" t-esc="len(current_quote.product_ids) or ''" />
+                </a>
+            </li>
+        </xpath>
+    </template>
+
     <template id="quote_historical" name="Quote Historical Dismac">
         <h5 class="text-uppercase text-primary pt8"><strong>Histórico</strong></h5>
         <ul class="nav nav-pills mt16" t-if="len(historical_quotes) &gt; 0">

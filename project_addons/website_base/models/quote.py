@@ -33,3 +33,10 @@ class ProductOffer(models.Model):
     products_not_found = fields.Html(_("Products not found in website"), strip_style=True)
     product_ids = fields.Many2many('product.template', 'product_quote_rel', 'product_id', 'quote_id',
                                    string=_('Products'))
+
+    @api.multi
+    def get_current_quote(self):
+        user = self.env.user
+        Quote = self.env['sale.quote']
+        domain = [('user_id', '=', user.id), ('website_id', '=', self.env['website'].get_current_website().id)]
+        return Quote.search(domain + [('state', '=', 'current')], limit=1)

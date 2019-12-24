@@ -10,7 +10,7 @@
 
     <template id="website_sale_products_item" name="Products Item Dismac" inherit_id="website_sale.products_item">
         <!-- Enable ribbon on list view -->
-        <xpath expr="//div[@class='ribbon-wrapper']" position="replace">
+        <xpath expr="//div[hasclass('ribbon-wrapper')]" position="replace">
             <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{'oe_ribbon_promo' if product.website_style_ids else ''}">
                 <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">Oferta</a>
             </div>
@@ -23,6 +23,17 @@
                     <strong>Historical ordered quantity:</strong> <span t-esc="product._get_product_historical_ordered_qty(request.env.user)" />
                 </div>
             </t>
+        </xpath>
+    </template>
+
+    <template id="products_add_to_request_quote" inherit_id="website_sale.products_item" name="Add to Request Quote">
+        <xpath expr="//div[hasclass('product_price')]" position="inside">
+            <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
+            <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
+               t-attf-class="d-md-inline-block btn btn-secondary btn-sm o_website_form_send #{'disabled' if current_quote and product in current_quote.product_ids else 'a'}"
+               title="Add to request quote" aria-label="Add to request quote" rel="noindex, nofollow">
+                <span class="fa fa-file-text-o"/>
+            </a>
         </xpath>
     </template>
 
@@ -194,8 +205,13 @@
                                                     </t>
                                                     <t t-call="website_sale.product_price" />
                                                     <p t-if="True" class="css_not_available_msg alert alert-warning">This combination does not exist.</p>
-                                                    <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#" rel="noindex, nofollow">Add to Cart</a>
-
+                                                    <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#" rel="noindex, nofollow"><span class="fa fa-shopping-cart" /></a>
+                                                    <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
+                                                    <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
+                                                       t-attf-class="btn btn-secondary mt8 btn-lg o_website_form_send #{'disabled' if current_quote and product in current_quote.product_ids else 'a'}"
+                                                       title="Add to request quote" aria-label="Add to request quote" rel="noindex, nofollow">
+                                                        <span class="fa fa-file-text-o"/>
+                                                    </a>
                                                     <t t-if="request.website.viewref('website_sale_comparison.add_to_compare').active">
                                                         <t t-set="product_variant" t-value="product_variant or product._create_first_product_variant()"/>
                                                         <button t-if="product_variant" type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-lg mt8 o_add_compare_dyn" title="Compare" aria-label="Compare" t-att-data-product-product-id="product_variant.id" data-action="o_comparelist"><span class="fa fa-exchange"/></button>
@@ -210,7 +226,7 @@
                                             <div class="product-quote-request">
                                                 <label class="mt16 text-muted">
                                                     <strong>Si desea añadir este producto a una petición de presupuesto especial, pulse
-                                                        <a t-att-href="'/presupuestos?add_product=%s' % product.id" class="o_website_form_send" rel="noindex, nofollow">aquí</a>.</strong>
+                                                        <a t-att-href="'/presupuestos?add_product=%s' % product.id" class="o_website_form_send" rel="noindex, nofollow" title="Add to current quote" aria-label="Add to current quote">aquí</a>.</strong>
                                                 </label>
                                             </div>
                                         </div>

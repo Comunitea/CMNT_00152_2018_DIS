@@ -38,6 +38,9 @@ class QuoteController(http.Controller):
             product = request.env['product.template'].search([('id', '=', int(add_product))])
             if product and current_quote and product not in current_quote.product_ids:
                 current_quote.product_ids += product
+            elif product and current_quote and product in current_quote.product_ids:
+                product_error_msg = None
+                product_error_name = None
             else:
                 product_error_msg = "ERROR! No se ha podido añadir el producto"
                 product_error_name = product.name or None
@@ -47,6 +50,9 @@ class QuoteController(http.Controller):
             product = request.env['product.template'].search([('id', '=', int(delete_product))])
             if product and current_quote and product in current_quote.product_ids:
                 current_quote.product_ids = [(3, product.id)]
+            elif product and current_quote and product not in current_quote.product_ids:
+                product_error_msg = None
+                product_error_name = None
             else:
                 product_error_msg = "ERROR! No se pudo borrar el producto"
                 product_error_name = product.name or None
