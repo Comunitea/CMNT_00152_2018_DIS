@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
+    <template id="portal_layout_history" name="Portal layout: history entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'history'" t-attf-class="breadcrumb-item #{'active ' if not history else ''}">
+                <t>History</t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_history" name="Portal My Home : Product purchase history" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="history_count" t-call="portal.portal_docs_entry">
+                <t t-set="title">History</t>
+                <t t-set="url" t-value="'/my/history'"/>
+                <t t-set="count" t-value="history_count"/>
+            </t>
+        </xpath>
+    </template>
+
     <template id="portal_my_history" name="My Purchases history">
         <t t-call="portal.portal_layout">
+            <t t-set="title"><t t-esc="website.name"/> | History</t>
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
 
             <t t-call="portal.portal_searchbar">
-                <t t-set="title">History</t>
+                <t t-set="page_name">history</t>
             </t>
             <t t-if="not products">
                 <p>There are currently no products for your account.</p>
@@ -24,10 +43,10 @@
                 </thead>
                 <t t-foreach="products" t-as="product">
                     <tr>
-                        <td><a t-att-href="product._compute_website_url()"><t t-esc="product.display_name"/></a></td>
+                        <td><a t-att-href="'/product/{}'.format(product.slug) if product.slug else keep('/shop/product/%s' % slug(product))"><t t-esc="product.display_name"/></a></td>
                         <td class="text-center"><span t-field="product.historical_ordered_qty"/></td>
                         <td class="text-right">
-                            <input name="product_id" t-att-value="product.id" type="hidden"/>
+                            <input name="product_id" t-att-value="product.product_variant_id.id" type="hidden"/>
                             <a t-attf-href="#" class="mb8 input-group-addon js_add_cart_json_sale_order_portal_content hidden-xs">
                                 <i class="fa fa-shopping-cart"/>
                             </a>
