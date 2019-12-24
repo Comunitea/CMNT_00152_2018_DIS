@@ -107,7 +107,8 @@ class WebsiteSaleContext(WebsiteSale):
             
             customer_domain = [('partner_id', '=', user.partner_id.id),
                 '|', ('date_start', '=', False), ('date_start', '<=', today),
-                '|', ('date_end', '=', False), ('date_end', '>=', today)]
+                '|', ('date_end', '=', False), ('date_end', '>=', today),
+                ('product_tmpl_id', '!=', False)]
         
             customer_products = request.env['customer.price'].sudo().read_group(customer_domain, ['product_tmpl_id'], ['product_tmpl_id'])
             if len(customer_products) > 0:         
