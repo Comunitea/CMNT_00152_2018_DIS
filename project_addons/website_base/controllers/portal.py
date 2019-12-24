@@ -24,9 +24,9 @@ class CustomerPortal(CustomerPortal):
         partner = request.env.user.partner_id
 
         SaleReport = request.env['sale.report']
-        history_count = SaleReport.search_count([
-            ('partner_id', '=', partner.id), ('state', '=', 'sale')
-        ])
+
+        history_count = len(SaleReport.read_group([('partner_id', '=', partner.id), ('state', '=', 'sale')], \
+            ['product_uom_qty'], ['product_tmpl_id', 'partner_id']))
 
         values.update({
             'history_count': history_count,
@@ -40,7 +40,8 @@ class CustomerPortal(CustomerPortal):
         
         customer_domain = [('partner_id', '=', user.partner_id.id), ('state', '=', 'sale')]
     
-        customer_products = request.env['sale.report'].sudo().read_group(customer_domain, ['product_tmpl_id'], ['product_tmpl_id', 'partner_id'])
+        customer_products = request.env['sale.report'].sudo().read_group(customer_domain, ['product_tmpl_id'], \
+            ['product_tmpl_id', 'partner_id'])
         if len(customer_products) > 0:         
             product_tmpl_ids = [x['product_tmpl_id'][0] for x in customer_products]  
             domain +=[('id', 'in', product_tmpl_ids)]
@@ -62,8 +63,9 @@ class CustomerPortal(CustomerPortal):
         domain = self._get_my_history_domain()
 
         searchbar_sortings = {
-            'ordered_qty': {'ordered_qty': _('Ordered Qty'), 'order': 'historical_ordered_qty desc'},
-            'name': {'label': _('Reference'), 'order': 'display_name'}
+            'ordered_qty': {'label': _('Ordered Qty'), 'order': 'historical_ordered_qty desc'},
+            'name': {'label': _('Name'), 'order': 'display_name asc'},
+            'order_date': {'label': _('Order Date'), 'order': 'partner_last_order desc'}
         }
         # default sortby order
         if not sortby:

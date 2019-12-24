@@ -130,15 +130,33 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     historical_ordered_qty = fields.Integer(compute="_get_product_historical_ordered_qty")
+    partner_last_order = fields.Datetime(compute="_get_partner_last_order")
 
+    @api.multi
     def _get_product_historical_ordered_qty(self):
+        for template in self:
 
-        context = self._context
-        current_uid = context.get('uid')
-        user = self.env['res.users'].browse(current_uid)
-        
-        customer_domain = [('partner_id', '=', user.partner_id.id), ('state', '=', 'sale'), ('product_tmpl_id', '=', self.id)]
-        
-        customer_product_data = self.env['sale.report'].sudo().read_group(customer_domain, ['product_uom_qty'], ['product_tmpl_id', 'partner_id'])
+            context = self._context
+            current_uid = context.get('uid')
+            user = self.env['res.users'].browse(current_uid)
+            
+            customer_domain = [('partner_id', '=', user.partner_id.id), ('state', '=', 'sale'), ('product_tmpl_id', '=', template.id)]
+            
+            customer_product_data = self.env['sale.report'].sudo().read_group(customer_domain, ['product_uom_qty'], ['product_tmpl_id', 'partner_id'])
 
-        self.historical_ordered_qty = customer_product_data[0]['product_uom_qty']
+            template.historical_ordered_qty = customer_product_data[0]['product_uom_qty']
+
+    @api.multi
+    def _get_partner_last_order(self):
+
+        for template in self:
+
+            context = self._context
+            current_uid = context.get('uid')
+            user = self.env['res.users'].browse(current_uid)
+            
+            customer_domain = [('partner_id', '=', user.partner_id.id), ('state', '=', 'sale'), ('product_tmpl_id', '=', template.id)]
+            
+            customer_product_data = self.env['sale.report'].sudo().search_read(customer_domain, ['confirmation_date'], order="confirmation_date desc")
+
+            template.partner_last_order = customer_product_data[0]['confirmation_date']
