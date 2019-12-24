@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
+    <template id="portal_layout_history" name="Portal layout: history entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'history'" t-attf-class="breadcrumb-item #{'active ' if not history else ''}">
+                <t>History</t>
+            </li>
+        </xpath>
+    </template>
+
     <template id="portal_my_home_history" name="Portal My Home : Product purchase history" inherit_id="portal.portal_my_home" priority="20">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
             <t t-if="history_count" t-call="portal.portal_docs_entry">
@@ -13,10 +21,11 @@
 
     <template id="portal_my_history" name="My Purchases history">
         <t t-call="portal.portal_layout">
+            <t t-set="title"><t t-esc="website.name"/> | History</t>
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
 
             <t t-call="portal.portal_searchbar">
-                <t t-set="title">History</t>
+                <t t-set="page_name">history</t>
             </t>
             <t t-if="not products">
                 <p>There are currently no products for your account.</p>

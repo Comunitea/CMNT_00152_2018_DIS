@@ -22,7 +22,8 @@
         # 'website_sale_product_brand',
         'payment_redsys',
         # 'website_sale_hide_price',
-        'website_sale'
+        'website_sale',
+        'portal',
     ],
     'data': [
         'templates/head.xml',

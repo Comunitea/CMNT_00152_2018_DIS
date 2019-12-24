@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-23 15:13+0000\n"
-"PO-Revision-Date: 2019-12-23 15:13+0000\n"
+"POT-Creation-Date: 2019-12-24 10:56+0000\n"
+"PO-Revision-Date: 2019-12-24 10:56+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.simulate_option_collapse_categories_recursive
-msgid "#{'Unfold' if c.parent_id else 'Fold'}"
+msgid "#{'Unfold' if c.id in parent_category_ids else 'Fold'}"
 msgstr ""
 
 #. module: website_base
@@ -49,6 +49,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_base.default_send_forms
 msgid "<span class=\"btn btn-primary btn-lg o_website_form_send\">Send</span>\n"
 "                <span id=\"o_website_form_result\"/>"
+msgstr ""
+
+#. module: website_base
+#: model_terms:ir.ui.view,arch_db:website_base.portal_my_history
+msgid "<span class=\"d-none d-md-inline\">Products #</span>\n"
+"                            <span class=\"d-block d-md-none\">Ref.</span>"
 msgstr ""
 
 #. module: website_base
@@ -90,11 +96,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_base.product_offers
 msgid "<strong>Filtrar ofertas:</strong>"
 msgstr ""
-
-#. module: website_base
-#: model_terms:ir.ui.view,arch_db:website_base.website_sale_products_item_website_dismac_history
-msgid "<strong>Historical ordered quantity:</strong>"
-msgstr "<strong>Cantidad total pedida:</strong>"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.quote_historical
@@ -197,7 +198,7 @@ msgid "Attach CV"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:53
+#: code:addons/website_base/models/product.py:62
 #: model:ir.model.fields,field_description:website_base.field_product_offer__attachment_id
 #: model_terms:ir.ui.view,arch_db:website_base.product_offer_form_view
 #: model_terms:ir.ui.view,arch_db:website_base.product_offers_view
@@ -206,7 +207,7 @@ msgid "Attachment"
 msgstr "Adjunto"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:54
+#: code:addons/website_base/models/product.py:63
 #: model:ir.model.fields,field_description:website_base.field_product_offer__attachment_filename
 #, python-format
 msgid "Attachment Filename"
@@ -329,14 +330,14 @@ msgid "Default Send Form Base"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:36
+#: code:addons/website_base/models/product.py:45
 #: model:ir.model.fields,field_description:website_base.field_product_offer__description
 #, python-format
 msgid "Description"
 msgstr "Descripción"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:35
+#: code:addons/website_base/models/product.py:44
 #: model:ir.model.fields,help:website_base.field_product_offer__website_sequence
 #, python-format
 msgid "Determine the display order in the Website"
@@ -442,7 +443,7 @@ msgid "Extra Images"
 msgstr "Imágenes extras"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:52
+#: code:addons/website_base/models/product.py:61
 #: model:ir.model.fields,field_description:website_base.field_product_offer__slug
 #, python-format
 msgid "Friendly URL"
@@ -462,7 +463,7 @@ msgid "General Information"
 msgstr "Información General"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:33
+#: code:addons/website_base/models/product.py:42
 #: model:ir.model.fields,help:website_base.field_product_offer__sequence
 #, python-format
 msgid "Gives the sequence order when displaying a offer list"
@@ -496,9 +497,10 @@ msgid "Historical Ordered Qty"
 msgstr "Cantidad total pedida"
 
 #. module: website_base
+#: model_terms:ir.ui.view,arch_db:website_base.portal_layout_history
 #: model_terms:ir.ui.view,arch_db:website_base.portal_my_home_history
 msgid "History"
-msgstr "Historial"
+msgstr "Histórico"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.quote_form
@@ -518,8 +520,8 @@ msgid "ID"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:40
-#: code:addons/website_base/models/product.py:116
+#: code:addons/website_base/models/product.py:49
+#: code:addons/website_base/models/product.py:125
 #: model:ir.model.fields,field_description:website_base.field_product_offer__image
 #: model:ir.model.fields,field_description:website_base.field_product_offer_image__image
 #, python-format
@@ -537,7 +539,7 @@ msgid "Images"
 msgstr "Imagenes"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:32
+#: code:addons/website_base/models/product.py:41
 #: model:ir.model.fields,field_description:website_base.field_product_offer__sequence
 #, python-format
 msgid "Internal Sequence"
@@ -580,14 +582,14 @@ msgid "Last week"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:42
+#: code:addons/website_base/models/product.py:51
 #: model:ir.model.fields,field_description:website_base.field_product_offer__image_medium
 #, python-format
 msgid "Medium-sized image"
 msgstr "Imagen de tamaño mediano"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:43
+#: code:addons/website_base/models/product.py:52
 #: model:ir.model.fields,help:website_base.field_product_offer__image_medium
 #, python-format
 msgid "Medium-sized image of the offer. It is automatically resized as a 128x128px image, with aspect ratio preserved, only when the image exceeds one of those sizes. Use this field in form views or some kanban views."
@@ -607,7 +609,12 @@ msgid "Metadata Info"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:115
+#: model:ir.ui.view,name:website_base.portal_my_history
+msgid "My Purchases history"
+msgstr "Histórico"
+
+#. module: website_base
+#: code:addons/website_base/models/product.py:124
 #: model:ir.model.fields,field_description:website_base.field_product_offer_image__name
 #: model_terms:ir.ui.view,arch_db:website_base.default_fields_forms
 #, python-format
@@ -717,7 +724,7 @@ msgid "Only published categories are visible on the website"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:51
+#: code:addons/website_base/models/product.py:60
 #: model:ir.model.fields,help:website_base.field_product_offer__website_published
 #, python-format
 msgid "Only published offers are visible on the website"
@@ -729,8 +736,19 @@ msgid "Opcional"
 msgstr ""
 
 #. module: website_base
+#: model_terms:ir.ui.view,arch_db:website_base.portal_my_history
+msgid "Options"
+msgstr "Opciones"
+
+#. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.simulate_sort
 msgid "Ordenado por:"
+msgstr ""
+
+#. module: website_base
+#: code:addons/website_base/controllers/portal.py:65
+#, python-format
+msgid "Ordered Qty"
 msgstr ""
 
 #. module: website_base
@@ -759,6 +777,11 @@ msgid "Portal My Home : Product purchase history"
 msgstr ""
 
 #. module: website_base
+#: model:ir.ui.view,name:website_base.portal_layout_history
+msgid "Portal layout: history entry"
+msgstr ""
+
+#. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.quote
 msgid "Presupuesto"
 msgstr ""
@@ -769,18 +792,13 @@ msgid "Presupuesto solicitado"
 msgstr ""
 
 #. module: website_base
-#: model_terms:ir.ui.view,arch_db:website_base.portal_my_home_history
-msgid "Prices"
-msgstr ""
-
-#. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.product_offer_form_view
 #: model_terms:ir.ui.view,arch_db:website_base.product_offers_view
 msgid "Product Name"
 msgstr "Nombre del producto"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:20
+#: code:addons/website_base/models/product.py:29
 #: model:ir.model,name:website_base.model_product_offer
 #, python-format
 msgid "Product Offer"
@@ -792,7 +810,7 @@ msgid "Product Offer Base"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:112
+#: code:addons/website_base/models/product.py:121
 #: model:ir.model,name:website_base.model_product_offer_image
 #, python-format
 msgid "Product Offer Image"
@@ -857,30 +875,30 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_base.sale_quote_form_view
 #: model_terms:ir.ui.view,arch_db:website_base.sale_quote_view
 msgid "Products find on website"
-msgstr ""
+msgstr "Productos encontrados"
 
 #. module: website_base
 #: code:addons/website_base/models/quote.py:32
 #: model:ir.model.fields,field_description:website_base.field_sale_quote__products_found
 #, python-format
 msgid "Products found in website"
-msgstr ""
+msgstr "Productos encontrados"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.sale_quote_form_view
 #: model_terms:ir.ui.view,arch_db:website_base.sale_quote_view
 msgid "Products not find on website"
-msgstr ""
+msgstr "No se han encontrado productos."
 
 #. module: website_base
 #: code:addons/website_base/models/quote.py:33
 #: model:ir.model.fields,field_description:website_base.field_sale_quote__products_not_found
 #, python-format
 msgid "Products not found in website"
-msgstr ""
+msgstr "No se han encontrado productos."
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:50
+#: code:addons/website_base/models/product.py:59
 #: model:ir.model.fields,field_description:website_base.field_product_offer__website_published
 #: model_terms:ir.ui.view,arch_db:website_base.product_offer_search_view
 #, python-format
@@ -934,6 +952,12 @@ msgstr ""
 #. module: website_base
 #: model:ir.ui.view,name:website_base.quotes
 msgid "Quotes Dismac"
+msgstr ""
+
+#. module: website_base
+#: code:addons/website_base/controllers/portal.py:66
+#, python-format
+msgid "Reference"
 msgstr ""
 
 #. module: website_base
@@ -996,7 +1020,7 @@ msgstr "Enviado"
 #. module: website_base
 #: model:ir.model.fields,field_description:website_base.field_sale_quote__date
 msgid "Sent on"
-msgstr ""
+msgstr "Enviado en"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.product_offer_form_view
@@ -1070,14 +1094,14 @@ msgid "Size Y"
 msgstr "Tamaño Y"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:46
+#: code:addons/website_base/models/product.py:55
 #: model:ir.model.fields,field_description:website_base.field_product_offer__image_small
 #, python-format
 msgid "Small-sized image"
 msgstr "Imagen de tamaño pequeño"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:47
+#: code:addons/website_base/models/product.py:56
 #: model:ir.model.fields,help:website_base.field_product_offer__image_small
 #, python-format
 msgid "Small-sized image of the offer. It is automatically resized as a 64x64px image, with aspect ratio preserved. Use this field anywhere a small image is required."
@@ -1119,7 +1143,7 @@ msgid "Subject"
 msgstr "Asunto"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:30
+#: code:addons/website_base/models/product.py:39
 #: model:ir.model.fields,field_description:website_base.field_product_offer__subtitle
 #, python-format
 msgid "Subtitle"
@@ -1131,7 +1155,12 @@ msgid "Teléfono de contacto"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:40
+#: model_terms:ir.ui.view,arch_db:website_base.portal_my_history
+msgid "There are currently no products for your account."
+msgstr ""
+
+#. module: website_base
+#: code:addons/website_base/models/product.py:49
 #: model:ir.model.fields,help:website_base.field_product_offer__image
 #, python-format
 msgid "This field holds the image used as image for the offer, limited to 1024x1024px."
@@ -1148,7 +1177,7 @@ msgid "This product is unpublished."
 msgstr "Este producto no está publicado."
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:29
+#: code:addons/website_base/models/product.py:38
 #: model:ir.model.fields,field_description:website_base.field_product_offer__name
 #, python-format
 msgid "Title"
@@ -1167,6 +1196,11 @@ msgstr ""
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.simulate_products_categories
 msgid "Todos los productos"
+msgstr ""
+
+#. module: website_base
+#: model_terms:ir.ui.view,arch_db:website_base.portal_my_history
+msgid "Total"
 msgstr ""
 
 #. module: website_base
@@ -1209,7 +1243,7 @@ msgid "Volver"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:27
+#: code:addons/website_base/models/product.py:36
 #: code:addons/website_base/models/quote.py:22
 #: model:ir.model,name:website_base.model_website
 #: model:ir.model.fields,field_description:website_base.field_product_offer__website_id
@@ -1231,12 +1265,7 @@ msgid "Website Product Category"
 msgstr "Categoría del Producto"
 
 #. module: website_base
-#: model:ir.ui.view,name:website_base.website_sale_products_item_website_dismac_history
-msgid "Website Sale Products Item Website Dismac History"
-msgstr ""
-
-#. module: website_base
-#: code:addons/website_base/models/product.py:34
+#: code:addons/website_base/models/product.py:43
 #: model:ir.model.fields,field_description:website_base.field_product_offer__website_sequence
 #, python-format
 msgid "Website Sequence"
@@ -1253,7 +1282,7 @@ msgid "Website category tree"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:31
+#: code:addons/website_base/models/product.py:40
 #: model:ir.model.fields,help:website_base.field_product_offer__subtitle
 #, python-format
 msgid "Will be show under title like a paragraph"
@@ -1282,6 +1311,11 @@ msgstr ""
 #. module: website_base
 #: model:ir.ui.view,name:website_base.simulate_products_categories
 msgid "eCommerce Categories Base"
+msgstr ""
+
+#. module: website_base
+#: model_terms:ir.ui.view,arch_db:website_base.portal_my_history
+msgid "history"
 msgstr ""
 
 #. module: website_base
@@ -1361,7 +1395,16 @@ msgid "terms of use"
 msgstr "términos de Uso"
 
 #. module: website_base
+#: model:ir.ui.view,name:website_base.website_base_website_assets_frontend
+msgid "website_base_website_assets_frontend"
+msgstr ""
+
+#. module: website_base
 #: model:ir.ui.view,name:website_base.website_submenu
 msgid "website_submenu"
 msgstr ""
 
+#. module: website_base
+#: model_terms:ir.ui.view,arch_db:website_base.portal_my_history
+msgid "| History"
+msgstr "| Histórico"
