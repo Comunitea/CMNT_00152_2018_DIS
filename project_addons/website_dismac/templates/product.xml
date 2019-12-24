@@ -77,6 +77,9 @@
     </template>
 
     <template id="website_sale_option_collapse_products_categories" name="Collapsible Category List Dismac" inherit_id="website_sale.option_collapse_products_categories">
+        <xpath expr="//ul" position="attributes">
+            <attribute name="id">o_shop_collapse_category_custom</attribute>
+        </xpath>
         <xpath expr="//ul//li//a" position="attributes">
             <attribute name="t-attf-class">pb0 text-uppercase nav-link#{'' if category else ' active mb4 pl-2 pr-2'} o_not_editable</attribute>
         </xpath>
@@ -108,7 +111,7 @@
                         <div t-att-class="'col-lg-3 col-md-4 col-12' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'd-none'"
                              id="products_grid_before">
                             <t t-set="parent_category_ids" t-value="request.env['product.public.category'].get_parent_categories(category or product.public_categ_ids[0] if product.public_categ_ids else 0)"/>
-                            <ul class="nav nav-pills flex-column menu-category mt16 pt8" id="o_shop_collapse_category">
+                            <ul class="nav nav-pills flex-column menu-category mt16 pt8" id="o_shop_collapse_category_custom">
                                 <li class="nav-item">
                                     <a t-att-href="keep('/shop', category=0)" t-attf-class="pt8 pb0 text-uppercase nav-link#{'' if category or (product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0) else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
                                 </li>

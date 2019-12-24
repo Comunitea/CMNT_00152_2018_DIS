@@ -50,7 +50,7 @@
             </div>
             <ul t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))"
                 class="nav nav-pills flex-column nav-hierarchy parent-category"
-                t-att-style="'display:block;' if c.id in parent_category_ids or product_category and product_category.category_id in parent_category_ids else 'width: inherit; display:none;'">
+                t-att-style="'display:block;' if c.id in parent_category_ids or product_category and product_category.category_id in parent_category_ids else 'display:none;'">
                 <t t-foreach="c.child_id" t-as="c">
                     <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
                 </t>
@@ -61,7 +61,7 @@
     <!-- Show categories and Catch not published categories if their child are published -->
     <template id="simulate_products_categories" name="eCommerce Categories Base" inherit_id="website_base.simulate_products">
         <xpath expr="//div[@id='products_grid_before']" position="inside">
-            <ul class="nav nav-pills flex-column menu-category mt16" id="o_shop_collapse_category">
+            <ul class="nav nav-pills flex-column menu-category mt16" id="o_shop_collapse_category_custom">
                 <li class="nav-item">
                     <a t-att-href="keep('/shop', category=0)"
                        t-attf-class="pt8 pb0 text-uppercase nav-link#{'' if category or product_category and product_category.category_id else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>

@@ -98,8 +98,22 @@ a {
     color: @color-secondary;
 }
 
-/* ECommerce categories*/
-#o_shop_collapse_category li i.fa {
+/* ECommerce categories and Collapse category */
+#o_shop_collapse_category_custom li {
+    width: 100%;
+
+    a {
+        display: inline-block;
+        width: 80%;
+        padding-left: 3px;
+    }
+
+    i.fa {
+        cursor: pointer;
+    }
+}
+
+#o_shop_collapse_category li i.fa, #o_shop_collapse_category_custom li i.fa {
     color: @color-secondary;
 }
 
