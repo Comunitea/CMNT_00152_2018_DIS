@@ -18,7 +18,7 @@
     'data': [
         'data/website_data.xml',
         'data/menu_data.xml',
-        'data/default_data.xml',
+        # 'data/default_data.xml',
         'templates/forms.xml',
         'templates/cookies.xml',
         'templates/account.xml',
@@ -26,8 +26,7 @@
         'templates/header.xml',
         'templates/product.xml',
         'views/customize_views.xml',
-        'templates/sale_order_portal.xml',
-        'templates/head.xml',
+        'templates/sale_order_portal.xml'
     ],
     'images': [
         '/static/description/icon.png',

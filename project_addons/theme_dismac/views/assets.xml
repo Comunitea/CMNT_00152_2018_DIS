@@ -6,6 +6,7 @@
         <xpath expr="link[last()]" position="after">
             <!-- Theme Dismac -->
             <link href="/theme_dismac/static/css/_general.less" rel="stylesheet" type="text/less"/>
+            <link href="/theme_dismac/static/css/category.less" rel="stylesheet" type="text/less"/>
             <link href="/theme_dismac/static/css/cookies.less" rel="stylesheet" type="text/less"/>
             <link href="/theme_dismac/static/css/elements.less" rel="stylesheet" type="text/less"/>
             <link href="/theme_dismac/static/css/footer.less" rel="stylesheet" type="text/less"/>

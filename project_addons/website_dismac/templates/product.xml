@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
-    <!-- Add Line to Historial Product Lists -->
-    <template id="website_sale_products_item_website_dismac_history" name="Website Sale Products Item Website Dismac History" inherit_id="website_sale.products_item">
+    <template id="website_sale_products_list_view" inherit_id="website_sale.products_list_view" name="List View Dismac">
+        <!-- Enable ribbon on list view -->
+        <xpath expr="//t[@t-call='website_sale.products_item']" position="inside">
+            <t t-set="show_list" t-value="True" />
+        </xpath>
+    </template>
+
+    <template id="website_sale_products_item" name="Products Item Dismac" inherit_id="website_sale.products_item">
+        <!-- Enable ribbon on list view -->
+        <xpath expr="//div[hasclass('ribbon-wrapper')]" position="replace">
+            <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids.html_class if product.website_style_ids else ''}">
+                <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">Oferta</a>
+            </div>
+        </xpath>
+
+        <!-- Add Line to Historial Product Lists -->
         <xpath expr="//form/div[@itemscope='itemscope']/section/div" position="after">
             <t t-if="list_type and list_type=='historial'">
                 <div>
@@ -12,11 +26,73 @@
         </xpath>
     </template>
 
-    <!-- Change prodduct detail view to convert like a shop view and include ecommerce categories -->
+    <template id="products_add_to_request_quote" inherit_id="website_sale.products_item" name="Add to Request Quote">
+        <xpath expr="//div[hasclass('product_price')]" position="inside">
+            <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
+            <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
+               t-attf-class="d-md-inline-block btn btn-secondary btn-sm o_website_form_send #{'disabled' if current_quote and product in current_quote.product_ids else 'a'}"
+               title="Add to request quote" aria-label="Add to request quote" rel="noindex, nofollow">
+                <span class="fa fa-file-text-o"/>
+            </a>
+        </xpath>
+    </template>
+
+    <template id="website_sale_categories_recursive" name="Category list Dismac" inherit_id="website_sale.categories_recursive">
+        <xpath expr="//li//a" position="attributes">
+            <attribute name="t-attf-class" add="text-uppercase" separator=" "/>
+        </xpath>
+    </template>
+
+    <template id="website_sale_products_categories" inherit_id="website_sale.products_categories" name="eCommerce Categories Dismac">
+        <xpath expr="//ul" position="attributes">
+            <attribute name="class" add="menu-category" separator=" "/>
+        </xpath>
+        <xpath expr="//ul//li//a" position="attributes">
+            <attribute name="t-attf-class" add="text-uppercase mt8" separator=" "/>
+        </xpath>
+    </template>
+
+    <template id="website_sale_option_collapse_categories_recursive" name="Collapse Category Recursive Dismac" inherit_id="website_sale.option_collapse_categories_recursive">
+        <xpath expr="//li//i" position="replace"/>
+        <xpath expr="//li//a" position="replace">
+            <div class="category-menu-img float-left">
+                <img class="img img-responsive" t-attf-src="/website/image/product.public.category/{{categ.id}}/image/45x45" t-att-alt="categ.name"/>
+            </div>
+            <div t-attf-class="category-menu-name float-left ml-2">
+                <i t-if="categ.child_id" t-attf-class="text-primary fa #{'fa-chevron-down' if categ.id in parent_category_ids else 'fa-chevron-right'}"
+               t-attf-title="#{'Unfold' if categ.id in parent_category_ids else 'Fold'}"
+               t-attf-aria-label="#{'Unfold' if categ.id in parent_category_ids else 'Fold'}" role="img"/>
+                <a t-att-href="keep('/category/%s' % categ.slug if categ.slug else '/shop/category/%s' % slug(categ), category=0)" t-if="categ.child_id and (categ.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))"
+                   t-attf-class="pt4 pb0 text-uppercase nav-link#{' active mb4 pl-2 pr2' if categ.id == int(category or 0) or (product and product.public_categ_ids and categ.id in product.public_categ_ids.mapped('id')) else ''}">
+                    <strong t-esc="categ.name"/>
+                </a>
+                <a t-att-href="keep('/category/%s' % categ.slug if categ.slug else '/shop/category/%s' % slug(categ), category=0)" t-else=""
+                   t-attf-class=" pt4 pb0 text-uppercase nav-link#{' active mb4 pl-2' if categ.id == int(category or 0) or (product and product.public_categ_ids and categ.id in product.public_categ_ids.mapped('id')) else ''}"
+                   t-field="categ.name"/>
+            </div>
+        </xpath>
+        <xpath expr="//ul" position="attributes">
+            <attribute name="class" add="parent-category" separator=" "/>
+        </xpath>
+    </template>
+
+    <template id="website_sale_option_collapse_products_categories" name="Collapsible Category List Dismac" inherit_id="website_sale.option_collapse_products_categories">
+        <xpath expr="//ul" position="attributes">
+            <attribute name="id">o_shop_collapse_category_custom</attribute>
+        </xpath>
+        <xpath expr="//ul//li//a" position="attributes">
+            <attribute name="t-attf-class">pb0 text-uppercase nav-link#{'' if category else ' active mb4 pl-2 pr-2'} o_not_editable</attribute>
+        </xpath>
+        <xpath expr="//t[@t-call='website_sale.option_collapse_categories_recursive']" position="attributes">
+            <attribute name="t-if">categ.website_published or (not categ.website_published and categ.child_id.website_published)</attribute>
+        </xpath>
+    </template>
+
+    <!-- Change product detail view to convert like a shop view and include ecommerce categories -->
     <template id="website_sale_product" name="Product Dismac" inherit_id="website_sale.product">
         <xpath expr="//div[@id='wrap']" position="replace">
             <t t-set="title">Dismac | Product | <t t-esc="product.name"/></t>
-            <t t-set="description"><t t-raw="product.description_short or product.description[0:20]"/></t>
+            <t t-set="description"><t t-raw="product.description_short or product.description and product.description[0:20]"/></t>
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
                 <div class="container py-2 oe_website_sale">
@@ -34,15 +110,14 @@
                     <div class="row mt-3">
                         <div t-att-class="'col-lg-3 col-md-4 col-12' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'd-none'"
                              id="products_grid_before">
-                            <ul class="nav nav-pills flex-column mt16 pt4" id="o_shop_collapse_category">
+                            <t t-set="parent_category_ids" t-value="request.env['product.public.category'].get_parent_categories(category or product.public_categ_ids[0] if product.public_categ_ids else 0)"/>
+                            <ul class="nav nav-pills flex-column menu-category mt16 pt8" id="o_shop_collapse_category_custom">
                                 <li class="nav-item">
-                                    <a t-att-href="keep('/shop', category=0)" t-attf-class="nav-link#{'' if category or (product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0) else ' active'} o_not_editable">Todos los productos</a>
+                                    <a t-att-href="keep('/shop', category=0)" t-attf-class="pt8 pb0 text-uppercase nav-link#{'' if category or (product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0) else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
                                 </li>
                                 <t t-foreach="categories" t-as="c">
-                                    <li class="nav-item">
-                                        <!-- Catch not published categories if their child are published -->
-                                        <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
-                                    </li>
+                                    <!-- Catch not published categories if their child are published -->
+                                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published or (not c.website_published and c.child_id.website_published)"/>
                                 </t>
                             </ul>
                         </div>
@@ -133,8 +208,13 @@
                                                     </t>
                                                     <t t-call="website_sale.product_price" />
                                                     <p t-if="True" class="css_not_available_msg alert alert-warning">This combination does not exist.</p>
-                                                    <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#" rel="noindex, nofollow">Add to Cart</a>
-
+                                                    <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#" rel="noindex, nofollow"><span class="fa fa-shopping-cart" /></a>
+                                                    <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
+                                                    <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
+                                                       t-attf-class="btn btn-secondary mt8 btn-lg o_website_form_send #{'disabled' if current_quote and product in current_quote.product_ids else 'a'}"
+                                                       title="Add to request quote" aria-label="Add to request quote" rel="noindex, nofollow">
+                                                        <span class="fa fa-file-text-o"/>
+                                                    </a>
                                                     <t t-if="request.website.viewref('website_sale_comparison.add_to_compare').active">
                                                         <t t-set="product_variant" t-value="product_variant or product._create_first_product_variant()"/>
                                                         <button t-if="product_variant" type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-lg mt8 o_add_compare_dyn" title="Compare" aria-label="Compare" t-att-data-product-product-id="product_variant.id" data-action="o_comparelist"><span class="fa fa-exchange"/></button>
@@ -149,7 +229,7 @@
                                             <div class="product-quote-request">
                                                 <label class="mt16 text-muted">
                                                     <strong>Si desea añadir este producto a una petición de presupuesto especial, pulse
-                                                        <a t-att-href="'/presupuestos?add_product=%s' % product.id" class="o_website_form_send" rel="noindex, nofollow">aquí</a>.</strong>
+                                                        <a t-att-href="'/presupuestos?add_product=%s' % product.id" class="o_website_form_send" rel="noindex, nofollow" title="Add to current quote" aria-label="Add to current quote">aquí</a>.</strong>
                                                 </label>
                                             </div>
                                         </div>
@@ -179,7 +259,7 @@
                     <h1>Tarifa Bienvenida</h1>
                     <p>Esta es la Tarifa bienvenida, donde ver los artículos con el precio de cliente Dismac. Si lo desea puede ordenar también el listado en función de los códigos de producto</p>
                 </t>
-                <t t-elif="list_type and list_type == 'historial'">
+                <t t-elif="list_type and list_type == 'history'">
                     <h1>Mi historial</h1>
                     <p>Su historial de pedidos muestra los artículos que nos solicita más frecuentemente, la lista se muestra ordenada en función de la frecuencia, mostrando en primer lugar los productos más habituales. Si lo desea puede ordenar el listado pulsando en cada uno de los títulos de las columnas</p>
                 </t>
