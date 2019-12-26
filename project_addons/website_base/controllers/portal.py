@@ -23,12 +23,12 @@ class CustomerPortal(CustomerPortal):
 
     def _prepare_portal_layout_values(self):
         values = super(CustomerPortal, self)._prepare_portal_layout_values()
-        commercial_partner_id = request.env.user.commercial_partner_id
+        partner_id = request.env.user.partner_id
 
         SaleReport = request.env['sale.report']
 
-        history_count = len(SaleReport.read_group([('commercial_partner_id', 'child_of', commercial_partner_id.id), ('state', '=', 'sale')], \
-            ['product_uom_qty'], ['product_tmpl_id', 'commercial_partner_id']))
+        history_count = len(SaleReport.read_group([('partner_id', 'child_of', partner_id.id), ('state', '=', 'sale')], \
+            ['product_uom_qty'], ['product_tmpl_id', 'partner_id']))
 
         values.update({
             'history_count': history_count,
@@ -40,7 +40,7 @@ class CustomerPortal(CustomerPortal):
         domain = []
         user = request.env.user
         
-        customer_domain = [('commercial_partner_id', 'child_of', user.commercial_partner_id.id), ('state', '=', 'sale')]
+        customer_domain = [('partner_id', 'child_of', user.partner_id.id), ('state', '=', 'sale')]
 
         if filterby:
             customer_domain += filterby
@@ -64,7 +64,6 @@ class CustomerPortal(CustomerPortal):
 
         ctx = request.env.context.copy()
         ctx.update(customer_history=True)
-        request.env.context= ctx
 
         searchbar_sortings = {
             'ordered_qty': {'label': _('Ordered Qty'), 'order': 'historical_ordered_qty desc'},
@@ -88,6 +87,10 @@ class CustomerPortal(CustomerPortal):
             searchbar_filters.update({
                 str(address.id): {'label': address.name, 'domain': [('order_id.partner_shipping_id', '=', address.id)]}
             })
+            if filterby == str(address.id):
+                ctx.update(selected_partner=address.id)
+
+        request.env.context= ctx
 
         # default filter by value
         if not filterby:
