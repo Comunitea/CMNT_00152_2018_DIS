@@ -257,7 +257,7 @@
             </t>
             <h6><strong>Productos encontrados en la web: </strong><span t-if="not current_quote.products_found" class="text-muted">No proporcionados</span></h6>
             <span t-field="current_quote.products_found"/>
-            <h6><strong>Productos no encontrados en la web: </strong><span t-if="not current_quote.products_found" class="text-muted">No proporcionados</span></h6>
+            <h6><strong>Productos no encontrados en la web: </strong><span t-if="not current_quote.products_not_found" class="text-muted">No proporcionados</span></h6>
             <span t-field="current_quote.products_not_found"/>
         </div>
 
@@ -266,7 +266,7 @@
             <h6><strong>Usuario: </strong><span t-esc="current_quote.user_id.name"/></h6>
             <h6><strong>Cliente: </strong><span t-esc="current_quote.user_id.partner_id.name"/></h6>
             <h6><strong>Email de contacto: </strong><span t-esc="current_quote.contact_email"/></h6>
-            <h6><strong>Teléfono de contacto: </strong><span t-esc="current_quote.contact_phone or 'No proporcionado'"/></h6>
+            <h6><strong>Teléfono de contacto: </strong><span t-esc="current_quote.contact_phone"/><span t-if="not current_quote.contact_phone" class="text-muted">No proporcionado</span></h6>
         </div>
 
         <h5 class="text-uppercase text-primary mt16"><strong>Observaciones</strong></h5>
