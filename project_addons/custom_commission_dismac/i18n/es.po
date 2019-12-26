@@ -392,7 +392,7 @@ msgstr "Linea de Factura"
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_crm_lead__pointing
 msgid "Is pointing"
-msgstr "Apuntamiento"
+msgstr "Señalamiento"
 
 #. module: custom_commission_dismac
 #: model_terms:ir.ui.view,arch_db:custom_commission_dismac.view_mailing_invoices_wzd_form
@@ -647,7 +647,7 @@ msgstr "Unidad operacional"
 #. module: custom_commission_dismac
 #: model:ir.model.fields,field_description:custom_commission_dismac.field_crm_lead__pointing_per
 msgid "Poiting (%)"
-msgstr "Apuntamiento (%)"
+msgstr "Señalamiento (%)"
 
 #. module: custom_commission_dismac
 #: selection:res.partner,agent_type:0
