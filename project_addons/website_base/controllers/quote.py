@@ -20,7 +20,7 @@ class QuoteController(http.Controller):
 
         # Get and update current quote or create one
         current_quote = Quote.search(domain + [('state', '=', 'current'), ], limit=1)
-        if not current_quote:
+        if not current_quote and not success:
             vals = {
                 'name': 'Solicitud de Presupuesto',
                 'date': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
@@ -32,6 +32,8 @@ class QuoteController(http.Controller):
                 'product_ids': None,
             }
             current_quote = Quote.create(vals)
+        elif success and current_quote:
+            current_quote.product_ids = None
 
         # Add shop product to current_quote
         if add_product:

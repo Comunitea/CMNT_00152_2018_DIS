@@ -57,6 +57,9 @@
                 <input type="hidden" class="o_website_form_input" name="state" t-att-value="'sent'" required="required"/>
                 <input type="hidden" class="o_website_form_input" name="website_id" t-att-value="request.website.id" required="required"/>
                 <input type="hidden" class="o_website_form_input" name="user_id" t-att-value="request.env.user.id" required="required"/>
+                <t t-foreach="current_quote.product_ids" t-as="product">
+                    <input type="hidden" class="o_website_form_input" name="product_ids" t-att-value="product.id" required="required"/>
+                </t>
             </div>
 
             <!-- Subject -->
@@ -82,7 +85,7 @@
                     <div class="col-lg-9 col-md-8">
                         <t t-foreach="current_quote.product_ids" t-as="product" t-if="current_quote and current_quote.product_ids">
                             <p class="mt8 mb0" t-if="product">
-                                <a t-attf-href="'/product/%s' % product.slug if product.slug else keep('/shop/product/%s' % slug(product)" t-att-content="product.name" t-field="product.name" />
+                                <a t-att-href="'/product/%s' % product.slug if product.slug else keep('/shop/product/%s' % slug(product))" t-att-content="product.name" t-field="product.name" />
                                 <span> - </span>
                                 <a t-att-href="'/presupuestos?delete_product=%s' % product.id" class="o_remove" title="Eliminar" alt="Eliminar" rel="noindex, nofollow">
                                     <i class="fa fa-trash" role="img" aria-label="Eliminar"/>
@@ -240,20 +243,21 @@
         <div class="simulated-product-title mt16 mb16">
             <h1>Presupuesto <span t-esc="current_quote.id"/></h1>
         </div>
-
         <div class="quote-section">
             <h6 class="text-uppercase"><strong><span t-esc="current_quote.date.strftime('%Y-%m-%d %H:%M')"/></strong> - <span t-esc="current_quote.name"/></h6>
         </div>
 
         <h5 class="text-uppercase text-primary mt16"><strong>Productos</strong></h5>
         <div class="quote-section">
-            <h6><strong>Productos añadidos desde tienda: </strong></h6>
-            <t t-foreach="current_quote.product_ids" t-as="product" t-tif="current_quote.product_ids">
-                <p class="mb4" t-if="product"><a t-att-href="'/product/{}'.format(product.slug) if product and product.slug else '/shop/product/%s' % product.name" t-att-content="product.name" t-field="product.name" /></p>
+            <h6><strong>Productos añadidos desde tienda: </strong><span t-if="len(current_quote.product_ids) == 0" class="text-muted">No proporcionados</span></h6>
+            <t t-foreach="current_quote.product_ids" t-as="product" t-if="len(current_quote.product_ids) &gt; 0">
+                <p class="mb4" t-if="product">
+                    <a t-att-href="'/product/%s' % product.slug if product.slug else keep('/shop/product/%s' % slug(product))" t-att-content="product.name" t-field="product.name" />
+                </p>
             </t>
-            <h6><strong>Productos encontrados en la web: </strong></h6>
+            <h6><strong>Productos encontrados en la web: </strong><span t-if="not current_quote.products_found" class="text-muted">No proporcionados</span></h6>
             <span t-field="current_quote.products_found"/>
-            <h6><strong>Productos no encontrados en la web: </strong></h6>
+            <h6><strong>Productos no encontrados en la web: </strong><span t-if="not current_quote.products_found" class="text-muted">No proporcionados</span></h6>
             <span t-field="current_quote.products_not_found"/>
         </div>
 
@@ -262,12 +266,13 @@
             <h6><strong>Usuario: </strong><span t-esc="current_quote.user_id.name"/></h6>
             <h6><strong>Cliente: </strong><span t-esc="current_quote.user_id.partner_id.name"/></h6>
             <h6><strong>Email de contacto: </strong><span t-esc="current_quote.contact_email"/></h6>
-            <h6><strong>Teléfono de contacto: </strong><span t-esc="current_quote.contact_phone"/></h6>
+            <h6><strong>Teléfono de contacto: </strong><span t-esc="current_quote.contact_phone or 'No proporcionado'"/></h6>
         </div>
 
         <h5 class="text-uppercase text-primary mt16"><strong>Observaciones</strong></h5>
         <div class="quote-section">
-            <span t-field="current_quote.observations"/>
+            <span t-field="current_quote.observations" t-if="current_quote.observations"/>
+            <p t-else="" class="text-muted mt8">Sin Observaciones</p>
         </div>
         <div class="row">
             <div class="col-12 text-center mt36">
