@@ -115,8 +115,10 @@
         <form t-attf-action="#{url_simulated_products}" method="get">
             <!--            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />-->
             <div itemscope="itemscope" itemtype="http://schema.org/Product">
-                <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids.html_class if product.website_style_ids else ''}">
-                    <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">Oferta</a>
+                <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids[0].html_class if product.website_style_ids else ''}">
+                    <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">
+                        <span t-esc="product.website_style_ids[0].name if product.website_style_ids else product.website_style_ids.name"/>
+                    </a>
                 </div>
                 <div class="oe_product_image">
                     <a itemprop="url" t-att-href="product_href">
@@ -234,6 +236,13 @@
             <section t-attf-class="container py-2 oe_website_sale" id="product_detail">
                 <div class="row">
                     <div class="col-sm-6">
+                        <!-- Ribbon -->
+                        <div t-attf-class="ribbon-wrapper-product-detail #{product.website_style_ids[0].html_class if product.website_style_ids else ''}">
+                            <a t-att-href="product_href" role="button" t-attf-class="ribbon-product-detail btn btn-danger">
+                                <span t-esc="product.website_style_ids[0].name if product.website_style_ids else product.website_style_ids.name"/>
+                            </a>
+                        </div>
+                        <!-- Carousel -->
                         <div id="o-carousel-product" class="carousel slide" data-ride="carousel" data-interval="0">
                             <div class="carousel-outer">
                                 <div class="carousel-inner">
@@ -243,7 +252,6 @@
                                         <div class="carousel-item" t-field="pimg.image" t-options='{"widget": "image", "class": "product_detail_img", "alt-field": "name", "zoom": "image", "itemprop": "image"}'/>
                                     </t>
                                 </div>
-
                                 <t t-if="len(image_ids) or variant_img">
                                     <a class="carousel-control-prev" href="#o-carousel-product" role="button" data-slide="prev" >
                                         <span class="fa fa-chevron-left" role="img" aria-label="Previous" title="Previous"/>

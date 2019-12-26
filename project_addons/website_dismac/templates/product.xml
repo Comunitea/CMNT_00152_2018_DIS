@@ -11,8 +11,10 @@
     <template id="website_sale_products_item" name="Products Item Dismac" inherit_id="website_sale.products_item">
         <!-- Enable ribbon on list view -->
         <xpath expr="//div[hasclass('ribbon-wrapper')]" position="replace">
-            <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids.html_class if product.website_style_ids else ''}">
-                <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">Oferta</a>
+            <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids[0].html_class if product.website_style_ids else ''}">
+                <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">
+                    <span t-esc="product.website_style_ids[0].name if product.website_style_ids else product.website_style_ids.name"/>
+                </a>
             </div>
         </xpath>
 
@@ -133,7 +135,6 @@
 
                             <!-- Product head -->
                             <div class="simulated-product-title mb4 text-uppercase">
-
                                 <h6 t-esc="product.public_categ_ids[0].parent_id.name if product.public_categ_ids and product.public_categ_ids[0].parent_id else product.public_categ_ids[0].name if product.public_categ_ids and product.public_categ_ids[0] else 'Producto'"/>
                                 <h4><span t-esc="product.public_categ_ids[0].name if product.public_categ_ids and product.public_categ_ids[0] else product.name"/></h4>
                             </div>
@@ -142,9 +143,14 @@
                             <div itemscope="itemscope" itemtype="http://schema.org/Product" class="js_sale">
                                 <section t-attf-class="container py-2 oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''}" id="product_detail">
                                     <div class="row">
-
-                                        <!-- Product Image -->
+                                        <!-- Product Carousel Image -->
                                         <div class="col-md-6">
+                                            <!-- Ribbon -->
+                                            <div t-attf-class="ribbon-wrapper-product-detail #{product.website_style_ids[0].html_class if product.website_style_ids else ''}">
+                                                <a t-att-href="product_href" role="button" t-attf-class="ribbon-product-detail btn btn-danger">
+                                                    <span t-esc="product.website_style_ids[0].name if product.website_style_ids else product.website_style_ids.name"/>
+                                                </a>
+                                            </div>
                                             <div id="o-carousel-product" class="carousel slide" data-ride="carousel" data-interval="0">
                                                 <div class="carousel-outer">
                                                     <div class="carousel-inner">

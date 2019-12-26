@@ -66,7 +66,6 @@ class ProductOffer(models.Model):
     # TODO: Include them in xml offer views to set by settings
     website_size_x = fields.Integer('Size X', default=1)
     website_size_y = fields.Integer('Size Y', default=1)
-    # TODO: Create styles for offers and include them in xml offer views
     website_style_ids = fields.Many2many('product.style', string='Styles')
 
     @api.multi

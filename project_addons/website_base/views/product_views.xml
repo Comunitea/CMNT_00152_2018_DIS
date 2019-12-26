@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
+    <!-- Create new product ribbon for novelties-->
+    <record id="image_novel" model="product.style">
+        <field name="name">Novedad</field>
+        <field name="html_class">oe_ribbon_novel</field>
+    </record>
+
+    <!-- Override product ribbon for offers-->
+    <record id="website_sale.image_promo" model="product.style">
+        <field name="name">Oferta</field>
+        <field name="html_class">oe_ribbon_promo</field>
+    </record>
+
     <!-- Product Public Categories -->
     <record id="website_public_category_form" model="ir.ui.view">
         <field name="name">Website category offer form</field>
@@ -42,9 +54,10 @@
                             <group>
                                 <field name="name"/>
                                 <field name="subtitle"/>
-                                <field name="website_id"/>
+                                <field name="website_id" options="{'no_create': True}"/>
                                 <field name="website_published"/>
                                 <field name="website_sequence"/>
+                                <field name="website_style_ids" widget="many2many_tags" groups="base.group_no_one"/>
                                 <field name="description"/>
                             </group>
                         </page>
@@ -163,9 +176,10 @@
                                         <group>
                                             <field name="name"/>
                                             <field name="subtitle"/>
-                                            <field name="website_id"/>
+                                            <field name="website_id" options="{'no_create': True}"/>
                                             <field name="website_published"/>
                                             <field name="website_sequence"/>
+                                            <field name="website_style_ids" widget="many2many_tags" groups="base.group_no_one"/>
                                             <field name="description"/>
                                         </group>
                                     </page>

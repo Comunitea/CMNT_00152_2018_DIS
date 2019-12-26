@@ -14,8 +14,17 @@
     box-shadow: 0 0 0 0.5px @color-secondary;
 }
 
-/* Enable ribbon on list view */
+/* Promo Ribbons */
 .oe_product {
+
+    /* Enable new ribbon on grid view */
+    &.oe_ribbon_novel {
+        .ribbon-wrapper {
+            display: block;
+        }
+    }
+
+    /* Enable ribbon on list view */
     .ribbon-wrapper.ribbon-wrapper-list {
         width: 70px;
         right: 0;
@@ -23,12 +32,52 @@
         &.oe_ribbon_promo {
              display: block;
         }
+        /* Enable new ribbon on list view */
+        &.oe_ribbon_novel {
+             display: block;
+        }
     }
-
     .ribbon.ribbon-list {
         font: bold 12px Sans-Serif;
         padding: 0;
         left: -9px;
         top: 9px;
     }
+}
+
+/* Enable ribbon on product detail view */
+#products_grid {
+    .ribbon-wrapper-product-detail {
+        display: none;
+        width: 85px;
+        height: 88px;
+        z-index: 5;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        right: 0;
+        &.oe_ribbon_novel {
+            display: block;
+        }
+        &.oe_ribbon_promo    {
+            display: block;
+        }
+    }
+    .ribbon-product-detail {
+        font: bold 15px Sans-Serif;
+        text-align: center;
+        transform: rotate(45deg);
+        position: relative;
+        padding: 7px 0;
+        left: -5px;
+        top: 15px;
+        width: 120px;
+        cursor: default;
+    }
+}
+.btn:not(:disabled):not(.disabled) {
+    cursor: auto;
+}
+a:not([href]):not([tabindex]) {
+    color: @color-white;
 }
