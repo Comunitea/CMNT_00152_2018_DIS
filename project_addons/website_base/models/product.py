@@ -140,7 +140,7 @@ class ProductTemplate(models.Model):
             current_uid = context.get('uid')
             user = self.env['res.users'].browse(current_uid)
             
-            customer_domain = [('partner_id', '=', user.partner_id.id), ('state', '=', 'sale'), ('product_tmpl_id', '=', template.id)]
+            customer_domain = [('partner_id', 'child_of', user.partner_id.id), ('state', '=', 'sale'), ('product_tmpl_id', '=', template.id)]
             
             customer_product_data = self.env['sale.report'].sudo().read_group(customer_domain, ['product_uom_qty'], ['product_tmpl_id', 'partner_id'])
 
@@ -155,7 +155,7 @@ class ProductTemplate(models.Model):
             current_uid = context.get('uid')
             user = self.env['res.users'].browse(current_uid)
             
-            customer_domain = [('partner_id', '=', user.partner_id.id), ('state', '=', 'sale'), ('product_tmpl_id', '=', template.id)]
+            customer_domain = [('partner_id', 'child_of', user.partner_id.id), ('state', '=', 'sale'), ('product_tmpl_id', '=', template.id)]
             
             customer_product_data = self.env['sale.report'].sudo().search_read(customer_domain, ['confirmation_date'], order="confirmation_date desc")
 

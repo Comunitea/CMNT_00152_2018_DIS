@@ -38,6 +38,7 @@
         'views/product_views.xml',
         'views/quote_views.xml',
         'security/ir.model.access.csv',
+        'security/sale_security.xml'
     ],
     'images': [
         '/static/description/icon.png',

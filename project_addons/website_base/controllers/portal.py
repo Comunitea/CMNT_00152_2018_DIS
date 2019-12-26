@@ -6,6 +6,8 @@ import base64
 import io
 import time
 from werkzeug.utils import redirect
+from collections import OrderedDict
+from odoo.osv.expression import OR
 
 from odoo import http, _
 from odoo.http import request
@@ -21,12 +23,12 @@ class CustomerPortal(CustomerPortal):
 
     def _prepare_portal_layout_values(self):
         values = super(CustomerPortal, self)._prepare_portal_layout_values()
-        partner = request.env.user.partner_id
+        commercial_partner_id = request.env.user.commercial_partner_id
 
         SaleReport = request.env['sale.report']
 
-        history_count = len(SaleReport.read_group([('partner_id', '=', partner.id), ('state', '=', 'sale')], \
-            ['product_uom_qty'], ['product_tmpl_id', 'partner_id']))
+        history_count = len(SaleReport.read_group([('commercial_partner_id', 'child_of', commercial_partner_id.id), ('state', '=', 'sale')], \
+            ['product_uom_qty'], ['product_tmpl_id', 'commercial_partner_id']))
 
         values.update({
             'history_count': history_count,
@@ -34,15 +36,19 @@ class CustomerPortal(CustomerPortal):
         return values
 
 
-    def _get_my_history_domain(self):
+    def _get_my_history_domain(self, filterby):
         domain = []
         user = request.env.user
         
-        customer_domain = [('partner_id', '=', user.partner_id.id), ('state', '=', 'sale')]
-    
-        customer_products = request.env['sale.report'].sudo().read_group(customer_domain, ['product_tmpl_id'], \
+        customer_domain = [('commercial_partner_id', 'child_of', user.commercial_partner_id.id), ('state', '=', 'sale')]
+
+        if filterby:
+            customer_domain += filterby
+        
+        customer_products = request.env['sale.report'].read_group(customer_domain, ['product_tmpl_id'], \
             ['product_tmpl_id', 'partner_id'])
-        if len(customer_products) > 0:         
+        
+        if len(customer_products) > 0:
             product_tmpl_ids = [x['product_tmpl_id'][0] for x in customer_products]  
             domain +=[('id', 'in', product_tmpl_ids)]
         else:
@@ -51,7 +57,7 @@ class CustomerPortal(CustomerPortal):
         return domain
 
     @http.route(['/my/history'], type='http', auth="user", website=True)
-    def portal_my_history(self, page=1, sortby=None, **kw):
+    def portal_my_history(self, page=1, sortby=None, search=None, search_in='all', filterby=None, **kw):
         values = self._prepare_portal_layout_values()
         partner = request.env.user.partner_id
         product_template = request.env['product.template']
@@ -60,13 +66,43 @@ class CustomerPortal(CustomerPortal):
         ctx.update(customer_history=True)
         request.env.context= ctx
 
-        domain = self._get_my_history_domain()
-
         searchbar_sortings = {
             'ordered_qty': {'label': _('Ordered Qty'), 'order': 'historical_ordered_qty desc'},
             'name': {'label': _('Name'), 'order': 'display_name asc'},
             'order_date': {'label': _('Order Date'), 'order': 'partner_last_order desc'}
         }
+
+        searchbar_filters = {
+            'all': {'label': _('All'), 'domain': []},
+        }
+
+        searchbar_inputs = {
+            'name': {'input': 'name', 'label': _('Search <span class="nolabel"> (in Name)</span>')},
+            'default_code': {'input': 'default_code', 'label': _('Search in Default Code')},
+            'all': {'input': 'all', 'label': _('Search in All')},
+        }
+
+        # extends filterby criteria with partner childs
+        addresses = partner.child_ids
+        for address in addresses:
+            searchbar_filters.update({
+                str(address.id): {'label': address.name, 'domain': [('order_id.partner_shipping_id', '=', address.id)]}
+            })
+
+        # default filter by value
+        if not filterby:
+            filterby = 'all'
+        domain_filter = searchbar_filters[filterby]['domain']
+        domain = self._get_my_history_domain(domain_filter)
+
+        if search and search_in:
+            search_domain = []
+            if search_in in ('name', 'all'):
+                search_domain = OR([search_domain, [('name', 'ilike', search)]])
+            if search_in in ('default_code', 'all'):
+                search_domain = OR([search_domain, [('default_code', 'ilike', search)]])
+            domain += search_domain
+
         # default sortby order
         if not sortby:
             sortby = 'ordered_qty'
@@ -77,7 +113,7 @@ class CustomerPortal(CustomerPortal):
         # pager
         pager = portal_pager(
             url="/my/history",
-            url_args={'sortby': sortby},
+            url_args={'sortby': sortby, 'search_in': search_in, 'search': search, 'filterby': filterby},
             total=order_count,
             page=page,
             step=self._items_per_page
@@ -92,7 +128,12 @@ class CustomerPortal(CustomerPortal):
             'pager': pager,
             'default_url': '/my/history',
             'searchbar_sortings': searchbar_sortings,
+            'searchbar_inputs': searchbar_inputs,
+            'searchbar_filters': OrderedDict(sorted(searchbar_filters.items())),
             'sortby': sortby,
+            'search': search,
+            'search_in': search_in,
+            'filterby': filterby
         })
         return request.render("website_base.portal_my_history", values)
         
