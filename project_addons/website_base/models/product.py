@@ -137,9 +137,12 @@ class ProductTemplate(models.Model):
 
             context = self._context
             current_uid = context.get('uid')
-            user = self.env['res.users'].browse(current_uid)
+            partner_id = self.env['res.users'].browse(current_uid).partner_id
+
+            if context.get('selected_partner'):
+                partner_id = self.env['res.users'].browse(context.get('selected_partner'))
             
-            customer_domain = [('partner_id', '=', user.partner_id.id), ('state', '=', 'sale'), ('product_tmpl_id', '=', template.id)]
+            customer_domain = [('partner_id', 'child_of', partner_id.id), ('state', '=', 'sale'), ('product_tmpl_id', '=', template.id)]
             
             customer_product_data = self.env['sale.report'].sudo().read_group(customer_domain, ['product_uom_qty'], ['product_tmpl_id', 'partner_id'])
 
@@ -152,9 +155,12 @@ class ProductTemplate(models.Model):
 
             context = self._context
             current_uid = context.get('uid')
-            user = self.env['res.users'].browse(current_uid)
+            partner_id = self.env['res.users'].browse(current_uid).partner_id
+
+            if context.get('selected_partner'):
+                partner_id = self.env['res.users'].browse(context.get('selected_partner'))
             
-            customer_domain = [('partner_id', '=', user.partner_id.id), ('state', '=', 'sale'), ('product_tmpl_id', '=', template.id)]
+            customer_domain = [('partner_id', 'child_of', partner_id.id), ('state', '=', 'sale'), ('product_tmpl_id', '=', template.id)]
             
             customer_product_data = self.env['sale.report'].sudo().search_read(customer_domain, ['confirmation_date'], order="confirmation_date desc")
 

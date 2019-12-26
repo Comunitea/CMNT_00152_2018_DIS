@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="analytic_tag_cost_center_form" model="ir.ui.view">
+        <field name="name">analytic.tag.cost.center.form</field>
+        <field name="model">account.analytic.tag</field>
+        <field name="inherit_id" ref="analytic.account_analytic_tag_form_view" />
+        <field name="arch" type="xml">
+            <field name="name" position = "after">
+                <field name = "cost_center_id"/>
+            </field>
+        </field>
+    </record>
+
+
+
+</odoo>

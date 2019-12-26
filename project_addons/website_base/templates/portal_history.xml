@@ -49,7 +49,7 @@
                 </thead>
                 <t t-foreach="products" t-as="product">
                     <tr>
-                        <td><a t-att-href="'/product/{}'.format(product.slug) if product.slug else keep('/shop/product/%s' % slug(product))"><t t-esc="product.display_name"/></a></td>
+                        <td><a t-att-href="'/product/{}'.format(product.slug) if product.slug else keep('/shop/product/%s' % slug(product))"><t t-esc="product.display_name[0:60]"/></a></td>
                         <td class="text-center"><span t-field="product.partner_last_order"/></td>
                         <td class="text-center"><span t-field="product.historical_ordered_qty"/></td>
                         <td class="text-right">
