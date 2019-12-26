@@ -115,7 +115,7 @@
         <form t-attf-action="#{url_simulated_products}" method="get">
             <!--            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />-->
             <div itemscope="itemscope" itemtype="http://schema.org/Product">
-                <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{'oe_ribbon_promo' if product.website_style_ids else ''}">
+                <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids.html_class if product.website_style_ids else ''}">
                     <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">Oferta</a>
                 </div>
                 <div class="oe_product_image">

@@ -7,7 +7,7 @@ class ProductPublicCategory(models.Model):
     _inherit = "res.users"
 
     quotes_ids = fields.One2many('sale.quote', 'user_id', string='Request quotes',
-                                 help=_("Request quotes' that contains this user"))
+                                 help=_("Request quotes that contains this category"))
 
 
 class ProductOffer(models.Model):

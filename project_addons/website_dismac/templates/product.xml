@@ -11,7 +11,7 @@
     <template id="website_sale_products_item" name="Products Item Dismac" inherit_id="website_sale.products_item">
         <!-- Enable ribbon on list view -->
         <xpath expr="//div[hasclass('ribbon-wrapper')]" position="replace">
-            <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{'oe_ribbon_promo' if product.website_style_ids else ''}">
+            <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids.html_class if product.website_style_ids else ''}">
                 <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">Oferta</a>
             </div>
         </xpath>
@@ -88,7 +88,7 @@
         </xpath>
     </template>
 
-    <!-- Change prodduct detail view to convert like a shop view and include ecommerce categories -->
+    <!-- Change product detail view to convert like a shop view and include ecommerce categories -->
     <template id="website_sale_product" name="Product Dismac" inherit_id="website_sale.product">
         <xpath expr="//div[@id='wrap']" position="replace">
             <t t-set="title">Dismac | Product | <t t-esc="product.name"/></t>
