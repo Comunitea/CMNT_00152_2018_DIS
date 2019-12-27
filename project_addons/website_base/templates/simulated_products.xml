@@ -292,7 +292,7 @@
                         <hr t-if="attachment"/>
                         <div class="o_not_editable" t-if="attachment">
                             <h6 class="mb16"><strong>DOCUMENTOS RELACIONADOS</strong></h6>
-                            <a t-att-href="'/web/content/%s' % (attachment.id)" t-att-title="attachment.res_name" t-att-alt="attachment.res_name" t-att-download="attachment.res_name">
+                            <a t-att-href="'/web/content/%s' % (attachment.id)" t-att-title="attachment.res_name" t-att-alt="attachment.res_name" t-att-download="attachment.res_name" rel="noindex">
                                 <div class='oe_attachment_embedded o_image' t-att-data-mimetype="attachment.mimetype" t-att-data-src="'/web/image/%s/100x80' % (attachment.id)"/>
                                 <div class='oe_attachment_name text-truncate'><i class="fa fa-download"/> <t t-raw='attachment.res_name' /></div>
                             </a>
