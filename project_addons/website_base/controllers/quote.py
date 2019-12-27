@@ -6,6 +6,8 @@ import shlex
 from odoo import http
 from odoo.http import request
 
+from odoo.addons.website.controllers.main import QueryURL
+
 
 class QuoteController(http.Controller):
 
@@ -67,13 +69,17 @@ class QuoteController(http.Controller):
         # Historical quotes
         quotes = Quote.search(domain + [('state', '=', 'sent'), ], order='date desc')
 
+        # Product links
+        keep = QueryURL('/shop', search=search, order=post.get('order', 'website_sequence desc'))
+
         # Values to render by default
         values = {'historical_quotes': quotes,  # simulated_products
                   'current_quote': current_quote,
                   'quote_success': success,
                   'product_error_msg': product_error_msg,
                   'product_error_name': product_error_name,
-                  'view_quote': False
+                  'view_quote': False,
+                  'keep': keep,
                   }
 
         # Values to render a quote

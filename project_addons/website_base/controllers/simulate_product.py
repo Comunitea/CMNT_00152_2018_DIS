@@ -86,7 +86,7 @@ class SimulateProductController(http.Controller):
         # Forms urls for simulated product common templates
         url_simulated_products = "/ofertas"
         url_simulated_product_templates = "/ofertas/oferta/"
-        keep = QueryURL(url_simulated_products, search=search, order=order)
+        keep = QueryURL('/shop', search=search, order=order)
 
         # Pager
         if ppg:

@@ -84,7 +84,13 @@ a {
 }
 .dropdown-item {
     color: @color-secondary;
-    &:hover {
+    &:hover:not(:active):not(.active) {
+        color: @color-secondary;
+        background-color: @color-white;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+    &:active, &.active {
         color: @color-white;
         background-color: @color-secondary;
     }

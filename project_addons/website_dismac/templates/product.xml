@@ -197,7 +197,7 @@
                                                 <p itemprop="description" t-field="product.description_short" class="text-muted" />
                                                 <hr/>
                                             </div>
-                                            <span itemprop="url" style="display:none;" t-esc="keep('%sproduct/%s' % (request.httprequest.url_root, product.slug)) if product.slug else keep('%sshop/product/%s' % slug(request.httprequest.url_root, slug(product)))"/>
+                                            <span itemprop="url" style="display:none;" t-esc="'/product/%s' % product.slug if product.slug else keep('/shop/product/%s' % slug(product))"/>
                                             <form t-if="product._is_add_to_cart_possible()" action="/shop/cart/update" method="POST">
                                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                                 <div class="js_product js_main_product">
