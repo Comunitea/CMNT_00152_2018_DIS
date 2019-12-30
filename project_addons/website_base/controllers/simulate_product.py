@@ -71,8 +71,7 @@ class SimulateProductController(http.Controller):
         offer_products = Product.search(domain_offer_products + request.website.website_domain()).filtered(
             lambda x: x if 'oe_ribbon_promo' in x.website_style_ids[0].html_class else None)
         # Catch not published product categories if their child are published
-        product_categories = offer_products.mapped('public_categ_ids').filtered(
-            lambda x: x.website_published)
+        product_categories = offer_products.mapped('public_categ_ids').filtered(lambda x: x.website_published)
         if category:
             offer_products = offer_products.search([('public_categ_ids', 'in', int(category))])
 
@@ -96,7 +95,8 @@ class SimulateProductController(http.Controller):
             post["ppg"] = ppg
         else:
             ppg = PPG
-        pager = request.website.pager(url=url_simulated_products, total=search_count, page=page, step=ppg, scope=7, url_args=post)
+        pager = request.website.pager(url=url_simulated_products, total=search_count, page=page,
+                                      step=ppg, scope=7, url_args=post)
 
         # Values to render by default with offer and product list
         values = {'simulated_products': bins_table,  # simulated_products
