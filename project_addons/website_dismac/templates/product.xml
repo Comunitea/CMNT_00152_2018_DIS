@@ -86,7 +86,7 @@
             <attribute name="t-attf-class">pb0 text-uppercase nav-link#{'' if category else ' active mb4 pl-2 pr-2'} o_not_editable</attribute>
         </xpath>
         <xpath expr="//t[@t-call='website_sale.option_collapse_categories_recursive']" position="attributes">
-            <attribute name="t-if">categ.website_published or (not categ.website_published and categ.child_id.website_published)</attribute>
+            <attribute name="t-if">categ.website_published</attribute>
         </xpath>
     </template>
 
@@ -119,7 +119,7 @@
                                 </li>
                                 <t t-foreach="categories" t-as="c">
                                     <!-- Catch not published categories if their child are published -->
-                                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published or (not c.website_published and c.child_id.website_published)"/>
+                                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
                                 </t>
                             </ul>
                         </div>

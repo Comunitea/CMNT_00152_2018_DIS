@@ -72,8 +72,7 @@ class SimulateProductController(http.Controller):
             lambda x: x if 'oe_ribbon_promo' in x.website_style_ids[0].html_class else None)
         # Catch not published product categories if their child are published
         product_categories = offer_products.mapped('public_categ_ids').filtered(
-            lambda x: x.website_published if x.website_published is True or (
-                    x.child_id and x.child_id.website_published is True) else None)
+            lambda x: x.website_published)
         if category:
             offer_products = offer_products.search([('public_categ_ids', 'in', int(category))])
 

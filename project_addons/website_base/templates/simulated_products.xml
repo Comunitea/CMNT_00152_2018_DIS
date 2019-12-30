@@ -67,7 +67,7 @@
                        t-attf-class="pt8 pb0 text-uppercase nav-link#{'' if category or product_category and product_category.category_id else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
                 </li>
                 <t t-foreach="categories" t-as="c">
-                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published or (not c.website_published and c.child_id.website_published)"/>
+                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
                 </t>
             </ul>
         </xpath>
