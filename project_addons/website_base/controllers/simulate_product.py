@@ -69,11 +69,9 @@ class SimulateProductController(http.Controller):
                 domain_offer_products += ['|', '|', ('name', 'ilike', srch), ('description', 'ilike', srch),
                                           ('description_short', 'ilike', srch), ]
         offer_products = Product.search(domain_offer_products + request.website.website_domain()).filtered(
-            lambda x: x if 'oe_ribbon_promo' in x.website_style_ids.html_class else None)
+            lambda x: x if 'oe_ribbon_promo' in x.website_style_ids[0].html_class else None)
         # Catch not published product categories if their child are published
-        product_categories = offer_products.mapped('public_categ_ids').filtered(
-            lambda x: x.website_published if x.website_published is True or (
-                    x.child_id and x.child_id.website_published is True) else None)
+        product_categories = offer_products.mapped('public_categ_ids').filtered(lambda x: x.website_published)
         if category:
             offer_products = offer_products.search([('public_categ_ids', 'in', int(category))])
 
@@ -86,7 +84,7 @@ class SimulateProductController(http.Controller):
         # Forms urls for simulated product common templates
         url_simulated_products = "/ofertas"
         url_simulated_product_templates = "/ofertas/oferta/"
-        keep = QueryURL(url_simulated_products, search=search, order=order)
+        keep = QueryURL('/shop', search=search, order=order)
 
         # Pager
         if ppg:
@@ -97,7 +95,8 @@ class SimulateProductController(http.Controller):
             post["ppg"] = ppg
         else:
             ppg = PPG
-        pager = request.website.pager(url=url_simulated_products, total=search_count, page=page, step=ppg, scope=7, url_args=post)
+        pager = request.website.pager(url=url_simulated_products, total=search_count, page=page,
+                                      step=ppg, scope=7, url_args=post)
 
         # Values to render by default with offer and product list
         values = {'simulated_products': bins_table,  # simulated_products

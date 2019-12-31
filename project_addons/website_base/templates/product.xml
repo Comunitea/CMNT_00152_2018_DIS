@@ -19,7 +19,7 @@
             <attribute name="t-if" add="and (categ.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" separator=" "/>
         </xpath>
         <xpath expr="//t[@t-call='website_sale.option_collapse_categories_recursive']" position="attributes">
-            <attribute name="t-if">categ.website_published or (not categ.website_published and categ.child_id.website_published)</attribute>
+            <attribute name="t-if">categ.website_published</attribute>
         </xpath>
     </template>
 

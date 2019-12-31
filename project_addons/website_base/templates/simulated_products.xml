@@ -8,7 +8,7 @@
             <t t-set="description">Revise y compre todos nuestros productos</t>
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
-                <div class="container py-2 oe_website_sale">
+                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">
                     <div class="products_pager form-inline justify-content-center">
                         <form t-attf-action="#{url_simulated_products}" role="search" method="get">
                             <t t-call="website.website_search_box" />
@@ -67,7 +67,7 @@
                        t-attf-class="pt8 pb0 text-uppercase nav-link#{'' if category or product_category and product_category.category_id else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
                 </li>
                 <t t-foreach="categories" t-as="c">
-                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published or (not c.website_published and c.child_id.website_published)"/>
+                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
                 </t>
             </ul>
         </xpath>
@@ -115,8 +115,10 @@
         <form t-attf-action="#{url_simulated_products}" method="get">
             <!--            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />-->
             <div itemscope="itemscope" itemtype="http://schema.org/Product">
-                <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids.html_class if product.website_style_ids else ''}">
-                    <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">Oferta</a>
+                <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids[0].html_class if product.website_style_ids else ''}">
+                    <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">
+                        <span t-esc="product.website_style_ids[0].name if product.website_style_ids else product.website_style_ids.name"/>
+                    </a>
                 </div>
                 <div class="oe_product_image">
                     <a itemprop="url" t-att-href="product_href">
@@ -231,9 +233,16 @@
         <t t-set="additional_title" t-value="product.name" />
         <div itemscope="itemscope" itemtype="http://schema.org/Product" id="wrap" class="js_sale">
             <!--<section t-attf-class="container py-2 oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''}" id="product_detail">-->
-            <section t-attf-class="container py-2 oe_website_sale" id="product_detail">
+            <section t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}" id="product_detail">
                 <div class="row">
                     <div class="col-sm-6">
+                        <!-- Ribbon -->
+                        <div t-attf-class="ribbon-wrapper-product-detail #{product.website_style_ids[0].html_class if product.website_style_ids else ''}">
+                            <a t-att-href="product_href" role="button" t-attf-class="ribbon-product-detail btn btn-danger">
+                                <span t-esc="product.website_style_ids[0].name if product.website_style_ids else product.website_style_ids.name"/>
+                            </a>
+                        </div>
+                        <!-- Carousel -->
                         <div id="o-carousel-product" class="carousel slide" data-ride="carousel" data-interval="0">
                             <div class="carousel-outer">
                                 <div class="carousel-inner">
@@ -243,7 +252,6 @@
                                         <div class="carousel-item" t-field="pimg.image" t-options='{"widget": "image", "class": "product_detail_img", "alt-field": "name", "zoom": "image", "itemprop": "image"}'/>
                                     </t>
                                 </div>
-
                                 <t t-if="len(image_ids) or variant_img">
                                     <a class="carousel-control-prev" href="#o-carousel-product" role="button" data-slide="prev" >
                                         <span class="fa fa-chevron-left" role="img" aria-label="Previous" title="Previous"/>
@@ -284,7 +292,7 @@
                         <hr t-if="attachment"/>
                         <div class="o_not_editable" t-if="attachment">
                             <h6 class="mb16"><strong>DOCUMENTOS RELACIONADOS</strong></h6>
-                            <a t-att-href="'/web/content/%s' % (attachment.id)" t-att-title="attachment.res_name" t-att-alt="attachment.res_name" t-att-download="attachment.res_name">
+                            <a t-att-href="'/web/content/%s' % (attachment.id)" t-att-title="attachment.res_name" t-att-alt="attachment.res_name" t-att-download="attachment.res_name" rel="noindex">
                                 <div class='oe_attachment_embedded o_image' t-att-data-mimetype="attachment.mimetype" t-att-data-src="'/web/image/%s/100x80' % (attachment.id)"/>
                                 <div class='oe_attachment_name text-truncate'><i class="fa fa-download"/> <t t-raw='attachment.res_name' /></div>
                             </a>

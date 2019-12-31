@@ -11,8 +11,10 @@
     <template id="website_sale_products_item" name="Products Item Dismac" inherit_id="website_sale.products_item">
         <!-- Enable ribbon on list view -->
         <xpath expr="//div[hasclass('ribbon-wrapper')]" position="replace">
-            <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids.html_class if product.website_style_ids else ''}">
-                <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">Oferta</a>
+            <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids[0].html_class if product.website_style_ids else ''}">
+                <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">
+                    <span t-esc="product.website_style_ids[0].name if product.website_style_ids else product.website_style_ids.name"/>
+                </a>
             </div>
         </xpath>
 
@@ -84,7 +86,7 @@
             <attribute name="t-attf-class">pb0 text-uppercase nav-link#{'' if category else ' active mb4 pl-2 pr-2'} o_not_editable</attribute>
         </xpath>
         <xpath expr="//t[@t-call='website_sale.option_collapse_categories_recursive']" position="attributes">
-            <attribute name="t-if">categ.website_published or (not categ.website_published and categ.child_id.website_published)</attribute>
+            <attribute name="t-if">categ.website_published</attribute>
         </xpath>
     </template>
 
@@ -95,7 +97,7 @@
             <t t-set="description"><t t-raw="product.description_short or product.description and product.description[0:20]"/></t>
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
-                <div class="container py-2 oe_website_sale">
+                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">
                     <div class="products_pager form-inline justify-content-center">
                         <t t-call="website_sale.search">
                             <t t-set="_classes">o_website_sale_search</t>
@@ -117,7 +119,7 @@
                                 </li>
                                 <t t-foreach="categories" t-as="c">
                                     <!-- Catch not published categories if their child are published -->
-                                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published or (not c.website_published and c.child_id.website_published)"/>
+                                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
                                 </t>
                             </ul>
                         </div>
@@ -133,18 +135,22 @@
 
                             <!-- Product head -->
                             <div class="simulated-product-title mb4 text-uppercase">
-
                                 <h6 t-esc="product.public_categ_ids[0].parent_id.name if product.public_categ_ids and product.public_categ_ids[0].parent_id else product.public_categ_ids[0].name if product.public_categ_ids and product.public_categ_ids[0] else 'Producto'"/>
                                 <h4><span t-esc="product.public_categ_ids[0].name if product.public_categ_ids and product.public_categ_ids[0] else product.name"/></h4>
                             </div>
 
                             <!-- Product content -->
                             <div itemscope="itemscope" itemtype="http://schema.org/Product" class="js_sale">
-                                <section t-attf-class="container py-2 oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''}" id="product_detail">
+                                <section t-attf-class="container oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''} #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}" id="product_detail">
                                     <div class="row">
-
-                                        <!-- Product Image -->
+                                        <!-- Product Carousel Image -->
                                         <div class="col-md-6">
+                                            <!-- Ribbon -->
+                                            <div t-attf-class="ribbon-wrapper-product-detail #{product.website_style_ids[0].html_class if product.website_style_ids else ''}">
+                                                <a t-att-href="product_href" role="button" t-attf-class="ribbon-product-detail btn btn-danger">
+                                                    <span t-esc="product.website_style_ids[0].name if product.website_style_ids else product.website_style_ids.name"/>
+                                                </a>
+                                            </div>
                                             <div id="o-carousel-product" class="carousel slide" data-ride="carousel" data-interval="0">
                                                 <div class="carousel-outer">
                                                     <div class="carousel-inner">
@@ -191,7 +197,7 @@
                                                 <p itemprop="description" t-field="product.description_short" class="text-muted" />
                                                 <hr/>
                                             </div>
-                                            <span itemprop="url" style="display:none;" t-esc="keep('%sproduct/%s' % (request.httprequest.url_root, product.slug)) if product.slug else keep('%sshop/product/%s' % slug(request.httprequest.url_root, slug(product)))"/>
+                                            <span itemprop="url" style="display:none;" t-esc="'/product/%s' % product.slug if product.slug else keep('/shop/product/%s' % slug(product))"/>
                                             <form t-if="product._is_add_to_cart_possible()" action="/shop/cart/update" method="POST">
                                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                                 <div class="js_product js_main_product">
@@ -250,6 +256,12 @@
     </template>
 
     <template id="website_sale_products" name="Products Dismac" inherit_id="website_sale.products">
+        <!-- Set padding by breadcrumbs bar -->
+        <xpath expr="//div[hasclass('container', 'py-2', 'oe_website_sale')]" position="attributes">
+            <attribute name="t-attf-class">container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}</attribute>
+        </xpath>
+        
+        <!-- Set dynamic title by content -->
         <xpath expr="//div[@id='products_grid']/table" position="before">
             <t t-set="title">Dismac | Tienda</t>
             <t t-set="description">Revise y compre todos nuestros productos</t>
@@ -258,10 +270,6 @@
                 <t t-if="list_type and list_type == 'pricelist'">
                     <h1>Tarifa Bienvenida</h1>
                     <p>Esta es la Tarifa bienvenida, donde ver los artículos con el precio de cliente Dismac. Si lo desea puede ordenar también el listado en función de los códigos de producto</p>
-                </t>
-                <t t-elif="list_type and list_type == 'history'">
-                    <h1>Mi historial</h1>
-                    <p>Su historial de pedidos muestra los artículos que nos solicita más frecuentemente, la lista se muestra ordenada en función de la frecuencia, mostrando en primer lugar los productos más habituales. Si lo desea puede ordenar el listado pulsando en cada uno de los títulos de las columnas</p>
                 </t>
                 <t t-else="">
                     <span class="text-uppercase" t-esc="category.parent_id.name if category and category.parent_id else 'Bienvenido a Dismac, {}'.format(request.env.user.name)"/>
