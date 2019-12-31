@@ -203,6 +203,8 @@ class ProductProduct(models.Model):
                     uom_id = lines[:1].product_uom
                 if uom_id and uom_id.id != product.uom_id.id:
                     lpp = uom_id._compute_price(lpp, product.uom_id)
+                if lpp == 0 and product.last_purchase_price != 0:
+                    lpp = product.last_purchase_price
                 product.last_purchase_price_fixed = lpp
 
 
