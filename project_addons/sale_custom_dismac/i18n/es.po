@@ -21,6 +21,33 @@ msgid "Apply In Price Unit"
 msgstr "Aplicar en precio unitario"
 
 #. module: sale_custom_dismac
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_invoice_on_date_form
+msgid "View invoiceable sales on date"
+msgstr "Ver pedidos facturables en fecha"
+
+#. module: sale_custom_dismac
+#: model:ir.actions.act_window,name:sale_custom_dismac.action_sale_invoice_on_date
+#: model:ir.ui.menu,name:sale_custom_dismac.menu_sale_invoice_on_date
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_invoice_on_date_form
+msgid "Invoiceable sales by date"
+msgstr "Ventas facturables por fecha"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order__invoice_until
+msgid "Invoice Until"
+msgstr "Facturar hasta"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_invoice_on_date__invoice_until_date
+msgid "Invoice Until Date"
+msgstr "Facturar hasta fecha"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order__pending_invoice_amount
+msgid "Pending Invoice Amount"
+msgstr "Importe pendiente de facturar"
+
+#. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__discount
 msgid "Discount(%)"
 msgstr "Descuento(%)"
@@ -53,6 +80,7 @@ msgstr "Aplicar descuento global"
 
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_invoice_on_date_form
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -241,6 +269,7 @@ msgstr ""
 
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_invoice_on_date_form
 msgid "or"
 msgstr "o"
 

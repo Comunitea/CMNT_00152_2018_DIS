@@ -17,10 +17,12 @@
         "sale_margin",
         "sale_order_revision",
         "sale_order_line_form_button",
+        "sale_order_action_invoice_create_hook",
     ],
     "data": [
         "security/ir.model.access.csv",
         "wizard/apply_global_discount.xml",
+        "wizard/sale_invoice_on_date.xml",
         "views/res_partner_view.xml",
         "views/sale_order_view.xml",
         "views/sale_order_type.xml",
