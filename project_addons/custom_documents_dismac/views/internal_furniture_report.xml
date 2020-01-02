@@ -3,9 +3,8 @@
     <data>
 
         <template id="report_budget_internal_furniture_document">
-
+            <t t-call="web.external_layout">
             <div class="article o_report_layout_standard">
-                <t t-call="custom_documents_dismac.header_layout_custom"/>
                 <!--CUERPO-->
                 <div class="row">
                     <div class="col-xs-5" style="text-center">
@@ -88,7 +87,7 @@
                                                                   ofertado, valorándose a parte en caso de ser demandados.</div>
                 </div>
             </div>
-
+            </t>
         </template>
 
 

@@ -4,6 +4,16 @@
 
 <!--PRESUPUESTOS -->
 
+    <report
+            id="sale.action_report_saleorder"
+            string="Ofimática"
+            model="sale.order"
+            report_type="qweb-pdf"
+            file="sale.report_saleorder"
+            name="sale.report_saleorder"
+            print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        />
+
 <!--Papeleria-->
 
         <report

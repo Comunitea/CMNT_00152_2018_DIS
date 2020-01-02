@@ -3,9 +3,8 @@
     <data>
 
         <template id="report_invoice_pro_document">
-
+            <t t-call="web.external_layout">
             <div class="article o_report_layout_standard">
-                <t t-call="custom_documents_dismac.header_layout_custom"/>
                 <!-- CUERPO FACTURA -->
                 <div>
                     <div class="row" >
@@ -164,9 +163,8 @@
 
 
                 <br/>
-                <t t-call="custom_documents_dismac.footer_layout_custom"/>
             </div>
-
+            </t>
         </template>
 
 

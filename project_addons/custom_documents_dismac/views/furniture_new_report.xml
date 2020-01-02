@@ -3,9 +3,8 @@
     <data>
 
         <template id="report_budget_furniture_new_document">
-
+            <t t-call="web.external_layout">
             <div class="article o_report_layout_standard">
-                <t t-call="custom_documents_dismac.header_layout_custom"/>
                 <!--CUERPO-->
                 <div class="row">
                     <div class="col-3 offset-3" style="text-center">
@@ -182,7 +181,7 @@
                                                                     ser demandados.</div>
                 </div>
             </div>
-
+            </t>
         </template>
 
 
