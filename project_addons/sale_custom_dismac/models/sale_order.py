@@ -1,9 +1,10 @@
 # © 2018 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import models, fields, api, _
+from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError
 from .res_partner import PROCUREMENT_PRIORITIES
 from odoo.tools import float_is_zero
+from odoo.tools import float_compare, pycompat
 
 
 class SaleOrder(models.Model):
@@ -26,6 +27,7 @@ class SaleOrder(models.Model):
     pending_invoice_amount = fields.Float(
         compute="_compute_pending_invoice_amount"
     )
+    project_reference = fields.Char('Project Reference')
 
     def _compute_pending_invoice_amount(self):
         for order in self:
@@ -327,6 +329,69 @@ class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
     notes = fields.Text("Advanced Description")
+    internal_notes = fields.Text("Notas internas")
+
+    image_variant = fields.Binary(
+        "Alternative image for line", attachment=True,
+        help="This field holds the image used as image for the product variant, limited to 1024x1024px.")
+    image = fields.Binary(
+        "Big-sized image", compute='_compute_images', inverse='_set_image',
+        help="Image of the product variant (Big-sized image of product template if false). It is automatically "
+             "resized as a 1024x1024px image, with aspect ratio preserved.")
+    image_small = fields.Binary(
+        "Small-sized image", compute='_compute_images',
+        inverse='_set_image_small',
+        help="Image of the product variant (Small-sized image of product template if false).")
+    image_medium = fields.Binary(
+        "Alternative image for line", compute='_compute_images',
+        inverse='_set_image_medium',
+        help="Image of the product variant (Medium-sized image of product template if false).")
+
+    @api.one
+    @api.depends('image_variant')
+    def _compute_images(self):
+        if self._context.get('bin_size'):
+            self.image_medium = self.image_variant
+            self.image_small = self.image_variant
+            self.image = self.image_variant
+        else:
+            resized_images = tools.image_get_resized_images(self.image_variant,
+                                                            return_big=True,
+                                                            avoid_resize_medium=True)
+            self.image_medium = resized_images['image_medium']
+            self.image_small = resized_images['image_small']
+            self.image = resized_images['image']
+
+    @api.one
+    def _set_image(self):
+        self._set_image_value(self.image)
+
+    @api.one
+    def _set_image_medium(self):
+        self._set_image_value(self.image_medium)
+
+    @api.one
+    def _set_image_small(self):
+        self._set_image_value(self.image_small)
+
+    @api.one
+    def _set_image_value(self, value):
+        if isinstance(value, pycompat.text_type):
+            value = value.encode('ascii')
+        image = tools.image_resize_image_big(value)
+
+        # This is needed because when there is only one variant, the user
+        # doesn't know there is a difference between template and variant, he
+        # expects both images to be the same.
+
+        self.image_variant = image
+
+    @api.onchange('product_uom', 'product_uom_qty')
+    def product_uom_change(self):
+        prev_price = self.price_unit
+        res = super().product_id_change()
+        if self.order_id.type_id.no_change_price and prev_price != 0:
+            self.price_unit = prev_price
 
     @api.multi
     def duplicate_line(self):
