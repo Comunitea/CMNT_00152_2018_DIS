@@ -60,11 +60,13 @@
                                                 <td style="padding: 3px">
                                                     <span t-field="product.display_name"/>
                                                 </td>
-                                                <td class="text-right" style="padding: 3px">
-                                                    <span t-field="product.import_location_str"/>
+                                                <td class="text-right" style="padding: 3px; color: grey">
+                                                    <t t-if="product.import_location_str != location.name">
+                                                        <span t-field="product.import_location_str"/>
+                                                    </t>
                                                 </td>
                                                 <td class="text-left" style="padding: 3px">
-                                                    <span t-esc="location.name"/>
+                                                    <span t-esc="location.name"/>(<span style="font-size: xx-small; padding: 1px" t-esc="location.removal_priority"/>)
                                                 </td>
                                                 <td class="text-right" style="padding: 3px">
                                                     <span t-esc="qty"/>(<span t-esc="ordered_qty"/>)
