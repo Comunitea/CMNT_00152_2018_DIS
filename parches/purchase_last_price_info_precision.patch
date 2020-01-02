@@ -1,0 +1,31 @@
+diff --git a/purchase_last_price_info/models/product.py b/purchase_last_price_info/models/product.py
+index 5016bfe..fa8eb49 100644
+--- a/purchase_last_price_info/models/product.py
++++ b/purchase_last_price_info/models/product.py
+@@ -3,13 +3,14 @@
+ #   (http://www.eficent.com)
+ 
+ from odoo import api, fields, models
+-
++from odoo.addons import decimal_precision as dp
+ 
+ class ProductProduct(models.Model):
+     _inherit = 'product.product'
+ 
+     last_purchase_price = fields.Float(
+-        string='Last Purchase Price')
++        string='Last Purchase Price', digits=dp.get_precision('Product '
++                                                              'Price'),)
+     last_purchase_date = fields.Date(
+         string='Last Purchase Date')
+     last_supplier_id = fields.Many2one(
+@@ -63,7 +64,8 @@ class ProductTemplate(models.Model):
+     _inherit = 'product.template'
+ 
+     last_purchase_price = fields.Float(
+-        string='Last Purchase Price')
++        string='Last Purchase Price', digits=dp.get_precision('Product '
++                                                              'Price'),)
+     last_purchase_date = fields.Date(
+         string='Last Purchase Date')
+     last_supplier_id = fields.Many2one(

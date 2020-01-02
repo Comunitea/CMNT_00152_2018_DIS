@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-22 09:41+0000\n"
-"PO-Revision-Date: 2019-11-22 09:41+0000\n"
+"POT-Creation-Date: 2020-01-02 11:22+0000\n"
+"PO-Revision-Date: 2020-01-02 11:22+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,13 +18,20 @@ msgstr ""
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__notes
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_order_form_custom
-msgid "Descripción avanzada"
-msgstr ""
-
-#. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_order_line_form_view_custom
 msgid "Advanced Description"
 msgstr "Descripción detallada"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__image_medium
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__image_variant
+msgid "Alternative image for line"
+msgstr "Imagen alternativa"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__apply_in_price_unit
+msgid "Apply In Price Unit"
+msgstr "Aplicar en precio unitario"
 
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
@@ -42,7 +49,18 @@ msgid "Apply global discount"
 msgstr "Aplicar descuento global"
 
 #. module: sale_custom_dismac
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.view_produtc_product_filter_stock
+msgid "Available Products"
+msgstr "Productos disponibles"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__image
+msgid "Big-sized image"
+msgstr "Imagen grande"
+
+#. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_invoice_on_date_form
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -55,6 +73,8 @@ msgstr "Contacto"
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__create_uid
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route__create_uid
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone__create_uid
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_invoice_on_date__create_uid
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line_delivery__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
@@ -62,8 +82,20 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__create_date
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route__create_date
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone__create_date
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_invoice_on_date__create_date
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line_delivery__create_date
 msgid "Created on"
 msgstr "Creado el"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__deliveries
+msgid "Deliveries"
+msgstr "Entregas"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line_delivery__delivery_date
+msgid "Delivery Date"
+msgstr "Fecha de entrega"
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__route_id
@@ -80,20 +112,68 @@ msgstr "Descuento (%)"
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__display_name
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route__display_name
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone__display_name
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_invoice_on_date__display_name
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line_delivery__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order__has_invoiceable_lines
+msgid "Has Invoiceable Lines"
+msgstr "Tiene líneas facturables"
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__id
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route__id
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone__id
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_invoice_on_date__id
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line_delivery__id
 msgid "ID"
 msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,help:sale_custom_dismac.field_sale_order_line__image
+msgid "Image of the product variant (Big-sized image of product template if false). It is automatically resized as a 1024x1024px image, with aspect ratio preserved."
+msgstr "Imagen de la variante del producto (Imagen grande de la plantilla del producto en caso de que esté vacía). Se redimensionará automáticamente como una imagen 1024x1024px, manteniendo la proporción."
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,help:sale_custom_dismac.field_sale_order_line__image_medium
+msgid "Image of the product variant (Medium-sized image of product template if false)."
+msgstr "Imagen de la variante del producto (Imagen mediana de la plantilla del producto en caso de que esté vacía)."
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,help:sale_custom_dismac.field_sale_order_line__image_small
+msgid "Image of the product variant (Small-sized image of product template if false)."
+msgstr "Imagen de la variante del producto (Imagen pequeña de la plantilla del producto en caso de que esté vacía)."
+
+#. module: sale_custom_dismac
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_order_line_form_view_custom
+msgid "Internal Notes"
+msgstr "Notas internas"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order__invoice_until
+msgid "Invoice Until"
+msgstr "Facturar hasta"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_invoice_on_date__invoice_until_date
+msgid "Invoice Until Date"
+msgstr "Facturar hasta fecha"
+
+#. module: sale_custom_dismac
+#: model:ir.actions.act_window,name:sale_custom_dismac.action_sale_invoice_on_date
+#: model:ir.ui.menu,name:sale_custom_dismac.menu_sale_invoice_on_date
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_invoice_on_date_form
+msgid "Invoiceable sales by date"
+msgstr "Ventas facturables por fecha"
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount____last_update
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route____last_update
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone____last_update
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_invoice_on_date____last_update
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line_delivery____last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
 
@@ -101,6 +181,8 @@ msgstr "Última modificación en"
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__write_uid
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route__write_uid
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone__write_uid
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_invoice_on_date__write_uid
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line_delivery__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
@@ -108,8 +190,15 @@ msgstr "Última actualización por"
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_apply_global_discount__write_date
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route__write_date
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_partner_zone__write_date
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_invoice_on_date__write_date
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line_delivery__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line_delivery__line_id
+msgid "Line"
+msgstr "Linea"
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_delivery_route__name
@@ -122,6 +211,16 @@ msgstr "Nombre"
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_type__need_approval
 msgid "Need Approval"
 msgstr "Necesita aprobación"
+
+#. module: sale_custom_dismac
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.view_produtc_product_filter_stock
+msgid "Negative Forecasted Quantity"
+msgstr "Cantidad Prevista Negativa"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_type__no_change_price
+msgid "No change price"
+msgstr "No cambiar precios"
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__no_valued_picking
@@ -142,11 +241,37 @@ msgid "Not urgent"
 msgstr "No urgente"
 
 #. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__internal_notes
+msgid "Notas internas"
+msgstr "Notas internas"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order__pending_invoice_amount
+msgid "Pending Invoice Amount"
+msgstr "Importe pendiente de facturar"
+
+#. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__priority
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users__priority
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order__priority
 msgid "Priority"
 msgstr "Prioridad"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order__project_reference
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.view_sales_order_filter
+msgid "Project Reference"
+msgstr "Referencia de proyecto"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__qty_to_invoice_on_date
+msgid "Qty To Invoice On Date"
+msgstr "Ctdad. a facturar en fecha"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line_delivery__quantity
+msgid "Quantity"
+msgstr "Cantidad"
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__require_num_order
@@ -170,9 +295,19 @@ msgid "Sales"
 msgstr "Ventas"
 
 #. module: sale_custom_dismac
+#: model:ir.model,name:sale_custom_dismac.model_sale_advance_payment_inv
+msgid "Sales Advance Payment Invoice"
+msgstr "Ventas. Anticipo pago factura"
+
+#. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_sale_order_line
 msgid "Sales Order Line"
 msgstr "Línea de pedido de venta"
+
+#. module: sale_custom_dismac
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.view_sales_order_filter
+msgid "Search invoiceable sales"
+msgstr "Buscar pedidos facturables"
 
 #. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__whole_orders
@@ -181,15 +316,37 @@ msgid "Shipping Whole orders"
 msgstr "Entregar todo el pedido"
 
 #. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__image_small
+msgid "Small-sized image"
+msgstr "Imagen de tamaño pequeño"
+
+#. module: sale_custom_dismac
+#: model:ir.model,name:sale_custom_dismac.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de existencias"
+
+#. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_stock_rule
 msgid "Stock Rule"
 msgstr "Regla de Inventario"
 
 #. module: sale_custom_dismac
-#: code:addons/sale_custom_dismac/models/sale_order.py:36
+#: code:addons/sale_custom_dismac/models/sale_order.py:52
 #, python-format
 msgid "The customer for this order requires a customer                         reference number"
 msgstr "El cliente de este pedido obliga a que haya un número de referencia del cliente"
+
+#. module: sale_custom_dismac
+#: code:addons/sale_custom_dismac/models/sale_order.py:291
+#: code:addons/sale_custom_dismac/models/sale_order.py:297
+#, python-format
+msgid "There is no invoicable line."
+msgstr "No hay línea facturable"
+
+#. module: sale_custom_dismac
+#: model:ir.model.fields,help:sale_custom_dismac.field_sale_order_line__image_variant
+msgid "This field holds the image used as image for the product variant, limited to 1024x1024px."
+msgstr "Este campo contiene la imagen usada como imagen de la variante del producto, limitada a 1024x1024px."
 
 #. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_sale_order_type
@@ -214,6 +371,11 @@ msgid "Very Urgent"
 msgstr "Muy urgente"
 
 #. module: sale_custom_dismac
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_invoice_on_date_form
+msgid "View invoiceable sales on date"
+msgstr "Ver pedidos facturables en fecha"
+
+#. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_partner__zone_id
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_res_users__zone_id
 msgid "Zone"
@@ -225,17 +387,113 @@ msgid "apply.global.discount"
 msgstr ""
 
 #. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.apply_global_discount_form
+msgid "apply.global.discount.form"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.cuustom_saleorder_document_inherit
+msgid "cuustom_saleorder_document_inherit"
+msgstr ""
+
+#. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_delivery_route
 msgid "delivery.route"
 msgstr ""
 
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_invoice_on_date_form
 msgid "or"
 msgstr "o"
 
 #. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_partner_zone
 msgid "partner.zone"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.view_produtc_product_filter_stock
+msgid "product.product.filte.stock"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.product_product_tree_no_cost_fields
+msgid "product.product.no_cost_fields"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.product_form_view_sale_order_button
+msgid "product.product.sale.order"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.product_form_view_security1
+msgid "product.product.security1"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.product_template_tree_no_cost_fields
+msgid "product.template.no_cost_fields"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.res_partner_view_custom
+msgid "res.partner.view.custom"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.res_partner_view_security1
+msgid "res.partner.view.security1"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.view_order_agent_invisible_form_inherit
+msgid "sale.agent.order.invisible.inherit.form"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.model,name:sale_custom_dismac.model_sale_invoice_on_date
+msgid "sale.invoice.on.date"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.sale_invoice_on_date_form
+msgid "sale.invoice.on.date.form"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.sale_order_form_custom
+msgid "sale.order.form.custom"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.view_sales_order_filter
+msgid "sale.order.inherit.view.search"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.view_order_tree
+msgid "sale.order.inherit.view.tree"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.model,name:sale_custom_dismac.model_sale_order_line_delivery
+msgid "sale.order.line.delivery"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.sale_margin_sale_order_line_form_not_visible
+msgid "sale.order.line.tree.margin.invisible.view.form"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.sot_sale_order_type_form_view
+msgid "sale.order.type.inherit.view.form"
+msgstr ""
+
+#. module: sale_custom_dismac
+#: model:ir.ui.view,name:sale_custom_dismac.sale_order_line_form_view_custom
+msgid "sale_order_line_form_view_custom"
 msgstr ""
 

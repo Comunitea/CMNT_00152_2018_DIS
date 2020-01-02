@@ -8,3 +8,4 @@ class SaleOrderType(models.Model):
 
     need_approval = fields.Boolean(default=False)
     use_partner_agent = fields.Boolean("Use partner commercial")
+    no_change_price = fields.Boolean("No change price")

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- Enable forms to create quotes -->
+    <record id="model_sale_quote" model="ir.model">
+        <field name="website_form_access">True</field>
+        <field name="website_form_recaptcha">True</field>
+        <field name="website_form_label">Create a Request Quote</field>
+        <field name="website_form_default_field_id" ref="website_base.field_sale_quote__metadata" />
+    </record>
+    <function model="ir.model.fields" name="formbuilder_whitelist">
+        <value>sale.quote</value>
+        <value eval="[
+            'name',
+            'date',
+            'state',
+            'product_ids',
+            'products_found',
+            'products_not_found',
+            'website_id',
+            'user_id',
+            'contact_phone',
+            'contact_email',
+            'observations',
+        ]"/>
+    </function>
+
+    <!-- Offers -->
+    <record id="sale_quote_form_view" model="ir.ui.view">
+        <field name="name">sale.quote.form</field>
+        <field name="model">sale.quote</field>
+        <field name="arch" type="xml">
+            <form string="Request quote">
+                <sheet>
+                    <div class="oe_title"  name="title">
+                        <label class="oe_edit_only" for="name" string="Quote Name"/>
+                        <h1><field name="name" placeholder="Quote Name"/></h1>
+                    </div>
+                    <notebook>
+                        <page string="General Information" name="general_information">
+                            <group string="Quote data">
+                                <field name="name"/>
+                                <field name="date"/>
+                                <field name="website_id" widget="many2one"/>
+                                <field name="user_id" widget="many2one"/>
+                                <field name="contact_phone"/>
+                                <field name="contact_email"/>
+                            </group>
+                            <group string="Observations"  name="observatios">
+                                <field name="observations"/>
+                            </group>
+                        </page>
+                        <page string="Products" name="products">
+                            <group string="Products added from shop" name="website_products">
+                                <field name="product_ids" widget="many2many_tags"/>
+                            </group>
+                            <group string="Products find on website" name="website_products">
+                                <field name="products_found"/>
+                            </group>
+                            <group string="Products not find on website"  name="not_website_products">
+                                <field name="products_not_found" />
+                            </group>
+                        </page>
+                        <page string="Metadata Info" name="metadata_info">
+                            <field nolabel="1" name="metadata"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="sale_quote_tree_view" model="ir.ui.view">
+        <field name="name">sale.quote.form</field>
+        <field name="model">sale.quote</field>
+        <field name="field_parent" eval="False"/>
+        <field name="arch" type="xml">
+            <tree string="Request quote" name="quotes">
+                <field name="id"/>
+                <field name="date"/>
+                <field name="name"/>
+                <field name="website_id" widget="many2one"/>
+                <field name="user_id" widget="many2one"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- User quotes -->
+    <record id="sale_quote_view" model="ir.ui.view">
+        <field name="name">sale.quote.view</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Request quote" name="quote_request">
+                    <field name="quotes_ids" nolabel="1">
+                        <tree string="Request quote" name="quotes">
+                            <field name="id"/>
+                            <field name="date"/>
+                            <field name="name"/>
+                            <field name="website_id" widget="many2one"/>
+                            <field name="user_id" widget="many2one"/>
+                        </tree>
+                        <form string="Request quote">
+                            <sheet>
+                                <div class="oe_title"  name="title">
+                                    <label class="oe_edit_only" for="name" string="Quote Name"/>
+                                    <h1><field name="name" placeholder="Quote Name"/></h1>
+                                </div>
+                                <notebook>
+                                    <page string="General Information" name="general_information">
+                                        <group string="Quote data">
+                                            <field name="name"/>
+                                            <field name="date"/>
+                                            <field name="website_id" widget="many2one"/>
+                                            <field name="user_id" widget="many2one"/>
+                                            <field name="contact_phone"/>
+                                            <field name="contact_email"/>
+                                        </group>
+                                        <group string="Observations"  name="observatios">
+                                            <field name="observations"/>
+                                        </group>
+                                    </page>
+                                    <page string="Products" name="products">
+                                        <group string="Products added from shop" name="website_products">
+                                            <field name="product_ids" widget="many2many_tags"/>
+                                        </group>
+                                        <group string="Products find on website" name="website_products">
+                                            <field name="products_found"/>
+                                        </group>
+                                        <group string="Products not find on website"  name="not_website_products">
+                                            <field name="products_not_found" />
+                                        </group>
+                                    </page>
+                                    <page string="Metadata Info" name="metadata_info">
+                                        <field nolabel="1" name="metadata"/>
+                                    </page>
+                                </notebook>
+                            </sheet>
+                        </form>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <record id="sale_quote_search_view" model="ir.ui.view">
+        <field name="name">sale.quote.search</field>
+        <field name="model">sale.quote</field>
+        <field name="arch" type="xml">
+            <search string="Request quote">
+                <field name="name" string="Request quote" filter_domain="[('name', 'ilike', self)]"/>
+                <field name="website_id" string="Website" filter_domain="[('website_id', 'ilike', raw_value)]"/>
+                <field name="user_id" string="User" filter_domain="[('user_id', 'ilike', raw_value)]"/>
+                <separator/>
+                <filter string="Sent" name="quotes_sent" domain="[('state', '=', 'sent')]"/>
+                <filter string="Current" name="current_quote" domain="[('state', '=', 'current')]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Today" name="request_quotes_today"
+                        domain="[('date', '&gt;', datetime.datetime.now().replace(second=0, microsecond=0))]"/>
+                <filter string="Yesterday" name="request_quotes_today"
+                        domain="['&amp;', ('date', '&gt;', datetime.datetime.now().replace(second=0, microsecond=0) - datetime.timedelta(days=1)), ('date', '&lt;', datetime.datetime.now().replace(second=0, microsecond=0))]"/>
+                <filter string="Last week" name="request_quotes_week"
+                        domain="['&amp;', ('date', '&gt;', (datetime.datetime.now() - relativedelta(weeks=1))), ('date', '&lt;', (datetime.datetime.now() + datetime.timedelta(days=1)))]"/>
+                <filter string="Last month" name="request_quotes_week"
+                        domain="['&amp;', ('date', '&gt;', (datetime.datetime.now() - relativedelta(months=1))), ('date', '&lt;', (datetime.datetime.now() + datetime.timedelta(days=1)))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Date" name="groupby_date" domain="[]" context="{'group_by': 'date'}"/>
+                    <filter string="Website" name="groupby_website" domain="[]" context="{'group_by': 'website_id'}"/>
+                    <filter string="User" name="groupby_user" domain="[]" context="{'group_by': 'user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="sale_quote_action" model="ir.actions.act_window">
+        <field name="name">Request quote</field>
+        <field name="domain">[('state', '=', 'sent')]</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.quote</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="sale_quote_tree_view"/>
+        <field name="search_view_id" ref="sale_quote_search_view"/>
+    </record>
+
+    <!-- Catalog sub-menus -->
+    <menuitem id="menu_catalog_sale_quote" name="Request quote"
+              action="sale_quote_action"
+              parent="website_sale.menu_catalog" sequence="7"/>
+
+    <!-- Configuration sub-menus -->
+    <menuitem id="menu_sale_quote"
+              action="sale_quote_action"
+              parent="website_sale.menu_product_settings" sequence="6"/>
+
+    <!-- Sales Menu -->
+    <menuitem id="sale_quote_menu_catalog" name="Request quote" action="sale_quote_action" parent="sale.product_menu_catalog" sequence="9" groups="sales_team.group_sale_salesman"/>
+
+</odoo>

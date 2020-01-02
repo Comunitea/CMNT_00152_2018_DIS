@@ -10,6 +10,7 @@
                 <form>
                     <group>
                         <field name="discount"/>
+                        <field name="apply_in_price_unit"/>
                     </group>
                     <footer>
                         <button name="apply_discount" string="Apply discount" type="object" class="oe_highlight"/>
@@ -26,5 +27,5 @@
             view_mode="form"
             target="new"
             id="apply_global_discount_action"/>
-            
+
 </odoo>

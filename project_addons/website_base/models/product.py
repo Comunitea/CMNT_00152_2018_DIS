@@ -14,6 +14,15 @@ class ProductPublicCategory(models.Model):
     offer_ids = fields.One2many('product.offer', 'category_id', string='Product Offers',
                                 help=_("Offers that contains this category"))
 
+    def get_parent_categories(self, category):
+        new_category = self.search([('id', '=', int(category))])
+        parent_category_ids = [new_category.id]
+        current_category = new_category
+        while current_category.parent_id:
+            parent_category_ids.append(current_category.parent_id.id)
+            current_category = current_category.parent_id
+        return parent_category_ids
+
 
 class ProductOffer(models.Model):
     _name = "product.offer"
@@ -57,7 +66,6 @@ class ProductOffer(models.Model):
     # TODO: Include them in xml offer views to set by settings
     website_size_x = fields.Integer('Size X', default=1)
     website_size_y = fields.Integer('Size Y', default=1)
-    # TODO: Create styles for offers and include them in xml offer views
     website_style_ids = fields.Many2many('product.style', string='Styles')
 
     @api.multi
@@ -115,3 +123,45 @@ class ProductOfferImage(models.Model):
     name = fields.Char(_('Name'), translate=True)
     image = fields.Binary(_('Image'), attachment=True)
     offer_id = fields.Many2one('product.offer', 'Related Offer', copy=True)
+
+
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    historical_ordered_qty = fields.Integer(compute="_get_product_historical_ordered_qty")
+    partner_last_order = fields.Datetime(compute="_get_partner_last_order")
+
+    @api.multi
+    def _get_product_historical_ordered_qty(self):
+        for template in self:
+
+            context = self._context
+            current_uid = context.get('uid')
+            partner_id = self.env['res.users'].browse(current_uid).partner_id
+
+            if context.get('selected_partner'):
+                partner_id = self.env['res.users'].browse(context.get('selected_partner'))
+            
+            customer_domain = [('partner_id', 'child_of', partner_id.id), ('state', '=', 'sale'), ('product_tmpl_id', '=', template.id)]
+            
+            customer_product_data = self.env['sale.report'].sudo().read_group(customer_domain, ['product_uom_qty'], ['product_tmpl_id', 'partner_id'])
+
+            template.historical_ordered_qty = customer_product_data[0]['product_uom_qty']
+
+    @api.multi
+    def _get_partner_last_order(self):
+
+        for template in self:
+
+            context = self._context
+            current_uid = context.get('uid')
+            partner_id = self.env['res.users'].browse(current_uid).partner_id
+
+            if context.get('selected_partner'):
+                partner_id = self.env['res.users'].browse(context.get('selected_partner'))
+            
+            customer_domain = [('partner_id', 'child_of', partner_id.id), ('state', '=', 'sale'), ('product_tmpl_id', '=', template.id)]
+            
+            customer_product_data = self.env['sale.report'].sudo().search_read(customer_domain, ['confirmation_date'], order="confirmation_date desc")
+
+            template.partner_last_order = customer_product_data[0]['confirmation_date']

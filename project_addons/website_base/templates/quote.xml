@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="quote_header_link" inherit_id="website.layout" name="Header Quotes Link Dismac">
+        <xpath expr="//header//ul[@id='top_menu']/li" position="before">
+            <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
+            <li class="nav-item divider d-none"/> <!-- Make sure the cart and related menus are not folded (see autohideMenu) -->
+            <li id="my_current_quote" t-attf-class="nav-item#{'' if current_quote and len(current_quote.product_ids) &gt; 0 else ' d-none'}">
+                <a href="/presupuestos" class="nav-link">
+                    <i class="fa fa-file-text-o"/>
+                    <sup t-attf-class="my_current_quote_quantity badge badge-primary" t-esc="len(current_quote.product_ids) or ''" />
+                </a>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="quote_historical" name="Quote Historical Dismac">
+        <h5 class="text-uppercase text-primary pt8"><strong>Histórico</strong></h5>
+        <ul class="nav nav-pills mt16" t-if="len(historical_quotes) &gt; 0">
+            <t t-foreach="historical_quotes" t-as="hist_quote">
+                <li class="nav-list">
+                    <a t-att-href="'/presupuestos/presupuesto/%s' % hist_quote.id" class="text-uppercase pl0 pr0" rel="noindex, nofollow">
+                        <strong><span t-esc="hist_quote.date.strftime('%Y-%m-%d %H:%M')"/></strong> - <span t-esc="hist_quote.name[0:10] + '...' if len(hist_quote.name) &gt; 11 else hist_quote.name[0:11]"/>
+                    </a>
+                </li>
+            </t>
+        </ul>
+        <p class="text-uppercase" t-else="">No hay registros</p>
+    </template>
+
+    <template id="quote_success" name="Quote Success Dismac">
+        <div class="simulated-product-title mt16">
+            <h1>Presupuesto solicitado</h1>
+            <p>Estamos encantados de poder antenderle, no dude por ello en ponerse en contacto con nostros para cualquier sugerencia o duda que le surja</p>
+        </div>
+        <h2 class="text-center text-uppercase mt48 mb36">Atención</h2>
+        <h6 class="text-center">Su consulta se ha enviado correctamente. En breve nos pondremos en contacto con usted.</h6>
+        <div class="row mb32">
+            <div class="col-4"/>
+            <div class="col-4 text-center mt16">
+                <a role="button" class="btn btn-primary" href="/presupuestos" rel="noindex, nofollow">Aceptar</a>
+                <a role="button" class="btn btn-primary" t-att-href="'/presupuestos/presupuesto/%s' % historical_quotes[0].id" rel="noindex, nofollow">Ver presupuesto</a>
+            </div>
+            <div class="col-4"/>
+        </div>
+    </template>
+
+    <template id="quote_form" name="Quote Form Dismac">
+        <div class="simulated-product-title mt16">
+            <h1>Solicite presupuesto</h1>
+            <p>Estamos encantados de poder antenderle, no dude por ello en ponerse en contacto con nostros para cualquier sugerencia o duda que le surja</p>
+        </div>
+        <form action="/website_form/" method="post" class="s_website_form container-fluid" enctype="multipart/form-data" data-model_name="sale.quote" data-success_page="/presupuestos?success=True" data-editable-form="false">
+            <!-- Required hidden fields -->
+            <div class="form-group row form-field o_website_form_required_custom">
+                <input type="hidden" class="o_website_form_input o_website_form_datetime" name="date" t-att-value="datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')" required="required"/>
+                <input type="hidden" class="o_website_form_input" name="state" t-att-value="'sent'" required="required"/>
+                <input type="hidden" class="o_website_form_input" name="website_id" t-att-value="request.website.id" required="required"/>
+                <input type="hidden" class="o_website_form_input" name="user_id" t-att-value="request.env.user.id" required="required"/>
+                <t t-foreach="current_quote.product_ids" t-as="product">
+                    <input type="hidden" class="o_website_form_input" name="product_ids" t-att-value="product.id" required="required"/>
+                </t>
+            </div>
+
+            <!-- Subject -->
+            <div class="quote-section">
+                <div class="form-group row form-field o_website_form_required_custom">
+                    <div class="col-lg-3 col-md-4 text-md-right">
+                        <label class="col-form-label" for="name">Asunto</label>
+                    </div>
+                    <div class="col-lg-9 col-md-8">
+                        <input type="text" class="form-control o_website_form_input" name="name"
+                               t-att-value="current_quote.name if current_quote.name else 'Solicitud de Presupuesto'" required="required"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products -->
+            <h5 class="text-uppercase text-primary mt16"><strong>Productos</strong></h5>
+            <div class="quote-section">
+                <div class="form-group row form-field">
+                    <div class="col-lg-3 col-md-4 text-md-right">
+                        <label class="col-form-label" for="products_found">Productos añadidos desde tienda:</label>
+                    </div>
+                    <div class="col-lg-9 col-md-8">
+                        <t t-foreach="current_quote.product_ids" t-as="product" t-if="current_quote and current_quote.product_ids">
+                            <p class="mt8 mb0" t-if="product">
+                                <a t-att-href="'/product/%s' % product.slug if product.slug else keep('/shop/product/%s' % slug(product))" t-att-content="product.name" t-field="product.name" />
+                                <span> - </span>
+                                <a t-att-href="'/presupuestos?delete_product=%s' % product.id" class="o_remove" title="Eliminar" alt="Eliminar" rel="noindex, nofollow">
+                                    <i class="fa fa-trash" role="img" aria-label="Eliminar"/>
+                                </a>
+                            </p>
+                        </t>
+                        <p t-if="product_error_msg" class="text-danger mt4 mb0">
+                            <span t-esc="product_error_msg"/>
+                            <br t-if="product_error_name"/>
+                            <span t-esc="product_error_name"/>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row form-field o_website_form_custom">
+                    <div class="col-lg-3 col-md-4 text-md-right">
+                        <label class="col-form-label" for="products_found">Productos encontrados en la web:</label>
+                    </div>
+                    <div class="col-lg-9 col-md-8">
+                        <textarea class="form-control o_website_form_input" rows="8" name="products_found"
+                                  t-att-value="current_quote.products_found"
+                                  placeholder="Productos que he encontrado en la web y sobre los que quiero un presupuesto" />
+                    </div>
+                </div>
+                <div class="form-group row form-field o_website_form_custom">
+                    <div class="col-lg-3 col-md-4 text-md-right">
+                        <label class="col-form-label" for="products_not_found">Productos No encontrados en la web:</label>
+                    </div>
+                    <div class="col-lg-9 col-md-8">
+                        <textarea class="form-control o_website_form_input" rows="8" name="products_not_found"
+                                  t-att-value="current_quote.products_not_found"
+                                  placeholder="Otros productos que no he encontrado en la web y en los que estoy interesado" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Data -->
+            <h5 class="text-uppercase text-primary mt16"><strong>Mis Datos</strong></h5>
+            <div class="quote-section">
+                <div class="form-group row">
+                    <div class="col-lg-3 col-md-4 text-md-right">
+                        <label class="col-form-label" >Usuario</label>
+                    </div>
+                    <div class="col-lg-9 col-md-8">
+                        <input type="text" class="form-control"
+                               t-att-value="current_quote.user_id.name if current_quote.user_id else request.env.user.name" readonly="1"/>
+                    </div>
+                </div>
+                <div class="form-group row form-field o_website_form_custom">
+                    <div class="col-lg-3 col-md-4 text-md-right">
+                        <label class="col-form-label" for="contact_phone">Teléfono de contacto</label>
+                    </div>
+                    <div class="col-lg-9 col-md-8">
+                        <input type="text" class="form-control o_website_form_input" name="contact_phone"
+                               t-att-value="current_quote.contact_phone" placeholder="Opcional"/>
+                    </div>
+                </div>
+                <div class="form-group row form-field o_website_form_required_custom">
+                    <div class="col-lg-3 col-md-4 text-md-right">
+                        <label class="col-form-label" for="contact_email">Email de contacto</label>
+                    </div>
+                    <div class="col-lg-9 col-md-8">
+                        <input type="text" class="form-control o_website_form_input" name="contact_email" required=""
+                               t-att-value="current_quote.contact_email if current_quote.contact_email else request.env.user.email"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Observations -->
+            <h5 class="text-uppercase text-primary mt16"><strong>Observaciones</strong></h5>
+            <div class="quote-section">
+                <div class="form-group row form-field o_website_form_required_custom">
+                    <div class="col-12">
+                        <input type="text" class="form-control o_website_form_input" name="observations"
+                               t-att-value="current_quote.observations"
+                               placeholder="Escriba aquí ... "/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Policy -->
+            <div class="form-group row form-field o_website_form_required_custom mt32">
+                <div class="col-12 col-12-offset-3 text-center">
+                    <div class="form-check">
+                        <input type="checkbox" value="accepted" id="privacy_policy" name="privacy_policy" class="o_website_form_input form-check-input" required="required"/>
+                        <label class="form-check-label" for="privacy_policy">
+                            <span class="acceptance_full">
+                                Acepto los <a href="http://www.dismacpruebas.es.mialias.net/avisos-legales" alt="Enlace avisos legales" title="Avisos Legales" rel="noindex, nofollow" target="_blank">avisos legales</a>
+                                , la <a href="http://www.dismacpruebas.es.mialias.net/politica-de-cookies" alt="Enlace política de cookies" title="Política de Cookies" rel="noindex, nofollow" target="_blank">política de cookies</a>
+                                , y la <a href="http://www.dismacpruebas.es.mialias.net/politica-de-privacidad" alt="Enlace política de privacidad" title="Política de Privacidad" rel="noindex, nofollow" target="_blank">política de privacidad</a>
+                                de este sitio web.
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Google recaptcha -->
+            <div class="form-group row form-field mt32">
+                <div class="col-lg-3 col-md-4 text-md-right">
+                        <label class="col-form-label pt24" for="g-recaptcha-response">Human?</label>
+                    </div>
+                    <div class="col-lg-9 col-md-8">
+                    <span class="o_website_form_recaptcha" required="" />
+                </div>
+            </div>
+
+            <!-- Send -->
+            <div class="form-group mt32">
+                <div class="col-12 text-center">
+                    <p><span id="o_website_form_result"/></p>
+                    <button type="submit" class="btn btn-primary btn-lg o_website_form_send">Enviar</button>
+                </div>
+            </div>
+        </form>
+    </template>
+
+    <template id="quotes" name="Quotes Dismac">
+        <t t-call="website.layout">
+            <t t-set="title" t-if="not view_quote">Dismac | Presupuestos</t>
+            <t t-set="title" t-else="">Dismac | Presupuesto <t t-esc="current_quote.id"/></t>
+            <t t-set="description" t-if="not view_quote">Haga una solicitud de presupuesto a medida o revise el historial de solicitudes.</t>
+            <t t-set="description" t-else=""><t t-esc="current_quote.name"/></t>
+            <div id="wrap" class="js_sale">
+                <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
+                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">
+                    <div class="products_pager form-inline justify-content-center">
+                        <form t-attf-action="/presupuestos" role="search" method="get">
+                            <t t-call="website.website_search_box" />
+                        </form>
+                    </div>
+                    <div class="row mt-3">
+                        <div id="quotes_grid_before" class="col-lg-3 col-md-4 mt16">
+                            <t t-call="website_base.quote_historical"/>
+                        </div>
+                        <div id="quotes_grid" class="col-lg-9 col-md-8 mt8 mb16">
+                            <t t-if="view_quote">
+                                <t t-call="website_base.quote"/>
+                            </t>
+                            <t t-else="">
+                                <t t-if="quote_success">
+                                    <t t-call="website_base.quote_success"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-call="website_base.quote_form"/>
+                                </t>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="quote" name="Quote Dismac">
+        <div class="simulated-product-title mt16 mb16">
+            <h1>Presupuesto <span t-esc="current_quote.id"/></h1>
+        </div>
+        <div class="quote-section">
+            <h6 class="text-uppercase"><strong><span t-esc="current_quote.date.strftime('%Y-%m-%d %H:%M')"/></strong> - <span t-esc="current_quote.name"/></h6>
+        </div>
+
+        <h5 class="text-uppercase text-primary mt16"><strong>Productos</strong></h5>
+        <div class="quote-section">
+            <h6><strong>Productos añadidos desde tienda: </strong><span t-if="len(current_quote.product_ids) == 0" class="text-muted">No proporcionados</span></h6>
+            <t t-foreach="current_quote.product_ids" t-as="product" t-if="len(current_quote.product_ids) &gt; 0">
+                <p class="mb4" t-if="product">
+                    <a t-att-href="'/product/%s' % product.slug if product.slug else keep('/shop/product/%s' % slug(product))" t-att-content="product.name" t-field="product.name" />
+                </p>
+            </t>
+            <h6><strong>Productos encontrados en la web: </strong><span t-if="not current_quote.products_found" class="text-muted">No proporcionados</span></h6>
+            <span t-field="current_quote.products_found"/>
+            <h6><strong>Productos no encontrados en la web: </strong><span t-if="not current_quote.products_not_found" class="text-muted">No proporcionados</span></h6>
+            <span t-field="current_quote.products_not_found"/>
+        </div>
+
+        <h5 class="text-uppercase text-primary mt16"><strong>Mis Datos</strong></h5>
+        <div class="quote-section">
+            <h6><strong>Usuario: </strong><span t-esc="current_quote.user_id.name"/></h6>
+            <h6><strong>Cliente: </strong><span t-esc="current_quote.user_id.partner_id.name"/></h6>
+            <h6><strong>Email de contacto: </strong><span t-esc="current_quote.contact_email"/></h6>
+            <h6><strong>Teléfono de contacto: </strong><span t-esc="current_quote.contact_phone"/><span t-if="not current_quote.contact_phone" class="text-muted">No proporcionado</span></h6>
+        </div>
+
+        <h5 class="text-uppercase text-primary mt16"><strong>Observaciones</strong></h5>
+        <div class="quote-section">
+            <span t-field="current_quote.observations" t-if="current_quote.observations"/>
+            <p t-else="" class="text-muted mt8">Sin Observaciones</p>
+        </div>
+        <div class="row">
+            <div class="col-12 text-center mt36">
+                <p class="mt32"><a role="button" class="btn btn-primary btn-lg" href="/presupuestos" rel="noindex, nofollow">Volver</a></p>
+            </div>
+        </div>
+    </template>
+
+</odoo>

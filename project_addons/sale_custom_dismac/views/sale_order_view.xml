@@ -46,6 +46,13 @@
             <field name="expected_date" position="before">
                 <field name="priority" attrs="{'readonly': [('state', 'in', ('sale','done','cancel'))]}"/>
             </field>
+
+            <field name="fiscal_position_id" position="after">
+                <field name="pending_invoice_amount"/>
+            </field>
+            <field name="client_order_ref" position="after">
+                <field name="project_reference"/>
+            </field>
         </field>
     </record>
 
@@ -57,9 +64,14 @@
         <field name="arch" type="xml">
 
             <!-- Campo descripción enb la vista custom del otro módulo -->
+             <field name="tax_id" position="before">
+                 <field name="image_medium" widget="image" class="oe_avatar" />
+             </field>
              <field name="name" position="after">
                 <label for="notes" string="Advanced Description"/>
                 <field name="notes" widget="html"/>
+                 <label for="internal_notes" string="Internal Notes"/>
+                <field name="internal_notes" />
             </field>
         </field>
     </record>
@@ -92,5 +104,32 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_sales_order_filter" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view.search</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="name" string="Project Reference" filter_domain="[('project_reference','ilike',self)]"/>
+                <field name="invoice_until" context="{'invoice_until': self}"/>
+            </field>
+            <filter name="my_sale_orders_filter" position="after">
+                <filter name="invoiceable_sales" string="Search invoiceable sales" domain="[('has_invoiceable_lines', '=', True)]"/>
+            </filter>
+        </field>
+    </record>
+
+    <record id="view_order_tree" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="amount_total" position="after">
+                <field name="pending_invoice_amount"/>
+            </field>
+        </field>
+    </record>
+
 </odoo>
 

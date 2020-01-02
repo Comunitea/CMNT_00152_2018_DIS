@@ -3,6 +3,11 @@ body {
     font-family: @main-font-family;
 }
 
+/* badge */
+.badge-secondary {
+    background-color: @color-secondary;
+}
+
 /* Links */
 a {
     color: @color-secondary;
@@ -16,7 +21,7 @@ a {
     color: @color-white;
     border-color: @color-secondary;
     background-color: @color-secondary;
-    &:hover, &:focus {
+    &:hover, &:focus, &.active {
         color: @color-secondary;
         background-color: @color-white;
         border-color: @color-secondary;
@@ -26,15 +31,21 @@ a {
 
 /* Ribbon Buttons */
 // Secondary Style
-.ribbon.btn.btn-danger {
-    &:hover {
+.ribbon.btn.btn-danger, .ribbon-product-detail.btn.btn-danger {
+    &:hover, &:focus, &.active {
         background-color: @color-secondary;
         border-color: @color-secondary;
         color: #fff;
-        box-shadow: None;
+        box-shadow: 0 0 0 0.5px @color-secondary;
     }
 }
 // Danger Style
+.btn-danger:not(:disabled):not(.disabled):active, .btn-danger:not(:disabled):not(.disabled):active:focus {
+    background-color: @color-secondary;
+    border-color: @color-secondary;
+    color: #fff;
+    box-shadow: 0 0 0 0.5px @color-secondary;
+}
 // .ribbon.btn.btn-danger {
 //     background-color: #dc3545;
 //     border-color: #dc3545;
@@ -52,6 +63,14 @@ a {
     color: @color-white;
 }
 
+.btn-secondary:disabled, .btn-secondary.disabled {
+    background-color: @color-secondary;
+    border-color: @color-secondary;
+    &:hover, &:focus, &.active {
+        color: @color-white;
+    }
+}
+
 /* Dropdown buttons */
 .btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active, .show > .btn-secondary.dropdown-toggle {
     color: @color-secondary;
@@ -65,7 +84,13 @@ a {
 }
 .dropdown-item {
     color: @color-secondary;
-    &:hover {
+    &:hover:not(:active):not(.active) {
+        color: @color-secondary;
+        background-color: @color-white;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+    &:active, &.active {
         color: @color-white;
         background-color: @color-secondary;
     }
@@ -85,8 +110,22 @@ a {
     color: @color-secondary;
 }
 
-/* ECommerce categories*/
-#o_shop_collapse_category li i.fa {
+/* ECommerce categories and Collapse category */
+#o_shop_collapse_category_custom li {
+    width: 100%;
+
+    a {
+        display: inline-block;
+        width: 80%;
+        padding-left: 3px;
+    }
+
+    i.fa {
+        cursor: pointer;
+    }
+}
+
+#o_shop_collapse_category li i.fa, #o_shop_collapse_category_custom li i.fa {
     color: @color-secondary;
 }
 

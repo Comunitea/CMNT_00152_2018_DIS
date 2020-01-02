@@ -4,9 +4,11 @@
     <!-- Show simulated products like products shop -->
     <template id="simulate_products" name="Simulate Products Base">
         <t t-call="website.layout">
+            <t t-set="title">Dismac | Tienda</t>
+            <t t-set="description">Revise y compre todos nuestros productos</t>
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
-                <div class="container py-2 oe_website_sale">
+                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">
                     <div class="products_pager form-inline justify-content-center">
                         <form t-attf-action="#{url_simulated_products}" role="search" method="get">
                             <t t-call="website.website_search_box" />
@@ -30,13 +32,25 @@
     <!-- Show collapsed categories and Catch not published categories if their child are published -->
     <template id="simulate_option_collapse_categories_recursive" name="Simulate Collapse Category Recursive Base">
         <li class="nav-item">
-            <i t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" t-attf-class="text-primary fa #{'fa-chevron-down' if c.parent_id else 'fa-chevron-right'}"
-               t-attf-title="#{'Unfold' if c.parent_id else 'Fold'}"
-               t-attf-aria-label="#{'Unfold' if c.parent_id else 'Fold'}" role="img"/>
-            <a t-att-href="keep('/category/%s' % c.slug if c.slug else '/shop/category/%s' % slug(c), category=0)"
-               t-attf-class="nav-link#{' active' if c.id == int(category or 0) or (product and product.public_categ_ids and c.id in product.public_categ_ids.mapped('id')) else ''}" t-field="c.name"/>
-            <ul t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))" class="nav nav-pills flex-column nav-hierarchy"
-                t-att-style="'display:block;' if category or c.parent_id or product_category and product_category.category_id.parent_id or (product and product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0) else 'display:none;'">
+            <div class="category-menu-img float-left">
+                <img class="img img-responsive" t-attf-src="/website/image/product.public.category/{{c.id}}/image/45x45" t-att-alt="c.name"/>
+            </div>
+            <div class="category-menu-name float-left ml-2">
+                <i t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))"
+                   t-attf-class="text-primary fa #{'fa-chevron-down' if c.id in parent_category_ids else 'fa-chevron-right'}"
+                   t-attf-title="#{'Unfold' if c.id in parent_category_ids else 'Fold'}"
+                   t-attf-aria-label="#{'Unfold' if c.id in parent_category_ids else 'Fold'}" role="img"/>
+                <a t-att-href="keep('/category/%s' % c.slug if c.slug else '/shop/category/%s' % slug(c), category=0)" t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))"
+                   t-attf-class="pt4 pb0 text-uppercase nav-link#{' active mb4 pl-2' if c.id == int(category or 0) or (product and product.public_categ_ids and c.id in product.public_categ_ids.mapped('id')) else ''}">
+                    <strong t-esc="c.name"/>
+                </a>
+                <a t-att-href="keep('/category/%s' % c.slug if c.slug else '/shop/category/%s' % slug(c), category=0)" t-else=""
+                   t-attf-class="pt4 pb0 text-uppercase nav-link#{' active mb4 pl-2' if c.id == int(category or 0) or (product and product.public_categ_ids and c.id in product.public_categ_ids.mapped('id')) else ''}"
+                   t-esc="c.name"/>
+            </div>
+            <ul t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))"
+                class="nav nav-pills flex-column nav-hierarchy parent-category"
+                t-att-style="'display:block;' if c.id in parent_category_ids or product_category and product_category.category_id in parent_category_ids else 'display:none;'">
                 <t t-foreach="c.child_id" t-as="c">
                     <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
                 </t>
@@ -47,12 +61,13 @@
     <!-- Show categories and Catch not published categories if their child are published -->
     <template id="simulate_products_categories" name="eCommerce Categories Base" inherit_id="website_base.simulate_products">
         <xpath expr="//div[@id='products_grid_before']" position="inside">
-            <ul class="nav nav-pills flex-column mt16" id="o_shop_collapse_category">
+            <ul class="nav nav-pills flex-column menu-category mt16" id="o_shop_collapse_category_custom">
                 <li class="nav-item">
-                    <a t-att-href="keep('/shop', category=0)" t-attf-class="nav-link#{'' if category or product_category and product_category.category_id else ' active'} o_not_editable">Todos los productos</a>
+                    <a t-att-href="keep('/shop', category=0)"
+                       t-attf-class="pt8 pb0 text-uppercase nav-link#{'' if category or product_category and product_category.category_id else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
                 </li>
                 <t t-foreach="categories" t-as="c">
-                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published or (not c.website_published and c.child_id.website_published)"/>
+                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
                 </t>
             </ul>
         </xpath>
@@ -100,8 +115,10 @@
         <form t-attf-action="#{url_simulated_products}" method="get">
             <!--            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />-->
             <div itemscope="itemscope" itemtype="http://schema.org/Product">
-                <div class="ribbon-wrapper">
-                    <a href="#" role="button" class="ribbon btn btn-danger">Oferta</a>
+                <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids[0].html_class if product.website_style_ids else ''}">
+                    <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">
+                        <span t-esc="product.website_style_ids[0].name if product.website_style_ids else product.website_style_ids.name"/>
+                    </a>
                 </div>
                 <div class="oe_product_image">
                     <a itemprop="url" t-att-href="product_href">
@@ -137,13 +154,26 @@
                         <t t-set="in_wish" t-value="product._is_in_wishlist()"/>
                         <input name="product_id" t-att-value="product_variant_id" type="hidden"/>
                         <t t-if="product_variant_id and len(request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_add_to_cart')])) &gt; 1">
-
                             <a href="#" role="button" class="btn btn-secondary btn-sm a-submit" aria-label="Shopping cart" title="Shopping cart">
                                 <span class="fa fa-shopping-cart" />
                             </a>
                         </t>
-                        <button t-if="product_variant_id and len(request.env['ir.ui.view'].search([('key', '=', 'website_sale_wishlist.add_to_wishlist')])) &gt; 1" type="button" role="button" class="btn btn-secondary btn-sm o_add_wishlist" t-att-disabled='in_wish or None' title="Add to Wishlist" t-att-data-product-template-id="product.id" t-att-data-product-product-id="product_variant_id" data-action="o_wishlist"><span class="fa fa-heart" role="img" aria-label="Add to wishlist"></span></button>
-                        <button t-if="product_variant_id and  len(request.env['ir.ui.view'].search([('key', '=', 'website_sale_comparison.add_to_compare')])) &gt; 1" type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-sm o_add_compare" title="Compare" aria-label="Compare" t-att-data-product-product-id="product_variant_id" data-action="o_comparelist"><span class="fa fa-exchange"></span></button>
+                        <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
+                        <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
+                           t-attf-class="d-md-inline-block btn btn-secondary btn-sm o_website_form_send #{'disabled' if current_quote and product in current_quote.product_ids else 'a'}"
+                           title="Add to request quote" aria-label="Add to request quote" rel="noindex, nofollow">
+                            <span class="fa fa-file-text-o"/>
+                        </a>
+                        <button t-if="product_variant_id and len(request.env['ir.ui.view'].search([('key', '=', 'website_sale_wishlist.add_to_wishlist')])) &gt; 1"
+                                type="button" role="button" class="btn btn-secondary btn-sm o_add_wishlist" t-att-disabled='in_wish or None' title="Add to Wishlist"
+                                t-att-data-product-template-id="product.id" t-att-data-product-product-id="product_variant_id" data-action="o_wishlist">
+                            <span class="fa fa-heart" role="img" aria-label="Add to wishlist"/>
+                        </button>
+                        <button t-if="product_variant_id and len(request.env['ir.ui.view'].search([('key', '=', 'website_sale_comparison.add_to_compare')])) &gt; 1"
+                                type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-sm o_add_compare" title="Compare" aria-label="Compare"
+                                t-att-data-product-product-id="product_variant_id" data-action="o_comparelist">
+                            <span class="fa fa-exchange"/>
+                        </button>
                     </div>
                 </section>
             </div>
@@ -192,6 +222,7 @@
             <div class="oe_product oe_list oe_product_cart" t-att-data-publish="product.website_published and 'on' or 'off'">
                 <t t-call="website_base.simulate_products_item">
                     <t t-set="show_publish" t-value="True" />
+                    <t t-set="show_list" t-value="True" />
                 </t>
             </div>
         </t>
@@ -202,9 +233,16 @@
         <t t-set="additional_title" t-value="product.name" />
         <div itemscope="itemscope" itemtype="http://schema.org/Product" id="wrap" class="js_sale">
             <!--<section t-attf-class="container py-2 oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''}" id="product_detail">-->
-            <section t-attf-class="container py-2 oe_website_sale" id="product_detail">
+            <section t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}" id="product_detail">
                 <div class="row">
                     <div class="col-sm-6">
+                        <!-- Ribbon -->
+                        <div t-attf-class="ribbon-wrapper-product-detail #{product.website_style_ids[0].html_class if product.website_style_ids else ''}">
+                            <a t-att-href="product_href" role="button" t-attf-class="ribbon-product-detail btn btn-danger">
+                                <span t-esc="product.website_style_ids[0].name if product.website_style_ids else product.website_style_ids.name"/>
+                            </a>
+                        </div>
+                        <!-- Carousel -->
                         <div id="o-carousel-product" class="carousel slide" data-ride="carousel" data-interval="0">
                             <div class="carousel-outer">
                                 <div class="carousel-inner">
@@ -214,7 +252,6 @@
                                         <div class="carousel-item" t-field="pimg.image" t-options='{"widget": "image", "class": "product_detail_img", "alt-field": "name", "zoom": "image", "itemprop": "image"}'/>
                                     </t>
                                 </div>
-
                                 <t t-if="len(image_ids) or variant_img">
                                     <a class="carousel-control-prev" href="#o-carousel-product" role="button" data-slide="prev" >
                                         <span class="fa fa-chevron-left" role="img" aria-label="Previous" title="Previous"/>
@@ -255,7 +292,7 @@
                         <hr t-if="attachment"/>
                         <div class="o_not_editable" t-if="attachment">
                             <h6 class="mb16"><strong>DOCUMENTOS RELACIONADOS</strong></h6>
-                            <a t-att-href="'/web/content/%s' % (attachment.id)" t-att-title="attachment.res_name" t-att-alt="attachment.res_name" t-att-download="attachment.res_name">
+                            <a t-att-href="'/web/content/%s' % (attachment.id)" t-att-title="attachment.res_name" t-att-alt="attachment.res_name" t-att-download="attachment.res_name" rel="noindex">
                                 <div class='oe_attachment_embedded o_image' t-att-data-mimetype="attachment.mimetype" t-att-data-src="'/web/image/%s/100x80' % (attachment.id)"/>
                                 <div class='oe_attachment_name text-truncate'><i class="fa fa-download"/> <t t-raw='attachment.res_name' /></div>
                             </a>
@@ -279,7 +316,13 @@
                                 </t>
                                 <t t-call="website_sale.product_price" />
                                 <p t-if="True" class="css_not_available_msg alert alert-warning">Esta combinación no existe.</p>
-                                <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#">Añadir al carrito</a>
+                                <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#"><span class="fa fa-shopping-cart" /></a>
+                                <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
+                                <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
+                                   t-attf-class="btn btn-secondary mt8 btn-lg o_website_form_send #{'disabled' if current_quote and product in current_quote.product_ids else 'a'}"
+                                   title="Add to request quote" aria-label="Add to request quote" rel="noindex, nofollow">
+                                    <span class="fa fa-file-text-o"/>
+                                </a>
                             </div>
                         </form>
                         <p t-if="not product.active" class="alert alert-warning">This product is no longer available.</p>

@@ -9,25 +9,25 @@
                         <div class="row">
                             <div class="col-lg-4 footer-company">
                                 <div class="footer-company-logo mb8">
-                                    <a href="/">
+                                    <a href="/" rel="noindex, nofollow">
                                         <span role="img" aria-label="Logo Dismac" title="Dismac"><img src="/website_dismac/static/img/dismac_logo_footer.png" class="img img-responsive logo" alt="Logo Dismac" title="Dismac"/></span>
                                     </a>
                                 </div>
                                 <address itemscope="itemscope" itemtype="http://schema.org/Organization">
                                     <ul class="list-unstyled mt32">
                                         <li><div t-field="res_company.partner_id" t-options='{"widget": "contact", "fields": ["address"]}'/></li>
-                                        <li><i class="fa fa-phone"/> <a t-field="res_company.partner_id.phone" t-att-href="'tel:%s' % res_company.partner_id.phone"/></li>
-                                        <li t-if="res_company.partner_id.mobile"> <i class="fa fa-phone"/><a t-field="res_company.partner_id.mobile" t-att-href="'tel:%s' % res_company.partner_id.mobile"/></li>
-                                        <li><i class="fa fa-envelope"/> <a t-field="res_company.partner_id.email" t-att-href="'mailto:%s' % res_company.partner_id.email"/></li>
+                                        <li><i class="fa fa-phone"/> <a t-field="res_company.partner_id.phone" t-att-href="'tel:%s' % res_company.partner_id.phone" rel="noindex, nofollow"/></li>
+                                        <li t-if="res_company.partner_id.mobile"> <i class="fa fa-phone"/><a t-field="res_company.partner_id.mobile" t-att-href="'tel:%s' % res_company.partner_id.mobile" rel="noindex, nofollow"/></li>
+                                        <li><i class="fa fa-envelope"/> <a t-field="res_company.partner_id.email" t-att-href="'mailto:%s' % res_company.partner_id.email" rel="noindex, nofollow"/></li>
                                     </ul>
                                 </address>
                             </div>
                             <div class="col-lg-4 footer-legal">
                                 <h5 class="text-uppercase">Menu</h5>
                                 <ul class="list-unstyled">
-                                    <li><a href="http://www.dismacpruebas.es.mialias.net/avisos-legales" alt="Enlace avisos legales" title="Avisos Legales" rel="nofollow" target="_blank">Avisos Legales</a></li>
-                                    <li><a href="http://www.dismacpruebas.es.mialias.net/politica-de-cookies" alt="Enlace política de cookies" title="Política de Cookies" rel="nofollow" target="_blank">Política de Cookies</a></li>
-                                    <li><a href="http://www.dismacpruebas.es.mialias.net/politica-de-privacidad" alt="Enlace política de privacidad" title="Política de Privacidad" rel="nofollow" target="_blank">Política de Privacidad</a></li>
+                                    <li><a href="http://www.dismacpruebas.es.mialias.net/avisos-legales" alt="Enlace avisos legales" title="Avisos Legales" rel="noindex, nofollow" target="_blank">Avisos Legales</a></li>
+                                    <li><a href="http://www.dismacpruebas.es.mialias.net/politica-de-cookies" alt="Enlace política de cookies" title="Política de Cookies" rel="noindex, nofollow" target="_blank">Política de Cookies</a></li>
+                                    <li><a href="http://www.dismacpruebas.es.mialias.net/politica-de-privacidad" alt="Enlace política de privacidad" title="Política de Privacidad" rel="noindex, nofollow" target="_blank">Política de Privacidad</a></li>
                                 </ul>
                             </div>
                             <div class="col-lg-4 footer-social">
@@ -35,11 +35,11 @@
                                     Síganos
                                 </h5>
                                 <ul class="list-unstyled">
-                                    <li t-if="website.social_linkedin"><a t-att-href="website.social_linkedin" rel="nofollow" target="_blank">Linkedin</a></li>
-                                    <li t-if="website.social_facebook"><a t-att-href="website.social_facebook" rel="nofollow" target="_blank">Facebook</a></li>
-                                    <li t-if="website.social_youtube"><a t-att-href="website.social_youtube" rel="nofollow" target="_blank">Youtube</a></li>
-                                    <li t-if="website.social_twitter"><a t-att-href="website.social_twitter" rel="nofollow" target="_blank">Twitter</a></li>
-                                    <li t-if="website.social_instagram"><a t-att-href="website.social_instagram" rel="nofollow" target="_blank">Instagram</a></li>
+                                    <li t-if="website.social_linkedin"><a t-att-href="website.social_linkedin" rel="noindex, nofollow" target="_blank">Linkedin</a></li>
+                                    <li t-if="website.social_facebook"><a t-att-href="website.social_facebook" rel="noindex, nofollow" target="_blank">Facebook</a></li>
+                                    <li t-if="website.social_youtube"><a t-att-href="website.social_youtube" rel="noindex, nofollow" target="_blank">Youtube</a></li>
+                                    <li t-if="website.social_twitter"><a t-att-href="website.social_twitter" rel="noindex, nofollow" target="_blank">Twitter</a></li>
+                                    <li t-if="website.social_instagram"><a t-att-href="website.social_instagram" rel="noindex, nofollow" target="_blank">Instagram</a></li>
                                 </ul>
                             </div>
                         </div>

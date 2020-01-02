@@ -1,0 +1,51 @@
+#products_grid_before {
+    padding-right: 0px;
+    & li.nav-item:nth-child(1n+1) {
+        height: 50px;
+        margin: 8px 0px;
+        border-bottom: @border-cat;
+    }
+    & li.nav-item:last-child {
+        border-bottom: none;
+        margin: 0px;
+    }
+}
+
+.menu-category {
+    padding: 8px;
+    border: @border-cat;
+    background: @color-bg-cat;
+}
+
+.oe_website_sale ul ul {
+    margin-left: 0px;
+}
+
+.parent-category {
+    position: absolute;
+    width: inherit;
+    top: 8px;
+    left: 100%;
+    z-index: 30;
+    background: @color-bg-cat;
+    margin-top: 8px;
+    border: @border-cat;
+    padding:10px 10px;
+    margin-left: 0px;
+}
+
+.nav-pills .nav-link.active {
+    padding-right: 2rem;
+}
+
+.category-menu-img {
+    height: 45px;
+    width: 20%;
+}
+
+.category-menu-name {
+    display:flex;
+    align-items:center;
+    height: 45px;
+    width: 75%;
+}

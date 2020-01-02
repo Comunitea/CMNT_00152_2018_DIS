@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <template id="website_sale_products_list_view" inherit_id="website_sale.products_list_view" name="List View Dismac">
+        <!-- Enable ribbon on list view -->
+        <xpath expr="//t[@t-call='website_sale.products_item']" position="inside">
+            <t t-set="show_list" t-value="True" />
+        </xpath>
+    </template>
+
+    <template id="website_sale_products_item" name="Products Item Dismac" inherit_id="website_sale.products_item">
+        <!-- Enable ribbon on list view -->
+        <xpath expr="//div[hasclass('ribbon-wrapper')]" position="replace">
+            <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids[0].html_class if product.website_style_ids else ''}">
+                <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">
+                    <span t-esc="product.website_style_ids[0].name if product.website_style_ids else product.website_style_ids.name"/>
+                </a>
+            </div>
+        </xpath>
+
+        <!-- Add Line to Historial Product Lists -->
+        <xpath expr="//form/div[@itemscope='itemscope']/section/div" position="after">
+            <t t-if="list_type and list_type=='historial'">
+                <div>
+                    <strong>Historical ordered quantity:</strong> <span t-esc="product._get_product_historical_ordered_qty(request.env.user)" />
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="products_add_to_request_quote" inherit_id="website_sale.products_item" name="Add to Request Quote">
+        <xpath expr="//div[hasclass('product_price')]" position="inside">
+            <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
+            <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
+               t-attf-class="d-md-inline-block btn btn-secondary btn-sm o_website_form_send #{'disabled' if current_quote and product in current_quote.product_ids else 'a'}"
+               title="Add to request quote" aria-label="Add to request quote" rel="noindex, nofollow">
+                <span class="fa fa-file-text-o"/>
+            </a>
+        </xpath>
+    </template>
+
+    <template id="website_sale_categories_recursive" name="Category list Dismac" inherit_id="website_sale.categories_recursive">
+        <xpath expr="//li//a" position="attributes">
+            <attribute name="t-attf-class" add="text-uppercase" separator=" "/>
+        </xpath>
+    </template>
+
+    <template id="website_sale_products_categories" inherit_id="website_sale.products_categories" name="eCommerce Categories Dismac">
+        <xpath expr="//ul" position="attributes">
+            <attribute name="class" add="menu-category" separator=" "/>
+        </xpath>
+        <xpath expr="//ul//li//a" position="attributes">
+            <attribute name="t-attf-class" add="text-uppercase mt8" separator=" "/>
+        </xpath>
+    </template>
+
+    <template id="website_sale_option_collapse_categories_recursive" name="Collapse Category Recursive Dismac" inherit_id="website_sale.option_collapse_categories_recursive">
+        <xpath expr="//li//i" position="replace"/>
+        <xpath expr="//li//a" position="replace">
+            <div class="category-menu-img float-left">
+                <img class="img img-responsive" t-attf-src="/website/image/product.public.category/{{categ.id}}/image/45x45" t-att-alt="categ.name"/>
+            </div>
+            <div t-attf-class="category-menu-name float-left ml-2">
+                <i t-if="categ.child_id" t-attf-class="text-primary fa #{'fa-chevron-down' if categ.id in parent_category_ids else 'fa-chevron-right'}"
+               t-attf-title="#{'Unfold' if categ.id in parent_category_ids else 'Fold'}"
+               t-attf-aria-label="#{'Unfold' if categ.id in parent_category_ids else 'Fold'}" role="img"/>
+                <a t-att-href="keep('/category/%s' % categ.slug if categ.slug else '/shop/category/%s' % slug(categ), category=0)" t-if="categ.child_id and (categ.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))"
+                   t-attf-class="pt4 pb0 text-uppercase nav-link#{' active mb4 pl-2 pr2' if categ.id == int(category or 0) or (product and product.public_categ_ids and categ.id in product.public_categ_ids.mapped('id')) else ''}">
+                    <strong t-esc="categ.name"/>
+                </a>
+                <a t-att-href="keep('/category/%s' % categ.slug if categ.slug else '/shop/category/%s' % slug(categ), category=0)" t-else=""
+                   t-attf-class=" pt4 pb0 text-uppercase nav-link#{' active mb4 pl-2' if categ.id == int(category or 0) or (product and product.public_categ_ids and categ.id in product.public_categ_ids.mapped('id')) else ''}"
+                   t-field="categ.name"/>
+            </div>
+        </xpath>
+        <xpath expr="//ul" position="attributes">
+            <attribute name="class" add="parent-category" separator=" "/>
+        </xpath>
+    </template>
+
+    <template id="website_sale_option_collapse_products_categories" name="Collapsible Category List Dismac" inherit_id="website_sale.option_collapse_products_categories">
+        <xpath expr="//ul" position="attributes">
+            <attribute name="id">o_shop_collapse_category_custom</attribute>
+        </xpath>
+        <xpath expr="//ul//li//a" position="attributes">
+            <attribute name="t-attf-class">pb0 text-uppercase nav-link#{'' if category else ' active mb4 pl-2 pr-2'} o_not_editable</attribute>
+        </xpath>
+        <xpath expr="//t[@t-call='website_sale.option_collapse_categories_recursive']" position="attributes">
+            <attribute name="t-if">categ.website_published</attribute>
+        </xpath>
+    </template>
+
+    <!-- Change product detail view to convert like a shop view and include ecommerce categories -->
+    <template id="website_sale_product" name="Product Dismac" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='wrap']" position="replace">
+            <t t-set="title">Dismac | Product | <t t-esc="product.name"/></t>
+            <t t-set="description"><t t-raw="product.description_short or product.description and product.description[0:20]"/></t>
+            <div id="wrap" class="js_sale">
+                <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
+                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">
+                    <div class="products_pager form-inline justify-content-center">
+                        <t t-call="website_sale.search">
+                            <t t-set="_classes">o_website_sale_search</t>
+                        </t>
+                        <t t-call="website_sale.pricelist_list">
+                            <t t-set="_classes">ml-2</t>
+                        </t>
+                        <t t-call="website.pager">
+                            <t t-set="_classes">ml-2</t>
+                        </t>
+                    </div>
+                    <div class="row mt-3">
+                        <div t-att-class="'col-lg-3 col-md-4 col-12' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'd-none'"
+                             id="products_grid_before">
+                            <t t-set="parent_category_ids" t-value="request.env['product.public.category'].get_parent_categories(category or product.public_categ_ids[0] if product.public_categ_ids else 0)"/>
+                            <ul class="nav nav-pills flex-column menu-category mt16 pt8" id="o_shop_collapse_category_custom">
+                                <li class="nav-item">
+                                    <a t-att-href="keep('/shop', category=0)" t-attf-class="pt8 pb0 text-uppercase nav-link#{'' if category or (product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0) else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
+                                </li>
+                                <t t-foreach="categories" t-as="c">
+                                    <!-- Catch not published categories if their child are published -->
+                                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
+                                </t>
+                            </ul>
+                        </div>
+                        <div t-att-class="'col-lg-9 col-md-8 mt16 mb32' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'col-lg-12 mb32'"
+                             id="products_grid">
+
+                            <t t-set="first_possible_combination" t-value="product._get_first_possible_combination()"/>
+                            <t t-set="combination_info" t-value="product._get_combination_info(first_possible_combination, add_qty=add_qty or 1, pricelist=pricelist)"/>
+                            <t t-set="product_variant" t-value="product.env['product.product'].browse(combination_info['product_id'])"/>
+                            <t t-set="additional_title" t-value="product.name" />
+                            <t t-set="variant_img" t-value="product_variant and product_variant.image_variant"/>
+                            <t t-set="image_ids"  t-value="product.product_image_ids"/>
+
+                            <!-- Product head -->
+                            <div class="simulated-product-title mb4 text-uppercase">
+                                <h6 t-esc="product.public_categ_ids[0].parent_id.name if product.public_categ_ids and product.public_categ_ids[0].parent_id else product.public_categ_ids[0].name if product.public_categ_ids and product.public_categ_ids[0] else 'Producto'"/>
+                                <h4><span t-esc="product.public_categ_ids[0].name if product.public_categ_ids and product.public_categ_ids[0] else product.name"/></h4>
+                            </div>
+
+                            <!-- Product content -->
+                            <div itemscope="itemscope" itemtype="http://schema.org/Product" class="js_sale">
+                                <section t-attf-class="container oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''} #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}" id="product_detail">
+                                    <div class="row">
+                                        <!-- Product Carousel Image -->
+                                        <div class="col-md-6">
+                                            <!-- Ribbon -->
+                                            <div t-attf-class="ribbon-wrapper-product-detail #{product.website_style_ids[0].html_class if product.website_style_ids else ''}">
+                                                <a t-att-href="product_href" role="button" t-attf-class="ribbon-product-detail btn btn-danger">
+                                                    <span t-esc="product.website_style_ids[0].name if product.website_style_ids else product.website_style_ids.name"/>
+                                                </a>
+                                            </div>
+                                            <div id="o-carousel-product" class="carousel slide" data-ride="carousel" data-interval="0">
+                                                <div class="carousel-outer">
+                                                    <div class="carousel-inner">
+                                                        <div t-if="variant_img" class="carousel-item active" t-field="product_variant.image" t-options="{'widget': 'image', 'class': 'product_detail_img js_variant_img', 'alt-field': 'name', 'zoom': 'image', 'unique': str(product['__last_update']) + (str(product_variant['__last_update']) or ''), 'itemprop': 'image'}"/>
+                                                        <div t-attf-class="carousel-item#{'' if variant_img else ' active'}" t-field="product.image" t-options="{'widget': 'image', 'class': 'product_detail_img', 'alt-field': 'name', 'zoom': 'image', 'unique': product['__last_update'], 'itemprop': 'image'}"/>
+                                                        <t t-if="len(image_ids)" t-foreach="image_ids" t-as="pimg">
+                                                            <div class="carousel-item" t-field="pimg.image" t-options='{"widget": "image", "class": "product_detail_img", "alt-field": "name", "zoom": "image", "itemprop": "image"}'/>
+                                                        </t>
+                                                    </div>
+                                                    <t t-if="len(image_ids) or variant_img">
+                                                        <a class="carousel-control-prev" href="#o-carousel-product" role="button" data-slide="prev" rel="noindex, nofollow">
+                                                            <span class="fa fa-chevron-left" role="img" aria-label="Previous" title="Previous"/>
+                                                        </a>
+                                                        <a class="carousel-control-next" href="#o-carousel-product" role="button" data-slide="next" rel="noindex, nofollow">
+                                                            <span class="fa fa-chevron-right" role="img" aria-label="Next" title="Next"/>
+                                                        </a>
+                                                    </t>
+                                                </div>
+                                                <ol class="carousel-indicators" t-if="len(image_ids) or variant_img">
+                                                    <li t-if="variant_img" data-target="#o-carousel-product" data-slide-to="0" class="active">
+                                                        <img class="img img-fluid js_variant_img_small" t-attf-src="/website/image/product.product/{{product_variant.id}}/image/90x90" t-att-alt="product.name"/>
+                                                    </li>
+                                                    <li data-target="#o-carousel-product" t-att-data-slide-to="1 if variant_img else '0'" t-att-class="'' if variant_img else 'active'">
+                                                        <img class="img img-fluid" t-attf-src="/website/image/product.template/{{product.id}}/image/90x90" t-att-alt="product.name"/>
+                                                    </li>
+                                                    <t t-if="len(image_ids)" t-foreach="image_ids" t-as="pimg">
+                                                        <li data-target="#o-carousel-product" t-att-data-slide-to="pimg_index + (variant_img and 2 or 1)">
+                                                            <img class="img img-fluid" t-attf-src="/website/image/product.image/{{pimg.id}}/image/90x90" t-att-alt="pimg.name"/>
+                                                        </li>
+                                                    </t>
+                                                </ol>
+                                            </div>
+                                        </div>
+
+                                        <!-- Product detail -->
+                                        <div class="col-md-6 col-xl-4 offset-xl-2" id="product_details">
+                                            <h4 itemprop="name" t-field="product.name">Product Name</h4>
+                                            <hr/>
+                                            <div class="product_details-sku" t-if="product.default_code">
+                                                <strong>SKU: </strong><span itemprop="sku" t-esc="product.default_code"/>
+                                                <hr/>
+                                            </div>
+                                            <div class="o_not_editable" t-if="product.description_short">
+                                                <p itemprop="description" t-field="product.description_short" class="text-muted" />
+                                                <hr/>
+                                            </div>
+                                            <span itemprop="url" style="display:none;" t-esc="'/product/%s' % product.slug if product.slug else keep('/shop/product/%s' % slug(product))"/>
+                                            <form t-if="product._is_add_to_cart_possible()" action="/shop/cart/update" method="POST">
+                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                <div class="js_product js_main_product">
+                                                    <t t-placeholder="select">
+                                                        <input type="hidden" class="product_id" name="product_id" t-att-value="product_variant.id" />
+                                                        <input type="hidden" class="product_template_id" name="product_template_id" t-att-value="product.id" />
+                                                        <t t-if="first_possible_combination" t-call="sale.variants">
+                                                            <t t-set="ul_class" t-value="'flex-column'" />
+                                                            <t t-set="parent_combination" t-value="None" />
+                                                        </t>
+                                                        <t t-else="">
+                                                            <ul class="d-none js_add_cart_variants" t-att-data-attribute_exclusions="{'exclusions: []'}"/>
+                                                        </t>
+                                                    </t>
+                                                    <t t-call="website_sale.product_price" />
+                                                    <p t-if="True" class="css_not_available_msg alert alert-warning">This combination does not exist.</p>
+                                                    <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#" rel="noindex, nofollow"><span class="fa fa-shopping-cart" /></a>
+                                                    <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
+                                                    <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
+                                                       t-attf-class="btn btn-secondary mt8 btn-lg o_website_form_send #{'disabled' if current_quote and product in current_quote.product_ids else 'a'}"
+                                                       title="Add to request quote" aria-label="Add to request quote" rel="noindex, nofollow">
+                                                        <span class="fa fa-file-text-o"/>
+                                                    </a>
+                                                    <t t-if="request.website.viewref('website_sale_comparison.add_to_compare').active">
+                                                        <t t-set="product_variant" t-value="product_variant or product._create_first_product_variant()"/>
+                                                        <button t-if="product_variant" type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-lg mt8 o_add_compare_dyn" title="Compare" aria-label="Compare" t-att-data-product-product-id="product_variant.id" data-action="o_comparelist"><span class="fa fa-exchange"/></button>
+                                                    </t>
+
+                                                </div>
+                                            </form>
+                                            <p t-elif="not product.active" class="alert alert-warning">This product is no longer available.</p>
+                                            <p t-else="" class="alert alert-warning">This product has no valid combination.</p>
+
+                                            <!-- Send to quote form page -->
+                                            <div class="product-quote-request">
+                                                <label class="mt16 text-muted">
+                                                    <strong>Si desea añadir este producto a una petición de presupuesto especial, pulse
+                                                        <a t-att-href="'/presupuestos?add_product=%s' % product.id" class="o_website_form_send" rel="noindex, nofollow" title="Add to current quote" aria-label="Add to current quote">aquí</a>.</strong>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <div itemprop="description" t-field="product.website_description" class="oe_structure mt16" id="product_full_description">
+                                    <div class="o_not_editable">
+                                        <hr/>
+                                        <p t-field="product.description"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="website_sale_products" name="Products Dismac" inherit_id="website_sale.products">
+        <!-- Set padding by breadcrumbs bar -->
+        <xpath expr="//div[hasclass('container', 'py-2', 'oe_website_sale')]" position="attributes">
+            <attribute name="t-attf-class">container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}</attribute>
+        </xpath>
+        
+        <!-- Set dynamic title by content -->
+        <xpath expr="//div[@id='products_grid']/table" position="before">
+            <t t-set="title">Dismac | Tienda</t>
+            <t t-set="description">Revise y compre todos nuestros productos</t>
+            <!-- Product list head -->
+            <div class="simulated-product-title mt16 mb32">
+                <t t-if="list_type and list_type == 'pricelist'">
+                    <h1>Tarifa Bienvenida</h1>
+                    <p>Esta es la Tarifa bienvenida, donde ver los artículos con el precio de cliente Dismac. Si lo desea puede ordenar también el listado en función de los códigos de producto</p>
+                </t>
+                <t t-else="">
+                    <span class="text-uppercase" t-esc="category.parent_id.name if category and category.parent_id else 'Bienvenido a Dismac, {}'.format(request.env.user.name)"/>
+                    <h1><span class="text-uppercase" t-esc="category.name if category else 'Tienda'"/></h1>
+                </t>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

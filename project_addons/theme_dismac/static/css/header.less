@@ -15,13 +15,16 @@ header {
     & .navbar-light .navbar-nav .nav-link {
         color: @color-text-header;
         font-size: 18px;
-        &:hover {
+        font-weight: bold;
+        text-decoration-color: @color-secondary;
+        &:hover{
+            color: @color-secondary;
+        }
+        &:focus, &.active {
             color: @color-secondary;
         }
     }
-    & .navbar-light .navbar-nav .nav-link.active, .nav-link {
+    & .navbar-light .navbar-nav .show > .nav-link {
         color: @color-secondary;
-        font-weight: bold;
-        text-decoration-color: @color-secondary;
     }
 }

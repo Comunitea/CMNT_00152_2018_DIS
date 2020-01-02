@@ -4,6 +4,10 @@
     <!-- Show simulate Product like simulated products shop -->
     <template id="simulate_product_offer" name="Simulate Product Offer Base" inherit_id="website_base.simulate_products">
         <xpath expr="//div[@id='products_grid']" position="inside">
+            <t t-set="title" t-if="offer_list">Dismac | Ofertas</t>
+            <t t-set="title" t-else="">Dismac | Oferta | <t t-esc="offer.name"/></t>
+            <t t-set="description" t-if="offer_list">Revise, descargue, compre o haga una solicitud de presupuesto de nuestras ofertas</t>
+            <t t-set="description" t-else=""><t t-esc="offer.subtitle or offer.description[0:20]"/></t>
             <t t-call="website_base.product_offers" t-if="offer_list">
                 <t t-set="url_simulated_products" t-value="url_simulated_products"/>
                 <t t-set="url_simulated_product_templates" t-value="url_simulated_product_templates"/>
@@ -31,7 +35,6 @@
 
     <!-- Offer Detail -->
     <template id="product_offer" name="Product Offer Base">
-        <t t-set="additional_title">Oferta <span t-esc="offer.name"/></t>
         <div class="simulated-product-title mb4">
             <span>Oferta activa desde: <span t-esc="offer.start_date"/></span>
             <h1><span t-esc="offer.category_id.name if offer.category_id else offer.name"/></h1>

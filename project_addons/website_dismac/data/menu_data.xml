@@ -35,7 +35,7 @@
 
         <record id="menu_pricelist" model="website.menu">
             <field name="name">Tarifas</field>
-            <field name="url">/page/tarifas</field>
+            <field name="url">/tarifas</field>
             <field name="parent_id" ref="website_dismac.main_menu"/>
             <field name="sequence" type="int">30</field>
             <field name="website_id" ref="website_dismac.dismac_website"/>
@@ -63,19 +63,9 @@
             <field name="user_not_logged">True</field>
         </record>
 
-        <record id="menu_history" model="website.menu">
-            <field name="name">Historial</field>
-            <field name="url">/page/historial</field>
-            <field name="parent_id" ref="website_dismac.main_menu"/>
-            <field name="sequence" type="int">60</field>
-            <field name="website_id" ref="website_dismac.dismac_website"/>
-            <field name="user_logged">True</field>
-            <field name="user_not_logged">True</field>
-        </record>
-
         <record id="menu_quote" model="website.menu">
             <field name="name">Presupuestos</field>
-            <field name="url">/presupuesto</field>
+            <field name="url">/presupuestos</field>
             <field name="parent_id" ref="website_dismac.main_menu"/>
             <field name="sequence" type="int">70</field>
             <field name="website_id" ref="website_dismac.dismac_website"/>
