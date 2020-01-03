@@ -2,7 +2,7 @@
 <odoo>
     <data>
 
-        <template id="report_saleorder_document_custom" inherit_id="sale.report_saleorder_document">
+        <template id="report_saleorder_document_custom" inherit_id="sale_order_report_product_image.report_saleorder_document_image">
             <xpath expr="//t[@t-if='doc.partner_shipping_id == doc.partner_invoice_id
                              and doc.partner_invoice_id != doc.partner_id
                              or doc.partner_shipping_id != doc.partner_invoice_id']" position="replace"/>
@@ -27,6 +27,10 @@
                 <p style="margin: 0;">&amp;bull; No se admitirá ninguna modificación o anulación de este presupuesto una vez aceptado.</p>
                 <p style="margin: 0;">&amp;bull; Validez del presupuesto: 15 días. Presupuesto válido durante el mes en curso, salvo error de omisión.</p>
                 <p style="margin: 0;">&amp;bull; Montaje e instalación de los artículos no incluído, salvo que esté reflejado explícitamente en este documento. Por lo que se valorarán aparte y se ejecutarán, previa aceptación del cliente.</p>
+            </xpath>
+            <xpath expr="//span[@t-field='line.product_id.image_small']" position="replace">
+                <span t-if="not line.image_small" t-field="line.product_id.image_small" t-options="{'widget': 'image', 'class': 'img-rounded'}"/>
+                <span t-if="line.image_small" t-field="line.image_small" t-options="{'widget': 'image', 'class': 'img-rounded'}"/>
             </xpath>
         </template>
 
