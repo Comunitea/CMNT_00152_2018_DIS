@@ -283,7 +283,7 @@ class ProductImportWzd(models.TransientModel):
         if not import_name:
             domain = [('name', '=', 'Generico')]
             location_id = self.env['stock.location'].search_read(domain, ['id'], limit=1)
-            return location_id
+            return location_id[0]['id']
 
         sl_dom = [('usage', '=', 'internal'), ('import_name', '=', import_name)]
         location_id = self.env['stock.location'].search_read(sl_dom, ['id'], limit=1)
