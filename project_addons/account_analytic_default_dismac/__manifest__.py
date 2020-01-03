@@ -12,7 +12,8 @@
         "sale",
         "purchase",
         "account_analytic_default",
-        "custom_analytic_account"
+        "custom_analytic_account",
+        "custom_commission_dismac"
     ],
     "data": [
         "views/account_analytic_default_account_view.xml"

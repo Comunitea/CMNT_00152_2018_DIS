@@ -14,7 +14,7 @@
         "sale",
         "sale_order_type",
         "sale_commission",
-        "sale_margin",
+        "sale_margin_percentage_dismac",
         "sale_order_revision",
         "sale_order_line_form_button",
         "sale_order_action_invoice_create_hook",

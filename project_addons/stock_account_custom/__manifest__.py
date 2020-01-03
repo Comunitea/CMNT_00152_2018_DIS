@@ -12,7 +12,6 @@
     "depends": [
         "stock_account",
         "purchase_last_price_info",
-        "sale_margin",
         "customer_price",
     ],
     "data": [
