@@ -63,6 +63,8 @@
                     <field name="start_line"/>
                     <field name="end_line"/>
                     <field name="only_create_locations"/>
+                    <field name="only_test_product"/>
+                    
                 </group>
                 <footer>
                     <button name="import_products" type="object" class="btn-primary" string="Import Products"/>
