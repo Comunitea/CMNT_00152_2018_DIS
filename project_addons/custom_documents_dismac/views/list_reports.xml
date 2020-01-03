@@ -128,16 +128,16 @@
 
 <!--Pedido -->
 
-        <!--<report
+        <report
             id="order"
             model="sale.order"
-            string="Pedido"
+            string="Pedido interno"
             report_type="qweb-pdf"
             name="custom_documents_dismac.order_report"
             file="custom_documents_dismac.order_report"
             print_report_name="'Order - %s' % (object.name)"
 
-        />-->
+        />
 
     </data>
 </odoo>

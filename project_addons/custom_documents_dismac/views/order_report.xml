@@ -41,16 +41,8 @@
                 <div>
                     <div class="row" >
                         <div name="invoice_address" class="col-6">
-                            <p><strong>Dirección de Facturación</strong></p>
-                            <div style="border: 1px solid black; padding: 4px;">
-                                <address t-field="o.partner_id"
-                                    t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
-                                <div t-if="o.partner_id.vat" class="mt16"><t t-esc="o.company_id.country_id.vat_label or 'TIN'"/>: <span t-field="o.partner_id.vat"/></div>
-                            </div>
                         </div>
-
                         <div name="invoice_address" class="col-6">
-                            <p><strong>Dirección Postal</strong></p>
                             <div style="border: 1px solid black; padding: 4px;">
                                 <address t-field="o.partner_id"
                                     t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
@@ -60,7 +52,7 @@
                     </div>
                     <br/>
                     <div class="row">
-                        <div class="col-4 offset-4 text-center"><strong>FACTURA</strong></div>
+                        <div class="col-4 offset-4 text-center"><strong>PEDIDO</strong></div>
                     </div>
                     <br/><br/>
                     <div class="row">
@@ -71,22 +63,25 @@
                     </div>
                     <div class="row">
                         <div class="col-2 offset-1 text-center"><span t-field="o.name"/></div>
-                        <div class="col-3 text-center"><span t-field="o.confirmation_date"/></div>
-                        <div class="col-3 text-center"><span t-field="o.commitment_date"/></div>
+                        <div class="col-3 text-center"><span t-field="o.date_order" t-options="{'widget': 'date'}"/></div>
+                        <div class="col-3 text-center"><span t-field="o.commitment_date" t-options="{'widget': 'date'}"/></div>
                         <div class="col-2 text-center"><span t-field="o.user_id"/></div>
                     </div>
                     <br/><br/>
                     <div class="row">
-                        <div class="offset-1" >REF. CLIENTE: <span t-field="o.partner_id.ref"/></div>
+                        <div class="col-3 offset-1" >REF. CLIENTE: <span t-field="o.client_order_ref"/></div>
                     </div>
+                    <t t-set="display_discount" t-value="any([l.discount for l in o.order_line])"/>
                     <table class="table table-sm o_main_table">
                         <thead style="border: 1px solid black;">
                             <tr>
-                                <th style="border: 1px solid black;">REFERENCIA</th>
                                 <th style="border: 1px solid black;">DESCRIPCIÓN</th>
                                 <th style="border: 1px solid black;">CANTIDAD</th>
                                 <th style="border: 1px solid black;">PENDIENTE</th>
-                                <th style="border: 1px solid black;">PRECIO</th>
+                                <th style="border: 1px solid black;" class="text-right">PRECIO</th>
+                                <th style="border: 1px solid black;" t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
+                                    <span>DTO</span>
+                                </th>
                                 <th class="text-right" style="border: 1px solid black;">IVA</th>
                                 <th class="text-right" style="border: 1px solid black;">TOTAL</th>
                             </tr>
@@ -94,25 +89,25 @@
                        <tbody class="order_tbody">
                             <t t-foreach="o.order_line.filtered(lambda r: not r.display_type)" t-as="o_line">
                                 <tr>
-                                    <td>
-                                        <span t-field="o_line.product_id.default_code"/>
+                                    <td style="border: 0;">
+                                        <span t-field="o_line.name"/>
                                     </td>
-                                    <td>
-                                        <span t-field="o_line.product_id"/>
-                                    </td>
-                                    <td>
+                                    <td style="border: 0;">
                                         <span t-field="o_line.product_uom_qty"/>
                                     </td>
-                                    <td>
+                                    <td style="border: 0;">
                                         <span t-esc="o_line.product_uom_qty - o_line.qty_delivered"/>
                                     </td>
-                                    <td>
+                                    <td style="border: 0;" class="text-right">
                                         <span t-field="o_line.price_unit" t-options="{'precision': o.partner_id.commercial_partner_id.decimals}"/>
                                     </td>
-                                    <td class="text-right">
-                                        <span t-field="o_line.tax_id.amount"/>
+                                    <td style="border: 0;" t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
+                                        <span t-field="o_line.discount"/>
                                     </td>
-                                    <td class="text-right">
+                                    <td style="border: 0;" class="text-right">
+                                        <span t-esc="', '.join(map(lambda x: (x.name), o_line.tax_id))"/>
+                                    </td>
+                                    <td style="border: 0;" class="text-right">
                                         <span t-field="o_line.price_total"/>
                                     </td>
                                 </tr>
@@ -166,7 +161,7 @@
 
 
                 <div class = "row">
-                    <div class="col-6" style="font-size: 60%;"><p>Importe mínimo para preparación de pedido: 20€</p></div>
+                    <div class="col-6" style="font-size: 90%;"><p>Importe mínimo para preparación de pedido: 20€</p></div>
                 </div>
 
             </div>

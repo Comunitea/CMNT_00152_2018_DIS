@@ -60,7 +60,10 @@
                                         <span t-if="line.image_small" t-field="line.image_small" t-options="{'widget': 'image', 'class': 'img-rounded'}"/>
                                         <span t-if="not line.image_small" t-field="line.product_id.image_small" t-options="{'widget': 'image', 'class': 'img-rounded'}"/>
                                     </td>
-                                    <td><span t-field="line.name"/></td>
+                                    <td>
+                                        <span t-if="line.notes" t-raw="line.notes"/>
+                                        <span t-if="not line.notes" t-field="line.name"/>
+                                    </td>
                                     <td>
                                         <span t-field="line.product_uom_qty"/>
                                         <span t-field="line.product_uom" groups="uom.group_uom"/>
