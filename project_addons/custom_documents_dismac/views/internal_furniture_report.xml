@@ -4,7 +4,7 @@
 
         <template id="report_budget_internal_furniture_document">
             <t t-call="web.external_layout">
-            <div class="article o_report_layout_standard">
+            <div class="page">
                 <!--CUERPO-->
                 <div class="row">
                     <div class="col-xs-5" style="text-center">

@@ -17,6 +17,7 @@
                     <div class="col-6 offset-2">
                         <div style="border: 1px solid black; padding: 4px;">
                             <div><span t-field="o.partner_id.name"/></div>
+                            <div t-if="o.partner_id.comercial"><span t-field="o.partner_id.comercial"/></div>
                             <div t-if="o.partner_id.street"><span t-field="o.partner_id.street"/></div>
                             <div t-if="o.partner_id.zip or o.partner_id.city"><span t-field="o.partner_id.zip"/> <span t-field="o.partner_id.city"/></div>
                             <div t-if="o.partner_id.state_id"><span t-field="o.partner_id.state_id"/></div>
@@ -101,7 +102,7 @@
 
                             <t t-if="current_section and (line_last or o.order_line[line_index+1].display_type == 'line_section')">
                                 <tr class="is-subtotal text-right">
-                                    <td colspan="99">
+                                    <td colspan="99" style="border: 0;">
                                         <strong class="mr16">Subtotal</strong>
                                         <span
                                             t-esc="current_subtotal"

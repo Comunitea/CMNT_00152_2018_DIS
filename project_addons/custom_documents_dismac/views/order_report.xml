@@ -24,15 +24,15 @@
                 <tr><td style="border: 0;">Conforme el cliente</td></tr>
             </xpath>
             <xpath expr="//div[@name='signature']" position="after">
-                <p>&amp;bull; No se admitirá ninguna modificación o anulación de este presupuesto una vez aceptado.</p>
-                <p>&amp;bull; Validez del presupuesto: 15 días. Presupuesto válido durante el mes en curso, salvo error de omisión.</p>
-                <p>&amp;bull; Montaje e instalación de los artículos no incluído, salvo que esté reflejado explícitamente en este documento. Por lo que se valorarán aparte y se ejecutarán, previa aceptación del cliente.</p>
+                <p style="margin: 0;">&amp;bull; No se admitirá ninguna modificación o anulación de este presupuesto una vez aceptado.</p>
+                <p style="margin: 0;">&amp;bull; Validez del presupuesto: 15 días. Presupuesto válido durante el mes en curso, salvo error de omisión.</p>
+                <p style="margin: 0;">&amp;bull; Montaje e instalación de los artículos no incluído, salvo que esté reflejado explícitamente en este documento. Por lo que se valorarán aparte y se ejecutarán, previa aceptación del cliente.</p>
             </xpath>
         </template>
 
         <template id="report_order_document">
             <t t-call="web.external_layout">
-            <div class="article o_report_layout_standard">
+            <div class="page">
                 <!-- CUERPO FACTURA -->
                 <div>
                     <div class="row" >
