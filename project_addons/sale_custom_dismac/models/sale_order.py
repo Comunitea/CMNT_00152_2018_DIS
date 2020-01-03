@@ -330,6 +330,9 @@ class SaleOrderLine(models.Model):
 
     notes = fields.Text("Advanced Description")
     internal_notes = fields.Text("Notas internas")
+    import_qty_delivered = fields.Float("Imported qty delivered", default=0)
+    picking_imported = fields.Char("Imported picking")
+    date_picking_imported = fields.Date("Date Imported picking")
 
     image_variant = fields.Binary(
         "Alternative image for line", attachment=True,
@@ -346,6 +349,28 @@ class SaleOrderLine(models.Model):
         "Alternative image for line", compute='_compute_images',
         inverse='_set_image_medium',
         help="Image of the product variant (Medium-sized image of product template if false).")
+
+
+####### PARTE TEMPORAL PARA ASUMIR LA PARTE NO ENTREGADA EN LOS PEDIDOS DE
+    # VENTA IMPORTADOS
+
+    def _get_qty_procurement(self):
+        qty = super()._get_qty_procurement()
+        if self.import_qty_delivered and self.picking_imported:
+            qty += self.import_qty_delivered
+        return qty
+
+    @api.multi
+    @api.depends('move_ids.state', 'move_ids.scrapped',
+                 'move_ids.product_uom_qty', 'move_ids.product_uom')
+    def _compute_qty_delivered(self):
+        super()._compute_qty_delivered()
+        for line in self:  # TODO: maybe one day, this should be done in SQL for performance sake
+            if line.qty_delivered_method == 'stock_move':
+                if line.import_qty_delivered and line.picking_imported:
+                    line.qty_delivered += line.import_qty_delivered
+
+#############################################################################
 
     @api.one
     @api.depends('image_variant')

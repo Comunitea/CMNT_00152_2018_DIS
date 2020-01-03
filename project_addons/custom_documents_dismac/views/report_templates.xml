@@ -1,45 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-<!-- CABECERA  header layout -->
-    <template id="header_layout_custom">
-        <div class="header">
-            <div class="row">
-                <div class="col-xs-3 mb4">
-                    <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % to_text(o.company_id.logo)" style="max-height: 25px;"/>
-                </div>
-                <br/>
-                <div class="col-xs-9 text-right" style="margin-top:22px;" t-field="o.company_id.report_header" name="moto"/>
-            </div>
-            <div t-if="o.company_id.logo or o.company_id.report_header" class="row zero_min_height">
-                <div class="col-xs-12">
-                    <div/>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6" name="company_address">
-                    <span t-field="o.company_id.partner_id"
-                        t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'/>
-                        CIF: <span t-field="o.company_id.vat"/>
-                </div>
-                <div  class=" col-6 text-right">
-                    <div t-if="o.company_id.phone"> Telf. <span t-field="o.company_id.phone"/></div>
-                    <div t-if="o.company_id.website"><span t-field="o.company_id.website"/></div>
-                    <div t-if="o.company_id.email">email: <span t-field="o.company_id.email"/></div>
-                </div>
-            </div>
-        </div>
+    <template id="external_layout_standard_custom" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[@t-if='company.logo or company.report_header']" position="replace"/>
+        <xpath expr="//div[hasclass('o_standard_footer')]//ul[hasclass('list-inline')]" position="replace">
+            <ul class="list-inline mb0">
+                <li t-if="company.phone" class="list-inline-item"><span t-field="company.phone"/></li>
+                <li t-if="company.email" class="list-inline-item"><span t-field="company.email"/></li>
+                <li t-if="company.website" class="list-inline-item"><span t-field="company.website"/></li>
+            </ul>
+        </xpath>
+        <xpath expr="//div[@t-field='company.partner_id']" position="after">
+            CIF: <span t-esc="company.vat.replace(' ','\N{NO-BREAK SPACE}')"/>
+        </xpath>
+        <xpath expr="//div[hasclass('header')]" position="attributes">
+            <attribute name="style">font-size: 11px;</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_report_layout_standard')]" position="attributes">
+            <attribute name="style">font-size: 11px;</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_standard_footer')]" position="attributes">
+            <attribute name="style">font-size: 11px;</attribute>
+        </xpath>
+    </template>
+
+     <template id="address_layout_custom" inherit_id="web.address_layout">
+         <xpath expr="//t[@t-set='colclass']" position="attributes">
+            <attribute name="t-value">('col-md-6' if report_type == 'html' else 'col-6') + ' ml-auto'</attribute>
+         </xpath>
     </template>
 
 <!-- PIE footer layout  -->
-
-    <template id="footer_layout_custom">
-        <div class="footer text-center" style="border-top: 1px solid black;">
-            <div class="row">
-                <p>Inscrita en el Registro Mercantil de Pontevedra, Folio 206, Libro 765 Soc, Inscrip. 3a Hoja PO-5165</p>
-            </div>
-        </div>
-    </template>
 
     <template id="footer_budget_layout_custom">
         <div class="footer ">

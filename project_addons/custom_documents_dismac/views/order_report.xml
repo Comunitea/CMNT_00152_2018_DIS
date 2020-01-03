@@ -2,10 +2,37 @@
 <odoo>
     <data>
 
-        <template id="report_order_document">
+        <template id="report_saleorder_document_custom" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//t[@t-if='doc.partner_shipping_id == doc.partner_invoice_id
+                             and doc.partner_invoice_id != doc.partner_id
+                             or doc.partner_shipping_id != doc.partner_invoice_id']" position="replace"/>
+            <xpath expr="//p[@t-field='doc.confirmation_date']" position="attributes">
+                <attribute name="t-options">{"widget": "date"}</attribute>
+            </xpath>
+            <xpath expr="//p[@t-field='doc.date_order']" position="attributes">
+                <attribute name="t-options">{"widget": "date"}</attribute>
+            </xpath>
+            <xpath expr="//span[contains(@t-esc, 'line.tax_id')]" position="attributes">
+                <attribute name="t-esc">', '.join(map(lambda x: (x.name), line.tax_id))</attribute>
+            </xpath>
+            <xpath expr="//div[@name='payment_term']" position="replace"/>
+            <xpath expr="//p[@t-field='doc.validity_date']/.." position="replace"/>
+            <xpath expr="//span[@t-field='doc.payment_term_id.note']" position="before">
+                <strong>Plazo de pago:</strong>
+            </xpath>
+            <xpath expr="//tr[hasclass('o_total')]" position="after">
+                <tr><td style="border: 0;">Conforme el cliente</td></tr>
+            </xpath>
+            <xpath expr="//div[@name='signature']" position="after">
+                <p style="margin: 0;">&amp;bull; No se admitirá ninguna modificación o anulación de este presupuesto una vez aceptado.</p>
+                <p style="margin: 0;">&amp;bull; Validez del presupuesto: 15 días. Presupuesto válido durante el mes en curso, salvo error de omisión.</p>
+                <p style="margin: 0;">&amp;bull; Montaje e instalación de los artículos no incluído, salvo que esté reflejado explícitamente en este documento. Por lo que se valorarán aparte y se ejecutarán, previa aceptación del cliente.</p>
+            </xpath>
+        </template>
 
-            <div class="article o_report_layout_standard">
-                <t t-call="custom_documents_dismac.header_layout_custom"/>
+        <template id="report_order_document">
+            <t t-call="web.external_layout">
+            <div class="page">
                 <!-- CUERPO FACTURA -->
                 <div>
                     <div class="row" >
@@ -139,9 +166,7 @@
                 </div>
 
             </div>
-
-
-
+            </t>
         </template>
 
 

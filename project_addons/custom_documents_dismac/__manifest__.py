@@ -13,6 +13,7 @@
         "account",
         "account_due_dates_str",
         "partner_variable_decimals",
+        'sale_order_report_product_image'
     ],
     "data": [
         "views/list_reports.xml",
