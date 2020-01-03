@@ -349,7 +349,7 @@ class ProductImportWzd(models.TransientModel):
             default_code = row_vals['default_code']
             pp_dom = [('default_code', '=', default_code)]
             product_id = self.env['product.product'].search(pp_dom, limit=1)
-            if not product_id:
+            if not product_id or product_id.type != 'product':
                 not_product_ids.append(default_code)
                 continue
             if self.only_test_product:
