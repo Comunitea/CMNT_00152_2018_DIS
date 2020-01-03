@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record id="view_location_search" model="ir.ui.view">
+        <field name="name">stock.location.search</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_search"/>
+        <field name="arch" type="xml">
+            <search string="Stock Locations">
+                <field name="name" string="Stock Locations"/>
+                <filter name="in_location" string="Internal" domain="[('usage', '=', 'internal')]" help="Internal Locations"/>
+                <filter name="customer" string="Customer" domain="[('usage', '=', 'customer')]" help="Customer Locations"/>
+                <filter name="supplier" string="Vendor" domain="[('usage', '=', 'supplier')]" help="Vendor Locations"/>
+                <field name="location_id" string="Parent Location"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_location_search" model="ir.ui.view">
+        <field name="name">view.location.search.inherit</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_search"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//search" position="inside">
+                <field name="kind"/>
+                <field name="picking_zone_id"/>
+                <field name="area" />
+                <field name="corridor" />
+                <field name="row" />
+                <field name="rack" />
+                <field name="level" />
+            </xpath>
+
+        </field>
+     </record>
+
+
+
+
   <record id="view_quant_package_formpi" model="ir.ui.view">
             <field name="name">	stock.quant.package.form.pi</field>
             <field name="model">stock.quant.package</field>
@@ -63,6 +102,8 @@
                     <field name="start_line"/>
                     <field name="end_line"/>
                     <field name="only_create_locations"/>
+                    <field name="only_test_product"/>
+
                 </group>
                 <footer>
                     <button name="import_products" type="object" class="btn-primary" string="Import Products"/>

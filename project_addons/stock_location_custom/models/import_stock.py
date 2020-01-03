@@ -134,6 +134,7 @@ class ProductImportWzd(models.TransientModel):
     location_id = fields.Many2one('stock.location', 'Ubicación del ajuste', default = get_default)
     filename = fields.Char(string='Filename')
     only_create_locations = fields.Boolean('Solo ubicaciones')
+    only_test_product = fields.Boolean('Solo Test products')
 
     @api.onchange('file')
     def onchange_filename(self):
@@ -144,17 +145,23 @@ class ProductImportWzd(models.TransientModel):
         pass
 
     def _parse_row_vals(self, row, idx):
+        def get_float(value):
+            try:
+                val = float(value)
+            except:
+                val = 0.00
+            return val
         res = {
-            'default_code': str(row[0]).upper(),
+            'default_code': str(row[0]),
             'nombre_articulo': str(row[1]),
-            'ubicacion_1': str(row[2]).upper(),
+            'ubicacion_1': str(row[2]),
             'ubicacion_2': str(row[3]).upper(),
             'ubicacion_3': str(row[4]).upper(),
             'ubicacion_4': str(row[5]).upper(),
             'ubicacion_5': str(row[6]).upper(),
             'ubicacion_6': str(row[7]).upper(),
             'ubicacion_7': str(row[8]).upper(),
-            'stock': float(row[9]) or 0.0,
+            'stock': get_float(row[9]),
             #'cost': float(row[10]) or 0.0,
         }
         # Check mandatory values setted
@@ -283,7 +290,7 @@ class ProductImportWzd(models.TransientModel):
         if not import_name:
             domain = [('name', '=', 'Generico')]
             location_id = self.env['stock.location'].search_read(domain, ['id'], limit=1)
-            return location_id
+            return location_id[0]['id']
 
         sl_dom = [('usage', '=', 'internal'), ('import_name', '=', import_name)]
         location_id = self.env['stock.location'].search_read(sl_dom, ['id'], limit=1)
@@ -332,7 +339,7 @@ class ProductImportWzd(models.TransientModel):
 
         header = sh.row_values(0)
 
-
+        not_product_ids=[]
         for nline in range(max(1, idx), end_line):
             idx += 1
             row = sh.row_values(nline)
@@ -342,6 +349,11 @@ class ProductImportWzd(models.TransientModel):
             default_code = row_vals['default_code']
             pp_dom = [('default_code', '=', default_code)]
             product_id = self.env['product.product'].search(pp_dom, limit=1)
+            if not product_id or product_id.type != 'product':
+                not_product_ids.append(default_code)
+                continue
+            if self.only_test_product:
+                continue
             stock = float(row_vals['stock'])
             if not product_id:
                 _logger.info ('----------------\nNO SE HA ENCONTRADO EL ARTICULO: {} en la línea {}'.format(default_code, idx))
@@ -413,6 +425,10 @@ class ProductImportWzd(models.TransientModel):
             for loc in LOCATION_IDS:
                 str = '{}{}\n'.format(str, loc.display_name)
             _logger.info(str)
+        _logger.info('ARTICULOS NO ENCONTRADOS\n-------------------------\n')
+        for p in not_product_ids:
+            _logger.info(p)
+        _logger.info('\n FIN ARTICULOS NO ENCONTRADOS\n-------------------------\n')
         if self.only_create_locations:
             return self.action_view_location()
         else:
