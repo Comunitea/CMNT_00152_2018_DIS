@@ -144,9 +144,9 @@ class ProductImportWzd(models.TransientModel):
         pass
 
     def _parse_row_vals(self, row, idx):
-        def get_float():
+        def get_float(value):
             try:
-                val = float(row[9])
+                val = float(value)
             except:
                 val = 0.00
             return val
