@@ -7,7 +7,7 @@
     "version": "12.0.1.0.0",
     "author": "Comunitea",
     "category": "Inventory",
-    "depends": ["stock", "stock_picking_batch_extended"],
+    "depends": ["stock", "stock_picking_batch_extended", "stock_removal_location_by_priority"],
     "data": [
         "views/product_import_wzd_view.xml"
     ],
