@@ -144,6 +144,12 @@ class ProductImportWzd(models.TransientModel):
         pass
 
     def _parse_row_vals(self, row, idx):
+        def get_float():
+            try:
+                val = float(row[9])
+            except:
+                val = 0.00
+            return val
         res = {
             'default_code': str(row[0]).upper(),
             'nombre_articulo': str(row[1]),
@@ -154,7 +160,7 @@ class ProductImportWzd(models.TransientModel):
             'ubicacion_5': str(row[6]).upper(),
             'ubicacion_6': str(row[7]).upper(),
             'ubicacion_7': str(row[8]).upper(),
-            'stock': float(row[9]) or 0.0,
+            'stock': get_float(row[9]),
             #'cost': float(row[10]) or 0.0,
         }
         # Check mandatory values setted
