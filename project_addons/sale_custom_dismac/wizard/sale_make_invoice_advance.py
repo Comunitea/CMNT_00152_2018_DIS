@@ -11,7 +11,7 @@ class SaleAdvancePaymentInv(models.TransientModel):
             No viene la fecha en contexto, solo en el active_domain,
             por lo que necesitamos volver a ponerla en contexto
         '''
-        import ipdb; ipdb.set_trace()
+    #    import ipdb; ipdb.set_trace()
         if self._context.get('active_domain'):
             for domain in self._context['active_domain']:
                 if domain[0] == 'invoice_until':
