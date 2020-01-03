@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import models, fields, api
+from odoo.addons import decimal_precision as dp
 
 
 class SaleOrder(models.Model):
@@ -19,43 +20,49 @@ class SaleOrder(models.Model):
                 sale.margin_perc = round((margin * 100) /
                                          sale.amount_untaxed, 2)
 
-    @api.depends('order_line.margin')
-    @api.multi
-    def _get_total_price_purchase(self):
-        for sale in self:
-            total_purchase = 0.0
-            for line in sale.order_line:
-                if line.product_id:
-                    if line.purchase_price:
-                        total_purchase += line.purchase_price * \
-                            line.product_uom_qty
-                    else:
-                        total_purchase += line.product_id.standard_price * \
-                            line.product_uom_qty
-            sale.total_purchase = total_purchase
-
-    total_purchase = fields.Float(compute="_get_total_price_purchase",
-                                  string='Price purchase', store=True)
     margin_perc = fields.Float(compute="_product_margin_perc",
                                string='Margin %',
                                help="It gives profitability by calculating "
                                     "percentage.", store=True)
+    margin = fields.Monetary(compute='_product_margin',
+                             help="It gives profitability by calculating the difference between the Unit Price and the cost.",
+                             currency_field='currency_id',
+                             digits=dp.get_precision('Product Price'),
+                             store=True)
+
+    @api.depends('order_line.margin')
+    def _product_margin(self):
+        for order in self:
+            order.margin = sum(order.order_line.filtered(
+                lambda r: r.state != 'cancel').mapped('margin'))
 
 
 class SaleOrderLine(models.Model):
 
     _inherit = "sale.order.line"
 
-    @api.one
-    @api.depends('margin')
-    def _product_margin_perc(self):
-        if self.purchase_price:
-            cost_price = self.purchase_price
-        else:
-            cost_price = self.product_id.standard_price
-        if cost_price:
-            self.margin_perc = round((self.margin * 100) /
-                                     (cost_price * self.product_uom_qty), 2)
+    margin = fields.Float(compute='_product_margin',
+                          digits=dp.get_precision('Product Price'), store=True)
 
-    margin_perc = fields.Float('Margin', compute='_product_margin_perc',
-                               store=True)
+    def _compute_cost_price(self):
+        frm_cur = self.env.user.company_id.currency_id
+        to_cur = self.order_id.pricelist_id.currency_id
+        purchase_price = self.product_id.reference_cost or \
+                         self.product_id.standard_price
+        if self.product_uom != self.product_id.uom_id:
+            purchase_price = self.product_id.uom_id._compute_price(
+                purchase_price, self.product_uom_id)
+        price = frm_cur._convert(
+            purchase_price, to_cur,
+            self.order_id.company_id or self.env.user.company_id,
+            self.order_id.date_order or fields.Date.today(), round=False)
+        return price
+
+    @api.depends('product_id', 'product_uom_qty',
+                 'price_unit', 'price_subtotal')
+    def _product_margin(self):
+        for line in self:
+            currency = line.order_id.pricelist_id.currency_id
+            price = line._compute_cost_price()
+            line.margin = currency.round(
+                line.price_subtotal - (price * line.product_uom_qty))
