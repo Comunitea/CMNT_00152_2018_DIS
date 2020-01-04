@@ -65,6 +65,25 @@ class PurchaseOrder(models.Model):
                 - order.amount_total
             )
 
+class PurchaseOrderLine(models.Model):
+    _inherit = "purchase.order.line"
+
+    import_qty_delivered = fields.Float("Imported qty delivered", default=0)
+
+    @api.multi
+    def _prepare_stock_moves(self, picking):
+        res = super()._prepare_stock_moves(picking=picking)
+        if self.import_qty_delivered > 0:
+            for val in res:
+                qty = val['product_uom_qty'] - self.import_qty_delivered
+                val.update(product_uom_qty=qty)
+        return res
+
+    def _update_received_qty(self):
+        res = super()._update_received_qty()
+        for line in self:
+            line.qty_received += line.import_qty_delivered
+
 
 class PurchaseBillUnion(models.Model):
     _inherit = "purchase.bill.union"
