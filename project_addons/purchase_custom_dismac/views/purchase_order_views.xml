@@ -48,6 +48,7 @@
                 <field name="company_id"/>
                 <filter name="not_delivered" string="Pendientes" domain="[('qty_to_receive', '&gt;', 0), ('state', 'not in', ['draft', 'cancel', 'done'])]"/>
                 <filter name="delivered" string="Entregados" domain="[('qty_to_receive', '&lt;=', 0)]"/>
+                <filter name="draft" string="Presupuestos" domain ="[('state', '=', 'draft')]"/>
                 <group expand="1" string="Group By">
                     <filter string="Fecha de entrega" name="date_planned" context="{'group_by':'date_planned'}"/>
                     <filter string="Producto" name="product" context="{'group_by':'product_id'}"/>
