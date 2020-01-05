@@ -15,7 +15,7 @@ template_ids = []
 
 PASILLO = {'A': 1 ,'B': 2 ,'C': 3 ,'D': 4 ,'E': 5 ,'F': 6 ,'G': 7, 'H': 8 ,
            'I': 9 ,'J': 10 ,'K': 11 ,'L': 12 ,'M': 13 ,'N': 14, 'O': 15, 'P': 16,
-           'Q': 17, 'R': 18, 'S': 19, 'T': 20, 'U': 21, 'V': 21, 'X': 22, 'Y': 23, 'Z': 24,
+           'Q': 17, 'R': 18, 'S': 19, 'T': 20, 'U': 21, 'V': 22, 'W': 23, 'X': 24, 'Y': 25, 'Z': 26,
            'CIT': 40 ,'ZA': 50 ,'ZB': 51 ,'BE': 60 ,'EM': 70,'EXPOS': 80}
 LOCATION_IDS = []
 
@@ -53,6 +53,8 @@ class StockLocation (models.Model):
     def set_removal_priority(self):
 
         for location in self.filtered(lambda x:x.usage == 'internal'):
+            if location.location_id.is_pos_x:
+                location.posx = location.location_id.posx
             try:
                 pasillo = False
                 parent = location
