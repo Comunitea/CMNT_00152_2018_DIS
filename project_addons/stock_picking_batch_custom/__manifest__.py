@@ -12,7 +12,9 @@
         "views/stock_batch_picking.xml",
         "views/report_batch_picking.xml",
         "views/account_invoice.xml",
+
         "security/ir.model.access.csv",
+
     ],
     "installable": True,
     "license": "AGPL-3",

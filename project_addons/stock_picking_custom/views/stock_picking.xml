@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="view_picking_withcarrier_custom" model="ir.ui.view">
+            <field name="name">delivery.stock.picking_withcarrier.form.view.packages</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='shipping_weight']" position="after">
+                    <field name="number_of_packages" />
+                </xpath>
+                <field name="note" position="before">
+                    <group>
+                        <field name="a_atencion"/>
+                    </group>
+                </field>
+            </field>
+        </record>
+
+</odoo>
