@@ -93,6 +93,11 @@ msgid "change product"
 msgstr "Cambiar producto"
 
 #. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_product_product__review_order
+msgid "Review Order"
+msgstr "Revisión en pedidos"
+
+#. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_res_partner
 msgid "Contact"
 msgstr "Contacto"
