@@ -3,6 +3,17 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
 
+    <record id="product_normal_form_view" model="ir.ui.view">
+        <field name="name">product.product.inherit.view.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <field name="lst_price" position="after">
+                <field name="review_order" />
+            </field>
+        </field>
+    </record>
+
     <record model="ir.ui.view" id="product_form_view_security1">
             <field name="name">product.product.security1</field>
             <field name="model">product.template</field>

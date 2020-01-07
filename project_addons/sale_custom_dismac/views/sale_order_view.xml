@@ -38,6 +38,12 @@
                         icon="fa-copy"
                         type="object"/>
             </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='product_id']" position="after">
+                <button name="%(sale_line_change_product_action)d"
+                        string="change product"
+                        icon="fa-arrow-right"
+                        type="action"/>
+            </xpath>
 
             <xpath expr="//field[@name='order_line']/form//field[@name='name']" position="after">
                 <label for="notes" string="Advanced Description"/>
@@ -52,6 +58,7 @@
             </field>
             <field name="client_order_ref" position="after">
                 <field name="project_reference"/>
+                <field name="pending_review"/>
             </field>
         </field>
     </record>
@@ -116,6 +123,7 @@
             </field>
             <filter name="my_sale_orders_filter" position="after">
                 <filter name="invoiceable_sales" string="Search invoiceable sales" domain="[('has_invoiceable_lines', '=', True)]"/>
+                <filter name="pending_review" string="pending review sales" domain="[('pending_review', '=', True)]"/>
             </filter>
         </field>
     </record>

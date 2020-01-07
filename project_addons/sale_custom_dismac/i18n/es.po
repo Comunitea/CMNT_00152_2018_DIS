@@ -23,6 +23,22 @@ msgid "Advanced Description"
 msgstr "Descripción detallada"
 
 #. module: sale_custom_dismac
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order__pending_review
+msgid "Pending Review"
+msgstr "Revisión pendiente"
+
+#. module: sale_custom_dismac
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.view_sales_order_filter
+msgid "pending review sales"
+msgstr "Ventas pendientes de revisión"
+
+#. module: sale_custom_dismac
+#: model:ir.actions.act_window,name:sale_custom_dismac.sale_line_change_product_action
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_line_change_product_view
+msgid "Change product"
+msgstr "Cambiar producto"
+
+#. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__image_medium
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__image_variant
 msgid "Alternative image for line"
@@ -54,6 +70,12 @@ msgid "Available Products"
 msgstr "Productos disponibles"
 
 #. module: sale_custom_dismac
+#: model:ir.model,name:sale_custom_dismac.model_product_product
+#: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_line_change_product__product_id
+msgid "Product"
+msgstr "Producto"
+
+#. module: sale_custom_dismac
 #: model:ir.model.fields,field_description:sale_custom_dismac.field_sale_order_line__image
 msgid "Big-sized image"
 msgstr "Imagen grande"
@@ -61,8 +83,14 @@ msgstr "Imagen grande"
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_invoice_on_date_form
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_line_change_product_view
 msgid "Cancel"
 msgstr "Cancelar"
+
+#. module: sale_custom_dismac
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_order_form_custom
+msgid "change product"
+msgstr "Cambiar producto"
 
 #. module: sale_custom_dismac
 #: model:ir.model,name:sale_custom_dismac.model_res_partner
@@ -404,6 +432,7 @@ msgstr ""
 #. module: sale_custom_dismac
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.apply_global_discount_form
 #: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_invoice_on_date_form
+#: model_terms:ir.ui.view,arch_db:sale_custom_dismac.sale_line_change_product_view
 msgid "or"
 msgstr "o"
 
