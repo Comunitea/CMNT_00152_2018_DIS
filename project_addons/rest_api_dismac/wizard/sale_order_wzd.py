@@ -25,6 +25,7 @@
 import base64, logging, urllib.request, json
 from odoo.addons.component.core import Component
 from odoo import fields, models, _
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -48,17 +49,33 @@ class SaleOrderWzd(models.TransientModel):
 
         if api_partner:
             api_partner = self.env['res.partner'].browse(int(api_partner))
+        else:
+            raise ValidationError(_('API partner not defined.'))
 
         with urllib.request.urlopen(json_url) as url:
 
             data = json.loads(url.read().decode())
 
+            if not data:
+                raise ValidationError(_('No data to fetch.'))
+
+            delivery_partner = self.env['res.partner'].create({
+                'name': data['datos_pedido']['destinatario'], 
+                'active': False,
+                'parent_id': api_partner.id,
+                'type': 'delivery',
+                'street': data['datos_pedido']['punto_entrega']['centro'],
+                'street2': data['datos_pedido']['punto_entrega']['campus']
+            })
+
             new_sale_order = self.env['sale.order'].create({
                 'partner_id': api_partner.id,
                 'partner_invoice_id': api_partner.id,
-                'partner_shipping_id': api_partner.id,
+                'partner_shipping_id': delivery_partner.id,
                 'uvigo_order': data['datos_pedido']['numero'],
-                'observations': data['datos_pedido']['observaciones']
+                'observations': data['datos_pedido']['observaciones'],
+                'uvigo_url': self.uvigo_url,
+                'commitment_date': data['datos_pedido']['fecha_entrega']
             })
 
             log_entry.sudo().update({
@@ -82,3 +99,12 @@ class SaleOrderWzd(models.TransientModel):
                     })
 
                     _logger.info("Añadiendo {} cantidad(es) de {} al pedido {}.".format(line['cantidad'], product.name, new_sale_order.id))
+
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'sale.order',
+                'view_mode': 'form',
+                'view_type': 'form',
+                'res_id': new_sale_order.id,
+                'views': [(False, 'form')]
+            }

@@ -27,6 +27,6 @@
         target="new"
         id="sale_order_uvigo_wzd_action"/>
 
-    <menuitem id="sale_order_uvigo_wzd_menu" string="Uvigo URL import" action="sale_order_uvigo_wzd_action" parent="sale.sale_menu_root"/>
+    <menuitem id="sale_order_uvigo_wzd_menu" string="Uvigo URL import" action="sale_order_uvigo_wzd_action" parent="sale.sale_order_menu"/>
 
 </odoo>
