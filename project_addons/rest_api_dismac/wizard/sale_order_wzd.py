@@ -87,18 +87,24 @@ class SaleOrderWzd(models.TransientModel):
                 for line in data['lineas_detalle']:
 
                     product = self.env['product.product'].search([('default_code', '=', line['codigo_articulo_proveedor'])])
-                    
-                    sale_order_line = self.env['sale.order.line'].create({
-                        'order_id': new_sale_order.id,
-                        'partner_id': new_sale_order.partner_id,
-                        'product_id': product.id,
-                        'price_unit': line['precio_unitario'],
-                        'product_uom': product.uom_id.id,
-                        'product_uom_qty': line['cantidad'],
-                        'name': line['descripcion'],
-                    })
 
-                    _logger.info("Añadiendo {} cantidad(es) de {} al pedido {}.".format(line['cantidad'], product.name, new_sale_order.id))
+                    if product.id:
+                    
+                        sale_order_line = self.env['sale.order.line'].create({
+                            'order_id': new_sale_order.id,
+                            'partner_id': new_sale_order.partner_id,
+                            'product_id': product.id,
+                            'price_unit': line['precio_unitario'],
+                            'product_uom': product.uom_id.id,
+                            'product_uom_qty': line['cantidad'],
+                            'name': line['descripcion'],
+                        })
+
+                        _logger.info("Añadiendo {} cantidad(es) de {} al pedido {}.".format(line['cantidad'], product.name, new_sale_order.id))
+                    
+                    else:
+                        _logger.error("No se ha encontrado el producto con default_code: {}.".format(line['codigo_articulo_proveedor']))
+                        raise ValidationError(_('Product with default_code {} not found.'.format(line['codigo_articulo_proveedor'])))
 
             return {
                 'type': 'ir.actions.act_window',
