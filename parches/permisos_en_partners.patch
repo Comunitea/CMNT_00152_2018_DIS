@@ -1,0 +1,19 @@
+diff --git a/addons/sale/models/res_partner.py b/addons/sale/models/res_partner.py
+index fac5165f..5999e380 100644
+--- a/addons/sale/models/res_partner.py
++++ b/addons/sale/models/res_partner.py
+@@ -18,12 +18,12 @@ class ResPartner(models.Model):
+         all_partners = self.search([('id', 'child_of', self.ids)])
+         all_partners.read(['parent_id'])
+ 
+-        sale_order_groups = self.env['sale.order'].read_group(
++        sale_order_groups = self.env['sale.order'].sudo().read_group(
+             domain=[('partner_id', 'in', all_partners.ids)],
+             fields=['partner_id'], groupby=['partner_id']
+         )
+         for group in sale_order_groups:
+-            partner = self.browse(group['partner_id'][0])
++            partner = self.sudo().browse(group['partner_id'][0])
+             while partner:
+                 if partner in self:
+                     partner.sale_order_count += group['partner_id_count']
