@@ -173,6 +173,12 @@ class StockBatchPicking(models.Model):
             self.moves_all_count = len(batch.move_grouped_ids)
         return
 
+    def action_view_stock_picking_related(self):
+        self.ensure_one()
+        action = self.env.ref('stock.action_picking_tree_all').read([])[0]
+        action['domain'] = [('id', 'in', self.picking_dest_ids.ids)]
+        return action
+
 
     def action_show_moves_kanban(self):
         self.ensure_one()
@@ -252,3 +258,9 @@ class StockBatchPicking(models.Model):
             move.qty_done = 0
             move.move_line_ids.write({"qty_done": 0.00})
         self.qty_applied = False
+
+    @api.multi
+    def action_print_picking(self):
+        if len(self)==1 and self.picking_type_id and self.picking_type_id.code == 'internal':
+            return self.env.ref('stcok_picking_batch_custom.action_report_batch_picking_custom')
+        return super().action_print_picking()

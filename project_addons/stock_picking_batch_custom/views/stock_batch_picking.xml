@@ -152,7 +152,22 @@
             <xpath expr="//field[@name='move_line_ids']/tree/field[@name='product_id']" position="before">
                     <field name="sale_order"/>
             </xpath>
+            <xpath expr="//button[@name='action_view_stock_picking']" position="replace">
+
+            <button name="action_view_stock_picking"
+                                class="oe_stat_button"
+                                icon="fa-cart-arrow-down"
+                                type="object">
+                            <field string="Picks" name="picking_count" widget="statinfo"/>
+                        </button>
+
+            </xpath>
+
              <xpath expr="//div[@name='button_box']" position="inside">
+
+                        <button name="action_view_stock_picking_related" string="Albaranes" class="oe_stat_button" icon="fa-truck" type="object">
+
+                        </button>
                         <button name="action_show_moves_kanban"
                                 string="Operations"
                                 type="object"
@@ -177,7 +192,6 @@
                 </xpath-->
 
             <xpath expr="//notebook" position="inside">
-
                 <page string="Grouped" attrs="{'invisible': [('moves_all_count','=', 0)]}">
                      <div>
                         <button class="oe_link oe_right oe_edit_only"
