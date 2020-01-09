@@ -19,7 +19,7 @@ class SaleOrder(models.Model):
 
     # order_lines_count = fields.Integer(
     #     'Line count', compute='_compute_sale_order_lines_count')
-
+    pending_review = fields.Boolean()
     need_approval = fields.Boolean(
         related="type_id.need_approval", readonly=True
     )
@@ -54,7 +54,12 @@ class SaleOrder(models.Model):
                         reference number"
                 )
                 raise UserError(msg)
-        res = super().action_confirm()
+            if any(order.mapped('order_line.product_id.review_order')):
+                order.pending_review = True
+                return True
+            else:
+                res = super().action_confirm()
+                order.pending_review = False
         return res
 
     @api.multi

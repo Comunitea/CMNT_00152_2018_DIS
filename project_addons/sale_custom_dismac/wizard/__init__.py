@@ -5,3 +5,4 @@
 from . import apply_global_discount
 from . import sale_make_invoice_advance
 from . import sale_invoice_on_date
+from . import sale_line_change_product

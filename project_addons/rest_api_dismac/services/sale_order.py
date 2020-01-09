@@ -25,6 +25,7 @@
 import base64, logging, urllib.request, json
 from odoo.addons.component.core import Component
 from odoo import fields, models, _
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -121,6 +122,7 @@ class SaleOrder(models.Model):
             data = json.loads(url.read().decode())
             self.uvigo_order = data['datos_pedido']['numero']
             self.observations = data['datos_pedido']['observaciones']
+            self.commitment_date = data['datos_pedido']['fecha_entrega']
             log_entry.sudo().update({
                 'uvigo_order': self.uvigo_order
             })
@@ -133,15 +135,21 @@ class SaleOrder(models.Model):
             for line in data['lineas_detalle']:
 
                 product = self.env['product.product'].search([('default_code', '=', line['codigo_articulo_proveedor'])])
-                
-                sale_order_line = self.env['sale.order.line'].create({
-                    'order_id': self.id,
-                    'partner_id': self.partner_id,
-                    'product_id': product.id,
-                    'price_unit': line['precio_unitario'],
-                    'product_uom': product.uom_id.id,
-                    'product_uom_qty': line['cantidad'],
-                    'name': line['descripcion'],
-                })
 
-                _logger.info("Añadiendo {} cantidad(es) de {} al pedido {}.".format(line['cantidad'], product.name, self.id))
+                if product.id:
+                
+                    sale_order_line = self.env['sale.order.line'].create({
+                        'order_id': self.id,
+                        'partner_id': self.partner_id,
+                        'product_id': product.id,
+                        'price_unit': line['precio_unitario'],
+                        'product_uom': product.uom_id.id,
+                        'product_uom_qty': line['cantidad'],
+                        'name': line['descripcion'],
+                    })
+
+                    _logger.info("Añadiendo {} cantidad(es) de {} al pedido {}.".format(line['cantidad'], product.name, self.id))
+                
+                else:
+                    _logger.error("No se ha encontrado el producto con default_code: {}.".format(line['codigo_articulo_proveedor']))
+                    raise ValidationError(_('Product with default_code {} not found.'.format(line['codigo_articulo_proveedor'])))

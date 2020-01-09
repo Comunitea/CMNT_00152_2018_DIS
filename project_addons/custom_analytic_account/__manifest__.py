@@ -10,6 +10,7 @@
     "website": "www.comunitea.com",
     "license": "AGPL-3",
     "depends": [
+        "purchase",
         "account_cost_center",
         "account_analytic_default",
     ],

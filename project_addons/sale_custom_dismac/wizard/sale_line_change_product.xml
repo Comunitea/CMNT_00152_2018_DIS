@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sale_line_change_product_view" model="ir.ui.view">
+        <field name="name">sale.line.change.product.form</field>
+        <field name="model">sale.line.change.product</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="product_id"/>
+                </group>
+                <footer>
+                    <button name="change_product" string="Change product" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window name="Change product"
+        res_model="sale.line.change.product"
+        view_id="sale_line_change_product_view"
+        view_mode="form"
+        target="new"
+        id="sale_line_change_product_action"/>
+</odoo>

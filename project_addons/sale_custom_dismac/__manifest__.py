@@ -23,6 +23,7 @@
         "security/ir.model.access.csv",
         "wizard/apply_global_discount.xml",
         "wizard/sale_invoice_on_date.xml",
+        "wizard/sale_line_change_product.xml",
         "views/res_partner_view.xml",
         "views/sale_order_view.xml",
         "views/sale_order_type.xml",

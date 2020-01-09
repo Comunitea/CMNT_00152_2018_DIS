@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-18 11:41+0000\n"
-"PO-Revision-Date: 2019-11-18 11:41+0000\n"
+"POT-Creation-Date: 2020-01-08 10:26+0000\n"
+"PO-Revision-Date: 2020-01-08 10:26+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: rest_api_dismac
+#: model:ir.ui.menu,name:rest_api_dismac.menu_rest_api_dismac_api_access_log
+msgid "API Access Log"
+msgstr "Accesos UVIGO-API"
+
+#. module: rest_api_dismac
 #: model:ir.model.fields,field_description:rest_api_dismac.field_res_config_settings__api_key
 msgid "API KEY"
-msgstr ""
+msgstr "Clave API"
 
 #. module: rest_api_dismac
 #: model:ir.model.fields,help:rest_api_dismac.field_res_config_settings__api_key
@@ -28,7 +33,7 @@ msgstr "API KEY para el token de identificación"
 #. module: rest_api_dismac
 #: model:ir.model.fields,field_description:rest_api_dismac.field_res_config_settings__api_partner
 msgid "API Partner ID"
-msgstr ""
+msgstr "Partner UVigo"
 
 #. module: rest_api_dismac
 #: model:ir.model.fields,field_description:rest_api_dismac.field_res_config_settings__api_string
@@ -41,14 +46,36 @@ msgid "API String for token authentication"
 msgstr "Cadena para el token de identificación"
 
 #. module: rest_api_dismac
+#: code:addons/rest_api_dismac/wizard/sale_order_wzd.py:53
+#, python-format
+msgid "API partner not defined."
+msgstr "Partner UVigo sin confingurar."
+
+#. module: rest_api_dismac
 #: model:ir.model.fields,help:rest_api_dismac.field_res_config_settings__api_partner
 msgid "Allowed Partner ID"
 msgstr "Partner ID Permitido"
 
 #. module: rest_api_dismac
+#: model_terms:ir.ui.view,arch_db:rest_api_dismac.rest_api_dismac_api_access_log_search
+#: model_terms:ir.ui.view,arch_db:rest_api_dismac.rest_api_dismac_api_access_log_tree
+msgid "Api Access Log"
+msgstr "Accesos UVIGO-API"
+
+#. module: rest_api_dismac
+#: model_terms:ir.ui.view,arch_db:rest_api_dismac.rest_api_dismac_api_access_log_form
+msgid "Api access log"
+msgstr "Accesos UVIGO-API"
+
+#. module: rest_api_dismac
 #: model_terms:ir.ui.view,arch_db:rest_api_dismac.res_config_settings_view_form
 msgid "Api configuration"
 msgstr "Configuración API"
+
+#. module: rest_api_dismac
+#: model_terms:ir.ui.view,arch_db:rest_api_dismac.sale_order_uvigo_wzd_form
+msgid "Cancel"
+msgstr "Cancelar"
 
 #. module: rest_api_dismac
 #: model:ir.model,name:rest_api_dismac.model_res_config_settings
@@ -61,51 +88,156 @@ msgid "Connect"
 msgstr "Conectar"
 
 #. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__create_uid
+#: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order_wzd__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__create_date
+#: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order_wzd__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__display_name
+#: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order_wzd__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__error
+msgid "Error"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__error_msg
+msgid "Error Message"
+msgstr "Mensaje de error"
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__id
+#: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order_wzd__id
+msgid "ID"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model_terms:ir.ui.view,arch_db:rest_api_dismac.sale_order_uvigo_wzd_form
+msgid "Import"
+msgstr "Importar"
+
+#. module: rest_api_dismac
 #: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order__is_from_uvigo
 msgid "Is From Uvigo"
 msgstr "Pedido UVigo"
 
 #. module: rest_api_dismac
-#: code:addons/rest_api_dismac/controllers/main.py:99
-#: code:addons/rest_api_dismac/controllers/main.py:101
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log____last_update
+#: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order_wzd____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__write_uid
+#: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order_wzd__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__write_date
+#: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order_wzd__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: rest_api_dismac
+#: code:addons/rest_api_dismac/wizard/sale_order_wzd.py:60
+#, python-format
+msgid "No data to fetch."
+msgstr "No hay datos para recibir."
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__order_id
+msgid "Order"
+msgstr "Pedido"
+
+#. module: rest_api_dismac
+#: code:addons/rest_api_dismac/services/sale_order.py:155
+#: code:addons/rest_api_dismac/wizard/sale_order_wzd.py:107
+#, python-format
+msgid "Product with default_code {} not found."
+msgstr "No se ha encontrado un producto con código {}."
+
+#. module: rest_api_dismac
+#: code:addons/rest_api_dismac/controllers/main.py:164
+#: code:addons/rest_api_dismac/controllers/main.py:168
+#: code:addons/rest_api_dismac/controllers/main.py:170
+#: code:addons/rest_api_dismac/controllers/main.py:176
+#: code:addons/rest_api_dismac/controllers/main.py:180
+#: code:addons/rest_api_dismac/controllers/main.py:182
 #, python-format
 msgid "REST API access not allowed to this order."
 msgstr "Acceso no permitido."
 
 #. module: rest_api_dismac
-#: code:addons/rest_api_dismac/controllers/main.py:75
-#: code:addons/rest_api_dismac/controllers/main.py:77
+#: code:addons/rest_api_dismac/controllers/main.py:124
+#: code:addons/rest_api_dismac/controllers/main.py:128
+#: code:addons/rest_api_dismac/controllers/main.py:130
 #, python-format
 msgid "REST API called with a invalid token."
 msgstr "El token enviado no es válido."
 
 #. module: rest_api_dismac
-#: code:addons/rest_api_dismac/controllers/main.py:48
-#: code:addons/rest_api_dismac/controllers/main.py:50
+#: code:addons/rest_api_dismac/controllers/main.py:92
+#: code:addons/rest_api_dismac/controllers/main.py:97
+#: code:addons/rest_api_dismac/controllers/main.py:100
+#, python-format
+msgid "REST API called with an incorrect timestamp date"
+msgstr "Llamada a la API con un timestamp incorrecto."
+
+#. module: rest_api_dismac
+#: code:addons/rest_api_dismac/controllers/main.py:76
+#: code:addons/rest_api_dismac/controllers/main.py:81
+#: code:addons/rest_api_dismac/controllers/main.py:84
+#, python-format
+msgid "REST API called with an incorrect timestamp format."
+msgstr "Llamada a la API con timestamp de formato incorrecto."
+
+#. module: rest_api_dismac
+#: code:addons/rest_api_dismac/controllers/main.py:59
+#: code:addons/rest_api_dismac/controllers/main.py:63
+#: code:addons/rest_api_dismac/controllers/main.py:65
 #, python-format
 msgid "REST API called with no credentials"
 msgstr "No se han enviado credenciales de acceso."
 
 #. module: rest_api_dismac
-#: code:addons/rest_api_dismac/controllers/main.py:83
-#: code:addons/rest_api_dismac/controllers/main.py:85
+#: code:addons/rest_api_dismac/controllers/main.py:138
+#: code:addons/rest_api_dismac/controllers/main.py:142
+#: code:addons/rest_api_dismac/controllers/main.py:144
 #, python-format
 msgid "REST API called without order id."
 msgstr "No se ha facilitado un id de pedido."
 
 #. module: rest_api_dismac
-#: code:addons/rest_api_dismac/controllers/main.py:91
-#: code:addons/rest_api_dismac/controllers/main.py:93
+#: code:addons/rest_api_dismac/controllers/main.py:150
+#: code:addons/rest_api_dismac/controllers/main.py:154
+#: code:addons/rest_api_dismac/controllers/main.py:156
 #, python-format
 msgid "REST API could not find that order number."
 msgstr "No se ha encontrado el pedido."
 
 #. module: rest_api_dismac
-#: code:addons/rest_api_dismac/controllers/main.py:65
-#: code:addons/rest_api_dismac/controllers/main.py:67
+#: code:addons/rest_api_dismac/controllers/main.py:110
+#: code:addons/rest_api_dismac/controllers/main.py:114
+#: code:addons/rest_api_dismac/controllers/main.py:116
 #, python-format
 msgid "REST API values not configured."
 msgstr "El acceso no está configurado."
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__requested_id
+msgid "Requested ID"
+msgstr "ID solicitada"
 
 #. module: rest_api_dismac
 #: model:ir.model,name:rest_api_dismac.model_sale_order
@@ -119,6 +251,7 @@ msgstr "PDF UVigo"
 
 #. module: rest_api_dismac
 #: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order__uvigo_url
+#: model:ir.model.fields,field_description:rest_api_dismac.field_sale_order_wzd__uvigo_url
 msgid "UVigo order URL"
 msgstr "UVigo URL"
 
@@ -136,4 +269,85 @@ msgstr "Número pedido UVigo"
 #: model_terms:ir.ui.view,arch_db:rest_api_dismac.sale_order_form_custom
 msgid "Unv. Vigo"
 msgstr "Unv. de Vigo"
+
+#. module: rest_api_dismac
+#: model:ir.actions.act_window,name:rest_api_dismac.sale_order_uvigo_wzd_action
+#: model:ir.ui.menu,name:rest_api_dismac.sale_order_uvigo_wzd_menu
+msgid "Uvigo URL import"
+msgstr "Importar desde UVigo"
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__url
+msgid "access url"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__access_type
+msgid "access_type"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model:ir.model,name:rest_api_dismac.model_api_access_log
+msgid "api.access.log"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model:ir.actions.act_window,name:rest_api_dismac.action_rest_api_dismac_api_access_log_view
+msgid "api.access.log.action"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model_terms:ir.ui.view,arch_db:rest_api_dismac.sale_order_uvigo_wzd_form
+msgid "or"
+msgstr "o"
+
+#. module: rest_api_dismac
+#: model:ir.ui.view,name:rest_api_dismac.res_config_settings_view_form
+msgid "res.config.settings.view.form.inherit.rest.api"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model:ir.ui.view,name:rest_api_dismac.rest_api_dismac_api_access_log_form
+msgid "rest.api.dismac.api.access.log.form"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model:ir.ui.view,name:rest_api_dismac.rest_api_dismac_api_access_log_search
+msgid "rest.api.dismac.api.access.log.search"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model:ir.ui.view,name:rest_api_dismac.rest_api_dismac_api_access_log_tree
+msgid "rest.api.dismac.api.access.log.tree"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model:ir.ui.view,name:rest_api_dismac.sale_order_form_custom
+msgid "sale.order.form.custom"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model:ir.ui.view,name:rest_api_dismac.sale_order_uvigo_wzd_form
+msgid "sale.order.import.wzd"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model:ir.model,name:rest_api_dismac.model_sale_order_wzd
+msgid "sale.order.wzd"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__timestamp
+msgid "timestamp"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__token
+msgid "token"
+msgstr ""
+
+#. module: rest_api_dismac
+#: model:ir.model.fields,field_description:rest_api_dismac.field_api_access_log__uvigo_order
+msgid "uvigo order"
+msgstr ""
 

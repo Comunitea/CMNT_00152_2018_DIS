@@ -8,3 +8,4 @@ from . import sale_order
 from . import sale_order_type
 from . import stock_rule
 from . import stock_move
+from . import product
