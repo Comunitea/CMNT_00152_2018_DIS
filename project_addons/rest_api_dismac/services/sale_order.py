@@ -108,6 +108,74 @@ class SaleOrder(models.Model):
                 self.is_from_uvigo = False
             else:
                 self.is_from_uvigo = True
+    
+    def get_sale_order_for_uvigo(self, datos_pedido, uvigo_url, delivery_partner, invoice_partner):
+
+        api_partner = self.env['ir.config_parameter'].sudo().get_param('rest_api_dismac.api_partner', False)
+
+        if api_partner:
+            api_partner = self.env['res.partner'].browse(int(api_partner))
+        else:
+            raise ValidationError(_('API partner not defined.'))
+
+        already_an_order = self.check_if_already_an_order(datos_pedido['numero'])
+
+        if already_an_order:
+            sale_order = already_an_order
+            sale_order.update({
+                'partner_id': api_partner.id,
+                'partner_invoice_id': invoice_partner.id,
+                'partner_shipping_id': delivery_partner.id,
+                'uvigo_order': datos_pedido['numero'],
+                'observations': datos_pedido['observaciones'],
+                'uvigo_url': uvigo_url,
+                'commitment_date': datos_pedido['fecha_entrega']
+            })
+
+        else:
+
+            sale_order = self.env['sale.order'].create({
+                'partner_id': api_partner.id,
+                'partner_invoice_id': invoice_partner.id,
+                'partner_shipping_id': delivery_partner.id,
+                'uvigo_order': datos_pedido['numero'],
+                'observations': datos_pedido['observaciones'],
+                'uvigo_url': uvigo_url,
+                'commitment_date': datos_pedido['fecha_entrega']
+            })
+
+        return sale_order
+
+    def check_if_already_an_order(self, uvigo_order):
+        return self.env['sale.order'].search([('uvigo_order', '=', uvigo_order)], limit=1)
+
+    def process_api_lines(self, lineas_detalle):
+        if self.order_line:
+            _logger.info("Eliminando líneas originales del pedido con id: {}".format(self.id))
+            for order_line in self.order_line:
+                order_line.unlink()
+
+        for line in lineas_detalle:
+
+            product = self.env['product.product'].search([('default_code', '=', line['codigo_articulo_proveedor'])])
+
+            if product.id:
+            
+                sale_order_line = self.env['sale.order.line'].create({
+                    'order_id': self.id,
+                    'partner_id': self.partner_id,
+                    'product_id': product.id,
+                    'price_unit': line['precio_unitario'],
+                    'product_uom': product.uom_id.id,
+                    'product_uom_qty': line['cantidad'],
+                    'name': line['descripcion'],
+                })
+
+                _logger.info("Añadiendo {} cantidad(es) de {} al pedido {}.".format(line['cantidad'], product.name, self.id))
+            
+            else:
+                _logger.error("No se ha encontrado el producto con default_code: {}.".format(line['codigo_articulo_proveedor']))
+                raise ValidationError(_('Product with default_code {} not found.'.format(line['codigo_articulo_proveedor'])))
 
     def read_json_data(self):
         log_entry = self.env['api.access.log'].sudo().create({
@@ -120,6 +188,13 @@ class SaleOrder(models.Model):
         json_url = "{}/json".format(self.uvigo_url)
         with urllib.request.urlopen(json_url) as url:
             data = json.loads(url.read().decode())
+
+            already_an_order = self.check_if_already_an_order(data['datos_pedido']['numero'])
+
+            if already_an_order:
+                _logger.error("El código ({}) de UVigo ya existe en el sistema: Pedido {}.".format(data['datos_pedido']['numero'], already_an_order.name))
+                raise ValidationError(_("The UVigo code ({}) is already in the system: Order {}.".format(data['datos_pedido']['numero'], already_an_order.name)))
+
             self.uvigo_order = data['datos_pedido']['numero']
             self.observations = data['datos_pedido']['observaciones']
             self.commitment_date = data['datos_pedido']['fecha_entrega']
@@ -128,40 +203,16 @@ class SaleOrder(models.Model):
             })
 
             delivery_name = data['datos_pedido']['destinatario']
-            delivery_street = "{}, {}".format(data['datos_pedido']['punto_entrega']['centro'], data['datos_pedido']['punto_entrega']['campus'])
+            punto_entrega = data['datos_pedido']['punto_entrega']
             oficina_contable = data['datos_facturacion']['datos_facturacion_dir3']['oficina_contable']
             organo_gestor = data['datos_facturacion']['datos_facturacion_dir3']['organo_gestor']
             unidad_tramitadora = data['datos_facturacion']['datos_facturacion_dir3']['unidad_contratacion']
 
-            delivery_partner = self.env['res.partner'].get_delivery_for_api_partner(delivery_name, delivery_street)
+            delivery_partner = self.env['res.partner'].get_delivery_for_api_partner(delivery_name, punto_entrega)
             self.partner_shipping_id = delivery_partner.id
 
-            invoice_partner = self.env['res.partner'].get_invoice_for_api_partner(delivery_street, oficina_contable, organo_gestor, unidad_tramitadora)
+            invoice_partner = self.env['res.partner'].get_invoice_for_api_partner(punto_entrega, oficina_contable, organo_gestor, unidad_tramitadora)
             self.partner_invoice_id = invoice_partner.id
 
-            if data['lineas_detalle']:
-                _logger.info("Eliminando líneas originales del pedido con id: {}".format(self.id))
-                for order_line in self.order_line:
-                    order_line.unlink()
-
-            for line in data['lineas_detalle']:
-
-                product = self.env['product.product'].search([('default_code', '=', line['codigo_articulo_proveedor'])])
-
-                if product.id:
-                
-                    sale_order_line = self.env['sale.order.line'].create({
-                        'order_id': self.id,
-                        'partner_id': self.partner_id,
-                        'product_id': product.id,
-                        'price_unit': line['precio_unitario'],
-                        'product_uom': product.uom_id.id,
-                        'product_uom_qty': line['cantidad'],
-                        'name': line['descripcion'],
-                    })
-
-                    _logger.info("Añadiendo {} cantidad(es) de {} al pedido {}.".format(line['cantidad'], product.name, self.id))
-                
-                else:
-                    _logger.error("No se ha encontrado el producto con default_code: {}.".format(line['codigo_articulo_proveedor']))
-                    raise ValidationError(_('Product with default_code {} not found.'.format(line['codigo_articulo_proveedor'])))
+            if data['lineas_detalle']:                
+                self.process_api_lines(data['lineas_detalle'])

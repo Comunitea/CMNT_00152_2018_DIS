@@ -60,58 +60,32 @@ class SaleOrderWzd(models.TransientModel):
                 raise ValidationError(_('No data to fetch.'))
 
             delivery_name = data['datos_pedido']['destinatario']
-            delivery_street = "{}, {}".format(data['datos_pedido']['punto_entrega']['centro'], data['datos_pedido']['punto_entrega']['campus'])
+            punto_entrega = data['datos_pedido']['punto_entrega']
             oficina_contable = data['datos_facturacion']['datos_facturacion_dir3']['oficina_contable']
             organo_gestor = data['datos_facturacion']['datos_facturacion_dir3']['organo_gestor']
             unidad_tramitadora = data['datos_facturacion']['datos_facturacion_dir3']['unidad_contratacion']
+            uvigo_order = data['datos_pedido']['numero']
+            observations = data['datos_pedido']['observaciones'],
 
-            delivery_partner = self.env['res.partner'].get_delivery_for_api_partner(delivery_name, delivery_street)
+            delivery_partner = self.env['res.partner'].get_delivery_for_api_partner(delivery_name, punto_entrega)
 
-            invoice_partner = self.env['res.partner'].get_invoice_for_api_partner(delivery_street, oficina_contable, organo_gestor, unidad_tramitadora)
+            invoice_partner = self.env['res.partner'].get_invoice_for_api_partner(punto_entrega, oficina_contable, organo_gestor, unidad_tramitadora)
 
-            new_sale_order = self.env['sale.order'].create({
-                'partner_id': api_partner.id,
-                'partner_invoice_id': invoice_partner.id,
-                'partner_shipping_id': delivery_partner.id,
-                'uvigo_order': data['datos_pedido']['numero'],
-                'observations': data['datos_pedido']['observaciones'],
-                'uvigo_url': self.uvigo_url,
-                'commitment_date': data['datos_pedido']['fecha_entrega']
-            })
+            sale_order = self.env['sale.order'].get_sale_order_for_uvigo(data['datos_pedido'], self.uvigo_url, delivery_partner, invoice_partner)
 
             log_entry.sudo().update({
-                'order_id': new_sale_order.id,
+                'order_id': sale_order.id,
                 'uvigo_order': data['datos_pedido']['numero']
             })
             
             if data['lineas_detalle']:
-                for line in data['lineas_detalle']:
-
-                    product = self.env['product.product'].search([('default_code', '=', line['codigo_articulo_proveedor'])])
-
-                    if product.id:
-                    
-                        sale_order_line = self.env['sale.order.line'].create({
-                            'order_id': new_sale_order.id,
-                            'partner_id': new_sale_order.partner_id,
-                            'product_id': product.id,
-                            'price_unit': line['precio_unitario'],
-                            'product_uom': product.uom_id.id,
-                            'product_uom_qty': line['cantidad'],
-                            'name': line['descripcion'],
-                        })
-
-                        _logger.info("Añadiendo {} cantidad(es) de {} al pedido {}.".format(line['cantidad'], product.name, new_sale_order.id))
-                    
-                    else:
-                        _logger.error("No se ha encontrado el producto con default_code: {}.".format(line['codigo_articulo_proveedor']))
-                        raise ValidationError(_('Product with default_code {} not found.'.format(line['codigo_articulo_proveedor'])))
+                sale_order.process_api_lines(data['lineas_detalle'])
 
             return {
                 'type': 'ir.actions.act_window',
                 'res_model': 'sale.order',
                 'view_mode': 'form',
                 'view_type': 'form',
-                'res_id': new_sale_order.id,
+                'res_id': sale_order.id,
                 'views': [(False, 'form')]
             }

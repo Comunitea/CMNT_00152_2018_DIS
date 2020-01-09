@@ -25,7 +25,7 @@ from odoo.exceptions import ValidationError
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    def get_delivery_for_api_partner(self, delivery_name, delivery_street):
+    def get_delivery_for_api_partner(self, delivery_name, punto_entrega):
 
         api_partner = self.env['ir.config_parameter'].sudo().get_param('rest_api_dismac.api_partner', False)
 
@@ -42,10 +42,9 @@ class ResPartner(models.Model):
             ('active', '=', False),
             ('firstname', '=', name),
             ('lastname', '=', lastname),
-            ('street', '=', delivery_street)
+            ('street', '=', punto_entrega['centro']),
+            ('street2', '=', punto_entrega['campus'])
         ], limit=1)
-
-        print(delivery_partner)
 
         if not delivery_partner:
 
@@ -55,18 +54,14 @@ class ResPartner(models.Model):
                 'active': False,
                 'parent_id': api_partner.id,
                 'type': 'delivery',
-                'street': delivery_street,
-                'street2': api_partner.street,
-                'city': api_partner.city,
-                'state_id': api_partner.state_id.id,
-                'country_id': api_partner.country_id.id,
-                'zip': api_partner.zip
+                'street': punto_entrega['centro'],
+                'street2': punto_entrega['campus']
             })
         
         return delivery_partner
 
 
-    def get_invoice_for_api_partner(self, delivery_street, oficina_contable, organo_gestor, unidad_tramitadora):
+    def get_invoice_for_api_partner(self, punto_entrega, oficina_contable, organo_gestor, unidad_tramitadora):
 
         api_partner = self.env['ir.config_parameter'].sudo().get_param('rest_api_dismac.api_partner', False)
 
@@ -91,12 +86,8 @@ class ResPartner(models.Model):
                 'active': False,
                 'parent_id': api_partner.id,
                 'type': 'invoice',
-                'street': delivery_street,
-                'street2': api_partner.street,
-                'city': api_partner.city,
-                'state_id': api_partner.state_id.id,
-                'country_id': api_partner.country_id.id,
-                'zip': api_partner.zip,
+                'street': punto_entrega['centro'],
+                'street2': punto_entrega['campus'],
                 'vat': api_partner.vat,
                 'oficina_contable': oficina_contable,
                 'organo_gestor': organo_gestor,
