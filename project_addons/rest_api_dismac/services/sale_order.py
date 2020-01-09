@@ -89,7 +89,7 @@ class SaleOrderService(Component):
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    is_from_uvigo = fields.Boolean(compute="_check_owner")   
+    is_from_uvigo = fields.Boolean(compute="_check_owner", compute_sudo=True)
     uvigo_order = fields.Char(string="UVigo order number")
     uvigo_url = fields.Char(string="UVigo order URL")
     uvigo_pdf = fields.Char(string="UVigo order PDF", compute="_compute_urls")
