@@ -59,18 +59,19 @@ class SaleOrderWzd(models.TransientModel):
             if not data:
                 raise ValidationError(_('No data to fetch.'))
 
-            delivery_partner = self.env['res.partner'].create({
-                'name': data['datos_pedido']['destinatario'], 
-                'active': False,
-                'parent_id': api_partner.id,
-                'type': 'delivery',
-                'street': data['datos_pedido']['punto_entrega']['centro'],
-                'street2': data['datos_pedido']['punto_entrega']['campus']
-            })
+            delivery_name = data['datos_pedido']['destinatario']
+            delivery_street = "{}, {}".format(data['datos_pedido']['punto_entrega']['centro'], data['datos_pedido']['punto_entrega']['campus'])
+            oficina_contable = data['datos_facturacion']['datos_facturacion_dir3']['oficina_contable']
+            organo_gestor = data['datos_facturacion']['datos_facturacion_dir3']['organo_gestor']
+            unidad_tramitadora = data['datos_facturacion']['datos_facturacion_dir3']['unidad_contratacion']
+
+            delivery_partner = self.env['res.partner'].get_delivery_for_api_partner(delivery_name, delivery_street)
+
+            invoice_partner = self.env['res.partner'].get_invoice_for_api_partner(delivery_street, oficina_contable, organo_gestor, unidad_tramitadora)
 
             new_sale_order = self.env['sale.order'].create({
                 'partner_id': api_partner.id,
-                'partner_invoice_id': api_partner.id,
+                'partner_invoice_id': invoice_partner.id,
                 'partner_shipping_id': delivery_partner.id,
                 'uvigo_order': data['datos_pedido']['numero'],
                 'observations': data['datos_pedido']['observaciones'],

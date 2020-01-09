@@ -127,6 +127,18 @@ class SaleOrder(models.Model):
                 'uvigo_order': self.uvigo_order
             })
 
+            delivery_name = data['datos_pedido']['destinatario']
+            delivery_street = "{}, {}".format(data['datos_pedido']['punto_entrega']['centro'], data['datos_pedido']['punto_entrega']['campus'])
+            oficina_contable = data['datos_facturacion']['datos_facturacion_dir3']['oficina_contable']
+            organo_gestor = data['datos_facturacion']['datos_facturacion_dir3']['organo_gestor']
+            unidad_tramitadora = data['datos_facturacion']['datos_facturacion_dir3']['unidad_contratacion']
+
+            delivery_partner = self.env['res.partner'].get_delivery_for_api_partner(delivery_name, delivery_street)
+            self.partner_shipping_id = delivery_partner.id
+
+            invoice_partner = self.env['res.partner'].get_invoice_for_api_partner(delivery_street, oficina_contable, organo_gestor, unidad_tramitadora)
+            self.partner_invoice_id = invoice_partner.id
+
             if data['lineas_detalle']:
                 _logger.info("Eliminando líneas originales del pedido con id: {}".format(self.id))
                 for order_line in self.order_line:
