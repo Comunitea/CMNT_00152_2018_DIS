@@ -34,16 +34,24 @@ class ResPartner(models.Model):
         else:
             raise ValidationError(_('API partner not defined.'))
 
+        lastname, name = delivery_name.split(', ')
+
         delivery_partner = self.env['res.partner'].search([
-            ('name', '=', delivery_name),
-            ('street', '=', delivery_street),
-            ('zip_id', '=', api_partner.zip_id.id)
+            '|',
+            ('active', '=', True),
+            ('active', '=', False),
+            ('firstname', '=', name),
+            ('lastname', '=', lastname),
+            ('street', '=', delivery_street)
         ], limit=1)
+
+        print(delivery_partner)
 
         if not delivery_partner:
 
             delivery_partner = self.env['res.partner'].create({
-                'name': delivery_name, 
+                'firstname': name, 
+                'lastname': lastname, 
                 'active': False,
                 'parent_id': api_partner.id,
                 'type': 'delivery',
@@ -68,6 +76,9 @@ class ResPartner(models.Model):
             raise ValidationError(_('API partner not defined.'))
 
         invoice_partner = self.env['res.partner'].search([
+            '|',
+            ('active', '=', True),
+            ('active', '=', False),
             ('oficina_contable', '=', oficina_contable),
             ('organo_gestor', '=', organo_gestor),
             ('unidad_tramitadora', '=', unidad_tramitadora)
