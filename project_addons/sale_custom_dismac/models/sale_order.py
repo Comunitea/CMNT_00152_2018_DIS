@@ -419,9 +419,13 @@ class SaleOrderLine(models.Model):
     @api.onchange('product_uom', 'product_uom_qty')
     def product_uom_change(self):
         prev_price = self.price_unit
+        prev_name = self.name
         res = super().product_id_change()
         if self.order_id.type_id.no_change_price and prev_price != 0:
             self.price_unit = prev_price
+        if self.product_id.review_order:
+            self.name = prev_name
+        return res
 
     @api.multi
     def duplicate_line(self):
