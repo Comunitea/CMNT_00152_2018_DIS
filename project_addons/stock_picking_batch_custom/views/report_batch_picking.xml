@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
- <report string="Batch picking groupe"
+ <report string="Agrupación de picking"
             id="action_report_batch_picking_custom"
             model="stock.picking.batch"
             report_type="qweb-pdf"
@@ -31,8 +31,43 @@
                         <t t-if="doc.notes">
                             <p t-esc="doc.notes"/>
                         </t>
-
                         <br/>
+                            <t t-if="moves">
+                            <table class="table table-condensed" string="ARTICULOS SIN STOCK">
+                                    <thead string="ARTICULOS SIN STOCK">
+                                        <th width="60%" style="padding: 3px">
+                                            <b><u>
+                                                <span>Artículos sin stock</span>
+                                            </u></b>
+                                        </th>
+                                        <th width="20%" style="padding: 3px"></th>
+                                        <th width="12%" style="padding: 3px" ><span>Pedido</span>
+                                        </th>
+                                        <th width="8%" class="text-right" style="padding: 3px"><span>Disponible</span>
+                                        </th>
+                                    </thead>
+                                <tbody>
+                                    <t t-foreach="moves" t-as="move">
+                                        <tr style="font-size: small;">
+                                    <td style="padding: 3px">
+                                        <span t-field="move.product_id.display_name"/>
+                                    </td>
+                                    <td style="padding: 3px">
+                                        <span t-field="move.product_id.import_location_str"/>
+                                    </td>
+                                    <td style="padding: 3px">
+                                        <span t-field="move.product_uom_qty"/>
+                                    </td>
+                                    <td style="padding: 3px">
+                                        <span t-field="move.reserved_availability"/>
+                                    </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+
+
+                        </table>
+                        <hr/></t>
                             <t t-foreach="get_grouped_data(doc)" t-as="l0_data">
                                 <table class="table table-condensed">
                                     <thead>
@@ -56,7 +91,7 @@
                                             <t t-set="ordered_qty" t-value="l1_item['product_uom_qty']"/>
                                             <t t-set="total_qty" t-value="total_qty + qty"/>
                                             <t t-set="carrier" t-value="l1_item['operations'][:1].picking_id.carrier_id"/>
-                                            <tr style="font-size: x-small;">
+                                            <tr style="font-size: small;">
                                                 <td style="padding: 3px">
                                                     <span t-field="product.display_name"/>
                                                 </td>
@@ -66,7 +101,7 @@
                                                     </t>
                                                 </td>
                                                 <td class="text-left" style="padding: 3px">
-                                                    <span t-esc="location.name"/>(<span style="font-size: xx-small; padding: 1px" t-esc="location.removal_priority"/>)
+                                                    <span t-esc="location.name"/>(<span style="font-size: small; padding: 1px" t-esc="location.removal_priority"/>)
                                                 </td>
                                                 <td class="text-right" style="padding: 3px">
                                                     <span t-esc="qty"/>(<span t-esc="ordered_qty"/>)

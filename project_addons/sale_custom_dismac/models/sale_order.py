@@ -58,8 +58,8 @@ class SaleOrder(models.Model):
                 order.pending_review = True
                 return True
             else:
+                res = super().action_confirm()
                 order.pending_review = False
-        res = super().action_confirm()
         return res
 
     @api.multi

@@ -95,6 +95,13 @@ class ReportPrintBatchPicking(models.AbstractModel):
         )
 
     @api.model
+    def _get_no_stock(self, batch):
+        moves = batch.move_lines.filtered(lambda x: x.product_uom_qty != x.reserved_availability)
+        print (moves)
+        return moves
+
+
+    @api.model
     def _get_grouped_data(self, batch):
 
         grouped_data = {}
@@ -125,5 +132,6 @@ class ReportPrintBatchPicking(models.AbstractModel):
             "data": data,
             "docs": docs,
             "get_grouped_data": self._get_grouped_data,
+            'moves': self._get_no_stock(docs),
             "now": fields.Datetime.now,
         }

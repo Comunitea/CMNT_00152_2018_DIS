@@ -43,6 +43,9 @@ class SaleOrderLine(models.Model):
 
     margin = fields.Float(compute='_product_margin',
                           digits=dp.get_precision('Product Price'), store=True)
+    purchase_price = fields.Float(
+        string="Cost", digits=dp.get_precision("Product Price")
+    )
 
     def _compute_cost_price(self):
         frm_cur = self.env.user.company_id.currency_id
@@ -64,5 +67,6 @@ class SaleOrderLine(models.Model):
         for line in self:
             currency = line.order_id.pricelist_id.currency_id
             price = line._compute_cost_price()
+            line.purchase_price = price
             line.margin = currency.round(
                 line.price_subtotal - (price * line.product_uom_qty))

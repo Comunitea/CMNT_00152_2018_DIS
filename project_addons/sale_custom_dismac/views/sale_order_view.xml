@@ -83,16 +83,16 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="sale_margin_sale_order_line_form_not_visible">
+    <!--record model="ir.ui.view" id="sale_margin_sale_order_line_form_not_visible">
         <field name="name">sale.order.line.tree.margin.invisible.view.form</field>
         <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale_margin.sale_margin_sale_order_line_form"/>
+        <field name="inherit_id" ref="sale_margin_percentage_dismac.sale_margin_perc_sale_order"/>
         <field name="arch" type="xml">
            <xpath expr="//field[@name='order_line']/tree//field[@name='purchase_price']" position="attributes">
                 <attribute name="attrs">{'column_invisible': True}</attribute>
             </xpath>
         </field>
-    </record>
+    </record-->
 
     <record id="view_order_agent_invisible_form_inherit" model="ir.ui.view">
         <field name="name">sale.agent.order.invisible.inherit.form</field>
