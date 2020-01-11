@@ -29,6 +29,18 @@ class SaleOrder(models.Model):
     )
     project_reference = fields.Char('Project Reference')
 
+    # Por compatibilidad entre sale_order_revision y sale_order_type
+    @api.multi
+    @api.returns('self', lambda value: value.id)
+    def copy(self, default=None):
+        if default is None:
+            default = {}
+        if default.get('name', '/') == '/' and self.type_id:
+            if self.type_id.sequence_id:
+                default['name'] = self.type_id.sequence_id.next_by_id()
+                default['unrevisioned_name'] = default['name']
+        return super(SaleOrder, self).copy(default=default)
+
     def _compute_pending_invoice_amount(self):
         for order in self:
             order_amount = 0
