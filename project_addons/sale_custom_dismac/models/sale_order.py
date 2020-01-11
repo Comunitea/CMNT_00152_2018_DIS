@@ -350,6 +350,8 @@ class SaleOrderLine(models.Model):
     import_qty_delivered = fields.Float("Imported qty delivered", default=0)
     picking_imported = fields.Char("Imported picking")
     date_picking_imported = fields.Date("Date Imported picking")
+    product_categ_id = fields.Many2one(related="product_id.categ_id",
+                                       readonly=True)
 
     image_variant = fields.Binary(
         "Alternative image for line", attachment=True,
