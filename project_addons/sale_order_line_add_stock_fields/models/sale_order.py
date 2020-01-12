@@ -8,31 +8,37 @@ class SaleOrderLine(models.Model):
 
     _inherit = "sale.order.line"
 
-    @api.depends(
-        "product_id", "order_id.commitment_date", "order_id.date_order"
-    )
+    @api.multi
     def get_line_qties(self):
         for line in self:
             if not line.product_id:
-                self.write({"virtual_available": 0.00, "qty_available": 0.00})
+                line.write({"virtual_available": 0.00, "qty_available": 0.00})
                 continue
-            order = line.order_id
-            to_date = order.commitment_date or order.date_order
-            qties = line.product_id._compute_quantities_dict(
-                self._context.get("lot_id"),
-                self._context.get("owner_id"),
-                self._context.get("package_id"),
-                self._context.get("from_date"),
-                to_date=to_date,
-            )
-            vals = {
-                "virtual_available": qties[line.product_id.id][
+
+            ctx = self._context.copy()
+            ctx.update(location=line.order_id.warehouse_id.lot_stock_id.id)
+            qties = line.product_id.with_context(ctx)._compute_quantities_dict(lot_id=False,owner_id=False,package_id=False, to_date=line.order_id.expected_date)
+            if line.state in ('done', 'sale'):
+                qty_enough = line.line_virtual_available >= line.product_uom_qty
+            else:
+                qty_enough = qties[line.product_id.id][
                     "virtual_available"
-                ],
-                "qty_available": qties[line.product_id.id]["qty_available"],
+                ] >= line.product_uom_qty
+            vals = {
+                'qty_enough': qty_enough,
+                "virtual_available": qties[line.product_id.id]["virtual_available"],
+                "qty_available": qties[line.product_id.id]["qty_available"]
             }
+            if qties[line.product_id.id]["virtual_available"] == qties[line.product_id.id]["qty_available"]:
+                stock_str = '{}'.format(qties[line.product_id.id]["qty_available"])
+            else:
+                stock_str = '{} / {}'.format(qties[line.product_id.id]["virtual_available"], qties[line.product_id.id]["qty_available"])
+            vals.update(stock_str = stock_str)
             line.update(vals)
 
+    qty_enough = fields.Boolean('Qty enough', compute="get_line_qties")
+    stock_str = fields.Char('Disponible/Total',
+        compute="get_line_qties")
     qty_available = fields.Float(
         "Quantity On Hand",
         compute="get_line_qties",
@@ -44,12 +50,12 @@ class SaleOrderLine(models.Model):
         digits=dp.get_precision("Product Unit of Measure"),
     )
 
+    line_stock_str = fields.Char('Disponible/Total')
     line_qty_available = fields.Float(
         "Line Quantity Available",
         digits=dp.get_precision("Product Unit of Measure"),
         help="Stock quantity of product at order line create time.\n",
     )
-
     line_virtual_available = fields.Float(
         "Line Quantity On Hand",
         digits=dp.get_precision("Product Unit of Measure"),
@@ -70,6 +76,7 @@ class SaleOrder(models.Model):
             )
             ctx.update(to_date=to_date)
             for line in sale.with_context(ctx).order_line:
+                line.line_stock_str = line.stock_str
                 line.line_qty_available = line.qty_available
                 line.line_virtual_available = line.virtual_available
         return super().action_confirm()
