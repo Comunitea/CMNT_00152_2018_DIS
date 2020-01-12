@@ -108,7 +108,6 @@ class StockBatchPicking(models.Model):
         ]._get_grouped_data(self)
 
         lines={}
-        #import pdb; pdb.set_trace()
         print (data)
         for pasillo in data:
             print(pasillo)
