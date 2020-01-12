@@ -21,3 +21,4 @@ class StockPicking(models.Model):
         backorder = super()._create_backorder(backorder_moves=backorder_moves)
         backorder.write({'move_type': 'one'})
         return backorder
+

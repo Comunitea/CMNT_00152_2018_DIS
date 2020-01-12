@@ -167,7 +167,7 @@
         </record>
 
         <report
-            string="Delivery stock picking tag report"
+            string="Etiquetas/Bultos"
             id="action_delivery_stock_picking_tag_report"
             model="stock.picking"
             report_type="qweb-pdf"
