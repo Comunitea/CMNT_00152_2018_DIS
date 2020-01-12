@@ -1,12 +1,20 @@
 # © 2019 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import models
+from odoo import models, fields
 from datetime import date
 
 
 class StockMove(models.Model):
 
     _inherit = 'stock.move'
+
+    type_id = fields.Many2one(comodel_name='sale.order.type', string='Tipo')
+
+    def _get_new_picking_values(self):
+        vals = super()._get_new_picking_values()
+        if self.type_id:
+            vals['type_id'] = self.type_id.id
+        return vals
 
     def _action_done(self):
         result = super(StockMove, self)._action_done()
