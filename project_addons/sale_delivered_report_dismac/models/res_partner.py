@@ -9,6 +9,17 @@ class ResPartner(models.Model):
 
     def get_undelivered_items(self):
 
+
+        action = self.env.ref('sale_delivered_report_dismac.action_delivery_report_all').read()[0]
+        action['views'] = [
+            (self.env.ref('sale_delivered_report_dismac.view_delivery_order_line_tree').id, 'tree'),
+        ]
+        action['domain'] = [('partner_id', '=', self.id)]
+        action['context'] = self._context
+        return action
+
+
+
         tree_view = self.env.ref(
             "sale_delivered_report_dismac.view_delivery_report_tree"
         )

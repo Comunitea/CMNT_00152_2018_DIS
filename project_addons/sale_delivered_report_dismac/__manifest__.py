@@ -15,6 +15,7 @@
         "sale_order_type",
         "purchase_open_qty",
         "web_tree_dynamic_colored_field",
+        "sale_order_line_add_stock_fields"
     ],
     "data": [
         "report/sale_delivery_report_views.xml",
