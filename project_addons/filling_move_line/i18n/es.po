@@ -1,0 +1,98 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* filling_move_line
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-01-12 18:07+0000\n"
+"PO-Revision-Date: 2020-01-12 18:07+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: filling_move_line
+#: model:ir.model,name:filling_move_line.model_stock_picking_batch
+msgid "Batch Picking"
+msgstr "Agrupación de albaranes"
+
+#. module: filling_move_line
+#: model_terms:ir.ui.view,arch_db:filling_move_line.view_filling_move_line
+msgid "C. Hecha"
+msgstr ""
+
+#. module: filling_move_line
+#: model_terms:ir.ui.view,arch_db:filling_move_line.view_filling_move_line
+msgid "Disponible"
+msgstr ""
+
+#. module: filling_move_line
+#: model_terms:ir.ui.view,arch_db:filling_move_line.stock_batch_picking_form
+#: model_terms:ir.ui.view,arch_db:filling_move_line.view_picking_form
+msgid "Filling Wh Ops"
+msgstr "Asistente de picking"
+
+#. module: filling_move_line
+#: model:ir.actions.act_window,name:filling_move_line.action_view_filling_move_line
+msgid "Filling move line"
+msgstr "Asistente de picking"
+
+#. module: filling_move_line
+#: model:ir.model.fields,field_description:filling_move_line.field_stock_move_line__not_stock
+msgid "Not Reserved"
+msgstr "No reservado"
+
+#. module: filling_move_line
+#: model_terms:ir.ui.view,arch_db:filling_move_line.view_filling_move_line
+msgid "Operaciones de almacén"
+msgstr ""
+
+#. module: filling_move_line
+#: model_terms:ir.ui.view,arch_db:filling_move_line.view_filling_move_line
+msgid "Ordenada"
+msgstr ""
+
+#. module: filling_move_line
+#: model:ir.model,name:filling_move_line.model_stock_move_line
+msgid "Product Moves (Stock Move Line)"
+msgstr "Movimientos de Producto (Stock Move Line)"
+
+#. module: filling_move_line
+#: model_terms:ir.ui.view,arch_db:filling_move_line.view_filling_move_line
+msgid "Sin stock"
+msgstr ""
+
+#. module: filling_move_line
+#: model:ir.model,name:filling_move_line.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de existencias"
+
+#. module: filling_move_line
+#: model:ir.model,name:filling_move_line.model_stock_picking
+msgid "Transfer"
+msgstr "Albarán"
+
+#. module: filling_move_line
+#: model_terms:ir.ui.view,arch_db:filling_move_line.view_filling_move_line
+msgid "Unit of Measure"
+msgstr "Unidad de medida"
+
+#. module: filling_move_line
+#: model:ir.ui.view,name:filling_move_line.view_filling_move_line
+msgid "filling_move_line"
+msgstr "Asistente de picking"
+
+#. module: filling_move_line
+#: model:ir.ui.view,name:filling_move_line.view_picking_form
+msgid "stock.picking form"
+msgstr ""
+
+#. module: filling_move_line
+#: model:ir.ui.view,name:filling_move_line.stock_batch_picking_form
+msgid "stock.picking.batch form"
+msgstr ""
+
