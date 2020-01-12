@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form" model="ir.ui.view">
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="show_helping_tree"
+                        class="oe_stat_button"
+                        icon="fa-shopping-cart"
+                        string="Filling Wh Ops"
+                        type="object"
+                        states="assigned"
+                        groups="stock.group_stock_user">
+                </button>
+            </xpath>
+        </field>
+    </record>
+    <record id="stock_batch_picking_form" model="ir.ui.view">
+        <field name="model">stock.picking.batch</field>
+        <field name="inherit_id" ref="stock_picking_batch_extended.stock_batch_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="show_helping_tree"
+                        class="oe_stat_button"
+                        icon="fa-shopping-cart"
+                        string="Filling Wh Ops"
+                        type="object"
+                        states="assigned,in_progress"
+                        groups="stock.group_stock_user">
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
