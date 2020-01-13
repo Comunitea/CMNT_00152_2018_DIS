@@ -18,6 +18,8 @@
         "views/sale_order_views.xml",
         "views/stock_view.xml",
         "security/ir.model.access.csv",
-        "wizard/purchase_line_change_supplier_wzd.xml"
+        "wizard/purchase_line_change_supplier_wzd.xml",
+        "wizard/purchase_order_line_confirm_changes.xml",
+        "data/ir_cron.xml"
     ],
 }

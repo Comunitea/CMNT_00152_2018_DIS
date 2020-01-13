@@ -3,6 +3,17 @@
 
     <template id="external_layout_standard_custom" inherit_id="web.external_layout_standard">
         <xpath expr="//div[@t-if='company.logo or company.report_header']" position="replace"/>
+        <xpath expr="//img[@t-if='company.logo']" position="replace">
+            <t t-if="o and o._name == 'sale.order' and o.type_id.report_partner_id">
+                <img t-att-src="image_data_uri(o.type_id.report_partner_id.image)" style="max-height: 45px;" alt="Logo"/>
+            </t>
+            <t t-if="o and o._name == 'account.invoice' and o.sale_type_id.report_partner_id">
+                <img t-att-src="image_data_uri(o.sale_type_id.report_partner_id.image)" style="max-height: 45px;" alt="Logo"/>
+            </t>
+            <t t-if="not o or o._name not in ('sale.order', 'account.invoice') or (o._name == 'sale.order' and not o.type_id.report_partner_id) or (o._name == 'account.invoice' and not o.sale_type_id.report_partner_id)">
+                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 45px;" alt="Logo"/>
+            </t>
+        </xpath>
         <xpath expr="//div[hasclass('o_standard_footer')]//ul[hasclass('list-inline')]" position="replace">
             <ul class="list-inline mb0">
                 <li t-if="company.phone" class="list-inline-item"><span t-field="company.phone"/></li>
