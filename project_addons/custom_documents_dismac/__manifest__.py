@@ -13,9 +13,9 @@
         "account",
         "account_due_dates_str",
         "partner_variable_decimals",
-        'sale_order_report_product_image',
-        'stock_picking_report_valued',
-        'account_payment_partner'
+        "sale_order_report_product_image",
+        "stock_picking_report_valued",
+        "account_payment_partner",
     ],
     "data": [
         "views/list_reports.xml",
@@ -26,7 +26,8 @@
         "views/internal_furniture_report.xml",
         "views/sale_proforma_invoice_report.xml",
         "views/furniture_new_report.xml",
-        "views/picking_report.xml"
+        "views/picking_report.xml",
+        "views/sale_order_type.xml",
     ],
     "installable": True,
 }
