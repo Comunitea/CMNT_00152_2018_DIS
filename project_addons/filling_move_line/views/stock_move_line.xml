@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_filling_move_line" model="ir.ui.view">
+        <field name="name">filling_move_line</field>
+        <field name="model">stock.move.line</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Operaciones de almacén" delete="1" editable='bottom' create="0"
+                  decoration-success="qty_done == product_uom_qty or qty_done == product_qty or (product_uom_qty == 0 and qty_done == not_stock)"
+                  decoration-muted="qty_done == 0 and product_uom_qty == 0"
+                  decoration-danger="qty_done == 0 and not_stock == 0"
+                  >
+                <!--
+                  decoration-danger="not purchase_order_id and qty_available_after_delivered &lt; 0"
+                  decoration-bf="not purchase_order_id and sale_order_line_id==sl_from"
+                  decoration-muted="purchase_order_id"-->
+                <field name="move_id" readonly="1" invisible="1"/>
+                <field name="picking_id" readonly="1" invisible="1"/>
+                <field name="product_id" readonly="1"/>
+                <field name="tracking" invisible="1" />
+                <field name="state" readonly="1"/>
+                <field name="lot_id" invisible="context.get('hide_lot_id')" attrs="{'readonly': [('tracking','=', 'none')]}" context="{'default_product_id': product_id, 'change_serial': True}"/>
+                <field name="location_id" invisible="context.get('hide_location_id')"/>
+                <field name="location_dest_id" invisible="context.get('hide_location_dest_id')"/>
+                <field name="product_qty" readonly="1" string="Ordenada"/>
+                <field name="product_uom_qty" readonly="1" string="Disponible"/>
+                <field name="not_stock" readonly="1" string="Sin stock"/>
+                <field name="qty_done" string="C. Hecha" attrs="{'readonly': [('tracking','=', 'serial')]}"/>
+                <field name="product_uom_id" options="{'no_open': True, 'no_create': True}" readonly="1" string="Unit of Measure" groups="uom.group_uom" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_view_filling_move_line" model="ir.actions.act_window">
+        <field name="name">Filling move line</field>
+        <field name="res_model">stock.move.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="filling_move_line.view_filling_move_line"/>
+        <field name="search_view_id" ref="stock.stock_move_line_view_search"/>
+
+    </record>
+</odoo>

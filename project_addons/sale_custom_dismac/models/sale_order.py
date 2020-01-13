@@ -29,6 +29,18 @@ class SaleOrder(models.Model):
     )
     project_reference = fields.Char('Project Reference')
 
+    # Por compatibilidad entre sale_order_revision y sale_order_type
+    @api.multi
+    @api.returns('self', lambda value: value.id)
+    def copy(self, default=None):
+        if default is None:
+            default = {}
+        if default.get('name', '/') == '/' and self.type_id:
+            if self.type_id.sequence_id:
+                default['name'] = self.type_id.sequence_id.next_by_id()
+                default['unrevisioned_name'] = default['name']
+        return super(SaleOrder, self).copy(default=default)
+
     def _compute_pending_invoice_amount(self):
         for order in self:
             order_amount = 0
@@ -338,6 +350,8 @@ class SaleOrderLine(models.Model):
     import_qty_delivered = fields.Float("Imported qty delivered", default=0)
     picking_imported = fields.Char("Imported picking")
     date_picking_imported = fields.Date("Date Imported picking")
+    product_categ_id = fields.Many2one(related="product_id.categ_id",
+                                       readonly=True)
 
     image_variant = fields.Binary(
         "Alternative image for line", attachment=True,
@@ -419,9 +433,13 @@ class SaleOrderLine(models.Model):
     @api.onchange('product_uom', 'product_uom_qty')
     def product_uom_change(self):
         prev_price = self.price_unit
+        prev_name = self.name
         res = super().product_id_change()
         if self.order_id.type_id.no_change_price and prev_price != 0:
             self.price_unit = prev_price
+        if self.product_id.review_order:
+            self.name = prev_name
+        return res
 
     @api.multi
     def duplicate_line(self):

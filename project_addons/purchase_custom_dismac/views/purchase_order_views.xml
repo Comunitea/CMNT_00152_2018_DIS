@@ -89,9 +89,15 @@
         </field>
     </record>
 
+    <menuitem id="purchase_report_root" name="Reporting" parent="purchase.menu_purchase_root" sequence="99"
+        groups="purchase.group_purchase_manager" />
+
+    <menuitem id="purchase.purchase_report" name="Reporting" parent="purchase_report_root" sequence="10"
+        groups="purchase.group_purchase_manager" action="purchase.action_purchase_order_report_all"/>
+
      <menuitem id="menu_action_purchase_custom_all"
             name="Compras pendientes"
             action="action_purchase_custom_all"
-            parent="purchase.purchase_report"
-            sequence="2"/>
+            parent="purchase_report_root"
+            sequence="20"/>
 </odoo>

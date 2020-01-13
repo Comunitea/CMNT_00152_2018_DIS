@@ -29,5 +29,6 @@
         "views/sale_order_type.xml",
         "views/report_sale_order.xml",
         "views/product_view.xml",
+        "views/stock_picking.xml",
     ],
 }

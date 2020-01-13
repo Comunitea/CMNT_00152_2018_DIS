@@ -139,7 +139,7 @@ class SaleDelivery(models.Model):
 
         if lines:
             max_date = lines[0].date_expected
-
+        last={}
         for line in lines:
             product_uom_qty = line.product_uom._compute_quantity(
                 line.product_uom_qty, line.product_uom
@@ -588,7 +588,7 @@ class SaleDelivery(models.Model):
            %s
            %s
 
-            order by date_order) """ % (
+            order by product_id, date_order) """ % (
             self._table,
             sql1,
             sql2,

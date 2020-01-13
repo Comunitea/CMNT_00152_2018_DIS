@@ -91,16 +91,71 @@
         </field>
     </record>
 
+    <record id="view_delivery_order_line_tree" model="ir.ui.view">
+     <field name="name">sale.delivery.order_line.report.tree</field>
+        <field name="model">sale.order.line</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Lineas de venta" delete="false" edit="false" create="false"
+                  decoration-success="moves_state == 'done' or qty_enough == True"
+                  decoration-danger="qty_enough == False"
+                  decoration-muted="moves_state == 'none'">
+                  <!--decoration-danger="not purchase_order_id and qty_available_after_delivered &lt; 0"
+                  decoration-bf="not purchase_order_id and sale_order_line_id==sl_from"
+                  decoration-muted="purchase_order_id"-->
+                <field name="partner_id" invisible="1"/>
+                <field name="order_id"/>
+                <field name="state"/>
+                <field name="product_id"/>
+                <field name="product_uom_qty" string="C. Pedida"/>
+                <field name="qty_enough" invisible="1"/>
+                <field name="line_stock_str" string="Stock"/>
+                <!--field name="line_stock_str" options="{'fg_color': 'gray: product_uom_qty != 0'}"/-->
+
+                <field name="expected_date"/>
+                <field name="estimated_delivery_date"/>
+                <field name="qty_delivered" />
+                <field name="qty_invoiced"/>
+                <field name="qty_to_invoice" invisible="1"/>
+                <field name="purchase_order_needed" />
+                <field name="moves_state" invisible="1"/>
+                <field name="state" invisible="1"/>
+                <field name="invoice_status" invisible="1"/>
+                <field name="customer_lead" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_sales_order_line_filter" model="ir.ui.view">
+    <field name="model">sale.order.line</field>
+    <field name="inherit_id" ref="sale.view_sales_order_line_filter"/>
+        <field name="arch" type="xml">
+            <field name="salesman_id">
+                <field name="purchase_order_needed"/>
+                <field name="state"/>
+
+            </field>
+            <xpath expr="//filter[@name='to_invoice']" position="after">
+                <filter name="process" string ="Para entregar" domain="[('moves_state', '=','pending')]" context="{'deliverable': True}"/>
+                <filter name="no_entregables" string="Sin stock" domain="[('moves_state', '=','pending')]" context="{'not_deliverable': True}"/>
+                <filter name="buy_pending" string="Pendientes de entrada" context="{'buy_pending': True}"/>
+            </xpath>
+
+        </field>
+    </record>
+
+
     <record id="action_delivery_report_all" model="ir.actions.act_window">
         <field name="name">Sales Delivery Status</field>
-        <field name="res_model">sale.delivery.report</field>
+        <field name="res_model">sale.order.line</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="target">current</field>
-        <field name="view_id"></field>  <!-- force empty -->
-        <field name="search_view_id" ref="view_delivery_report_search"/>
-        <field name="context">{'search_default_not_delivered':1}</field>
-        <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
+        <field name="view_id" ref="view_delivery_order_line_tree"/>
+        <field name="search_view_id" ref="sale.view_sales_order_line_filter"/>
+        <field name="domain">[('state', 'not in', ('cancel', 'draft'))]</field>
+        <field name="context">{'search_default_process':1}</field>
+        <field name="help"></field>
     </record>
 
     <menuitem id="menu_action_delivery_report_all"
