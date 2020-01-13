@@ -191,10 +191,10 @@ class SaleOrder(models.Model):
                 body = _("Order %s has been unlocked") % order.name
 
             if body:
-                order.sudo().message_post(
+                order.sudo().with_context(
+                    mail_post_autofollow=False).message_post(
                     body=body,
-                    partner_ids=[(4, pids[0])],
-                    subtype="mail.mt_note",
+                    subtype="mail.mt_note"
                 )
 
     @api.model
@@ -236,8 +236,8 @@ class SaleOrder(models.Model):
         user_name = self.env["res.users"].search([("id", "=", self._uid)]).name
         # Send message of order was unlocked
         body = _("Unlock forced applied by %s") % (user_name)
-        self.sudo().message_post(
-            body=body, partner_ids=[(4, pids[0])], subtype="mail.mt_note"
+        self.sudo().with_context(mail_post_autofollow=False).message_post(
+            body=body, subtype="mail.mt_note"
         )
 
     @api.multi
@@ -248,8 +248,8 @@ class SaleOrder(models.Model):
         user_name = self.env["res.users"].search([("id", "=", self._uid)]).name
         # Send message of order was unlocked
         body = _("No force unlock applied by %s") % user_name
-        self.sudo().message_post(
-            body=body, partner_ids=[(4, pids[0])], subtype="mail.mt_note"
+        self.sudo().with_context(mail_post_autofollow=False).message_post(
+            body=body, subtype="mail.mt_note"
         )
 
     # *********************** LOCKING FUNCTIONS *******************************
