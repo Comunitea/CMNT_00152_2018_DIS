@@ -9,6 +9,9 @@
             <xpath expr="//button[@name='action_view_stock_move_lines']" position="after">
                 <button string="Unreceived Items" icon="fa-sign-in" class="oe_stat_button" name="get_unreceived_items" type="object"></button>
             </xpath>
+            <header position="inside">
+                <button name="button_compute_last_60_days_sales" type="object" string="compute last 60 days sales"/>
+            </header>
         </field>
     </record>
 

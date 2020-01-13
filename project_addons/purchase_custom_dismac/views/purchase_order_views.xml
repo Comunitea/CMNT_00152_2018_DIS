@@ -6,34 +6,36 @@
         <field name="model">purchase.order.line</field>
         <field name="type">tree</field>
         <field name="arch" type="xml">
-            <tree string="Purchase Order Lines" create="false" delete="false" edit="false" decoration-success="qty_to_receive&lt;=0"
-                decoration-danger="qty_to_receive&gt;0">
+            <tree string="Purchase Order Lines" create="false" delete="false" editable="top">
                 <field name="currency_id" invisible="1"/>
-                <field name="order_id"/>
-                <field name="partner_id"/>
-                <field name="product_id" />
-                <field name="date_planned"  widget="date"/>
-                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                <field name="order_id" readonly="True"/>
+                <field name="partner_id" readonly="True"/>
+                <field name="new_partner_id"/>
+                <field name="product_id"  readonly="True"/>
+                <field name="product_categ_id"/>
+                <field name="date_planned"  widget="date" readonly="True"/>
+                <field name="product_virtual_available"/>
+                <field name="to_deliver_qty"/>
+                <field name="last_60_days_sales"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" readonly="True"/>
                 <field name="product_qty"/>
-                <field name="qty_received"/>
-                <field name="qty_to_receive" />
                 <field name="product_uom" groups="uom.group_uom" attrs="{'readonly': [('state', 'in', ('purchase', 'done', 'cancel'))]}" force_save="1"/>
                 <field name="price_unit"/>
 
                 <field name="price_subtotal" widget="monetary"/>
-                <field name="state"/>
+                <field name="state" readonly="True"/>
             </tree>
         </field>
     </record>
 
     <record id="purchase_custom_tree_picking_ref" model="ir.ui.view">
-     <field name="name">purchase.order.line.tree.picking_ref</field>
+        <field name="name">purchase.order.line.tree.picking_ref</field>
         <field name="model">purchase.order</field>
         <field name="type">tree</field>
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
-           <field name="origin" position="after">
-               <field name="supplier_picking_ref"/>
+        <field name="origin" position="after">
+            <field name="supplier_picking_ref"/>
             </field>
         </field>
     </record>
@@ -44,6 +46,8 @@
         <field name="arch" type="xml">
             <search string="Purchase Order Lines Status">
                 <field name="order_id"/>
+                <field name="product_categ_id"/>
+                <field name="partner_id"/>
                 <field name="product_id"/>
                 <field name="company_id"/>
                 <filter name="not_delivered" string="Pendientes" domain="[('qty_to_receive', '&gt;', 0), ('state', 'not in', ['draft', 'cancel', 'done'])]"/>
@@ -66,7 +70,7 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="purchase_custom_tree"></field>  <!-- force empty -->
         <field name="search_view_id" ref="purchase_custom_search"/>
-        <field name="context">{'search_default_not_delivered':1}</field>
+        <field name="context">{'search_default_draft':1}</field>
     </record>
 
     <record id="purchase_custom_order_form" model="ir.ui.view">
