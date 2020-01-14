@@ -60,9 +60,8 @@ class SaleOrderLine(models.Model):
         ctx = self._context.copy()
 
         for line in self:
-            print ('Producto: {}'.format(line.product_id.display_name))
             need_qty = line.product_uom_qty
-            estimated_date = line.order_id.expected_date or line.order_id.confirmation_date
+            estimated_date = line.order_id.expected_date or line.order_id.confirmation_date or line.order_id.date_order
             location = line.order_id.warehouse_id.lot_stock_id
             parent_path = '{}/'.format(location.id)
             ctx.update(location=location.id)
