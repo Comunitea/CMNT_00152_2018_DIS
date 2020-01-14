@@ -4,7 +4,7 @@ from odoo import _, api, fields, models
 
 from odoo.exceptions import ValidationError
 from odoo.addons import decimal_precision as dp
-
+from odoo.tools.float_utils import float_compare
 
 class BatchPickingGroupMove(models.Model):
 
@@ -108,7 +108,6 @@ class StockBatchPicking(models.Model):
         ]._get_grouped_data(self)
 
         lines={}
-        #import pdb; pdb.set_trace()
         print (data)
         for pasillo in data:
             print(pasillo)
@@ -172,6 +171,12 @@ class StockBatchPicking(models.Model):
             self.get_move_done()
             self.moves_all_count = len(batch.move_grouped_ids)
         return
+
+    def action_view_stock_picking_related(self):
+        self.ensure_one()
+        action = self.env.ref('stock.action_picking_tree_all').read([])[0]
+        action['domain'] = [('id', 'in', self.picking_dest_ids.ids)]
+        return action
 
 
     def action_show_moves_kanban(self):
@@ -252,3 +257,38 @@ class StockBatchPicking(models.Model):
             move.qty_done = 0
             move.move_line_ids.write({"qty_done": 0.00})
         self.qty_applied = False
+
+    @api.multi
+    def action_print_picking(self):
+        if len(self)==1 and self.picking_type_id and self.picking_type_id.code == 'internal':
+            return self.env.ref('stcok_picking_batch_custom.action_report_batch_picking_custom')
+        return super().action_print_picking()
+
+    @api.multi
+    def action_transfer(self):
+        """ Create wizard to process all active pickings in these batches
+        """
+        picks_to_split = self.env['stock.picking']
+        precision_digits = self.env[
+            'decimal.precision'].precision_get('Product Unit of Measure')
+        for batch in self:
+            picking_ids = batch.picking_ids
+            for picking_id in picking_ids:
+                if float_compare(picking_id.quantity_done, 0, precision_digits=precision_digits) == 0:
+                    raise ValidationError('El albarán {} no tiene nada realizado. Debes sacarlo de la agrupación o marcar alguna cantidad para hacer'.format(picking_id.name))
+            ## Hago el split de todos los albaranes
+            picks_to_split += picking_ids.filtered(lambda x: not x.all_assigned)
+            picks_to_split.split_process()
+        super().action_transfer()
+        back_domain = [('backorder_id', 'in', picks_to_split.ids)]
+        backorder_ids = self.env['stock.picking'].search(back_domain)
+        action = self.env.ref('stock.action_picking_tree_all').read()[0]
+        action['context'] = self._context
+        if backorder_ids:
+            action['domain'] = [('id', 'in', backorder_ids.ids)]
+        else:
+            if len(self) == 1:
+                action['domain'] = [('id', 'in', self.picking_dest_ids.ids)]
+            else:
+                action['domain'] = [('id', 'in', self.mapped('picking_dest_ids').ids)]
+        return action

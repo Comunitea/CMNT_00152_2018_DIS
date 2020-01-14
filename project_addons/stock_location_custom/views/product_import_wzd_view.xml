@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
   <record id="view_quant_package_formpi" model="ir.ui.view">
-            <field name="name">	stock.quant.package.form.pi</field>
+            <field name="name"> stock.quant.package.form.pi</field>
             <field name="model">stock.quant.package</field>
             <field name="inherit_id" ref="stock.view_quant_package_form"/>
             <field name="arch" type="xml">
                 <field name="company_id" position="before">
                     <field name="import_name"/>
-                    <field name="import_product_id"/>
+                    <field name="product_ids" widget="many2many_tags"/>
                 </field>
             </field>
     </record>
 
     <record id="view_location_form_pi" model="ir.ui.view">
-            <field name="name">	stock.location.form.pi</field>
+            <field name="name"> stock.location.form.pi</field>
             <field name="model">stock.location</field>
             <field name="inherit_id" ref="stock.view_location_form"/>
             <field name="arch" type="xml">
+                <field name="scrap_location" position="before">
+                    <field name="is_pos_x"/>
+                </field>
                 <field name="usage" position="before">
-                    <field name="import_name" readonly="1" attrs="{'invisible': [('usage','=','internal')]}"/>
+                    <field name="import_name" readonly="1" attrs="{'invisible': [('import_name','=','')]}"/>
+                </field>
+                <field name="removal_priority" position="after">
+                    <field name="inverse_order" attrs="{'invisible': [('is_pos_x','!=',True)]}"/>
                 </field>
                 <field name="posx" position="before">
                     <field name="building"/>
@@ -55,16 +62,19 @@
                     <field name="file" filename="filename"/>
                     <field name="start_line"/>
                     <field name="end_line"/>
+                    <field name="only_create_locations"/>
+                    <field name="only_test_product"/>
+
                 </group>
                 <footer>
                     <button name="import_products" type="object" class="btn-primary" string="Import Products"/>
                     <button special="cancel" string="Cancel" class="oe_link"/>
-                </footer> 
+                </footer>
             </form>
         </field>
     </record>
 
-   
+
     <record id="action_import_products" model="ir.actions.act_window">
         <field name="name">Import Products</field>
         <field name="res_model">product.import.wzd</field>
@@ -78,6 +88,6 @@
               parent="stock.menu_stock_warehouse_mgmt"
 
               sequence="99" />
-    
-    
+
+
 </odoo>

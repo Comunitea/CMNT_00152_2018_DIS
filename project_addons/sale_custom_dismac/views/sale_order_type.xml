@@ -9,6 +9,7 @@
             <field name="incoterm_id" position="after">
                 <field name="use_partner_agent"/>
                 <field name="need_approval"/>
+                <field name="no_change_price"/>
             </field>
         </field>
     </record>

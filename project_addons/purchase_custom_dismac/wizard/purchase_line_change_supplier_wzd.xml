@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="purchase_line_partner_change_form" model="ir.ui.view">
+        <field name="name">purchase.line.partner.change.form</field>
+        <field name="model">purchase.line.partner.change</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="asistente para cambio de proveedor">
+                <group>
+                    <field name="partner_id" domain = "[('id', 'in', partner_ids)]"/>
+                </group>
+                <group>
+                    <field name="show_price" invisible="1"/>
+                    <field name="show_apply_partner" invisible="1"/>
+                    <field name="show_apply_order" invisible="1"/>
+                    <field name="initial_amount" invisible="1"/>
+                    <field name="partner_amount" invisible="1"/>
+                    <field name="partner_ids" invisible="0" widget="many2many_tags"/>
+                </group>
+
+                    <field name="line_ids" nolabel="1">
+                        <tree create="0" editable="0" delete="1"
+                        decoration-muted ="partner_price_unit==0">
+                            <field name="purchase_line_id" invisible="1"/>
+                            <field name="wzd_id" invisible="1"/>
+                            <field name="same_partner"/>
+                            <field name="partner_id"/>
+                            <field name="product_id"/>
+                            <field name="product_qty"/>
+                            <field name="product_uom"/>
+                            <field name="price_unit"/>
+                            <field name="partner_price_unit"/>
+                        </tree>
+                    </field>
+                    <h2>
+                        <field name="purchase_order_id" readonly="1"/>
+                    </h2>
+
+
+                <footer>
+                    <button name="apply_partner" attrs="{'invisible': [('show_apply_partner', '=', False)]}"
+                            string="Aplicar precios" type="object" />
+                    <button name="apply_order" attrs="{'invisible': [('show_apply_order', '=', False)]}"
+                            string="Cambiar proveedor" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window name="Asistente de cambio de proveedor"
+        src_model="purchase.order.line"
+        res_model="purchase.line.partner.change"
+        key2="client_action_multi"
+        view_mode="form"
+        target="new"
+        id="action_purchase_line_partner_change_form"/>
+
+</odoo>

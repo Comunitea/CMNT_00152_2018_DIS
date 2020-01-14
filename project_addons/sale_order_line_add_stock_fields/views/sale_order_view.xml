@@ -1,20 +1,25 @@
 <?xml version="1.0"?>
 <odoo>
     
-    <record id="view_sale_order_form_add_Stock_fieldst" model="ir.ui.view">
+    <record id="view_sale_order_form_add_stock_field" model="ir.ui.view">
              <field name="name">sale.order.form.inherit</field>
              <field name="model">sale.order</field>
              <field name="inherit_id" ref="sale.view_order_form" />
              <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='product_uom_qty']" position="after">
+                    <field name="qty_enough" invisible="1"/>
+                    <!--field name="qty_available" attrs="{'column_invisible': [('parent.state', '=', 'sale')]}"/-->
 
-                <xpath expr="//tree/field[@name='product_uom_qty']" position="before">
-                    <!--field name="virtual_available" attrs="{'column_invisible': [('parent.state', '=', 'sale')]}"/>
-                    <field name="qty_available" attrs="{'column_invisible': [('parent.state', '=', 'sale')]}"/-->
-
-                    <field name="line_virtual_available" attrs="{'column_invisible': [('parent.state', '!=', 'sale')]}" readonly="1"/>
-                    <field name="line_qty_available" attrs="{'column_invisible': [('parent.state', '!=', 'sale')]}" readonly="1"/>
-
+                    <!--field name="line_virtual_available" attrs="{'column_invisible': [('parent.state', '=', 'sale')]}" readonly="1"/>
+                    <field name="line_qty_available" attrs="{'column_invisible': [('parent.state', '=', 'sale')]}" readonly="1"/-->
+                    <field name="stock_str" attrs="{'column_invisible': [('parent.state', 'in', ('cancel', 'done', 'sale'))]}"/>
+                    <field name="line_stock_str" readonly="1" attrs="{'column_invisible': [('parent.state', 'in', ('cancel', 'draft', 'sent'))]}"/>
                 </xpath>
+                 <field name="stock_str" position="attributes">
+                <attribute name="options"> {
+                    "fg_color": "green: qty_enough==True; red: qty_enough==False"
+                }</attribute>
+              </field>
 
                 <xpath expr="//label[@for='qty_delivered']" position="before">
                     <label for="line_qty_available" attrs="{'invisible': [('state', '=', 'sale')]}"/>
@@ -45,8 +50,9 @@
             <field name="inherit_id" ref="sale_order_line_form_button.sale_order_line_form_view" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='route_id']" position="before">
-                    <field name="virtual_available" attrs="{'invisible': [('state', '=', 'sale')]}"/>
-                    <field name="qty_available" attrs="{'invisible': [('state', '=', 'sale')]}"/>
+                    <field name="stock_str" readonly="1"/>
+                    <field name="virtual_available" invisible="1"/>
+                    <field name="qty_available" invisible="1"/>
                 </xpath>
             </field>
     </record>

@@ -3,8 +3,8 @@
 
     <template id="cuustom_saleorder_document_inherit" inherit_id="sale.report_saleorder_document">
         <xpath expr="//span[@t-field='line.name']" position="replace">
-            <td t-if="line.notes"><span t-raw="line.notes"/></td>
-            <td t-if="not line.notes"><span t-field="line.name"/></td>
+            <span t-if="line.notes" t-raw="line.notes"/>
+            <span t-if="not line.notes" t-field="line.name"/>
         </xpath>
     </template>
 

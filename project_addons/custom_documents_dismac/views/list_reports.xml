@@ -4,6 +4,16 @@
 
 <!--PRESUPUESTOS -->
 
+    <report
+            id="sale.action_report_saleorder"
+            string="Ofimática"
+            model="sale.order"
+            report_type="qweb-pdf"
+            file="sale.report_saleorder"
+            name="sale.report_saleorder"
+            print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        />
+
 <!--Papeleria-->
 
         <report
@@ -45,7 +55,7 @@
         <report
             id="budget_furniture_new"
             model="sale.order"
-            string="Mobiliario nuevo"
+            string="Mobiliario"
             report_type="qweb-pdf"
             name="custom_documents_dismac.report_budget_furniture_new_report"
             file="custom_documents_dismac.report_budget_furniture_new_report"
@@ -57,7 +67,7 @@
         <report
             id="budget_furniture_new_iva"
             model="sale.order"
-            string="Mobiliario nuevo - con IVA"
+            string="Mobiliario - con IVA"
             report_type="qweb-pdf"
             name="custom_documents_dismac.report_budget_furniture_new_iva_report"
             file="custom_documents_dismac.report_budget_furniture_new_iva_report"
@@ -69,7 +79,7 @@
         <report
             id="budget_furniture_new_without_photos"
             model="sale.order"
-            string="Mobiliario nuevo - sin Fotos"
+            string="Mobiliario - sin Fotos"
             report_type="qweb-pdf"
             name="custom_documents_dismac.report_budget_furniture_new_without_photos_report"
             file="custom_documents_dismac.report_budget_furniture_new_without_photos_report"
@@ -82,7 +92,7 @@
         <report
             id="budget_furniture_new_iva_without_photos"
             model="sale.order"
-            string="Mobiliario nuevo - sin Fotos con IVA"
+            string="Mobiliario - sin Fotos con IVA"
             report_type="qweb-pdf"
             name="custom_documents_dismac.report_budget_furniture_new_iva_without_photos"
             file="custom_documents_dismac.report_budget_furniture_new_iva_without_photos"
@@ -121,7 +131,7 @@
         <report
             id="order"
             model="sale.order"
-            string="Pedido"
+            string="Pedido interno"
             report_type="qweb-pdf"
             name="custom_documents_dismac.order_report"
             file="custom_documents_dismac.order_report"

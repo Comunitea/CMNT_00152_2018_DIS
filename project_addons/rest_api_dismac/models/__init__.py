@@ -21,3 +21,4 @@
 
 from . import res_config
 from . import api_access_log
+from . import res_partner

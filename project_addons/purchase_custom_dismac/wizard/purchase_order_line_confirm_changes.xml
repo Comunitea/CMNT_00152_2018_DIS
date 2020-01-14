@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="purchase_order_line_confirm_changes_form" model="ir.ui.view">
+        <field name="name">purchase.order.line.confirm.changes.form</field>
+        <field name="model">purchase.order.line.confirm.changes</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="order_lines" nolabel="1">
+                        <tree editable="top">
+                            <field name="order_id"/>
+                            <field name="partner_id"/>
+                            <field name="new_partner_id"/>
+                            <field name="product_id"/>
+                            <field name="product_qty"/>
+                            <field name="price_unit"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button name="confirm" string="Confirm" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window name="Confirmar cambio de proveedor"
+        res_model="purchase.order.line.confirm.changes"
+        src_model="purchase.order.line"
+        view_id="purchase_order_line_confirm_changes_form"
+        key2="client_action_multi"
+        view_mode="form"
+        target="new"
+        id="purchase_order_line_confirm_changes_action"/>
+</odoo>

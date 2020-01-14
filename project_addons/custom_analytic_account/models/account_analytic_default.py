@@ -14,11 +14,26 @@ class AccountAnalyticTag(models.Model):
 class AccountInvoiceLine(models.Model):
     _inherit = "account.invoice.line"
 
-    @api.onchange('product_id')
-    def _onchange_product_id(self):
-        res = super()._onchange_product_id()
+    @api.onchange('analytic_tag_ids')
+    def _onchange_analyic_tag_id(self):
         if self.analytic_tag_ids:
-            self.cost_center_id = self.cost_center_id = \
-                self.analytic_tag_ids.mapped(
-                'cost_center_id')[0].id
-        return res
+            cost_center = self.analytic_tag_ids.mapped(
+                    'cost_center_id')
+            if cost_center:
+                self.cost_center_id = cost_center[0].id
+        return
+
+class AccountInvoice(models.Model):
+    _inherit = 'account.invoice'
+
+    def _prepare_invoice_line_from_po_line(self, line):
+        data = super()._prepare_invoice_line_from_po_line(line)
+        if data['analytic_tag_ids']:
+            aat = self.env['account.analytic.tag'].browse(data[
+                                                           'analytic_tag_ids'])
+            cost_center = aat.mapped(
+                'cost_center_id')
+            if cost_center:
+                data['cost_center_id'] = cost_center[0].id
+        return data
+

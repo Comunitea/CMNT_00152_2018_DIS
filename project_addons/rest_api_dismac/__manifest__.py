@@ -23,7 +23,7 @@
 ##############################################################################
 {
     "name": "Rest Api Dismac",
-    'version': '1.0',
+    'version': '12.0.0.0.0',
     "summary": "Rest Api for Dismac based on OCA's rest-framework module",
     'description': '',
     'category': 'Custom',
@@ -33,15 +33,15 @@
     'contributors': [
         'Vicente Ángel Gutiérrez Fernández <vicente@comunitea.com>',
     ],
-    "depends": ["base_rest", "component", "sale", "website"],
+    "depends": ["base_rest", "component", "sale", "website", "l10n_es_facturae"],
     "data": [
         'views/res_config.xml',
         'views/sale_order.xml',
         'views/api_access_log.xml',
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'wizard/sale_order_wzd.xml'
     ],
     "demo": [],
-    "external_dependencies": {"python": ["zeep"]},
     'images': [
         '/static/description/icon.png',
     ],

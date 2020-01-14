@@ -36,5 +36,20 @@
     </record>
 
 
+    <record id="res_partner_view_custom_change_user_id" model="ir.ui.view" >
+        <field name="name">res.partner.view.custom_user_id</field>
+        <field name="model">res.partner</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="sale_commission.view_partner_form_agent"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="replace"/>
+            <field name="agents" position="replace"/>
+            <field name="phone" position="before">
+                <field name="user_id" />
+                <field name="agents" widget="many2many_tags"/>
+            </field>
+        </field>
+    </record>
+
 </odoo>
 

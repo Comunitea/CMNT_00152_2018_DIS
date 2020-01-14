@@ -171,3 +171,51 @@ msgstr "Transferir"
 msgid "Unreceived Items"
 msgstr "Líneas de compra"
 
+
+#. module: purchase_custom_dismac
+#: model:ir.model.fields,field_description:purchase_custom_dismac.field_purchase_order_line__new_partner_id
+msgid "New partner"
+msgstr "Nueva empresa"
+
+#. module: purchase_custom_dismac
+#: model:ir.model.fields,field_description:purchase_custom_dismac.field_purchase_order_line__product_categ_id
+msgid "Category"
+msgstr "Categoría"
+
+#. module: purchase_custom_dismac
+#: model:ir.model.fields,field_description:purchase_custom_dismac.field_purchase_order_line__product_virtual_available
+msgid "available qty"
+msgstr "Cantidad disponible"
+
+#. module: purchase_custom_dismac
+#: model_terms:ir.ui.view,arch_db:purchase_custom_dismac.product_unreceived_items
+msgid "compute last 60 days sales"
+msgstr "Calcular ventas 60 días"
+
+#. module: purchase_custom_dismac
+#: model:ir.model.fields,field_description:purchase_custom_dismac.field_product_product__last_60_days_sales
+#: model:ir.model.fields,field_description:purchase_custom_dismac.field_purchase_order_line__last_60_days_sales
+msgid "Last 60 Days Sales"
+msgstr "Ventas 60 días"
+
+#. module: purchase_custom_dismac
+#: model:ir.model.fields,field_description:purchase_custom_dismac.field_purchase_order_line__to_deliver_qty
+msgid "To Deliver Qty"
+msgstr "Cantidad pendiente de envío"
+
+#. module: purchase_custom_dismac
+#: model_terms:ir.ui.view,arch_db:purchase_custom_dismac.purchase_order_line_confirm_changes_form
+msgid "Confirm"
+msgstr "Confirmar"
+
+#. module: purchase_custom_dismac
+#: model_terms:ir.ui.view,arch_db:purchase_custom_dismac.purchase_line_partner_change_form
+#: model_terms:ir.ui.view,arch_db:purchase_custom_dismac.purchase_order_line_confirm_changes_form
+msgid "or"
+msgstr "o"
+
+#. module: purchase_custom_dismac
+#: model_terms:ir.ui.view,arch_db:purchase_custom_dismac.purchase_line_partner_change_form
+#: model_terms:ir.ui.view,arch_db:purchase_custom_dismac.purchase_order_line_confirm_changes_form
+msgid "Cancel"
+msgstr "Cancelar"

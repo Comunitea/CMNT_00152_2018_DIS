@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="stock_picking_tag">
+          <t t-call="web.basic_layout">
+
+            <t t-foreach="docs" t-as="o">
+            <t t-foreach="range(1,o.number_of_packages+1)" t-as="pack">
+
+              <div class="page" style="page-break-after: always;">
+                            <div class="row">
+                                <div style="width:60%">
+                                        <span>
+                                            <strong>
+                                                <span t-field="o.picking_type_id.warehouse_id.partner_id.display_name"/>
+                                            </strong>
+                                        </span>
+                                </div>
+                                <div class="text-left">
+                                        <strong><span>Nº: </span>
+                                            <span t-esc="pack"/>/
+                                            <span t-field="o.number_of_packages"/></strong>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="width:95%; font-size: small;">
+
+                                    <t t-set="partner" t-value="o.picking_type_id.warehouse_id.partner_id" />
+                                    <div t-if="partner.street">
+                                        <span t-field="partner.street"/>
+                                    </div>
+                                    <div t-if="partner.street2">
+                                        <span t-field="partner.street2"/>
+                                    </div>
+                                    <t t-if="partner.zip_id">
+                                        <div>
+                                            <span t-field="partner.zip_id.name"/> - <span t-field="partner.zip_id.city_id.name"/>
+                                        </div>
+                                        <div>
+                                            <span t-field="partner.zip_id.city_id.state_id.name"/> - <span t-field="partner.zip_id.city_id.country_id.name"/>
+                                        </div>
+                                    </t>
+
+                                    <div t-if="not partner.zip_id">
+                                        <div>
+                                            <span t-field="partner.zip"/> - <span t-field="partner.city"/>
+                                        </div>
+                                         <div>
+                                            <span t-field="partner.state_id.name"/> - <span t-field="partner.country_id.name"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <t t-if="partner.mobile">
+                                            <i class='fa fa-mobile fa-fw' role="img" aria-label="Mobile" title="Mobile"/>
+                                            <span t-field="partner.mobile"/>
+                                        </t>
+                                        <t t-if="partner.phone">
+                                            <i class='fa fa-phone fa-fw' role="img" aria-label="Phone" title="Phone"/>
+                                            <span t-field="partner.phone"/>
+                                        </t>
+                                    </div>
+                                    <div>
+                                        <t t-if="partner.email">
+                                            <i class='fa fa-envelope fa-fw' role="img" aria-label="Email" title="Email"/>
+                                            <span t-field="partner.email"/>
+                                        </t>
+                                    </div>
+                            </div>
+
+                            </div>
+                            <hr style="margin:2px"/>
+                            <div class="row">
+                                <div style="width: 100%">
+                                    <span>
+                                        Dirección de entrega
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <div style="width:100%">
+                                    <span><strong><span t-field="o.partner_id.name"/></strong></span>
+                            </div>
+
+                            <div style="width:95%; font-size: small;">
+                                <div t-if="o.partner_id.street">
+                                    <span t-field="o.partner_id.street"/>
+                                </div>
+                                <div t-if="o.partner_id.street2">
+                                    <span t-field="o.partner_id.street2"/>
+                                </div>
+                                <t t-if="o.partner_id.zip_id">
+                                    <div>
+                                        <span t-field="o.partner_id.zip_id.name"/> - <span t-field="o.partner_id.zip_id.city_id.name"/>
+                                    </div>
+                                    <div>
+                                        <span t-field="o.partner_id.zip_id.city_id.state_id.name"/> - <span t-field="o.partner_id.zip_id.city_id.country_id.name"/>
+                                    </div>
+                                </t>
+
+                                <div t-if="not o.partner_id.zip_id">
+                                    <div>
+                                        <span t-field="o.partner_id.zip"/> - <span t-field="o.partner_id.city"/>
+                                    </div>
+                                     <div>
+                                        <span t-field="o.partner_id.state_id.name"/> - <span t-field="o.partner_id.country_id.name"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <t t-if="o.partner_id.mobile">
+                                        <i class='fa fa-mobile fa-fw' role="img" aria-label="Mobile" title="Mobile"/>
+                                        <span t-field="o.partner_id.mobile"/>
+                                    </t>
+                                    <t t-if="o.partner_id.phone">
+                                        <i class='fa fa-phone fa-fw' role="img" aria-label="Phone" title="Phone"/>
+                                        <span t-field="o.partner_id.phone"/>
+                                    </t>
+                                </div>
+                                <div>
+                                    <t t-if="o.partner_id.email">
+                                        <i class='fa fa-envelope fa-fw' role="img" aria-label="Email" title="Email"/>
+                                        <span t-field="o.partner_id.email"/>
+                                    </t>
+                                </div>
+                            </div>
+                            <hr style="margin:2px"/>
+
+                            <div class="row"  style="width:100%">
+
+                                <div style="width: 33%; font-size: small">
+                                    <strong>Nº de albarán: </strong>
+                                    <br/>
+                                    <span t-field="o.name"/>
+                                </div>
+                                <div t-if="o.partner_id.ref" style="width: 33%; font-size: small">
+                                    <strong>Refer. Cliente: </strong>
+                                    <br/>
+                                    <span t-field="o.partner_id.ref"/>
+                                </div>
+                                <div t-if="o.a_atencion" style="width: 33%; font-size: small">
+                                    <strong>A/A </strong>
+                                    <br/>
+                                    <span t-field="o.a_atencion"/>
+                                </div>
+                            </div>
+                            <!--t t-if="o.a_atencion" >
+                                <div style="width: 100%; font-size: small">
+                                    <strong>A/A: </strong><span t-field="o.a_atencion"/>
+                                </div>
+                            </t-->
+
+                            <!--div>
+                                <span t-if="o.carrier_partner_id"><strong>Carrier: </strong>  <span t-field="o.carrier_partner_id"/></span>
+                            </div-->
+                            <t t-if="o.note">
+                                <hr style="margin:2px"/>
+                                <div style="width:100%">
+                                    <span>
+                                        <strong>Notas: </strong>
+                                    </span>
+                                </div>
+                                <div style="width:100%; font-size: small">
+                                    <span>
+                                        <span t-field="o.note"/>
+                                    </span>
+                                </div>
+                            </t>
+                            <!--div>
+                             <table class="table" width="100%">
+                                  <thead>
+                                      <tr>
+                                          <td width="33%">
+                                             <strong>Date</strong>
+                                        </td>
+                                        <td width="33%">
+                                             <strong>Carrier</strong>
+                                        </td>
+                                          <td width="33%">
+                                             <strong>Ref</strong>
+                                        </td>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr>
+                                          <td>
+                                             <span t-field="o.date"/>
+                                          </td>
+                                          <td>
+                                             <span t-field="o.carrier_id"/>
+                                          </td>
+                                          <td>
+                                             <span t-field="o.carrier_tracking_ref"/>
+                                          </td>
+
+                                      </tr>
+
+                                  </tbody>
+
+                            </table>
+                            <table class="table" width="100%">
+                                  <thead>
+                                      <tr>
+                                        <td width="33%">
+                                             <strong>Delivery packs</strong>
+                                        </td>
+                                          <td width="33%">
+                                             <strong>Weight</strong>
+                                        </td>
+                                          <td width="33%">
+                                          </td>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr>
+                                          <td>
+                                             <span t-field="o.number_of_packages"/>
+                                          </td>
+                                          <td>
+                                             <span t-field="o.weight"/><span t-field="o.weight_uom_id"/>
+                                          </td>
+
+                                      </tr>
+
+                                  </tbody>
+                            </table>
+                            </div-->
+                        </div>
+             </t>
+                </t>
+          </t>
+        </template>
+
+
+
+        <record id="paperformat_picking_tag" model="report.paperformat">
+            <field name="name">Picking Tag</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">120</field>
+            <field name="page_width">100</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">4</field>
+            <field name="margin_bottom">4</field>
+            <field name="margin_left">4</field>
+            <field name="margin_right">4</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+            string="Etiquetas/Bultos"
+            id="action_delivery_stock_picking_tag_report"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="stock_picking_custom.stock_picking_tag"
+            file="stock_picking_custom.stock_picking_tag"
+            print_report_name="'Stock picking tag- %s - %s' % (object.partner_id.name or '', object.name)"
+            paperformat="stock_picking_custom.paperformat_picking_tag"/>
+
+
+
+    </data>
+</odoo>

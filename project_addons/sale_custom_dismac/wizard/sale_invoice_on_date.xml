@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="sale_invoice_on_date_form" model="ir.ui.view">
+        <field name="name">sale.invoice.on.date.form</field>
+        <field name="model">sale.invoice.on.date</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Invoiceable sales by date">
+                <group>
+                    <field name="invoice_until_date"/>
+                </group>
+                <footer>
+                    <button name="view_invoiceable_orders" string="View invoiceable sales on date" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window name="Invoiceable sales by date"
+        res_model="sale.invoice.on.date"
+        view_id="sale_invoice_on_date_form"
+        view_mode="form"
+        target="new"
+        id="action_sale_invoice_on_date"/>
+
+
+    <menuitem id="menu_sale_invoice_on_date" string="Invoiceable sales by date" action="action_sale_invoice_on_date" parent="sale.menu_sale_invoicing"/>
+</odoo>

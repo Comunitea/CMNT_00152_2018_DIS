@@ -11,8 +11,10 @@ class ProcurementRule(models.Model):
         res = super(ProcurementRule, self)._get_stock_move_values(
             product_id, product_qty, product_uom, location_id, name, origin,
             values, group_id)
+
         if values.get('group_id'):
             sale_id = values['group_id'].sale_id
             if sale_id:
-                res.update(priority=sale_id.priority)
+                res.update(type_id=sale_id.type_id.id,
+                           priority=sale_id.priority)
         return res

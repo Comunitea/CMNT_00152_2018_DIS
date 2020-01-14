@@ -12,6 +12,17 @@
                 <field name="is_claimable" invisible="1"/>
                 <field name="claimed_on" invisible="1"/>
             </xpath>
+
+            <xpath expr="//group[@name='container_row_stock']" position="attributes">
+                 <attribute name="groups">stock.group_stock_user</attribute>
+            </xpath>
+
+
+
+
+
+
+
         </field>
     </record>
 </odoo>

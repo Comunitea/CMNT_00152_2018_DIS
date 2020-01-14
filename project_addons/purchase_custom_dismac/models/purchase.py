@@ -66,6 +66,53 @@ class PurchaseOrder(models.Model):
             )
 
 
+class PurchaseOrderLine(models.Model):
+    _inherit = "purchase.order.line"
+
+    import_qty_delivered = fields.Float("Imported qty delivered", default=0)
+    new_partner_id = fields.Many2one("res.partner", "New partner")
+    product_virtual_available = fields.Float(
+        "available qty", related="product_id.virtual_available"
+    )
+    product_categ_id = fields.Many2one(
+        "product.category", "Category", related="product_id.categ_id"
+    )
+    to_deliver_qty = fields.Float(compute="_compute_to_deliver_qty")
+    last_60_days_sales = fields.Float(related="product_id.last_60_days_sales")
+
+    def _compute_to_deliver_qty(self):
+        for line in self:
+            self.env.cr.execute(
+                """
+                    SELECT SUM(product_uom_qty), SUM(qty_cancelled), SUM(qty_delivered)
+                    FROM sale_delivery_report
+                    WHERE product_id={}
+                """.format(
+                    line.product_id.id
+                )
+            )
+            result = self.env.cr.fetchone()
+            if result[0] and result[1] and result[2]:
+                line.to_deliver_qty = result[0] - result[1] - result[2]
+            else:
+                line.to_deliver_qty = 0
+
+    @api.multi
+    def _prepare_stock_moves(self, picking):
+        res = super()._prepare_stock_moves(picking=picking)
+        if self.import_qty_delivered > 0:
+            for val in res:
+                qty = val["product_uom_qty"] - self.import_qty_delivered
+                val.update(product_uom_qty=qty)
+        return res
+
+    def _update_received_qty(self):
+        res = super()._update_received_qty()
+        for line in self:
+            line.qty_received += line.import_qty_delivered
+        return res
+
+
 class PurchaseBillUnion(models.Model):
     _inherit = "purchase.bill.union"
 

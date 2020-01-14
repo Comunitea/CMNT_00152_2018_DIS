@@ -13,17 +13,26 @@ _logger = logging.getLogger(__name__)
 # Global variable to store the new created templates
 template_ids = []
 
-PASILLO = {'A': 0 ,'B': 1 ,'C': 2 ,'D': 4 ,'E': 5 ,'F': 6 ,'G': 7, 'H': 8 ,
+PASILLO = {'A': 1 ,'B': 2 ,'C': 3 ,'D': 4 ,'E': 5 ,'F': 6 ,'G': 7, 'H': 8 ,
            'I': 9 ,'J': 10 ,'K': 11 ,'L': 12 ,'M': 13 ,'N': 14, 'O': 15, 'P': 16,
-           'Q': 17, 'R': 18, 'S': 19, 'T': 20, 'U': 21, 'V': 21, 'X': 22, 'Y': 23, 'Z': 24,
-           'CIT': 100 ,'ZA': 200 ,'ZB': 201 ,'BE': 100 ,'EM': 300 ,'EXPOS': 500}
+           'Q': 17, 'R': 18, 'S': 19, 'T': 20, 'U': 21, 'V': 22, 'W': 23, 'X': 24, 'Y': 25, 'Z': 26,
+           'CIT': 40 ,'ZA': 50 ,'ZB': 51 ,'BE': 60 ,'EM': 70,'EXPOS': 80}
 LOCATION_IDS = []
 
 class StockQuantPackage(models.Model):
     _inherit = 'stock.quant.package'
 
+    @api.multi
+    def get_product_ids(self):
+        for pack in self:
+            domain =[('package_id', '=', pack.id)]
+            quant_ids = self.env['stock.quant'].search(domain)
+            pack.product_ids = quant_ids.mapped('product_id')
+
+
+
     import_name = fields.Char('Import name')
-    import_product_id = fields.Many2one('product.product', 'Producto orig.')
+    product_ids = fields.One2many('product.product', string='Producto orig.', compute=get_product_ids)
 
 
 class StockLocation (models.Model):
@@ -33,28 +42,60 @@ class StockLocation (models.Model):
     import_name = fields.Char(string="Ubicación importada")
     floor = fields.Integer(string="Piso", default=-1)
     building = fields.Integer(string="Nave", default=-1)
+    inverse_order = fields.Boolean('Prioridad inversa', help='Si está marcado el orden de la prioridad es inverso', default=False)
+    is_pos_x = fields.Boolean('Pasillo', default=False)
+
+    _sql_constraints = [
+        ('import_name_uniq', 'unique (import_name)', 'The import_name name must be unique !')
+    ]
+
+    @api.multi
+    def set_removal_priority(self):
+
+        for location in self.filtered(lambda x:x.usage == 'internal'):
+            if location.location_id.is_pos_x:
+                location.posx = location.location_id.posx
+            try:
+                pasillo = False
+                parent = location
+                while parent and not pasillo:
+                    if parent.is_pos_x:
+                        pasillo = parent
+                    parent = parent.location_id
+                if parent:
+                    posx = min(99, pasillo.posx)
+                    posy = location.posy if not pasillo.inverse_order else 99-location.posy
+                    posz = location.posz
+                    location.removal_priority = int('%02d%02d%02d' %(posx, posy, posz))
+                    _logger.info('Actualizando RP {}: {}'.format(location.display_name, location.removal_priority))
+                else:
+                    _logger.info('NO se ha encontrado un pasillo para  {}'.format(location.display_name))
+            except:
+                _logger.info('ERROR Actualizando RP {}'.format(location.display_name))
+
 
     @api.multi
     def set_barcode(self):
+        for location in self.filtered(lambda x:x.usage == 'internal'):
+            try:
+                if location.floor != -1 and location.building != -1 and not location.is_pos_x:
+                    location.barcode = '%01d%01d%02d%02d%02d'%(location.building, location.floor, location.posx, location.posy, location.posz)
+                    _logger.info('Actualizando CDB {}: {}'.format(location.display_name, location.barcode))
+            except:
+                _logger.info('ERROR Actualizando CDB {}'.format(location.display_name))
 
-        for location in self:
-            parent_loc = location
-            while location.floor == -1 and parent_loc:
-                location.floor == parent_loc.floor
-                parent_loc = parent_loc.location_id
-
-            parent_loc = location
-            while location.building == -1 and parent_loc:
-                location.building == parent_loc.building
-                parent_loc = parent_loc.location_id
-            if location.floor != -1 and location.building != -1:
-                location.barcode = '%01d.%01d.%03d.%02d.%02d'%(location.building, location.floor, location.posx, location.posy, location.posz)
-            _logger.info('Actualizando {}: {}'.format(location.display_name, location.barcode))
-
-
-
-
-
+    @api.multi
+    def set_parent_vals(self):
+        for loc in self:
+            view = False
+            location = loc
+            while location and not view:
+                print('Ubicación {} y padre {}'.format(location.name, location.location_id.name))
+                if location.usage == 'view' and location.posx == 0:
+                    view = location
+                location = location.location_id
+            loc.building = view.building
+            loc.floor = view.floor
 
 
 class ProductTemplate (models.Model):
@@ -63,16 +104,39 @@ class ProductTemplate (models.Model):
 
     import_location_str = fields.Char(string="Ubicación importada")
 
+class ProductProduct(models.Model):
+
+    _inherit ='product.product'
+
+    def create_putaway_imported(self, location, location_id):
+        strategic_id = location.putaway_strategy_id
+        if not strategic_id:
+            raise ValueError ('La ubicación {} not tiene estrategia de traslado'.format(location.name))
+
+        sfps = self.env['stock.fixed.putaway.strat']
+        val = {'sequence': 1,
+               'putaway_id': strategic_id.id,
+               'product_id': self.id,
+               'fixed_location_id': location_id}
+
+        sfps.create(val)
+
 class ProductImportWzd(models.TransientModel):
 
     _name = 'product.import.wzd'
+
+    @api.multi
+    def get_default(self):
+        return self.env['stock.location'].browse(12)
 
     name = fields.Char('Importation name', required=True)
     file = fields.Binary(string='File', required=True)
     start_line = fields.Integer("Desde linea")
     end_line = fields.Integer("Hasta linea")
-    location_id = fields.Many2one('stock.location', 'Ubicación del ajuste')
+    location_id = fields.Many2one('stock.location', 'Ubicación del ajuste', default = get_default)
     filename = fields.Char(string='Filename')
+    only_create_locations = fields.Boolean('Solo ubicaciones')
+    only_test_product = fields.Boolean('Solo Test products')
 
     @api.onchange('file')
     def onchange_filename(self):
@@ -83,18 +147,24 @@ class ProductImportWzd(models.TransientModel):
         pass
 
     def _parse_row_vals(self, row, idx):
+        def get_float(value):
+            try:
+                val = float(value)
+            except:
+                val = 0.00
+            return val
         res = {
             'default_code': str(row[0]),
             'nombre_articulo': str(row[1]),
             'ubicacion_1': str(row[2]),
-            'ubicacion_2': str(row[3]),
-            'ubicacion_3': str(row[4]),
-            'ubicacion_4': str(row[5]),
-            'ubicacion_5': str(row[6]),
-            'ubicacion_6': str(row[7]),
-            'ubicacion_7': str(row[8]),
-            'stock': float(row[9]) or 0.0,
-            'cost': float(row[10]) or 0.0,
+            'ubicacion_2': str(row[3]).upper(),
+            'ubicacion_3': str(row[4]).upper(),
+            'ubicacion_4': str(row[5]).upper(),
+            'ubicacion_5': str(row[6]).upper(),
+            'ubicacion_6': str(row[7]).upper(),
+            'ubicacion_7': str(row[8]).upper(),
+            'stock': get_float(row[9]),
+            #'cost': float(row[10]) or 0.0,
         }
         # Check mandatory values setted
         if not row[0]:
@@ -104,25 +174,42 @@ class ProductImportWzd(models.TransientModel):
         return res
 
     def get_pasillo_vals(self, pasillo, planta_id):
-        pl_dom = [('location_id', '=', planta_id), '|', ('name', '=', pasillo), ('import_name', '=', pasillo)]
-        pasillo_id = self.env['stock.location'].search_read(pl_dom, ['id'], limit=1)
 
+        planta = self.env['stock.location'].browse(planta_id)
+        import_name =  "{}.{}".format(planta.name, pasillo)
+        pl_dom = [('import_name', '=', import_name)]
+        pasillo_id = self.env['stock.location'].search_read(pl_dom, ['id'], limit=1)
+        posx = int(PASILLO.get(pasillo, 0))
         if not pasillo_id:
             pasillo_vals = {'name': pasillo,
-                            'import_name': pasillo,
+                            'posx': posx,
+                            'import_name': import_name,
                             'location_id': planta_id,
-                            'usage': 'view'}
+                            'is_pos_x': True,
+                            'usage': 'internal'}
 
             pasillo_id = self.env['stock.location'].create(pasillo_vals)
+            view = False
+            location = pasillo_id
+            while location and not view:
+                print ('Ubicación {} y padre {}'.format(location.name, location.location_id.name))
+                if location.usage == 'view' and location.posx == 0:
+                    view = location
+                location = location.location_id
+
+            pasillo_id.building = view.building
+            pasillo_id.floor = view.floor
+
             LOCATION_IDS.append(pasillo_id)
-            _logger.info('SE HA CREADO LA UBIACIÓN: {}'.format(pasillo_id.display_name))
+            _logger.info('SE HA CREADO EL PASILLO: {}'.format(pasillo_id.display_name))
+            self._create_xml_id('stock_location', pasillo_id.location_id.name + '_' + pasillo_id.name, pasillo_id.id, 'stock.location')
             pasillo_id = pasillo_id.id
         else:
             pasillo_id = pasillo_id[0]['id']
-
         return pasillo_id
 
-    def  get_loc_vals(self, str):
+    def  get_loc_vals(self, import_name):
+
         def sin_numeros(s):
             numeros = "1234567890"
             s_sin_numeros = ""
@@ -131,63 +218,86 @@ class ProductImportWzd(models.TransientModel):
                     s_sin_numeros += letra
             return s_sin_numeros
 
-        if str[:1] == '1':
-            str = str[1:]
+        name = import_name
+
+        ##ES PLANTA 1
+        if import_name[:1] == '1':
+            nombre_sin_pasillo = import_name[1:]
             domain = [('name', '=', 'Planta 1')]
             planta_id = self.env['stock.location'].search_read(domain, ['id'], limit=1)[0]['id']
-        elif str[:1] == 'P':
+        ##ES PALET
+        elif import_name[:1] == 'P':
+            ##devuelvo la ubiación de palets
             domain = [('name', '=', 'Palets')]
             return self.env['stock.location'].search_read(domain, ['id'], limit=1)[0]['id']
+        #ES PLANTA 0
         else:
+            nombre_sin_pasillo = import_name
             domain = [('name', '=', 'Planta 0')]
             planta_id = self.env['stock.location'].search_read(domain, ['id'], limit=1)[0]['id']
 
-        name = str
-        pasillo = sin_numeros(str)
+        ## el pasillo siempre es son letras
+        pasillo = sin_numeros(nombre_sin_pasillo)
         pasillo_id = self.get_pasillo_vals(pasillo, planta_id)
+        ##sa co el pos x de los pasillos
         posx = int(PASILLO.get(pasillo, 0))
+        ## n1 debe ser el nombre sin el pasillo y sin la planta -> posy y posz
+        n1 = nombre_sin_pasillo.replace(pasillo, '')
 
-        n1 = name.replace(pasillo, '')
-
-
-
-        if len(n1) > 1:
+        if len(n1) > 0:
             posy = int((n1[:1]))
-            if len(n1)>2:
+            if len(n1) > 1:
                 posz = int((n1[1:]))
             else:
                 posz= 0
         else:
             posy = 0
-            posz=0
+            posz = 0
 
-        if len(str)<=1:
-            n1 =  str[1:]
+        if len(import_name) <= 1:
+            n1 = import_name[1:]
         else:
             n1 = name
 
-        val ={'name': n1,
+        val ={'name': name,
               'usage': 'internal',
-              'import_name': name,
+              'import_name': import_name,
               'location_id': pasillo_id,
+              'is_pos_x': False,
               'posx': posx,
               'posy': posy,
               'posz': posz}
-
+        _logger.info('CREANDO LA UBIACIÓN: {}: {}'.format(name, n1))
         loc = self.env['stock.location'].create(val)
+
+        view = False
+        location = loc
+        while location and not view:
+            print ('Ubicación {} y padre {}'.format(location.name, location.location_id.name))
+            if location.usage == 'view' and location.posx == 0:
+                view = location
+            location = location.location_id
+
+        loc.building = view.building
+        loc.floor = view.floor
+        self._create_xml_id('stock_location', loc.location_id.name + '_' + loc.name, loc.id, 'stock.location')
+
         LOCATION_IDS.append(loc)
         _logger.info('SE HA CREADO LA UBIACIÓN: {}'.format(loc.display_name))
-
         return loc.id
 
 
 
+    def get_location_id(self, import_name):
+        if not import_name:
+            domain = [('name', '=', 'Generico')]
+            location_id = self.env['stock.location'].search_read(domain, ['id'], limit=1)
+            return location_id[0]['id']
 
-    def get_location_id(self, location):
-        sl_dom = ['|', ('name', '=', location), ('import_name', '=', location)]
+        sl_dom = [('usage', '=', 'internal'), ('import_name', '=', import_name)]
         location_id = self.env['stock.location'].search_read(sl_dom, ['id'], limit=1)
         if not location_id:
-            location_id = self.get_loc_vals(location)
+            location_id = self.get_loc_vals(import_name)
         else:
             location_id = location_id[0]['id']
         return location_id
@@ -198,6 +308,15 @@ class ProductImportWzd(models.TransientModel):
                'location_id': self.location_id.id}
         inv = self.env['stock.inventory'].create(vals)
         return inv
+
+    def _create_xml_id(self, modulo, xml_id, res_id, model):
+        sql = "delete from  ir_model_data where model='%s' and name='%s'" % (model, xml_id)
+        _logger.info('SE ha ejecutado\n: {}'.format(sql))
+        self._cr.execute(sql)
+        sql= "INSERT INTO ir_model_data (module, name, res_id, model) VALUES ('%s', '%s', %s, '%s')" %(modulo, xml_id, res_id, model)
+        _logger.info('SE ha ejecutado\n: {}'.format(sql))
+        self._cr.execute(sql)
+        return True
 
     def import_products(self):
         self.ensure_one()
@@ -210,15 +329,20 @@ class ProductImportWzd(models.TransientModel):
         created_product_ids = []
         idx = self.start_line
         location_ids = {}
-        inv = self.new_inventory()
-        inv.action_start()
-        line_ids = self.env['stock.inventory.line']
+        location_palet = self.env['stock.location'].search([('name', '=', 'Palets')])
+        if not self.only_create_locations:
+            inv = self.new_inventory()
+            inv.action_start()
+            line_ids = self.env['stock.inventory.line']
         if self.end_line > 0:
             end_line = self.end_line
         else:
             end_line = sh.nrows
 
-        for nline in range(min(1, idx), end_line):
+        header = sh.row_values(0)
+
+        not_product_ids=[]
+        for nline in range(max(1, idx), end_line):
             idx += 1
             row = sh.row_values(nline)
             row_vals = self._parse_row_vals(row, idx)
@@ -227,6 +351,11 @@ class ProductImportWzd(models.TransientModel):
             default_code = row_vals['default_code']
             pp_dom = [('default_code', '=', default_code)]
             product_id = self.env['product.product'].search(pp_dom, limit=1)
+            if not product_id or product_id.type != 'product':
+                not_product_ids.append(default_code)
+                continue
+            if self.only_test_product:
+                continue
             stock = float(row_vals['stock'])
             if not product_id:
                 _logger.info ('----------------\nNO SE HA ENCONTRADO EL ARTICULO: {} en la línea {}'.format(default_code, idx))
@@ -241,24 +370,41 @@ class ProductImportWzd(models.TransientModel):
                         import_loc_name = row_vals[name]
                 palet = row_vals[name]
                 if palet[:1] == 'P':
-                    ## Es palet
-                    new_pack_vals = {'name': palet,
-                                     'import_product_id': product_id.id,
-                                     'import_name': 'Palet: {} - {}'.format(palet, product_id.display_name)}
-                    new_pack = self.env['stock.quant.package'].create(new_pack_vals)
-                    _logger.info('Nuevo paquete: {}'.format(new_pack_vals['import_name']))
+                    new_pack = self.env['stock.quant.package'].search([('name', '=', palet)])
+                    if not new_pack:
+                        ## Es palet
+                        new_pack_vals = {'name': palet,
+                                         'import_name': 'Palet: {}'.format(palet)}
+                        new_pack = self.env['stock.quant.package'].create(new_pack_vals)
+                        self._create_xml_id('sqp', new_pack.name, new_pack.id, 'stock.quant.package')
+                        _logger.info('Nuevo paquete: {}'.format(new_pack_vals['import_name']))
+
+                    new_quant_val = {'product_id': product_id.id,
+                                     'location_id': location_palet.id,
+                                     'quantity': 0,
+                                     'product_uom_id': product_id.uom_id.id,
+                                     'package_id': new_pack.id
+                                     }
+                    new_quant = self.env['stock.quant'].sudo().create(new_quant_val)
 
             location = row_vals['ubicacion_1'].strip()
-
             location_id = self.get_location_id(location)
+            if not self.only_create_locations and stock > 0:
+                new_line_vals = {'product_id': product_id.id,
+                                'location_id': location_id,
+                                'inventory_id': inv.id,
+                                'product_qty': stock}
+                new_line = line_ids.create(new_line_vals)
 
-            new_line = {'product_id': product_id.id,
-                        'location_id': location_id,
-                        'inventory_id': inv.id,
-                        'product_qty': stock}
-            new_line = line_ids.create(new_line)
-            p_vals = {'property_stock_location': location_id,
-                      'import_location_str': import_loc_name}
+
+            p_vals = {'import_location_str': import_loc_name}
+
+            if location[:1] == 'P':
+                location_id = location_palet.id
+
+            product_id.create_putaway_imported(self.location_id, location_id)
+
+
             product_id.write(p_vals)
             _logger.info(
                 '{} - {} en {}: Stock {} Uds'.
@@ -270,16 +416,33 @@ class ProductImportWzd(models.TransientModel):
 
 
         if LOCATION_IDS:
+            if False:
+                for loc_id in LOCATION_IDS:
+                    try:
+                        loc_id.set_barcode()
+                        loc_id.set_removal_priority()
+                    except:
+                        _logger.info('Error actualizando datos de ubicación" LA UBIACIÓN: {}'.format(name))
             str = 'Ubiciones creadas: \n'
             for loc in LOCATION_IDS:
                 str = '{}{}\n'.format(str, loc.display_name)
             _logger.info(str)
+        _logger.info('ARTICULOS NO ENCONTRADOS\n-------------------------\n')
+        for p in not_product_ids:
+            _logger.info(p)
+        _logger.info('\n FIN ARTICULOS NO ENCONTRADOS\n-------------------------\n')
+        if self.only_create_locations:
+            return self.action_view_location()
+        else:
+            return self.action_view(inv)
 
-
-
-
-        return self.action_view(inv)
-
+    def action_view_location(self):
+        self.ensure_one()
+        action = self.env.ref(
+            'stock.action_location_form').read()[0]
+        action['domain'] = [('import_name', '!=', '')]
+        action['context'] = ''
+        return action
     def action_view(self, inv):
         self.ensure_one()
         action = self.env.ref(
