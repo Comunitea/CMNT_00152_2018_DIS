@@ -204,10 +204,8 @@
 
     <template id="quotes" name="Quotes Dismac">
         <t t-call="website.layout">
-            <t t-set="title" t-if="not view_quote">Dismac | Presupuestos</t>
-            <t t-set="title" t-else="">Dismac | Presupuesto <t t-esc="current_quote.id"/></t>
-            <t t-set="description" t-if="not view_quote">Haga una solicitud de presupuesto a medida o revise el historial de solicitudes.</t>
-            <t t-set="description" t-else=""><t t-esc="current_quote.name"/></t>
+            <t t-set="additional_title" t-if="not view_quote">Presupuestos</t>
+            <t t-set="additional_title" t-else="">Presupuesto <t t-esc="current_quote.id"/></t>
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
                 <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">

@@ -9,8 +9,6 @@ from odoo import api, fields, models, tools, _
 class ProductPublicCategory(models.Model):
     _inherit = "product.public.category"
 
-    website_published = fields.Boolean(string=_('Published on the Website'), default=True,
-                                       help=_("Only published categories are visible on the website"))
     offer_ids = fields.One2many('product.offer', 'category_id', string='Product Offers',
                                 help=_("Offers that contains this category"))
 
@@ -36,13 +34,18 @@ class ProductOffer(models.Model):
     website_id = fields.Many2one('website', string=_("Website"), default=_default_website, ondelete='cascade')
     active = fields.Boolean(default=True)
     name = fields.Char(_('Title'), index=True, required=True, translate=True)
-    subtitle = fields.Char(_('Subtitle'), index=True, translate=True,
-                           help=_("Will be show under title like a paragraph"))
+    description_short = fields.Char(_('Subtitle'), index=True, translate=True,
+                           help=_("Short description to be show under title like a paragraph in plain text"))
+    description_sale = fields.Text(
+        'Sale Description', translate=True,
+        help="A description of the Offer that you want to communicate to your customers. "
+             "Only in case of products, this description will be copied to every Sales Order, "
+             "Delivery Order and Customer Invoice/Credit Note")
     sequence = fields.Integer(_('Internal Sequence'), default=1,
                               help=_('Gives the sequence order when displaying a offer list'))
     website_sequence = fields.Integer(_('Website Sequence'), default=lambda self: self._default_website_sequence(),
                                       help=_("Determine the display order in the Website"))
-    description = fields.Html(_("Description"), strip_style=True, required=True, translate=True)
+    description_full = fields.Html(_("Full HTML Description"), strip_style=True, required=True, translate=True)
     category_id = fields.Many2one('product.public.category', string='Related Category')
     offer_image_ids = fields.One2many('product.offer.image', 'offer_id', string='Images')
     # image: all image fields are base64 encoded and PIL-supported
@@ -58,6 +61,9 @@ class ProductOffer(models.Model):
                                        "Use this field anywhere a small image is required."))
     website_published = fields.Boolean(string=_('Published'), default=True,
                                        help=_("Only published offers are visible on the website"))
+    website_meta_title = fields.Char(string=_("Meta Title"), translate=True)
+    website_meta_description = fields.Text(string=_("Meta Description"), translate=True)
+    website_meta_keywords = fields.Char(string=_("Meta Keywords"), translate=True)
     slug = fields.Char(_("Friendly URL"))
     attachment_id = fields.Binary(string=_("Attachment"), attachment=True)
     attachment_filename = fields.Char(string=_("Attachment Filename"))

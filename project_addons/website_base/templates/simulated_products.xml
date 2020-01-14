@@ -4,8 +4,6 @@
     <!-- Show simulated products like products shop -->
     <template id="simulate_products" name="Simulate Products Base">
         <t t-call="website.layout">
-            <t t-set="title">Dismac | Tienda</t>
-            <t t-set="description">Revise y compre todos nuestros productos</t>
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
                 <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">
@@ -110,7 +108,7 @@
     <!-- Simulated Product Items -->
     <template id="simulate_products_item" name="Simulate Products item Base">
         <t t-set="url_href" t-value="'/product/' if product._get_combination_info() else url_simulated_product_templates"/>
-        <t t-set="product_href" t-value="keep('{}{}'.format(url_href, product.slug) if product.slug else '{}{}'.format(''/product/shop/'', slug(product)), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))" />
+        <t t-set="product_href" t-value="keep('/product/{}', page=(pager['page']['num'] if pager['page']['num']&gt;1 else None)).format(product.slug) if product.slug else keep('/shop/product/%s' % slug(product), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))" />
         <!--<t t-set="combination_info" t-value="product._get_combination_info(only_template=True, add_qty=add_qty or 1, pricelist=pricelist)"/>-->
         <form t-attf-action="#{url_simulated_products}" method="get">
             <!--            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />-->
@@ -280,13 +278,17 @@
                     </div>
                     <div class="col-sm-6">
                         <h2 itemprop="name" t-field="product.name">Nombre de producto</h2>
-                        <hr t-if="product.subtitle" />
+                        <hr t-if="product.description_sale" />
                         <div class="o_not_editable">
-                            <p class="text-uppercase"><strong><span t-esc="product.subtitle"/></strong></p>
+                            <p class="text-uppercase"><strong><span t-esc="product.description_sale"/></strong></p>
                         </div>
-                        <hr t-if="product.description" />
+                        <hr t-if="product.description_short" />
                         <div class="o_not_editable">
-                            <p itemprop="description" t-field="product.description"/>
+                            <p class="text-uppercase"><strong><span t-esc="product.description_short"/></strong></p>
+                        </div>
+                        <hr t-if="product.description_full" />
+                        <div class="o_not_editable">
+                            <p itemprop="description" t-field="product.description_full"/>
                         </div>
                         <t t-set="attachment" t-value="product.get_attachment_id()"/>
                         <hr t-if="attachment"/>
@@ -298,7 +300,7 @@
                             </a>
                         </div>
                         <t t-set="url_href" t-value="'product/' if product._get_combination_info() else url_simulated_product_templates"/>
-                        <t t-set="product_href" t-value="keep('{}{}'.format(url_href, product.slug) if product.slug else '{}{}'.format('product/shop/', slug(product)), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))" />
+                        <t t-set="product_href" t-value="keep('/product/{}', page=(pager['page']['num'] if pager['page']['num']&gt;1 else None)).format(product.slug) if product.slug else keep('/shop/product/%s' % slug(product), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))" />
                         <span itemprop="url" style="display:none;" t-esc="'%s%s' % (request.httprequest.url_root, product_href[1:])"/>
                         <form t-if="product._get_combination_info() and product._is_add_to_cart_possible()" action="/shop/cart/update" method="POST">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-True
 {
     'name': 'Website Dismac',
     'version': '1.0',
@@ -18,7 +18,7 @@
     'data': [
         'data/website_data.xml',
         'data/menu_data.xml',
-        # 'data/default_data.xml',
+        'data/default_data.xml',
         'templates/forms.xml',
         'templates/cookies.xml',
         'templates/account.xml',

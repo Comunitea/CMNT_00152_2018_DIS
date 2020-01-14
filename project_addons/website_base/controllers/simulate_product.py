@@ -9,6 +9,8 @@ from odoo.http import request
 from odoo.addons.website.controllers.main import QueryURL
 from odoo.addons.website_sale.controllers.main import TableCompute
 
+from werkzeug.exceptions import NotFound
+
 # TODO: Change this by settings
 PPG = 20  # Products Per Page
 PPR = 4   # Products Per Row
@@ -27,12 +29,17 @@ class SimulateProductController(http.Controller):
         return parent_category_ids
 
     @http.route(['/ofertas', '/ofertas/page/<int:page>', '/ofertas/oferta/<path:path>',
+                 '''/ofertas/category/<model("product.public.category", "[('website_id', 'in', (False, current_website_id))]"):category>''',
+                 '''/ofertas/category/<model("product.public.category", "[('website_id', 'in', (False, current_website_id))]"):category>/page/<int:page>'''
                  ], type='http', auth='public', website=True)
     def get_offers(self, page=0, category=None, search='', order='', path='', ppg=False, **post):
         # Catch parent categories for categories menu
         parent_category_ids = []
         if category:
+            category = request.env['product.public.category'].search([('id', '=', int(category))], limit=1)
             parent_category_ids = self.get_parent_categories(category)
+            if not category or not category.can_access_from_current_website():
+                raise NotFound()
 
         # Offers only published, with validate dates and published categories
         Offer = request.env['product.offer']
@@ -51,7 +58,7 @@ class SimulateProductController(http.Controller):
         # Set is needed to prevent catch the same category on product categories after
         offer_categories = set(offers.mapped('category_id'))
         if category:
-            offers = offers.filtered(lambda x: x.category_id.id == int(category))
+            offers = offers.filtered(lambda x: x.category_id.id == category.id)
         bins_table = []
         bins_table += offers
 
@@ -73,7 +80,7 @@ class SimulateProductController(http.Controller):
         # Catch not published product categories if their child are published
         product_categories = offer_products.mapped('public_categ_ids').filtered(lambda x: x.website_published)
         if category:
-            offer_products = offer_products.search([('public_categ_ids', 'in', int(category))])
+            offer_products = offer_products.search([('public_categ_ids', 'in', category.id)])
 
         # Final data
         offer_categories.update(offer_categories, product_categories)
@@ -115,12 +122,15 @@ class SimulateProductController(http.Controller):
                   'parent_category_ids': parent_category_ids,
                   }
 
+        if category:
+            values['main_object'] = category
+
         # Values to render for single offer
         if path:
             offers = request.env['product.offer']
             offer = offers.search([('slug', '=', path)], limit=1)
             if offer:
-                values.update({'offer': offer, 'product_category': offer, 'offer_list': False, })
+                values.update({'main_object': offer, 'offer': offer, 'product_category': offer, 'offer_list': False, })
                 if not category and offer.category_id:
                     values.update({'category': offer.category_id.id, })
             else:

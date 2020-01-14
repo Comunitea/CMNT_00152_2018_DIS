@@ -93,8 +93,6 @@
     <!-- Change product detail view to convert like a shop view and include ecommerce categories -->
     <template id="website_sale_product" name="Product Dismac" inherit_id="website_sale.product">
         <xpath expr="//div[@id='wrap']" position="replace">
-            <t t-set="title">Dismac | Product | <t t-esc="product.name"/></t>
-            <t t-set="description"><t t-raw="product.description_short or product.description and product.description[0:20]"/></t>
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
                 <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">
@@ -188,15 +186,15 @@
                                         <!-- Product detail -->
                                         <div class="col-md-6 col-xl-4 offset-xl-2" id="product_details">
                                             <h4 itemprop="name" t-field="product.name">Product Name</h4>
-                                            <hr/>
                                             <div class="product_details-sku" t-if="product.default_code">
+                                                <hr t-if="product.default_code"/>
                                                 <strong>SKU: </strong><span itemprop="sku" t-esc="product.default_code"/>
-                                                <hr/>
                                             </div>
-                                            <div class="o_not_editable" t-if="product.description_short">
-                                                <p itemprop="description" t-field="product.description_short" class="text-muted" />
-                                                <hr/>
+                                            <div class="o_not_editable" t-if="product.description_sale">
+                                                <hr t-if="product.description_sale" />
+                                                <p t-field="product.description_sale" class="text-muted" />
                                             </div>
+                                            <hr/>
                                             <span itemprop="url" style="display:none;" t-esc="'/product/%s' % product.slug if product.slug else keep('/shop/product/%s' % slug(product))"/>
                                             <form t-if="product._is_add_to_cart_possible()" action="/shop/cart/update" method="POST">
                                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
@@ -244,7 +242,7 @@
                                 <div itemprop="description" t-field="product.website_description" class="oe_structure mt16" id="product_full_description">
                                     <div class="o_not_editable">
                                         <hr/>
-                                        <p t-field="product.description"/>
+                                        <p t-field="product.description_full"/>
                                     </div>
                                 </div>
                             </div>
@@ -263,8 +261,6 @@
         
         <!-- Set dynamic title by content -->
         <xpath expr="//div[@id='products_grid']/table" position="before">
-            <t t-set="title">Dismac | Tienda</t>
-            <t t-set="description">Revise y compre todos nuestros productos</t>
             <!-- Product list head -->
             <div class="simulated-product-title mt16 mb32">
                 <t t-if="list_type and list_type == 'pricelist'">

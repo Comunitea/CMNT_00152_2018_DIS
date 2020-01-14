@@ -40,7 +40,7 @@
             <field name="sequence" type="int">30</field>
             <field name="website_id" ref="website_dismac.dismac_website"/>
             <field name="user_logged">True</field>
-            <field name="user_not_logged">True</field>
+            <field name="user_not_logged">False</field>
         </record>
 
         <record id="menu_offers" model="website.menu">
@@ -50,7 +50,7 @@
             <field name="sequence" type="int">40</field>
             <field name="website_id" ref="website_dismac.dismac_website"/>
             <field name="user_logged">True</field>
-            <field name="user_not_logged">True</field>
+            <field name="user_not_logged">False</field>
         </record>
 
         <record id="menu_catalog" model="website.menu">
@@ -60,7 +60,7 @@
             <field name="sequence" type="int">50</field>
             <field name="website_id" ref="website_dismac.dismac_website"/>
             <field name="user_logged">True</field>
-            <field name="user_not_logged">True</field>
+            <field name="user_not_logged">False</field>
         </record>
 
         <record id="menu_quote" model="website.menu">
@@ -70,7 +70,7 @@
             <field name="sequence" type="int">70</field>
             <field name="website_id" ref="website_dismac.dismac_website"/>
             <field name="user_logged">True</field>
-            <field name="user_not_logged">True</field>
+            <field name="user_not_logged">False</field>
         </record>
 
         <record id="menu_contactus" model="website.menu">
