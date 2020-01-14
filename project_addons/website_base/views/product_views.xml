@@ -14,24 +14,12 @@
     </record>
 
     <!-- Product Public Categories -->
-    <record id="website_public_category_form" model="ir.ui.view">
-        <field name="name">Website category offer form</field>
-        <field name="model">product.public.category</field>
-        <field name="inherit_id" ref="website_sale.product_public_category_form_view"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='sequence']" position="after">
-                <field name="website_published"/>
-            </xpath>
-        </field>
-    </record>
-
     <record id="website_public_category_tree" model="ir.ui.view">
         <field name="name">Website category tree</field>
         <field name="model">product.public.category</field>
         <field name="inherit_id" ref="website_sale.product_public_category_tree_view"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='website_id']" position="after">
-                <field name="website_published"/>
                 <field name="offer_ids" widget="one2many_tags"/>
             </xpath>
         </field>
@@ -53,12 +41,12 @@
                         <page string="General Information" name="general_information">
                             <group>
                                 <field name="name"/>
-                                <field name="subtitle"/>
-                                <field name="website_id" options="{'no_create': True}"/>
+                                <field name="description_short"/>
+                                <field name="website_id" options="{'no_create': True}" groups="website.group_multi_website"/>
                                 <field name="website_published"/>
                                 <field name="website_sequence"/>
                                 <field name="website_style_ids" widget="many2many_tags" groups="base.group_no_one"/>
-                                <field name="description"/>
+                                <field name="description_full"/>
                             </group>
                         </page>
 
@@ -69,8 +57,13 @@
                             </group>
                         </page>
                         <page string="Seo">
-                            <group>
+                            <group string="Slug">
                                 <field name="slug"/>
+                            </group>
+                            <group string="Metadata">
+                                <field name="website_meta_title"/>
+                                <field name="website_meta_keywords"/>
+                                <field name="website_meta_description"/>
                             </group>
                         </page>
                         <page string="Categories">
@@ -135,11 +128,11 @@
                 <field name="website_sequence" widget="handle"/>
                 <field name="display_name"/>
                 <field name="name"/>
-                <field name="subtitle"/>
+                <field name="description_short"/>
                 <field name="website_published"/>
                 <field name="start_date" widget="date"/>
                 <field name="end_date" widget="date"/>
-                <field name="website_id"/>
+                <field name="website_id" groups="website.group_multi_website"/>
                 <field name="category_id" widget="one2many_tags"/>
             </tree>
         </field>
@@ -158,7 +151,7 @@
                             <tree>
                                 <field name="website_sequence" widget="handle"/>
                                 <field name="name"/>
-                                <field name="subtitle"/>
+                                <field name="description_short"/>
                                 <field name="website_id"/>
                                 <field name="website_published"/>
                                 <field name="start_date" widget="date"/>
@@ -175,12 +168,12 @@
                                     <page string="General Information" name="general_information">
                                         <group>
                                             <field name="name"/>
-                                            <field name="subtitle"/>
+                                            <field name="description_short"/>
                                             <field name="website_id" options="{'no_create': True}"/>
                                             <field name="website_published"/>
                                             <field name="website_sequence"/>
                                             <field name="website_style_ids" widget="many2many_tags" groups="base.group_no_one"/>
-                                            <field name="description"/>
+                                            <field name="description_full"/>
                                         </group>
                                     </page>
 
@@ -191,8 +184,13 @@
                                         </group>
                                     </page>
                                     <page string="Seo">
-                                        <group>
+                                        <group string="Slug">
                                             <field name="slug"/>
+                                        </group>
+                                        <group string="Metadata">
+                                            <field name="website_meta_title"/>
+                                            <field name="website_meta_keywords"/>
+                                            <field name="website_meta_description"/>
                                         </group>
                                     </page>
                                     <page string="Categories">
@@ -267,7 +265,7 @@
                             <div class="oe_kanban_details">
                                 <strong class="o_kanban_record_title">
                                     <field name="name"/>
-                                    <field name="subtitle"/>
+                                    <field name="description_short"/>
                                 </strong>
                             </div>
                         </div>
@@ -283,7 +281,7 @@
         <field name="arch" type="xml">
             <search string="Offer">
                 <field name="name" string="Offer" filter_domain="[('name', 'ilike', self)]"/>
-                <field name="subtitle" string="Offer Subtitle" filter_domain="['|', ('name', 'ilike', self), ('subtitle', 'ilike', self)]"/>
+                <field name="description_short" string="Offer Short Description" filter_domain="[('description_short', 'ilike', self)]"/>
                 <field name="website_id" string="Website" filter_domain="[('website_id', 'ilike', raw_value)]"/>
                 <field name="category_id" string="Category" filter_domain="[('category_id', 'ilike', raw_value)]"/>
                 <separator/>

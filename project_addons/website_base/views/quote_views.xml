@@ -41,7 +41,7 @@
                             <group string="Quote data">
                                 <field name="name"/>
                                 <field name="date"/>
-                                <field name="website_id" widget="many2one"/>
+                                <field name="website_id" widget="many2one" options="{'no_create': True}" groups="website.group_multi_website"/>
                                 <field name="user_id" widget="many2one"/>
                                 <field name="contact_phone"/>
                                 <field name="contact_email"/>
@@ -71,7 +71,7 @@
     </record>
 
     <record id="sale_quote_tree_view" model="ir.ui.view">
-        <field name="name">sale.quote.form</field>
+        <field name="name">sale.quote.tree.view</field>
         <field name="model">sale.quote</field>
         <field name="field_parent" eval="False"/>
         <field name="arch" type="xml">
@@ -79,7 +79,7 @@
                 <field name="id"/>
                 <field name="date"/>
                 <field name="name"/>
-                <field name="website_id" widget="many2one"/>
+                <field name="website_id" widget="many2one" groups="website.group_multi_website"/>
                 <field name="user_id" widget="many2one"/>
             </tree>
         </field>
@@ -98,7 +98,7 @@
                             <field name="id"/>
                             <field name="date"/>
                             <field name="name"/>
-                            <field name="website_id" widget="many2one"/>
+                            <field name="website_id" widget="many2one" groups="website.group_multi_website"/>
                             <field name="user_id" widget="many2one"/>
                         </tree>
                         <form string="Request quote">
@@ -112,7 +112,7 @@
                                         <group string="Quote data">
                                             <field name="name"/>
                                             <field name="date"/>
-                                            <field name="website_id" widget="many2one"/>
+                                            <field name="website_id" widget="many2one" options="{'no_create': True}" groups="website.group_multi_website"/>
                                             <field name="user_id" widget="many2one"/>
                                             <field name="contact_phone"/>
                                             <field name="contact_email"/>

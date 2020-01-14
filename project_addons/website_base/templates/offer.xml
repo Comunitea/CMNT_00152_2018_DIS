@@ -4,10 +4,7 @@
     <!-- Show simulate Product like simulated products shop -->
     <template id="simulate_product_offer" name="Simulate Product Offer Base" inherit_id="website_base.simulate_products">
         <xpath expr="//div[@id='products_grid']" position="inside">
-            <t t-set="title" t-if="offer_list">Dismac | Ofertas</t>
-            <t t-set="title" t-else="">Dismac | Oferta | <t t-esc="offer.name"/></t>
-            <t t-set="description" t-if="offer_list">Revise, descargue, compre o haga una solicitud de presupuesto de nuestras ofertas</t>
-            <t t-set="description" t-else=""><t t-esc="offer.subtitle or offer.description[0:20]"/></t>
+            <t t-set="additional_title" t-if="offer_list">Ofertas</t>
             <t t-call="website_base.product_offers" t-if="offer_list">
                 <t t-set="url_simulated_products" t-value="url_simulated_products"/>
                 <t t-set="url_simulated_product_templates" t-value="url_simulated_product_templates"/>
@@ -18,7 +15,6 @@
 
     <!-- List offers -->
     <template id="product_offers" name="Product Offers Base">
-        <t t-set="additional_title">Ofertas</t>
         <div class="simulated-product-title">
             <h1 class="mt8">Ofertas</h1>
         </div>
@@ -26,7 +22,7 @@
         <p class="mb16">
             <a role="button" t-attf-href="/ofertas" class="btn btn-secondary">Todas</a>
             <t t-foreach="offer_categories" t-as="offer_cat">
-                <a role="button" t-attf-href="/ofertas?category=#{offer_cat.id}" t-attf-class="btn btn-secondary #{'active' if category and int(category) == offer_cat.id else ''}"><span t-esc="offer_cat.name"/></a>
+                <a role="button" t-att-href="keep('/ofertas/category/%s' % offer_cat.slug if offer_cat.slug else '/shop/category/%s' % slug(offer_cat), category=0)" t-attf-class="btn btn-secondary #{'active' if category and int(category) == offer_cat.id else ''}"><span t-esc="offer_cat.name"/></a>
             </t>
         </p>
         <t t-call="website_base.simulate_products_list_view" t-if="len(request.env['ir.ui.view'].search([('name', '=', 'List View')])) &gt; 1"/>
