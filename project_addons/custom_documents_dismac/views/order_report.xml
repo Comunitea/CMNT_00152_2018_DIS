@@ -40,19 +40,22 @@
                 <!-- CUERPO FACTURA -->
                 <div>
                     <div class="row" >
-                        <div name="invoice_address" class="col-6">
-                            <div style="border: 1px solid black; padding: 4px;">
-                                <address t-field="o.partner_id.commercial_partner_id"
-                                    t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
-                                <div t-if="o.partner_id.vat" class="mt16"><t t-esc="o.company_id.country_id.vat_label or 'TIN'"/>: <span t-field="o.partner_id.vat"/></div>
-                            </div>
-                        </div>
                         <div name="shipping_address" class="col-6">
                             <div style="border: 1px solid black; padding: 4px;">
                                 <address t-field="o.partner_shipping_id"
                                     t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
                             </div>
                         </div>
+                        <div name="invoice_address" class="col-6">
+                            <div style="border: 1px solid black; padding: 4px;">
+                                <address t-field="o.partner_id.commercial_partner_id"
+                                    t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                                <span t-if="o.partner_id.phone or o.partner_id.mobile " class="mt16">Tfno: <span t-field="o.partner_id.phone"/> -  <span t-field="o.partner_id.mobile"/><br/></span>
+                                <span t-if="o.partner_id.vat" class="mt16"><t t-esc="o.company_id.country_id.vat_label or 'TIN'"/>: <span t-field="o.partner_id.vat"/></span>
+
+                            </div>
+                        </div>
+
                     </div>
                     <br/>
                     <div class="row">
