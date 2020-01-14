@@ -13,7 +13,7 @@
 
                     <div class="col-4 offset-1">
                         <div>
-                            <div><span t-field="o.partner_id.name"/></div>
+                            <div><span t-field="o.partner_id"/></div>
                             <div t-if="o.partner_id.comercial"><span t-field="o.partner_id.comercial"/></div>
                             <div t-if="o.partner_id.street"><span t-field="o.partner_id.street"/></div>
                             <div t-if="o.partner_id.city or o.partner_id.zip"><span t-field="o.partner_id.zip"/> <span t-field="o.partner_id.city"/></div>
