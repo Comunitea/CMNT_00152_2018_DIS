@@ -79,21 +79,41 @@ class PurchaseOrderLine(models.Model):
     )
     to_deliver_qty = fields.Float(compute="_compute_to_deliver_qty")
     last_60_days_sales = fields.Float(related="product_id.last_60_days_sales")
+    min_max_reordering = fields.Char('Min/Max', compute="_compute_max_min")
+
+    @api.onchange('new_partner_id')
+    def _onchange_new_partner(self):
+        self.discount = self.new_partner_id.default_supplierinfo_discount
+        psinfo = self.env['product.supplierinfo'].search(
+            [('name', '=', self.new_partner_id.id),
+             ('product_id', '=', self.product_id.id)], limit=1)
+        if psinfo:
+            self.price_unit = psinfo[0].price
+
+    def _compute_max_min(self):
+        for line in self:
+            if line.product_id.nbr_reordering_rules == 1:
+                line.min_max_reordering = \
+                    str(line.product_id.reordering_min_qty) + "/" +\
+                    str(line.product_id.reordering_max_qty)
+            else:
+                line.min_max_reordering = "--/--"
 
     def _compute_to_deliver_qty(self):
         for line in self:
             self.env.cr.execute(
                 """
-                    SELECT SUM(product_uom_qty), SUM(qty_cancelled), SUM(qty_delivered)
-                    FROM sale_delivery_report
-                    WHERE product_id={}
+                    SELECT SUM(qty_pending)
+                    FROM sale_order_line
+                    WHERE state not in ('draft','sent', 'cancel') AND 
+                    product_id={}
                 """.format(
                     line.product_id.id
                 )
             )
             result = self.env.cr.fetchone()
-            if result[0] and result[1] and result[2]:
-                line.to_deliver_qty = result[0] - result[1] - result[2]
+            if result and result[0] :
+                line.to_deliver_qty = result[0]
             else:
                 line.to_deliver_qty = 0
 
