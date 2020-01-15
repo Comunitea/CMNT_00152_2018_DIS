@@ -9,19 +9,20 @@
             <tree string="Purchase Order Lines" create="false" delete="false" editable="top">
                 <field name="currency_id" invisible="1"/>
                 <field name="order_id" readonly="True"/>
-                <field name="partner_id" readonly="True"/>
-                <field name="new_partner_id"/>
+                <field name="partner_id" readonly="True" string ="Proveedor" />
+                <field name="new_partner_id" string="Nuevo proveedor" domain="[('supplier', '=', True)]"/>
                 <field name="product_id"  readonly="True"/>
                 <field name="product_categ_id" readonly="True"/>
                 <field name="date_planned"  widget="date" readonly="True"/>
                 <field name="product_virtual_available"/>
                 <field name="to_deliver_qty"/>
                 <field name="last_60_days_sales"/>
-                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" readonly="True"/>
+                <field name="min_max_reordering" />
+                <field name="company_id" groups="base.group_multi_company" invisible="1"/>
                 <field name="product_qty"/>
                 <field name="product_uom" groups="uom.group_uom" attrs="{'readonly': [('state', 'in', ('purchase', 'done', 'cancel'))]}" force_save="1"/>
                 <field name="price_unit"/>
-
+                <field name="discount"/>
                 <field name="price_subtotal" widget="monetary"/>
                 <field name="state" readonly="True"/>
             </tree>

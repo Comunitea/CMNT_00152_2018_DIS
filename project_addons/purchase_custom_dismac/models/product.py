@@ -19,6 +19,7 @@ class ProductProduct(models.Model):
                 [
                     ("product_id", "=", product.id),
                     ("order_id.date_order", ">=", sixty_days_ago),
+                    ("state", "not in", ('draft', 'sent', 'cancel')),
                 ]
             )
             product.last_60_days_sales = sum(
