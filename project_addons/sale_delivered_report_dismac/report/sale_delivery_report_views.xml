@@ -103,11 +103,13 @@
                   <!--decoration-danger="not purchase_order_id and qty_available_after_delivered &lt; 0"
                   decoration-bf="not purchase_order_id and sale_order_line_id==sl_from"
                   decoration-muted="purchase_order_id"-->
-                <field name="partner_id" invisible="1"/>
+                <field name="partner_id" />
                 <field name="order_id"/>
                 <field name="state"/>
                 <field name="product_id"/>
+                <field name="qty_pending" string="C. Pendiente"/>
                 <field name="product_uom_qty" string="C. Pedida"/>
+
                 <field name="qty_enough" invisible="1"/>
                 <field name="line_stock_str" string="Stock"/>
                 <!--field name="line_stock_str" options="{'fg_color': 'gray: product_uom_qty != 0'}"/-->
@@ -115,12 +117,12 @@
                 <field name="expected_date"/>
                 <field name="estimated_delivery_date"/>
                 <field name="qty_delivered" />
-                <field name="qty_invoiced"/>
-                <field name="qty_to_invoice" invisible="1"/>
+                <!--field name="qty_invoiced"/-->
+                <!--field name="qty_to_invoice" invisible="1"/-->
                 <field name="purchase_order_needed" />
                 <field name="moves_state" invisible="1"/>
                 <field name="state" invisible="1"/>
-                <field name="invoice_status" invisible="1"/>
+                <!--field name="invoice_status" invisible="1"/-->
                 <field name="customer_lead" invisible="1"/>
                 <field name="currency_id" invisible="1"/>
             </tree>
