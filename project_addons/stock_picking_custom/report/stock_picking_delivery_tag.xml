@@ -18,9 +18,8 @@
                                         </span>
                                 </div>
                                 <div class="text-left">
-                                        <strong><span>Nº: </span>
-                                            <span t-esc="pack"/>/
-                                            <span t-field="o.number_of_packages"/></strong>
+                                        <strong><span>Bultos: </span>
+                                            <span t-esc="pack"/>/<span t-field="o.number_of_packages"/></strong>
                                 </div>
                             </div>
                             <div>
@@ -69,7 +68,7 @@
                             </div>
 
                             </div>
-                            <hr style="margin:2px"/>
+                            <hr style="margin:3px"/>
                             <div class="row">
                                 <div style="width: 100%">
                                     <span>
@@ -125,7 +124,7 @@
                                     </t>
                                 </div>
                             </div>
-                            <hr style="margin:2px"/>
+                            <hr style="margin:3px"/>
 
                             <div class="row"  style="width:100%">
 
@@ -154,13 +153,14 @@
                             <!--div>
                                 <span t-if="o.carrier_partner_id"><strong>Carrier: </strong>  <span t-field="o.carrier_partner_id"/></span>
                             </div-->
-                            <t t-if="o.note">
-                                <hr style="margin:2px"/>
+
+                                <hr style="margin:3px"/>
                                 <div style="width:100%">
                                     <span>
                                         <strong>Notas: </strong>
                                     </span>
                                 </div>
+                            <t t-if="o.note">
                                 <div style="width:100%; font-size: small">
                                     <span>
                                         <span t-field="o.note"/>
@@ -238,7 +238,7 @@
             <field name="name">Picking Tag</field>
             <field name="default" eval="True" />
             <field name="format">custom</field>
-            <field name="page_height">120</field>
+            <field name="page_height">130</field>
             <field name="page_width">100</field>
             <field name="orientation">Portrait</field>
             <field name="margin_top">4</field>
