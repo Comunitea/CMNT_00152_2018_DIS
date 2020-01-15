@@ -16,7 +16,7 @@ class BatchPickingGroupMove(models.Model):
     product_id = fields.Many2one(
         "product.product", string="Product", readonly=True
     )
-    qty_done = fields.Float(digits=dp.get_precision("Product Unit of Measure"))
+    qty_done = fields.Float(digits=dp.get_precision("Product Unit of Measure"), compute="get_qty_done", inverse="set_qty_done")
     product_uom_qty = fields.Float(
         "Qty ordered",
         digits=dp.get_precision("Product Unit of Measure"),
@@ -32,7 +32,23 @@ class BatchPickingGroupMove(models.Model):
     invisible = fields.Boolean(default=False)
     batch_id = fields.Many2one("stock.picking.batch")
     product_uom = fields.Many2one(related="product_id.uom_id")
+    n_moves = fields.Integer("N lineas", compute="get_qty_done")
+    tracking = fields.Char()
 
+    def set_qty_done(self):
+        self.ensure_one()
+        if not self.move_line_ids or not len(self.move_line_ids) == 1:
+            raise ValidationError('No puedes cambiar aquí si tienes más de un pedido/ubicación de origen: {}'.format(self.n_moves))
+        if self.product_id.tracking != 'none':
+            raise ValidationError('No puedes cambiar aquí la cantidad ya que el artículo {} tiene trazabilidad'.format(self.product_id.display_name))
+        self.move_line_ids.qty_done = self.qty_done
+
+
+    @api.multi
+    def get_qty_done(self):
+        for move in self:
+            move.qty_done = sum(x.qty_done for x in move.move_line_ids)
+            move.n_moves = len(move.move_line_ids)
 
     @api.multi
     def action_apply_qties(self):
@@ -102,7 +118,55 @@ class StockBatchPicking(models.Model):
     _inherit = "stock.picking.batch"
 
     def get_move_done(self):
+        self.ensure_one()
+        self.move_lines.create_empty_move_lines()
+        g_moves = self.env['batch.picking.group.move']
+        vals = {}
+        if self.picking_type_id.default_location_src_id == self.picking_type_id.warehouse_id.lot_stock_id:
+            field1 = 'location_id'
+        elif self.picking_type_id.default_location_dest_id == self.picking_type_id.warehouse_id.lot_stock_id:
+            field1 = 'location_dest_id'
+        else:
+            field1 = False
 
+        for move in self.move_lines:
+            if field1:
+                p_key = '{}.{}'.format(move.product_id.id, move[field1].id)
+            else:
+                p_key = '{}'.format(move.product_id.id)
+            print (p_key)
+            if not p_key in vals.keys():
+                vals[p_key] = {
+                        'op_ids':  move.move_line_ids,
+                        "product_id": move.product_id.id,
+                        "location_id": move.location_id.id,
+                        "location_dest_id": move.location_dest_id.id,
+                        "product_uom_qty": move.product_uom_qty,
+                        "reserved_availability": move.reserved_availability,
+                        "group": True,
+                        "batch_id": self.id,
+                        "tracking": move.product_id.tracking,
+                        "move_line_ids": False
+                    }
+            else:
+
+                vals[p_key]['op_ids'] = vals[p_key]['op_ids'] + move.move_line_ids
+                vals[p_key]["location_id"] = move.location_id.id
+                vals[p_key]['product_uom_qty'] = vals[p_key]['product_uom_qty'] + move.product_uom_qty
+                vals[p_key]['reserved_availability'] = vals[p_key]['reserved_availability'] + move.reserved_availability
+        for p_key in vals:
+            vals[p_key]['move_line_ids'] = [(6, 0, vals[p_key]['op_ids'].ids )]
+            product_ops = vals[p_key]['op_ids']
+            create_val = vals[p_key]
+            new_location = product_ops.mapped('location_id')
+            if len(new_location) == 1:
+                create_val.update(location_id=new_location.id)
+            new_location = product_ops.mapped('location_dest_id')
+            if len(new_location) == 1:
+                create_val.update(location_dest_id=new_location.id)
+            create_val = vals[p_key]
+            self.move_grouped_ids.create(create_val)
+        return
         data = self.env[
             "report.stock_picking_batch_custom.report_batch_picking_custom"
         ]._get_grouped_data(self)
@@ -128,6 +192,7 @@ class StockBatchPicking(models.Model):
                         "product_uom_qty": item["product_uom_qty"],
                         "group": True,
                         "batch_id": self.id,
+                        "tracking": product_id.tracking
                     }
 
 
@@ -198,6 +263,10 @@ class StockBatchPicking(models.Model):
 
     @api.multi
     def action_get_moves_done(self):
+
+        self.ensure_one()
+        #self.move_lines.create_empty_move_lines()
+
         self.ensure_one()
         if not self.moves_all_count:
             self.get_move_done()

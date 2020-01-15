@@ -75,6 +75,7 @@
                         decoration-danger="qty_done&lt;product_uom_qty and qty_done&gt;0 "
                         decoration-success="qty_done==product_uom_qty">
                         <field name="product_id"/>
+                        <field name="tracking"/>
                         <button name="action_apply_qties"
                                 attrs="{'invisible': [('qty_done', '!=', 0)]}" context="{'fill_qty_done': True}"
                             type="object" icon="fa-cart-arrow-down" aria-label="Show details" title="Marcar realizado"/>
@@ -82,9 +83,11 @@
                                 attrs="{'invisible': ['|', ('qty_done', '=', 0), ('qty_done', '=', 'product_uom_qty') ]}"
                                 type="object" icon="fa-edit" aria-label="Show details" title="Repartir cantidad realizada realizado"/>
                          <field name="location_id"/>
+                         <field name="n_moves"/>
                          <field name="product_uom_qty"/>
-                         <field name="qty_done" />
+                         <field name="qty_done" attrs="{'readonly':[('n_moves', '!=', 1), ('tracking', '!=', 'none')]}"/>
                          <button name="action_show_details"
+
                                  type="object" icon="fa-list" aria-label="Show details" title="Show details"/>
 
 
@@ -212,7 +215,8 @@
                             <field name="qty_done" class="oe_bold"/>
                             <button name="action_show_details"
                                     string="Register lots, packs, location"
-                                    type="object" icon="fa-list" aria-label="Register lots, packs, location"
+                                    type="object" icon="fa-list"
+                                    aria-label="Register lots, packs, location"
                                     context="{'from_batch':True}"
                                     options="{&quot;warn&quot;: true}"/>
                             <button name="action_apply_qties"

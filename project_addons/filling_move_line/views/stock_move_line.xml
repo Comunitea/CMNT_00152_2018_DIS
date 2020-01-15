@@ -6,9 +6,8 @@
         <field name="type">tree</field>
         <field name="arch" type="xml">
             <tree string="Operaciones de almacén" delete="1" editable='bottom' create="0"
-                  decoration-success="qty_done == product_uom_qty or qty_done == product_qty or (product_uom_qty == 0 and qty_done == not_stock)"
-                  decoration-muted="qty_done == 0 and product_uom_qty == 0"
-                  decoration-danger="qty_done == 0 and not_stock == 0"
+                  decoration-success="qty_done > 0 and (qty_done == product_uom_qty or qty_done == product_qty or qty_done == not_stock)"
+                  decoration-muted="qty_done == 0 and not_stock > 0"
                   >
                 <!--
                   decoration-danger="not purchase_order_id and qty_available_after_delivered &lt; 0"
