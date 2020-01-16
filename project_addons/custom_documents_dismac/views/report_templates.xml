@@ -26,8 +26,8 @@
             <t t-if="o and ((o._name == 'sale.order' and o.type_id.report_partner_id) or (o._name == 'account.invoice' and o.sale_type_id.report_partner_id))">
                 <ul class="list-inline mb0">
                     <li class="list-inline-item"><span t-field="o.company_id.name"/></li>
-                    <li class="list-inline-item"><span t-field="o.company_id.street"/> <span t-field="o.company_id.street2"/> <span t-field="o.company_id.city"/> <span t-field="o.company_id.zip"/> CIF: <span t-field="o.company_id.country_id.name"/></li>
-                    <li class="list-inline-item"><span t-field="o.company_id.vat"/></li>
+                    <li class="list-inline-item"><span t-field="o.company_id.street"/> <span t-field="o.company_id.street2"/> <span t-field="o.company_id.city"/> <span t-field="o.company_id.zip"/> <span t-field="o.company_id.country_id.name"/></li>
+                    <li class="list-inline-item">CIF: <span t-field="o.company_id.vat"/></li>
                 </ul>
             </t>
         </xpath>
