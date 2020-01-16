@@ -10,7 +10,13 @@
     "license": "AGPL-3",
     "application": False,
     "installable": True,
-    "depends": ["stock", "delivery", "purchase", "purchase_open_qty"],
+    "depends": [
+        "stock",
+        "delivery",
+        "purchase",
+        "purchase_open_qty",
+        "purchase_discount",
+    ],
     "data": [
         "views/res_partner_views.xml",
         "views/purchase_order_views.xml",
@@ -20,6 +26,6 @@
         "security/ir.model.access.csv",
         "wizard/purchase_line_change_supplier_wzd.xml",
         "wizard/purchase_order_line_confirm_changes.xml",
-        "data/ir_cron.xml"
+        "data/ir_cron.xml",
     ],
 }
