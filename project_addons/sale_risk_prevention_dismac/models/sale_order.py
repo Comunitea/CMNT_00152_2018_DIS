@@ -19,7 +19,9 @@ class SaleOrder(models.Model):
     opt_prevention_risk = fields.Boolean(
         related="type_id.opt_prevention_risk", readonly=True
     )
-    need_prevention_risk = fields.Boolean(string="Need Prevention Risk")
+    need_prevention_risk = fields.Selection([('1', 'Sí '),
+                                            ('0', 'No')],
+                                            string="Need Prevention Risk")
     request_prevention = fields.Boolean(string="Request prevention risk")
     prevention_risk_contact_id = fields.Many2one(
         "res.partner",
