@@ -70,6 +70,9 @@ class SaleOrderLine(models.Model):
         for line in self:
             need_qty = line.product_uom_qty
             estimated_date = line.order_id.expected_date or line.order_id.confirmation_date or line.order_id.date_order
+            if not moves and available_qty > need_qty:
+                line.estimated_delivery_date = (estimated_date + relativedelta.relativedelta(days=1 or 0)).strftime(DEFAULT_SERVER_DATE_FORMAT)
+
             location = line.order_id.warehouse_id.lot_stock_id
             parent_path = '{}/'.format(location.id)
             ctx.update(location=location.id)
@@ -94,10 +97,6 @@ class SaleOrderLine(models.Model):
                 else:
                     line.purchase_order_needed = purchase_line.order_id
                     line.estimated_delivery_date = False
-
-            if not moves and available_qty > need_qty:
-                line.estimated_delivery_date = (estimated_date + relativedelta.relativedelta(days=1 or 0)).strftime(DEFAULT_SERVER_DATE_FORMAT)
-
 
             for move in moves:
                 ##
