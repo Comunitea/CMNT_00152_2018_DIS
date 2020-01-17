@@ -19,12 +19,15 @@ class StockMove(models.Model):
                 qty = move.product_uom_qty - move.reserved_availability
                 if move.move_line_ids:
                     sugested_location = move.move_line_ids[0].location_id
+                    sugested_location_dest = move.move_line_ids[0].location_dest_id
                 else:
                     sugested_location = move.location_id.get_putaway_strategy(move.product_id) or move.location_id
+                    sugested_location_dest = move.location_dest_id.get_putaway_strategy(move.product_id) or move.location_dest_id
 
                 if move.product_id.tracking != 'serial':
                     vals = move._prepare_move_line_vals()
                     vals.update(not_stock=qty,
+                                location_dest_id=sugested_location_dest.id,
                                 location_id=sugested_location.id)
                     move_line = self.env['stock.move.line'].create(vals)
                     move.write({
@@ -48,6 +51,10 @@ class StockMoveLine(models.Model):
     _inherit='stock.move.line'
 
     not_stock = fields.Float('Not Reserved', default=0.0, digits=dp.get_precision('Product Unit of Measure'), required=True)
+    sale_line_id = fields.Many2one(related='move_id.sale_line_id', string='Venta')
+    src_removal_priority = fields.Integer(related='location_id.removal_priority', store=True)
+    dest_removal_priority = fields.Integer(related='location_dest_id.removal_priority', store=True)
+    ordered_qty = fields.Float(related="move_id.product_uom_qty")
 
     @api.onchange('lot_id')
     def onchange_serial_lot_id(self):

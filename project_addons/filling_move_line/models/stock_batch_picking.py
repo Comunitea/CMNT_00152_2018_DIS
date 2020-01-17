@@ -37,7 +37,8 @@ class StockBatchPicking(models.Model):
         action['views'] = [
             (self.env.ref('filling_move_line.view_filling_move_line').id, 'tree'),
         ]
-        action['domain'] = [('id', 'in', self.mapped('move_lines').mapped('move_line_ids').ids)]
+        ids = self.mapped('move_lines').mapped('move_line_ids').ids
+        action['domain'] = [('id', 'in', ids)]
         action['context'] = ctx
         return action
 
