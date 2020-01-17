@@ -10,6 +10,8 @@
                 </div>
             </div>
         </xpath>
+
+
     </template>
 
     <template id="report_delivery_document" inherit_id="stock_picking_report_valued.valued_report_picking">
@@ -31,6 +33,20 @@
         <xpath expr="//td[@groups='sale.group_discount_per_so_line']" position="attributes">
             <attribute name="t-if">display_discount</attribute>
         </xpath>
+
+        <xpath expr="//table[@t-if=&quot;o.state!=&apos;done&apos;&quot;]" position="attributes">
+            <attribute name="t-if">o.state not in ('done', 'assigned')</attribute>
+        </xpath>
+        <xpath expr="//table[@t-if=&quot;o.move_line_ids and o.state==&apos;done&apos;&quot;]" position="attributes">
+            <attribute name="t-if">o.move_line_ids and o.state and o.state in ('done', 'assigned')</attribute>
+        </xpath>
+        <xpath expr="//t[@t-if=&quot;o.state != &apos;done&apos;&quot;]/th" position="replace">
+
+        </xpath>
+        <xpath expr="//t[@t-if=&quot;move_line.picking_id.state != &apos;done&apos;&quot;]/td" position="replace">
+
+        </xpath>
+
     </template>
 
     <template id="report_delivery_document_inherit_sale_stock_name" inherit_id="stock.report_delivery_document">
