@@ -12,6 +12,7 @@
                 <field name="virtual_available"/>
                 <field name="lst_price"/>
                 <field name="reference_cost"/>
+                <field name="last_purchase_date"/>
             </tree>
         </field>
     </record>
