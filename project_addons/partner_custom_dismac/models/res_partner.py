@@ -23,6 +23,7 @@ class ResPartner(models.Model):
     days_without_order_or_quotation = fields.Integer(
         related="sale_type.days_without_order_or_quotation"
     )
+    # user_id = fields.Many2one('res.users', default=lambda self: self.env.user)
 
     @api.multi
     def _get_partner_claim_date(self):

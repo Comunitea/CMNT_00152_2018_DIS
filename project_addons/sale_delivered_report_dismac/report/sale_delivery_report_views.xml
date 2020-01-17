@@ -96,7 +96,7 @@
         <field name="model">sale.order.line</field>
         <field name="type">tree</field>
         <field name="arch" type="xml">
-            <tree string="Lineas de venta" delete="false" edit="false" create="false"
+            <tree string="Lineas de venta"  edit="false" create="false"
                   decoration-success="moves_state == 'done' or qty_enough == True"
                   decoration-danger="qty_enough == False"
                   decoration-muted="moves_state == 'none'">
@@ -107,6 +107,11 @@
                 <field name="order_id"/>
                 <field name="state"/>
                 <field name="product_id"/>
+                <field name="review_order" invisible="True"/>
+                <button name="%(sale_custom_dismac.sale_line_change_product_action)d"
+                        string="change product"
+                        icon="fa-arrow-right"
+                        type="action" attrs="{'invisible': [('review_order', '!=', True)]}"/>
                 <field name="qty_pending" string="C. Pendiente"/>
                 <field name="product_uom_qty" string="C. Pedida"/>
 
@@ -128,6 +133,7 @@
             </tree>
         </field>
     </record>
+
     <record id="view_sales_order_line_filter" model="ir.ui.view">
     <field name="model">sale.order.line</field>
     <field name="inherit_id" ref="sale.view_sales_order_line_filter"/>
@@ -141,6 +147,7 @@
                 <filter name="process" string ="Para entregar" domain="[('moves_state', '=','pending')]" context="{'deliverable': True}"/>
                 <filter name="no_entregables" string="Sin stock" domain="[('moves_state', '=','pending')]" context="{'not_deliverable': True}"/>
                 <filter name="buy_pending" string="Pendientes de entrada" context="{'buy_pending': True}"/>
+                <filter name="prods_999" string="Productos a modificar (999)" domain="[('state', '=','sale'), ('review_order', '=', True), ('moves_state', '=','none')]"/>
             </xpath>
 
         </field>

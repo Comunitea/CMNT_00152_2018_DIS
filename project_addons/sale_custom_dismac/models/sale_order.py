@@ -68,10 +68,9 @@ class SaleOrder(models.Model):
                 raise UserError(msg)
             if any(order.mapped('order_line.product_id.review_order')):
                 order.pending_review = True
-                return True
             else:
-                res = super().action_confirm()
                 order.pending_review = False
+        res = super().action_confirm()
         return res
 
     @api.multi
@@ -352,6 +351,8 @@ class SaleOrderLine(models.Model):
     date_picking_imported = fields.Date("Date Imported picking")
     product_categ_id = fields.Many2one(related="product_id.categ_id",
                                        readonly=True)
+    review_order = fields.Boolean(related="product_id.review_order",
+                                       readonly=True)
 
     image_variant = fields.Binary(
         "Alternative image for line", attachment=True,
@@ -369,6 +370,29 @@ class SaleOrderLine(models.Model):
         inverse='_set_image_medium',
         help="Image of the product variant (Medium-sized image of product template if false).")
 
+    @api.multi
+    def write(self, values):
+
+        lines = self.env['sale.order.line']
+        if 'product_id' in values and 'product_uom_qty' not in values:
+            lines = self.filtered(
+                lambda r: r.state == 'sale' and not r.is_expense and
+                          r.product_id.review_order == True)
+        res = super(SaleOrderLine, self).write(values)
+        if lines:
+            orders = lines.mapped('order_id')
+            for order in orders:
+                if not any(order.mapped('order_line.product_id.review_order')):
+                    order.pending_review = False
+            lines._action_launch_stock_rule()
+        return res
+
+    @api.multi
+    def _action_launch_stock_rule(self):
+        rev_lines = self.filtered(lambda x: x.product_id.review_order == True)
+        if rev_lines:
+            self = self - rev_lines
+        return super()._action_launch_stock_rule()
 
 ####### PARTE TEMPORAL PARA ASUMIR LA PARTE NO ENTREGADA EN LOS PEDIDOS DE
     # VENTA IMPORTADOS

@@ -28,20 +28,36 @@ class TierValidation(models.AbstractModel):
                                 ).id
                             except ValueError:
                                 activity_type_id = False
-                            ctx = self._context.copy()
-                            ctx.update(skip_check_locks=True)
-                            self.act1 = (
-                                self.env["mail.activity"]
-                                .with_context(ctx)
-                                .create(
-                                    {
-                                        "activity_type_id": activity_type_id,
-                                        "note": "Request Validation",
-                                        "res_id": rec.id,
-                                        "res_model_id": td.model_id.id,
-                                        "user_id": td.reviewer_id.id,
-                                    }
-                                )
-                            )
+
+                            # SE COMENTA 16/01 a petición de Jorge
+
+                            # ctx = self._context.copy()
+                            # ctx.update(skip_check_locks=True)
+                            # self.act1 = (
+                            #     self.env["mail.activity"]
+                            #     .with_context(ctx)
+                            #     .create(
+                            #         {
+                            #             "activity_type_id": activity_type_id,
+                            #             "note": "Request Validation",
+                            #             "res_id": rec.id,
+                            #             "res_model_id": td.model_id.id,
+                            #             "user_id": td.reviewer_id.id,
+                            #         }
+                            #     )
+                            # )
                     # TODO: notify? post some msg in chatter?
         return created_trs
+
+    # Evitamos notificaciones a petición de Jorge (16/01/2020)
+
+    def _notify_accepted_reviews(self):
+        return
+
+    def _notify_rejected_review(self):
+        return
+
+    def _notify_review_requested(self, tier_reviews):
+        return
+
+    

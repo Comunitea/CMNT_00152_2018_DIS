@@ -39,10 +39,11 @@
                         type="object"/>
             </xpath>
             <xpath expr="//field[@name='order_line']/tree//field[@name='product_id']" position="after">
+                <field name="review_order" invisible="True"/>
                 <button name="%(sale_line_change_product_action)d"
                         string="change product"
                         icon="fa-arrow-right"
-                        type="action"/>
+                        type="action" attrs="{'invisible': [('review_order', '!=', True)]}"/>
             </xpath>
 
             <xpath expr="//field[@name='order_line']/form//field[@name='name']" position="after">
