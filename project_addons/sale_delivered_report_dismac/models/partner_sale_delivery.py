@@ -139,7 +139,10 @@ class SaleOrderLine(models.Model):
                 elif str(location.id) in move.location_dest_id.parent_path.split('/'):
                     ## Es una entrada en stock
                     if available_qty < need_qty and available_qty + move.product_uom_qty >= need_qty:
-                        line.purchase_order_needed = move.purchase_line_id and  move.purchase_line_id.order_id
+                        
+                        # Lo comento para corregir un  error en el servidor d DISMAC (Necesitamos revisar esto)
+
+                        #line.purchase_order_needed = move.purchase_line_id and  move.purchase_line_id.order_id
                         line.estimated_delivery_date = (move.date_expected + relativedelta.relativedelta(days=1 or 0)).strftime(DEFAULT_SERVER_DATE_FORMAT)
                         line.move_needed = move
                         break
