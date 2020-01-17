@@ -342,7 +342,7 @@ class StockBatchPicking(models.Model):
             'decimal.precision'].precision_get('Product Unit of Measure')
         for batch in self:
             picking_ids = batch.picking_ids
-            for picking_id in picking_ids:
+            for picking_id in picking_ids.filtered(lambda x:x.state in ('confirmed', 'assigned')):
                 if float_compare(picking_id.quantity_done, 0, precision_digits=precision_digits) == 0:
                     raise ValidationError('El albarán {} no tiene nada realizado. Debes sacarlo de la agrupación o marcar alguna cantidad para hacer'.format(picking_id.name))
             ## Hago el split de todos los albaranes
