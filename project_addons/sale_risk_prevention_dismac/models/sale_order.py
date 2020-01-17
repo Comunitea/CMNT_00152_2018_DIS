@@ -1,7 +1,8 @@
 # © 2018 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import models, fields
+from odoo import api, models, fields, _
+from odoo.exceptions import UserError
 
 
 class RiskPreventionDocumentSale(models.Model):
@@ -20,7 +21,7 @@ class SaleOrder(models.Model):
         related="type_id.opt_prevention_risk", readonly=True
     )
     need_prevention_risk = fields.Selection([('1', 'Sí '),
-                                            ('0', 'No')],
+                                             ('0', 'No')],
                                             string="Need Prevention Risk")
     request_prevention = fields.Boolean(string="Request prevention risk")
     prevention_risk_contact_id = fields.Many2one(
@@ -38,3 +39,20 @@ class SaleOrder(models.Model):
     risk_document_completed = fields.Boolean(
         string="Risk document " "completed", default=False
     )
+
+    @api.multi
+    def action_confirm(self):
+        """
+        Check if order requires prevention
+        """
+        for order in self:
+            if (
+                order.opt_prevention_risk
+                and order.need_prevention_risk == False
+            ):
+                msg = _(
+                    "Es necesario definir si es necesaria la preveciónde riesgos antes de confirmar el pedido"
+                )
+                raise UserError(msg)
+        res = super().action_confirm()
+        return res

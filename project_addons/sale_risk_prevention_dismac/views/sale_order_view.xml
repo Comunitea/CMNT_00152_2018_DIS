@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <field name="company_id" position="after">
                 <field name="opt_prevention_risk" readonly="True"/>
-                <field name="need_prevention_risk" attrs="{'invisible': [('opt_prevention_risk', '=', False)], 'required': [('opt_prevention_risk', '=', True)]}"/>
+                <field name="need_prevention_risk" attrs="{'invisible': [('opt_prevention_risk', '=', False)]}"/>
             </field>
             <notebook position="inside">
                 <page string="Prevention Risk" name="prevention_risk" attrs="{'invisible': [('need_prevention_risk', '!=', '1')]}">
