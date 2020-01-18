@@ -51,7 +51,7 @@ class SaleOrder(models.Model):
                 and order.need_prevention_risk == False
             ):
                 msg = _(
-                    "Es necesario definir si es necesaria la preveciónde riesgos antes de confirmar el pedido"
+                    "Debe establecer si es necesaria o no prevención de riesgos antes de confirmar este pedido"
                 )
                 raise UserError(msg)
         res = super().action_confirm()
