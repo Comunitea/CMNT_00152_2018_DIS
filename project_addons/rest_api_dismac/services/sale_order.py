@@ -163,7 +163,7 @@ class SaleOrder(models.Model):
             
                 sale_order_line = self.env['sale.order.line'].create({
                     'order_id': self.id,
-                    'partner_id': self.partner_id,
+                    'partner_id': self.partner_id.id,
                     'product_id': product.id,
                     'price_unit': line['precio_unitario'],
                     'product_uom': product.uom_id.id,
