@@ -70,9 +70,7 @@ class SaleOrderLine(models.Model):
         for line in self:
             need_qty = line.product_uom_qty
             estimated_date = line.order_id.expected_date or line.order_id.confirmation_date or line.order_id.date_order
-            if not moves and available_qty > need_qty:
-                line.estimated_delivery_date = (estimated_date + relativedelta.relativedelta(days=1 or 0)).strftime(DEFAULT_SERVER_DATE_FORMAT)
-
+            
             location = line.order_id.warehouse_id.lot_stock_id
             parent_path = '{}/'.format(location.id)
             ctx.update(location=location.id)
@@ -82,6 +80,9 @@ class SaleOrderLine(models.Model):
                             ('product_id', '=', product_id.id),
                             '|', ('location_id', 'child_of', location.id), ('location_dest_id', 'child_of' , location.id)]
             moves = self.env['stock.move'].search(moves_domain, order='date_expected asc')
+            if not moves and available_qty > need_qty:
+                line.estimated_delivery_date = (estimated_date + relativedelta.relativedelta(days=1 or 0)).strftime(DEFAULT_SERVER_DATE_FORMAT)
+
             po = self.env['purchase.order']
             line.estimated_delivery_date = False
 
@@ -139,7 +140,7 @@ class SaleOrderLine(models.Model):
                 elif str(location.id) in move.location_dest_id.parent_path.split('/'):
                     ## Es una entrada en stock
                     if available_qty < need_qty and available_qty + move.product_uom_qty >= need_qty:
-                        
+
                         # Lo comento para corregir un  error en el servidor d DISMAC (Necesitamos revisar esto)
 
                         #line.purchase_order_needed = move.purchase_line_id and  move.purchase_line_id.order_id

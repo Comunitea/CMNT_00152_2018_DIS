@@ -114,7 +114,6 @@
                         type="action" attrs="{'invisible': [('review_order', '!=', True)]}"/>
                 <field name="qty_pending" string="C. Pendiente"/>
                 <field name="product_uom_qty" string="C. Pedida"/>
-                 <field name="qty_available"/>
                 <field name="qty_enough" invisible="1"/>
                 <field name="line_stock_str" string="Stock"/>
                 <!--field name="line_stock_str" options="{'fg_color': 'gray: product_uom_qty != 0'}"/-->
