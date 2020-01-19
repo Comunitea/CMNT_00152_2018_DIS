@@ -118,5 +118,4 @@ class SaleOrderLine(models.Model):
     planned_delivery_date = fields.Date(
         "Estimated delivery date", compute="_get_date_planned"
     )
-
     sendable = fields.Boolean("Sendable")
