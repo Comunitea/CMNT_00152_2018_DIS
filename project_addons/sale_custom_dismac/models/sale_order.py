@@ -339,6 +339,11 @@ class SaleOrder(models.Model):
 
         return res
 
+    @api.multi
+    def action_propagate_priority(self):
+        for order in self:
+            order.picking_ids.filtered(lambda x: x.state != 'done').mapped('move_lines').write({'priority': order.priority})
+
 
 class SaleOrderLine(models.Model):
 
