@@ -54,7 +54,7 @@ class SaleOrderLine(models.Model):
                          self.product_id.standard_price
         if self.product_uom != self.product_id.uom_id:
             purchase_price = self.product_id.uom_id._compute_price(
-                purchase_price, self.product_uom_id)
+                purchase_price, self.product_uom)
         price = frm_cur._convert(
             purchase_price, to_cur,
             self.order_id.company_id or self.env.user.company_id,

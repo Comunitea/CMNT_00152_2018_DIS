@@ -112,9 +112,14 @@
                         string="change product"
                         icon="fa-arrow-right"
                         type="action" attrs="{'invisible': [('review_order', '!=', True)]}"/>
+<<<<<<< HEAD
                 <field name="qty_pending" string="Pendiente"/>
                 <field name="product_uom_qty" string="Pedida"/>
                 <field name="qty_available"/>
+=======
+                <field name="qty_pending" string="C. Pendiente"/>
+                <field name="product_uom_qty" string="C. Pedida"/>
+>>>>>>> 9251c51a001a62db7ecdf312cfcdd714762bf7aa
                 <field name="qty_enough" invisible="1"/>
                 <field name="line_stock_str" string="Stock"/>
                 <!--field name="line_stock_str" options="{'fg_color': 'gray: product_uom_qty != 0'}"/-->

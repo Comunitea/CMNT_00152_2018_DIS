@@ -71,9 +71,6 @@ class ResPartner(models.Model):
             raise ValidationError(_('API partner not defined.'))
 
         invoice_partner = self.env['res.partner'].search([
-            '|',
-            ('active', '=', True),
-            ('active', '=', False),
             ('oficina_contable', '=', oficina_contable),
             ('organo_gestor', '=', organo_gestor),
             ('unidad_tramitadora', '=', unidad_tramitadora)

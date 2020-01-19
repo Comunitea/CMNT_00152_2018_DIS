@@ -26,20 +26,22 @@ class ProductProduct(models.Model):
             for product in self:
                 pricelist_price = product.price
                 pricelist_explanation = "Precio de tarifa "
+
+                # SE mueve toda esta parte par mostrar el descuetno de forma explícita
                 # Aplica descuento de categoría
-                categ_dis = self.env["category.discount"].get_customer_discount(
-                    partner_id, product.categ_id.id
-                )
+                # categ_dis = self.env["category.discount"].get_customer_discount(
+                #     partner_id, product.categ_id.id
+                # )
 
-                if categ_dis:
+                # if categ_dis:
 
-                    pricelist_price = pricelist_price * (
-                        1 - categ_dis[0].discount / 100
-                    )
-                    pricelist_explanation += (
-                        " . Aplicado descuento de "
-                        "categoría  " + str(categ_dis[0].discount)
-                    )
+                #     pricelist_price = pricelist_price * (
+                #         1 - categ_dis[0].discount / 100
+                #     )
+                #     pricelist_explanation += (
+                #         " . Aplicado descuento de "
+                #         "categoría  " + str(categ_dis[0].discount)
+                #     )
 
                     # get customet price
                 customer_price = (
