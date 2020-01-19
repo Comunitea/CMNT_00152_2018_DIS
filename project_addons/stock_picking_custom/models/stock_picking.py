@@ -22,3 +22,9 @@ class StockPicking(models.Model):
         backorder.write({'move_type': 'one'})
         return backorder
 
+    @api.multi
+    @api.depends('state', 'is_locked', 'batch_id')
+    def _compute_show_validate(self):
+        super()._compute_show_validate()
+        for pick in self.filtered(lambda x: x.batch_id):
+            pick.show_validate=False

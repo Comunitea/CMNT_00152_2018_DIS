@@ -15,11 +15,21 @@
         </record>
 
 
-        <record id="view_picking_withcarrier_custom" model="ir.ui.view">
-            <field name="name">delivery.stock.picking_withcarrier.form.view.packages</field>
+
+        <delete id="stock_picking_custom.view_picking_withcarrier_custom" model="ir.ui.view"/>
+        <record id="view_spci" model="ir.ui.view">
+            <field name="name">stock_picking_complete_info.form.view</field>
             <field name="model">stock.picking</field>
-            <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='reserved_availability']" position="attributes">
+                    <attribute name="options">
+                        {"fg_color": "red: state == 'confirmed'; orange: state == 'partially_available'"}
+                    </attribute>
+                </xpath>
+                <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="attributes">
+                    <attribute name="context">{'partner_id': parent.partner_id}</attribute>
+                </xpath>
                 <xpath expr="//field[@name='shipping_weight']" position="after">
                     <field name="number_of_packages" />
                 </xpath>
