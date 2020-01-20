@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-True
+# -*- coding: utf-8 -*-
 {
     'name': 'Website Dismac',
     'version': '1.0',
@@ -18,15 +18,16 @@
     'data': [
         'data/website_data.xml',
         'data/menu_data.xml',
-        'data/default_data.xml',
+        # 'data/default_data.xml',
         'templates/forms.xml',
         'templates/cookies.xml',
-        'templates/account.xml',
+        #'templates/account.xml',
         'templates/footer.xml',
         'templates/header.xml',
         'templates/product.xml',
         'views/customize_views.xml',
-        'templates/sale_order_portal.xml'
+        'templates/sale_order_portal.xml',
+        'security/ir.model.access.csv'
     ],
     'images': [
         '/static/description/icon.png',
