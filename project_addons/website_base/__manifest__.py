@@ -14,16 +14,7 @@
     'depends': [
         'ecommerce_base',
         'website_seo_settings',
-        # 'website_blog_base',
-        # 'follow_us_base',
-        # 'multi_company_base',
-        # 'mass_mailing',
-        # 'website_form_builder',
-        # 'website_sale_product_brand',
-        'payment_redsys',
-        # 'website_sale_hide_price',
-        'website_sale',
-        'portal',
+        'breadcrumbs_base_tmp',
         'sale_order_lock'
     ],
     'data': [

@@ -6,7 +6,13 @@
         <div class="form-group field-legal mb0 small terms-with-check">
             <label for="privacy_policy">
                 <input type="checkbox" value="accepted" id="privacy_policy" name="privacy_policy" required="required"/>
-                <t t-call="website_legal_page.acceptance_full"/>
+<!--                <t t-call="website_legal_page.acceptance_full"/>-->
+                <span class="acceptance_full">
+                    Acepto los <a href="http://www.dismacpruebas.es.mialias.net/avisos-legales" alt="Enlace avisos legales" title="Avisos Legales" rel="nofollow" target="_blank">avisos legales</a>
+                    , la <a href="http://www.dismacpruebas.es.mialias.net/politica-de-cookies" alt="Enlace política de cookies" title="Política de Cookies" rel="nofollow" target="_blank">política de cookies</a>
+                    , y la <a href="http://www.dismacpruebas.es.mialias.net/politica-de-privacidad" alt="Enlace política de privacidad" title="Política de Privacidad" rel="nofollow" target="_blank">política de privacidad</a>
+                    de este sitio web.
+                </span>
             </label>
         </div>
     </template>
