@@ -48,8 +48,8 @@ class SimulateProductController(http.Controller):
                          ('start_date', '<=', current_date), ] + request.website.website_domain()
         if search:
             for srch in shlex.split(search):
-                domain_offers += ['|', '|', ('name', 'ilike', srch), ('subtitle', 'ilike', srch),
-                                  ('description', 'ilike', srch), ]
+                domain_offers += ['|', '|', ('name', 'ilike', srch), ('description_short', 'ilike', srch),
+                                  ('description_full', 'ilike', srch), ]
         offers = Offer.search(domain_offers, order=order if order else 'website_sequence desc')
         # Catch not published offer categories if their child are published
         offers = offers.filtered(
@@ -73,8 +73,8 @@ class SimulateProductController(http.Controller):
         domain_offer_products = [('website_style_ids', '!=', False)]
         if search:
             for srch in shlex.split(search):
-                domain_offer_products += ['|', '|', ('name', 'ilike', srch), ('description', 'ilike', srch),
-                                          ('description_short', 'ilike', srch), ]
+                domain_offer_products += ['|', '|', ('name', 'ilike', srch), ('description_short', 'ilike', srch),
+                                          ('description_full', 'ilike', srch), ]
         offer_products = Product.search(domain_offer_products + request.website.website_domain()).filtered(
             lambda x: x if 'oe_ribbon_promo' in x.website_style_ids[0].html_class else None)
         # Catch not published product categories if their child are published
