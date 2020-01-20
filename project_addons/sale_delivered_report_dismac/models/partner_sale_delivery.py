@@ -82,7 +82,7 @@ class SaleOrderLine(models.Model):
 
         for line in self:
             #
-            
+
             line_moves = line.move_ids.filtered(lambda x: not x.move_orig_ids)
             if line_moves:
                 estimated_date = line_moves[0].date_expected
