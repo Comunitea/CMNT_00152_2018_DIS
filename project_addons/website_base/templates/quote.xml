@@ -215,10 +215,10 @@
                         </form>
                     </div>
                     <div class="row mt-3">
-                        <div id="quotes_grid_before" class="col-lg-3 col-md-4 mt16">
+                        <div id="quotes_grid_before" class="col-lg-3 d-none d-md-block mt16">
                             <t t-call="website_base.quote_historical"/>
                         </div>
-                        <div id="quotes_grid" class="col-lg-9 col-md-8 mt8 mb16">
+                        <div id="quotes_grid" class="col-lg-9 mt8 mb16">
                             <t t-if="view_quote">
                                 <t t-call="website_base.quote"/>
                             </t>
