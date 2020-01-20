@@ -36,6 +36,7 @@ class ProductOffer(models.Model):
     name = fields.Char(_('Title'), index=True, required=True, translate=True)
     description_short = fields.Char(_('Subtitle'), index=True, translate=True,
                            help=_("Short description to be show under title like a paragraph in plain text"))
+    description_full = fields.Html(_("Full HTML Description"), strip_style=True, required=True, translate=True)
     description_sale = fields.Text(
         'Sale Description', translate=True,
         help="A description of the Offer that you want to communicate to your customers. "
@@ -45,7 +46,6 @@ class ProductOffer(models.Model):
                               help=_('Gives the sequence order when displaying a offer list'))
     website_sequence = fields.Integer(_('Website Sequence'), default=lambda self: self._default_website_sequence(),
                                       help=_("Determine the display order in the Website"))
-    description_full = fields.Html(_("Full HTML Description"), strip_style=True, required=True, translate=True)
     category_id = fields.Many2one('product.public.category', string='Related Category')
     offer_image_ids = fields.One2many('product.offer.image', 'offer_id', string='Images')
     # image: all image fields are base64 encoded and PIL-supported
