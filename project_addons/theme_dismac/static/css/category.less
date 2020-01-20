@@ -1,51 +1,85 @@
-#products_grid_before {
-    padding-right: 15px;
-    & li.nav-item:nth-child(1n+1) {
+/* lateral menu as stacked to the bottom */
+@media screen and (max-width: 1024px) {
+    #products_grid_before {
+        padding-right: 15px;
+        & .menu-category > li.nav-item:nth-child(1n+1) {
+            padding: 8px 0px;
+            border-bottom: @border-cat;
+        }
+        & .menu-category > li.nav-item:last-child {
+            border-bottom: none;
+        }
+    }
+
+    .menu-category {
+        padding: 8px;
+        border: @border-cat;
+        background: @color-bg-cat;
+    }
+
+    .category-menu-img {
         height: 50px;
-        margin: 8px 0px;
-        border-bottom: @border-cat;
+        width: 10%;
     }
-    & li.nav-item:last-child {
-        border-bottom: none;
-        margin: 0px;
+
+    .category-menu-name {
+        display:flex;
+        align-items:center;
+        height: 50px;
+        width: 85%;
     }
 }
 
-.menu-category {
-    padding: 8px;
-    border: @border-cat;
-    background: @color-bg-cat;
-}
+/* lateral menu as stacked to the right */
+@media screen and (min-width: 1024px) {
+    #products_grid_before {
+        padding-right: 0px;
+        & li.nav-item:nth-child(1n+1) {
+            height: 50px;
+            margin-bottom: 8px;
+            border-bottom: @border-cat;
+        }
+        & li.nav-item:last-child {
+            border-bottom: none;
+            margin: 0px;
+        }
+    }
 
-.oe_website_sale ul ul {
-    margin-left: -15px;
-}
+    .menu-category {
+        padding: 8px;
+        border: @border-cat;
+        background: @color-bg-cat;
+    }
 
-.parent-category {
-    position: absolute;
-    width: inherit;
-    top: 8px;
-    left: 100%;
-    z-index: 30;
-    background: @color-bg-cat;
-    margin-top: 8px;
-    border: @border-cat;
-    padding:10px 10px;
-    margin-left: 0px;
-}
+    .oe_website_sale ul ul {
+        margin-left: 0px;
+    }
 
-.nav-pills .nav-link.active {
-    padding-right: 2rem;
-}
+    .parent-category {
+        position: absolute;
+        width: inherit;
+        top: 8px;
+        left: 100%;
+        z-index: 30;
+        background: @color-bg-cat;
+        margin-top: 8px;
+        border: @border-cat;
+        padding:10px 10px;
+    }
 
-.category-menu-img {
-    height: 45px;
-    width: 20%;
-}
+    .nav-pills .nav-link.active {
+        padding-right: 2rem;
+    }
 
-.category-menu-name {
-    display:flex;
-    align-items:center;
-    height: 45px;
-    width: 75%;
+    .category-menu-img {
+        height: 45px;
+        width: 20%;
+    }
+
+    .category-menu-name {
+        display:flex;
+        align-items:center;
+        height: 45px;
+        width: 75%;
+    }
 }
