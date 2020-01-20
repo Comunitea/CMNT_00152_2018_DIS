@@ -14,7 +14,17 @@
     'depends': [
         'ecommerce_base',
         'website_seo_settings',
-        'breadcrumbs_base_tmp',
+        # 'website_blog_base',
+        # 'follow_us_base',
+        # 'multi_company_base',
+        # 'mass_mailing',
+        # 'website_form_builder',
+        # 'website_sale_product_brand',
+        'payment_redsys',
+        # 'website_sale_hide_price',
+        'website_sale',
+        'portal',
+        'sale_order_lock'
     ],
     'data': [
         'templates/head.xml',
@@ -29,7 +39,8 @@
         'views/product_views.xml',
         'views/quote_views.xml',
         'security/ir.model.access.csv',
-        'security/sale_security.xml'
+        'security/sale_security.xml',
+        'templates/payment.xml'
     ],
     'images': [
         '/static/description/icon.png',

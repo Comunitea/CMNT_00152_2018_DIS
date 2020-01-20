@@ -24,10 +24,10 @@ class CustomerPortal(CustomerPortal):
         values = super(CustomerPortal, self)._prepare_portal_layout_values()
         partner_id = request.env.user.partner_id
 
-        SaleReport = request.env['sale.report']
+        SaleReport = request.env['sale.order.line']
 
-        history_count = len(SaleReport.read_group([('partner_id', 'child_of', partner_id.id), ('state', '=', 'sale')],
-                                                  ['product_uom_qty'], ['product_tmpl_id', 'partner_id']))
+        history_count = len(SaleReport.read_group([('is_delivery', '=', False), ('order_partner_id', 'child_of', partner_id.id), ('state', 'in', ('sale', 'done'))],
+                                                  ['product_uom_qty'], ['product_id', 'order_partner_id']))
 
         values.update({
             'history_count': history_count,
@@ -37,18 +37,25 @@ class CustomerPortal(CustomerPortal):
     def _get_my_history_domain(self, filterby):
         domain = []
         user = request.env.user
+
+        partner_id = user.partner_id.id
+        ctx = request.env.context.copy()
         
-        customer_domain = [('partner_id', 'child_of', user.partner_id.id), ('state', '=', 'sale'),
+        if 'selected_partner' in ctx:
+            partner_id = ctx['selected_partner']
+        
+        customer_domain = [('order_partner_id', 'child_of', partner_id), ('state', 'in', ('sale', 'done')),
                            ('product_id.type', 'in', ('consu', 'product'))]
 
         if filterby:
             customer_domain += filterby
         
-        customer_products = request.env['sale.report'].read_group(customer_domain, ['product_tmpl_id'],
-                                                                  ['product_tmpl_id', 'partner_id'])
+        customer_products = request.env['sale.order.line'].read_group(customer_domain, ['product_id'],
+                                                                  ['product_id', 'order_partner_id'])
         
         if len(customer_products) > 0:
-            product_tmpl_ids = [x['product_tmpl_id'][0] for x in customer_products]  
+            product_ids = [x['product_id'][0] for x in customer_products] 
+            product_tmpl_ids = request.env['product.product'].browse(product_ids).mapped('product_tmpl_id').ids
             domain += [('id', 'in', product_tmpl_ids)]
         else:
             domain = [('id', '=', None)]
@@ -84,7 +91,7 @@ class CustomerPortal(CustomerPortal):
         addresses = partner.child_ids
         for address in addresses:
             searchbar_filters.update({
-                str(address.id): {'label': address.name, 'domain': [('order_id.partner_shipping_id', '=', address.id)]}
+                str(address.id): {'label': address.name, 'domain': ['|', ('order_id.partner_shipping_id', 'child_of', address.id), ('order_id.partner_id', 'child_of', address.id)]}
             })
             if filterby == str(address.id):
                 ctx.update(selected_partner=address.id)
@@ -109,7 +116,7 @@ class CustomerPortal(CustomerPortal):
         if not sortby:
             sortby = 'ordered_qty'
         sort_order = searchbar_sortings[sortby]['order']
-
+        
         # count for pager
         order_count = product_template.search_count(domain)
         # pager
@@ -142,6 +149,82 @@ class CustomerPortal(CustomerPortal):
             'keep': keep,
         })
         return request.render("website_base.portal_my_history", values)
+
+    @http.route(['/my/orders', '/my/orders/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_my_orders(self, page=1, date_begin=None, date_end=None, sortby=None, filterby=None, **kw):
+        res = super(CustomerPortal, self).portal_my_orders(page, date_begin, date_end, sortby, **kw)
+
+        partner = request.env.user.partner_id
+
+        searchbar_filters = {
+            'own': {'label': _('Own'), 'domain': None},
+        }
+
+        # extends filterby criteria with partner childs
+        addresses = partner.child_ids
+        for address in addresses:
+            searchbar_filters.update({
+                str(address.id): {'label': address.name, 'domain': ['|', ('partner_shipping_id', 'child_of', address.id), ('partner_id', 'child_of', address.id)]}
+            })
+
+        if not filterby:
+            filterby = 'own'
+
+        # If filterby is not 'own' we need to recalculate all the data
+        
+        if filterby != 'own':
+            SaleOrder = request.env['sale.order']
+
+            domain = [
+                ('message_partner_ids', 'child_of', [partner.commercial_partner_id.id]),
+                ('state', 'in', ['sale', 'done'])
+            ]
+
+            searchbar_sortings = {
+                'date': {'label': _('Order Date'), 'order': 'date_order desc'},
+                'name': {'label': _('Reference'), 'order': 'name'},
+                'stage': {'label': _('Stage'), 'order': 'state'},
+            }
+
+            # adding our filter
+            domain += searchbar_filters[filterby]['domain']
+
+            # default sortby order
+            if not sortby:
+                sortby = 'date'
+            sort_order = searchbar_sortings[sortby]['order']
+
+            archive_groups = self._get_archive_groups('sale.order', domain)
+            if date_begin and date_end:
+                domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
+
+            # count for pager
+            order_count = SaleOrder.search_count(domain)
+            # pager
+            pager = portal_pager(
+                url="/my/orders",
+                url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby, 'filterby': filterby},
+                total=order_count,
+                page=page,
+                step=self._items_per_page
+            )
+            # content according to pager and archive selected
+            orders = SaleOrder.search(domain, order=sort_order, limit=self._items_per_page, offset=pager['offset'])
+            request.session['my_orders_history'] = orders.ids[:100]
+
+            res.qcontext.update({
+                'archive_groups': archive_groups,
+                'orders': orders.sudo(),
+                'pager': pager,
+                'order_count': order_count
+            })
+
+        res.qcontext.update({
+            'searchbar_filters': OrderedDict(sorted(searchbar_filters.items())),
+            'filterby': filterby,
+        })
+
+        return res
         
 
 class WebsiteSaleContext(WebsiteSale):
