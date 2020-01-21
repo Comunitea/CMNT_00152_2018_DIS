@@ -27,6 +27,7 @@
         'templates/product.xml',
         'templates/quote.xml',
         'templates/portal_history.xml',
+        'templates/portal_reviews.xml',
         'views/product_views.xml',
         'views/quote_views.xml',
         'security/ir.model.access.csv',

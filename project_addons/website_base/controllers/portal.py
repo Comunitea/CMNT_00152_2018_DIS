@@ -28,9 +28,13 @@ class CustomerPortal(CustomerPortal):
 
         history_count = len(SaleReport.read_group([('is_delivery', '=', False), ('order_partner_id', 'child_of', partner_id.id), ('state', 'in', ('sale', 'done'))],
                                                   ['product_uom_qty'], ['product_id', 'order_partner_id']))
+        
+        review_count = len(request.env.user.review_ids.filtered(lambda x: x.status == 'pending' and x.model == 'sale.order').ids)
+        #review_count = len(request.env.user.review_ids.ids)
 
         values.update({
             'history_count': history_count,
+            'review_count': review_count,
         })
         return values
 
@@ -149,6 +153,130 @@ class CustomerPortal(CustomerPortal):
             'keep': keep,
         })
         return request.render("website_base.portal_my_history", values)
+    
+    @http.route(['/my/reviews', '/my/reviews/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_my_reviews(self, page=1, sortby=None, date_begin=None, date_end=None, search=None, search_in='all', filterby=None, **kw):
+        values = self._prepare_portal_layout_values()
+        partner = request.env.user.partner_id
+        reviews = request.env.user.review_ids
+        
+        sale_order_ids = request.env['tier.review'].search([('status', '=', 'pending'), ('model', '=', 'sale.order'), ('id', 'in', reviews.ids)]).mapped('res_id')
+        #sale_order_ids = request.env['tier.review'].search([('model', '=', 'sale.order'), ('id', 'in', reviews.ids)]).mapped('res_id')
+        SaleOrder = request.env['sale.order']
+
+        domain = [
+            ('id', 'in', sale_order_ids)
+        ]
+
+        searchbar_filters = {
+            'all': {'label': _('All'), 'domain': []},
+        }
+
+        searchbar_sortings = {
+            'date': {'label': _('Order Date'), 'order': 'date_order desc'},
+            'name': {'label': _('Reference'), 'order': 'name'},
+            'stage': {'label': _('Stage'), 'order': 'state'},
+        }
+
+        searchbar_inputs = {
+            'name': {'input': 'name', 'label': _('Search <span class="nolabel"> by name</span>')},
+            'all': {'input': 'all', 'label': _('Search in All')},
+        }
+
+        # extends filterby criteria with partner childs
+        addresses = partner.child_ids
+        for address in addresses:
+            searchbar_filters.update({
+                str(address.id): {'label': address.name, 'domain': ['|', ('partner_shipping_id', 'child_of', address.id), ('partner_id', 'child_of', address.id)]}
+            })
+
+        # default filter by value
+        if not filterby:
+            filterby = 'all'
+
+        # adding our filter
+            domain += searchbar_filters[filterby]['domain']
+        
+        # search
+        if search and search_in:
+            search_domain = []
+            if search_in in ('name', 'all'):
+                search_domain = OR([search_domain, [('name', 'ilike', search)]])
+            domain += search_domain
+
+        # default sortby order
+        if not sortby:
+            sortby = 'date'
+        sort_order = searchbar_sortings[sortby]['order']
+
+        archive_groups = self._get_archive_groups('sale.order', domain)
+        if date_begin and date_end:
+            domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
+
+        # count for pager
+        order_count = SaleOrder.sudo().search_count(domain)
+        # pager
+        pager = portal_pager(
+            url="/my/reviews",
+            url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby},
+            total=order_count,
+            page=page,
+            step=self._items_per_page
+        )
+        # content according to pager and archive selected
+        orders = SaleOrder.sudo().search(domain, order=sort_order, limit=self._items_per_page, offset=pager['offset'])
+        request.session['my_pending_reviews'] = orders.ids[:100]
+
+        # link
+        keep = QueryURL('/my/reviews', search=search, order=sort_order)
+
+        values.update({
+            'date': date_begin,
+            'orders': orders.sudo(),
+            'page_name': 'reviews',
+            'pager': pager,
+            'archive_groups': archive_groups,
+            'default_url': '/my/reviews',
+            'searchbar_sortings': searchbar_sortings,
+            'filterby': filterby,
+            'searchbar_filters': OrderedDict(sorted(searchbar_filters.items())),
+            'sortby': sortby,
+            'searchbar_inputs': searchbar_inputs,
+            'search': search,
+            'keep': keep,
+            'pending_review': True
+        })
+        return request.render("sale.portal_my_orders", values)
+
+    @http.route(['/my/reviews/validation'], type='http', auth="user", website=True)
+    def portal_review_validation(self, order_id, validation, **kw):
+
+        partner = request.env.user.partner_id
+        reviews = request.env.user.review_ids
+        review = request.env['tier.review'].search([('model', '=', 'sale.order'), ('id', 'in', reviews.ids), ('res_id', '=', order_id)])
+        
+        if not review:
+            return request.redirect('/my')
+        else:
+            if validation:
+                request.env['sale.order'].sudo().browse(review.res_id).validate_tier()
+            else:
+                request.env['sale.order'].sudo().browse(review.res_id).reject_tier()
+            return request.redirect('/my')     
+
+    @http.route(['/my/reviews/<int:order_id>'], type='http', auth="public", website=True)
+    def portal_review_page(self, order_id, report_type=None, access_token=None, message=False, download=False, **kw):
+        res = self.portal_order_page(order_id, report_type, access_token, message, download, **kw)
+
+        res.qcontext.update({
+            'pending_review': True,
+            'page_name': 'review',
+        })
+
+        history = request.session.get('my_pending_reviews', [])
+        res.qcontext.update(get_records_pager(history, res.qcontext['sale_order']))     
+
+        return res
 
     @http.route(['/my/orders', '/my/orders/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_orders(self, page=1, date_begin=None, date_end=None, sortby=None, filterby=None, **kw):
@@ -157,7 +285,7 @@ class CustomerPortal(CustomerPortal):
         partner = request.env.user.partner_id
 
         searchbar_filters = {
-            'own': {'label': _('Own'), 'domain': None},
+            'all': {'label': _('All'), 'domain': []},
         }
 
         # extends filterby criteria with partner childs
@@ -168,11 +296,11 @@ class CustomerPortal(CustomerPortal):
             })
 
         if not filterby:
-            filterby = 'own'
+            filterby = 'all'
 
         # If filterby is not 'own' we need to recalculate all the data
         
-        if filterby != 'own':
+        if filterby != 'all':
             SaleOrder = request.env['sale.order']
 
             domain = [
