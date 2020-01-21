@@ -29,25 +29,19 @@ class SimulateProductController(http.Controller):
         return parent_category_ids
 
     @http.route(['/ofertas', '/ofertas/page/<int:page>', '/ofertas/oferta/<path:path>',
-                '''/ofertas/category/<path:slug>''',
-                '''/ofertas/category/<path:slug>/page/<int:page>''',
-                '''/ofertas/category/<model("product.public.category", "[('website_id', 'in', (False, current_website_id))]"):category>''',
-                '''/ofertas/category/<model("product.public.category", "[('website_id', 'in', (False, current_website_id))]"):category>/page/<int:page>'''
-                ], type='http', auth='public', website=True)
+                 '/ofertas/category/<path:slug>', '/ofertas/category/<path:slug>/page/<int:page>',
+                 '''/ofertas/category/<model("product.public.category", "[('website_id', 'in', (False, current_website_id))]"):category>''',
+                 '''/ofertas/category/<model("product.public.category", "[('website_id', 'in', (False, current_website_id))]"):category>/page/<int:page>'''
+                 ], type='http', auth='public', website=True)
     def get_offers(self, page=0, category=None, search='', order='', path='', slug=False, ppg=False, **post):
-        # Catch parent categories for categories menu
-        parent_category_ids = []
+        # Catch category by slug(category) or category.slug
         domain = [('id', 'in', [])]
-
         if slug:
             domain = [('slug', '=', slug)]
-
         if category:
             domain = [('id', '=', int(category))]
-        
-        public_category = request.env['product.public.category'].search(domain, limit=1)      
+        public_category = request.env['product.public.category'].search(domain, limit=1)
         parent_category_ids = self.get_parent_categories(public_category)
-        import pdb; pdb.set_trace()
         if (slug or category) and (not public_category or not public_category.can_access_from_current_website()):
             raise NotFound()
 
