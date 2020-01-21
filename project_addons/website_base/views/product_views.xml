@@ -156,7 +156,6 @@
                                 <field name="website_published"/>
                                 <field name="start_date" widget="date"/>
                                 <field name="end_date" widget="date"/>
-                                <field name="category_id" widget="one2many_tags"/>
                             </tree>
                             <form>
                                 <field name="image_medium" widget='image' class="oe_avatar"/>

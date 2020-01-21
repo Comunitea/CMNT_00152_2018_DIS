@@ -20,12 +20,15 @@
                         </t>
                     </div>
                     <div class="row mt-3">
-                        <!-- Categories -->
+                        <!-- Set SGEEDE Infinite Scroll for products grid -->
+                        <t t-set="infinity_scroll" t-value="'sgeede-infinite-scroll' if request.env['ir.ui.view'].search([('key', '=', 'sgeede_infinite_scroll.products_infinite_scroll'), ('website_id', '=', request.website.id)]).active else ''"/>
+                        <!-- Set lateral categories menu for products grid -->
+                        <t t-set="menu_categories" t-value="'col-lg-9 mt16 mb32' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'col-lg-12 mb32'"/>
+                        <!-- Categories lateral menu -->
                         <div t-att-class="'col-lg-3 d-none d-md-block' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'd-none'"
                              id="products_grid_before"/>
-                        <!-- Products -->
-                        <div t-att-class="'col-lg-9 mt16 mb32' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'col-lg-12 mb32'"
-                             id="products_grid"/>
+                        <!-- Products with or without SGEEDE Infinite Scroll and lateral categories menu-->
+                        <div t-attf-class="#{menu_categories} #{infinity_scroll}" id="products_grid"/>
                     </div>
                     <!-- Bottom pager -->
                     <div class="products_pager form-inline justify-content-center mt-3">
@@ -118,10 +121,9 @@
     <!-- Simulated Product Items -->
     <template id="simulate_products_item" name="Simulate Products item Base">
         <t t-set="url_href" t-value="'/product/' if product._get_combination_info() else url_simulated_product_templates"/>
-        <t t-set="product_href" t-value="keep('/product/{}', page=(pager['page']['num'] if pager['page']['num']&gt;1 else None)).format(product.slug) if product.slug else keep('/shop/product/%s' % slug(product), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))" />
-        <!--<t t-set="combination_info" t-value="product._get_combination_info(only_template=True, add_qty=add_qty or 1, pricelist=pricelist)"/>-->
-        <form t-attf-action="#{url_simulated_products}" method="get">
-            <!--            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />-->
+        <t t-set="product_href" t-value="keep('{}{}'.format(url_href, product.slug) if product.slug else '{}{}'.format(''/product/shop/'', slug(product)), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))" />
+        <form action="/shop/cart/update" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
             <div itemscope="itemscope" itemtype="http://schema.org/Product">
                 <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids[0].html_class if product.website_style_ids else ''}">
                     <a t-att-href="product_href" role="button" t-attf-class="ribbon #{'ribbon-list' if show_list else ''} btn btn-danger">
@@ -159,29 +161,31 @@
                         </b>
                         <!-- Miniature buttons -->
                         <t t-set="product_variant_id" t-value="product._get_first_possible_variant_id()"/>
-                        <t t-set="in_wish" t-value="product._is_in_wishlist()"/>
-                        <input name="product_id" t-att-value="product_variant_id" type="hidden"/>
                         <t t-if="product_variant_id and len(request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_add_to_cart')])) &gt; 1">
-                            <a href="#" role="button" class="btn btn-secondary btn-sm a-submit" aria-label="Shopping cart" title="Shopping cart">
-                                <span class="fa fa-shopping-cart" />
-                            </a>
+                            <input name="product_id" t-att-value="product_variant_id" type="hidden"/>
+                            <t t-if="product_variant_id">
+                                <a href="#" role="button" class="btn btn-secondary btn-sm a-submit" aria-label="Shopping cart" title="Shopping cart">
+                                    <span class="fa fa-shopping-cart" />
+                                </a>
+                            </t>
                         </t>
+                        <t t-set="in_wish" t-value="product._is_in_wishlist()"/>
+                        <button t-if="product_variant_id and request.env['ir.ui.view'].search([('key', '=', 'website_sale_wishlist.add_to_wishlist')]).active "
+                                type="button" role="button" class="btn btn-secondary btn-sm o_add_wishlist" t-att-disabled='in_wish or None' title="Add to Wishlist"
+                                t-att-data-product-template-id="product.id" t-att-data-product-product-id="product_variant_id" data-action="o_wishlist">
+                            <span class="fa fa-heart" role="img" aria-label="Add to wishlist"/>
+                        </button>
+                        <button t-if="product_variant_id and request.env['ir.ui.view'].search([('key', '=', 'website_sale_comparison.add_to_compare')]).active"
+                                type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-sm o_add_compare" title="Compare" aria-label="Compare"
+                                t-att-data-product-product-id="product_variant_id" data-action="o_comparelist">
+                            <span class="fa fa-exchange"/>
+                        </button>
                         <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
                         <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
                            t-attf-class="d-md-inline-block btn btn-secondary btn-sm o_website_form_send #{'disabled' if current_quote and product in current_quote.product_ids else 'a'}"
                            title="Add to request quote" aria-label="Add to request quote" rel="noindex, nofollow">
                             <span class="fa fa-file-text-o"/>
                         </a>
-                        <button t-if="product_variant_id and len(request.env['ir.ui.view'].search([('key', '=', 'website_sale_wishlist.add_to_wishlist')])) &gt; 1"
-                                type="button" role="button" class="btn btn-secondary btn-sm o_add_wishlist" t-att-disabled='in_wish or None' title="Add to Wishlist"
-                                t-att-data-product-template-id="product.id" t-att-data-product-product-id="product_variant_id" data-action="o_wishlist">
-                            <span class="fa fa-heart" role="img" aria-label="Add to wishlist"/>
-                        </button>
-                        <button t-if="product_variant_id and len(request.env['ir.ui.view'].search([('key', '=', 'website_sale_comparison.add_to_compare')])) &gt; 1"
-                                type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-sm o_add_compare" title="Compare" aria-label="Compare"
-                                t-att-data-product-product-id="product_variant_id" data-action="o_comparelist">
-                            <span class="fa fa-exchange"/>
-                        </button>
                     </div>
                 </section>
             </div>
@@ -195,7 +199,7 @@
                 <tr t-ignore="true">
                     <td t-foreach="range(0,rows)" t-as="row" t-attf-width="#{100/rows}%"/>
                 </tr>
-                <tr t-foreach="bins" t-as="tr_product">
+                <tr t-foreach="bins" t-as="tr_product" t-attf-class="sgeede-infinite-get">
                     <t t-foreach="tr_product" t-as="td_product">
                         <t t-if="td_product">
                             <t t-set="product" t-value="td_product['product']" />
@@ -209,6 +213,25 @@
                         <td t-if="not td_product" class="oe-height-2" />
                     </t>
                 </tr>
+                <!-- SGEEDE Infinite Scroll -->
+                <t t-if="category">
+                    <tr class="sgeede-infinite-pagination">
+                        <t t-if="int(pager['page']['num']) + 1 &lt;= int(pager['page_count'])">
+                            <td><a t-att-href="pager['page_next']['url']" style="display: none">Page <span t-esc="int(pager['page']['num']) + 1"/>
+                            </a></td>
+                        </t>
+                        <td><span class="max-page" t-esc="pager['page_count']" style="display: none"/></td>
+                    </tr>
+                </t>
+                <t t-if="not category">
+                    <tr class="sgeede-infinite-pagination">
+                        <t t-if="int(pager['page']['num']) + 1 &lt;= int(pager['page_count'])">
+                            <td><a t-att-href="pager['page_next']['url']" style="display: none">Page <span t-esc="int(pager['page']['num']) + 1"/>
+                            </a></td>
+                        </t>
+                        <td><span class="max-page" t-esc="pager['page_count']" style="display: none"/></td>
+                    </tr>
+                </t>
             </tbody>
         </table>
         <t t-if="not bins">
@@ -227,13 +250,33 @@
     <!-- Simulated Product List View -->
     <template id="simulate_products_list_view" name="Simulate Products Grid List Base">
         <t t-foreach="simulated_products" t-as="product" t-if="simulated_products">
-            <div class="oe_product oe_list oe_product_cart" t-att-data-publish="product.website_published and 'on' or 'off'">
+            <!-- With or without SGEEDE Infinite Scroll -->
+            <div class="oe_product oe_list oe_product_cart sgeede-infinite-get" t-att-data-publish="product.website_published and 'on' or 'off'">
                 <t t-call="website_base.simulate_products_item">
                     <t t-set="show_publish" t-value="True" />
                     <t t-set="show_list" t-value="True" />
                 </t>
             </div>
         </t>
+        <!-- SGEEDE Infinite Scroll -->
+        <t t-if="category">
+                <div class="sgeede-infinite-pagination">
+                    <t t-if="int(pager['page']['num']) + 1 &lt;= int(pager['page_count'])">
+                        <a t-att-href="pager['page_next']['url']" style="display: none">Page <span t-esc="int(pager['page']['num']) + 1"/>
+                        </a>
+                    </t>
+                    <span class="max-page" t-esc="pager['page_count']" style="display: none"/>
+                </div>
+            </t>
+            <t t-if="not category">
+                <div class="sgeede-infinite-pagination">
+                    <t t-if="int(pager['page']['num']) + 1 &lt;= int(pager['page_count'])">
+                        <a t-att-href="pager['page_next']['url']" style="display: none">Page <span t-esc="int(pager['page']['num']) + 1"/>
+                        </a>
+                    </t>
+                    <span class="max-page" t-esc="pager['page_count']" style="display: none"/>
+                </div>
+            </t>
     </template>
 
     <!-- Simulated product structure into simulated shop products -->

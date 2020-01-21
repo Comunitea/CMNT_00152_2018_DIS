@@ -70,12 +70,12 @@ class SimulateProductController(http.Controller):
 
         # Products templates within offer
         Product = request.env['product.template']
-        domain_offer_products = [('website_style_ids', '!=', False)]
+        domain_offer_products = [('website_style_ids', '!=', False), ] + request.website.website_domain()
         if search:
             for srch in shlex.split(search):
                 domain_offer_products += ['|', '|', ('name', 'ilike', srch), ('description_short', 'ilike', srch),
                                           ('description_full', 'ilike', srch), ]
-        offer_products = Product.search(domain_offer_products + request.website.website_domain()).filtered(
+        offer_products = Product.search(domain_offer_products).filtered(
             lambda x: x if 'oe_ribbon_promo' in x.website_style_ids[0].html_class else None)
         # Catch not published product categories if their child are published
         product_categories = offer_products.mapped('public_categ_ids').filtered(lambda x: x.website_published)
