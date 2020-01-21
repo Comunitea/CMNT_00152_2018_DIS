@@ -22,7 +22,8 @@
         <p class="mb16">
             <a role="button" t-attf-href="/ofertas" class="btn btn-secondary">Todas</a>
             <t t-foreach="offer_categories" t-as="offer_cat">
-                <a role="button" t-att-href="keep('/ofertas/category/%s' % offer_cat.slug if offer_cat.slug else '/ofertas/category/%s' % slug(offer_cat), category=0)" t-attf-class="btn btn-secondary #{'active' if category and int(category) == offer_cat.id else ''}"><span t-esc="offer_cat.name"/></a>
+                <!-- <a role="button" t-att-href="keep('/ofertas/category/%s' % offer_cat.slug if offer_cat.slug else '/ofertas/category/%s' % slug(offer_cat), category=0)" t-attf-class="btn btn-secondary #{'active' if category and int(category) == offer_cat.id else ''}"><span t-esc="offer_cat.name"/></a> -->
+                <a role="button" t-att-href="keep('/ofertas/category/%s' % slug(offer_cat), category=0)" t-attf-class="btn btn-secondary #{'active' if category and int(category) == offer_cat.id else ''}"><span t-esc="offer_cat.name"/></a>
             </t>
         </p>
         <t t-call="website_base.simulate_products_list_view" t-if="len(request.env['ir.ui.view'].search([('name', '=', 'List View')])) &gt; 1"/>
