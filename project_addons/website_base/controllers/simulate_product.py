@@ -29,17 +29,27 @@ class SimulateProductController(http.Controller):
         return parent_category_ids
 
     @http.route(['/ofertas', '/ofertas/page/<int:page>', '/ofertas/oferta/<path:path>',
-                 '''/ofertas/category/<model("product.public.category", "[('website_id', 'in', (False, current_website_id))]"):category>''',
-                 '''/ofertas/category/<model("product.public.category", "[('website_id', 'in', (False, current_website_id))]"):category>/page/<int:page>'''
-                 ], type='http', auth='public', website=True)
-    def get_offers(self, page=0, category=None, search='', order='', path='', ppg=False, **post):
+                '''/ofertas/category/<path:slug>''',
+                '''/ofertas/category/<path:slug>/page/<int:page>''',
+                '''/ofertas/category/<model("product.public.category", "[('website_id', 'in', (False, current_website_id))]"):category>''',
+                '''/ofertas/category/<model("product.public.category", "[('website_id', 'in', (False, current_website_id))]"):category>/page/<int:page>'''
+                ], type='http', auth='public', website=True)
+    def get_offers(self, page=0, category=None, search='', order='', path='', slug=False, ppg=False, **post):
         # Catch parent categories for categories menu
         parent_category_ids = []
+        domain = [('id', 'in', [])]
+
+        if slug:
+            domain = [('slug', '=', slug)]
+
         if category:
-            category = request.env['product.public.category'].search([('id', '=', int(category))], limit=1)
-            parent_category_ids = self.get_parent_categories(category)
-            if not category or not category.can_access_from_current_website():
-                raise NotFound()
+            domain = [('id', '=', int(category))]
+        
+        public_category = request.env['product.public.category'].search(domain, limit=1)      
+        parent_category_ids = self.get_parent_categories(public_category)
+        import pdb; pdb.set_trace()
+        if (slug or category) and (not public_category or not public_category.can_access_from_current_website()):
+            raise NotFound()
 
         # Offers only published, with validate dates and published categories
         Offer = request.env['product.offer']
@@ -57,8 +67,8 @@ class SimulateProductController(http.Controller):
                     x.category_id.child_id and x.category_id.child_id.website_published is True) else None)
         # Set is needed to prevent catch the same category on product categories after
         offer_categories = set(offers.mapped('category_id'))
-        if category:
-            offers = offers.filtered(lambda x: x.category_id.id == category.id)
+        if public_category:
+            offers = offers.filtered(lambda x: x.category_id.id == public_category.id)
         bins_table = []
         bins_table += offers
 
@@ -79,8 +89,8 @@ class SimulateProductController(http.Controller):
             lambda x: x if 'oe_ribbon_promo' in x.website_style_ids[0].html_class else None)
         # Catch not published product categories if their child are published
         product_categories = offer_products.mapped('public_categ_ids').filtered(lambda x: x.website_published)
-        if category:
-            offer_products = offer_products.search([('public_categ_ids', 'in', category.id)])
+        if public_category:
+            offer_products = offer_products.search([('public_categ_ids', 'in', public_category.id)])
 
         # Final data
         offer_categories.update(offer_categories, product_categories)
@@ -110,7 +120,7 @@ class SimulateProductController(http.Controller):
                   'url_simulated_products': url_simulated_products,
                   'url_simulated_product_templates': url_simulated_product_templates,
                   'categories': all_categories,
-                  'category': category,
+                  'category': public_category,
                   'offer_categories': offer_categories,
                   'search': search,
                   'search_count': search_count,
@@ -122,8 +132,8 @@ class SimulateProductController(http.Controller):
                   'parent_category_ids': parent_category_ids,
                   }
 
-        if category:
-            values['main_object'] = category
+        if public_category:
+            values['main_object'] = public_category
 
         # Values to render for single offer
         if path:
@@ -131,7 +141,7 @@ class SimulateProductController(http.Controller):
             offer = offers.search([('slug', '=', path)], limit=1)
             if offer:
                 values.update({'main_object': offer, 'offer': offer, 'product_category': offer, 'offer_list': False, })
-                if not category and offer.category_id:
+                if not public_category and offer.category_id:
                     values.update({'category': offer.category_id.id, })
             else:
                 return request.env['ir.http'].reroute('/404')
