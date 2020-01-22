@@ -97,7 +97,7 @@ class ReportPrintBatchPicking(models.AbstractModel):
     @api.model
     def _get_no_stock(self, batch):
         moves = batch.move_lines.filtered(lambda x: x.product_uom_qty != x.reserved_availability)
-        print (moves)
+        #print (moves)
         return moves
 
 
