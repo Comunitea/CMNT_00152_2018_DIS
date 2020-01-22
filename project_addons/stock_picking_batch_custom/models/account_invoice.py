@@ -20,7 +20,7 @@ class AccountInvoice(models.Model):
 
         #self.vendor_bill_id = self.vendor_batch_id.vendor_bill_id
         purchase_ids = self.vendor_batch_id.mapped('move_lines').mapped('purchase_line_id').mapped('order_id')
-        self.purchase_id = purchase_ids and purchase_ids[0]
+        #self.purchase_id = purchase_ids and purchase_ids[0]
         if not self.vendor_batch_id:
             return {}
         if not self.partner_id:
@@ -52,7 +52,7 @@ class AccountInvoice(models.Model):
             qty = line.quantity_done
             if float_compare(qty, 0.0, precision_rounding=line.product_uom.rounding) <= 0:
                 qty = 0.0
-            data['qty'] = qty
+            data['quantity'] = qty
             new_line = new_lines.new(data)
             new_line._set_additional_fields(self)
             new_lines += new_line

@@ -15,6 +15,7 @@
                 <field name="product_categ_id" readonly="True"/>
                 <field name="date_planned"  widget="date" readonly="True"/>
                 <field name="product_virtual_available"/>
+                <field name="product_stock_available"/>
                 <field name="to_deliver_qty"/>
                 <field name="last_60_days_sales"/>
                 <field name="min_max_reordering" />

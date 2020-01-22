@@ -19,3 +19,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:custom_documents_dismac.field_sale_order_type__report_partner_id
 msgid "Report Partner"
 msgstr "Empresa de informe"
+
+#. module: custom_documents_dismac
+#: model:ir.actions.report,name:custom_documents_dismac.action_report_delivery_neutro
+msgid "Delivery Slip neutro"
+msgstr "Vale de entrega neutro"
