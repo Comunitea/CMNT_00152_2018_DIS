@@ -32,6 +32,6 @@ class ResPartner(models.Model):
                 "type": "ir.actions.act_window",
                 "domain": domain,
                 "search_view_id": search_view and search_view[1] or False,
-                "context": {"search_default_not_delivered": 1},
+                "context": {"search_default_draft": 1},
             }
         return value
