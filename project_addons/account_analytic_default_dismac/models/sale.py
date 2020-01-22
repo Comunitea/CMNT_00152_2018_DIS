@@ -32,4 +32,9 @@ class SaleOrderLine(models.Model):
         if not self.order_id.analytic_account_id:
             if rec and rec.analytic_id.id:
                 res['account_analytic_id'] = rec.analytic_id.id
+        if res['analytic_tag_ids']:
+            cc_ids = self.env['account.analytic.tag'].browse(res['analytic_tag_ids'][0][2]).mapped('cost_center_id')
+            if cc_ids:
+                res['cost_center_id'] = cc_ids[0].id
+
         return res

@@ -183,9 +183,14 @@ msgid "Category"
 msgstr "Categoría"
 
 #. module: purchase_custom_dismac
-#: model:ir.model.fields,field_description:purchase_custom_dismac.field_purchase_order_line__product_virtual_available
+#: model:ir.model.fields,field_description:purchase_custom_dismac.field_purchase_order_line__product_stock_available
 msgid "available qty"
 msgstr "Cantidad disponible"
+
+#. module: purchase_custom_dismac
+#: model:ir.model.fields,field_description:purchase_custom_dismac.field_purchase_order_line__product_virtual_available
+msgid "virtual available qty"
+msgstr "stock virtual"
 
 #. module: purchase_custom_dismac
 #: model_terms:ir.ui.view,arch_db:purchase_custom_dismac.product_unreceived_items

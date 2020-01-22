@@ -58,5 +58,20 @@
         </xpath>
     </template>
 
+    <template id="report_deliveryslip_neutro">
+        <t t-foreach="docs" t-as="o">
+            <t t-set="neutro" t-value="True"/>
+            <t t-call="stock.report_delivery_document" t-lang="o.partner_id.lang"/>
+        </t>
+    </template>
+    <report
+        string="Delivery Slip neutro"
+        id="action_report_delivery_neutro"
+        model="stock.picking"
+        report_type="qweb-pdf"
+        name="custom_documents_dismac.report_deliveryslip_neutro"
+        file="custom_documents_dismac.report_deliveryslip_neutro"
+        print_report_name="'Delivery Slip - %s - %s' % (object.partner_id.name or '', object.name)"
+    />
 </odoo>
 

@@ -36,12 +36,14 @@
         </xpath>
         <xpath expr="//div[hasclass('header')]" position="attributes">
             <attribute name="style">font-size: 11px;</attribute>
+            <attribute name="t-if">not neutro</attribute>
         </xpath>
         <xpath expr="//div[hasclass('o_report_layout_standard')]" position="attributes">
             <attribute name="style">font-size: 11px;</attribute>
         </xpath>
         <xpath expr="//div[hasclass('o_standard_footer')]" position="attributes">
             <attribute name="style">font-size: 11px;</attribute>
+            <attribute name="t-if">not neutro</attribute>
         </xpath>
     </template>
 

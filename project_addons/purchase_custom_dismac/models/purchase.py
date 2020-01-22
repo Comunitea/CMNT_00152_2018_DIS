@@ -71,8 +71,11 @@ class PurchaseOrderLine(models.Model):
 
     import_qty_delivered = fields.Float("Imported qty delivered", default=0)
     new_partner_id = fields.Many2one("res.partner", "New partner")
+    product_stock_available = fields.Float(
+        "available qty", related="product_id.qty_available"
+    )
     product_virtual_available = fields.Float(
-        "available qty", related="product_id.virtual_available"
+        "virtual available qty", related="product_id.virtual_available"
     )
     product_categ_id = fields.Many2one(
         "product.category", "Category", related="product_id.categ_id"
@@ -105,14 +108,14 @@ class PurchaseOrderLine(models.Model):
                 """
                     SELECT SUM(qty_pending)
                     FROM sale_order_line
-                    WHERE state not in ('draft','sent', 'cancel') AND 
+                    WHERE state not in ('draft','sent', 'cancel') AND
                     product_id={}
                 """.format(
                     line.product_id.id
                 )
             )
             result = self.env.cr.fetchone()
-            if result and result[0] :
+            if result and result[0]:
                 line.to_deliver_qty = result[0]
             else:
                 line.to_deliver_qty = 0

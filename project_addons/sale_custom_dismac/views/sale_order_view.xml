@@ -51,7 +51,13 @@
                 <field name="notes" widget="html"/>
             </xpath>
             <field name="expected_date" position="before">
-                <field name="priority" attrs="{'readonly': [('state', 'in', ('sale','done','cancel'))]}"/>
+                <label for="priority"></label>
+                <div>
+                    <field name="priority" class="oe_inline"/>
+                     <button class="oe_stat_button" name="action_propagate_priority"
+                        type="object" icon="fa-telegram"/>
+                </div>
+
             </field>
 
             <field name="fiscal_position_id" position="after">

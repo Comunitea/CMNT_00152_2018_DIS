@@ -117,125 +117,15 @@ class StockBatchPicking(models.Model):
 
     _inherit = "stock.picking.batch"
 
-    def get_move_done(self):
-        self.ensure_one()
-        self.move_lines.create_empty_move_lines()
-        g_moves = self.env['batch.picking.group.move']
-        vals = {}
-        if self.picking_type_id.default_location_src_id == self.picking_type_id.warehouse_id.lot_stock_id:
-            field1 = 'location_id'
-        elif self.picking_type_id.default_location_dest_id == self.picking_type_id.warehouse_id.lot_stock_id:
-            field1 = 'location_dest_id'
-        else:
-            field1 = False
-
-        for move in self.move_lines:
-            if field1:
-                p_key = '{}.{}'.format(move.product_id.id, move[field1].id)
-            else:
-                p_key = '{}'.format(move.product_id.id)
-            print (p_key)
-            if not p_key in vals.keys():
-                vals[p_key] = {
-                        'op_ids':  move.move_line_ids,
-                        "product_id": move.product_id.id,
-                        "location_id": move.location_id.id,
-                        "location_dest_id": move.location_dest_id.id,
-                        "product_uom_qty": move.product_uom_qty,
-                        "reserved_availability": move.reserved_availability,
-                        "group": True,
-                        "batch_id": self.id,
-                        "tracking": move.product_id.tracking,
-                        "move_line_ids": False
-                    }
-            else:
-
-                vals[p_key]['op_ids'] = vals[p_key]['op_ids'] + move.move_line_ids
-                vals[p_key]["location_id"] = move.location_id.id
-                vals[p_key]['product_uom_qty'] = vals[p_key]['product_uom_qty'] + move.product_uom_qty
-                vals[p_key]['reserved_availability'] = vals[p_key]['reserved_availability'] + move.reserved_availability
-        for p_key in vals:
-            vals[p_key]['move_line_ids'] = [(6, 0, vals[p_key]['op_ids'].ids )]
-            product_ops = vals[p_key]['op_ids']
-            create_val = vals[p_key]
-            new_location = product_ops.mapped('location_id')
-            if len(new_location) == 1:
-                create_val.update(location_id=new_location.id)
-            new_location = product_ops.mapped('location_dest_id')
-            if len(new_location) == 1:
-                create_val.update(location_dest_id=new_location.id)
-            create_val = vals[p_key]
-            self.move_grouped_ids.create(create_val)
-        return
-        data = self.env[
-            "report.stock_picking_batch_custom.report_batch_picking_custom"
-        ]._get_grouped_data(self)
-
-        lines={}
-        print (data)
-        for pasillo in data:
-            print(pasillo)
-            for item in pasillo["l1_items"]:
-                print (item)
-                product_id = item["product"]
-                location_id = item['location_id']#item["operations"][0].location_id.id
-                line_name = '{}.{}'.format(product_id.id, location_id.id)#, lot_id and lot_id.id or 0, package_id and package_id.id or 0)
-                if line_name in lines.keys():
-                    lines[line_name]['product_uom_qty'] += item["product_uom_qty"]
-                    lines[line_name]['op_ids'] += item["operations"].ids
-                else:
-                    lines[line_name] = {
-                        "qty_done": 0,
-                        'op_ids':  item["operations"].ids,
-                        "product_id": product_id.id,
-                        "location_id": location_id.id,
-                        "product_uom_qty": item["product_uom_qty"],
-                        "group": True,
-                        "batch_id": self.id,
-                        "tracking": product_id.tracking
-                    }
-
-
-        for item in lines.keys():
-            val = lines[item]
-            val['move_line_ids'] = [(6,0, val['op_ids'])]
-            self.move_grouped_ids.create(val)
-
-        return
-
     @api.multi
     def get_moves_count(self):
         for batch in self:
-            batch.moves_all_count = len(batch.move_grouped_ids)
+            batch.moves_all_count = len(batch.move_lines)
 
-    move_grouped_ids = fields.One2many(
-        "batch.picking.group.move", "batch_id", domain=[("group", "=", True)]
-    )
+
     moves_all_count = fields.Integer("Moves count", compute=get_moves_count)
     qty_applied = fields.Boolean(default=False)
 
-    @api.model
-    def sort_level_0(self, items, location_field="location_id"):
-        # OJO !!!!!! Mismo ordenamiento que la función en batch_report
-
-        res = sorted(
-            items,
-            key=lambda item: (
-                item[location_field].posx,
-                item[location_field].posy,
-                item[location_field].posz,
-                item[location_field].name,
-            ),
-        )
-
-        return res
-
-    @api.multi
-    def get_moves_done(self):
-        for batch in self.filtered(lambda x: x.moves_all_count == 0):
-            self.get_move_done()
-            self.moves_all_count = len(batch.move_grouped_ids)
-        return
 
     def action_view_stock_picking_related(self):
         self.ensure_one()
@@ -261,33 +151,6 @@ class StockBatchPicking(models.Model):
             "domain": [('id', 'in', self.move_line_ids.ids)]
         }
 
-    @api.multi
-    def action_get_moves_done(self):
-
-        self.ensure_one()
-        #self.move_lines.create_empty_move_lines()
-
-        self.ensure_one()
-        if not self.moves_all_count:
-            self.get_move_done()
-        view_tree = self.env.ref(
-            "stock_picking_batch_custom.view_stock_group_move_tree_operations"
-        )
-        view_form = self.env.ref(
-            "stock_picking_batch_custom.view_stock_group_move_operations"
-        )
-        return {
-            "name": _("Detailed Operations"),
-            "type": "ir.actions.act_window",
-            "view_type": "form",
-            "view_mode": "tree",
-            "res_model": "batch.picking.group.move",
-            "views": [(view_tree.id, "tree"), (view_form.id, "form")],
-            "view_id": view_tree.id,
-            "domain": [("batch_id", "=", self.id)],
-            "context": dict(self.env.context),
-        }
-
     @api.constrains("picking_ids")
     def _check_type(self):
         if len(self.picking_ids.mapped("picking_type_id")) > 1:
@@ -295,37 +158,18 @@ class StockBatchPicking(models.Model):
 
     @api.multi
     def action_group(self):
-        self.get_moves_done()
+        self.move_lines.create_empty_move_lines()
+        self.write({'state':'in_progress'})
 
     @api.multi
     def action_cancel_group(self):
-        if all(not x.qty_done for x in self.move_grouped_ids):
-            self.move_grouped_ids.mapped("move_line_ids").write(
-                {"qty_done": 0.00}
-            )
-            self.move_grouped_ids.unlink()
-            self.moves_all_count = len(self.move_grouped_ids)
+        self.move_lines.mapped('move_line_ids').filtered(lambda x:not x.qty_done and x.not_stock >0).unlink()
 
     @api.multi
     def action_apply_qty(self):
-        for batch in self.filtered(lambda x: not x.qty_applied):
-            for move in batch.move_grouped_ids:
-                move.action_apply_qties()
-            batch.qty_applied = True
+        to_apply = self.filtered(lambda x: not x.qty_applied)
+        to_apply.force_set_qty_done()
 
-    @api.multi
-    def set_qty_done(self):
-        for move in self.move_grouped_ids:
-            move.qty_done = move.product_uom_qty
-            move.action_apply_qties()
-        self.qty_applied = False
-
-    @api.multi
-    def reset_qty_done(self):
-        for move in self.move_grouped_ids:
-            move.qty_done = 0
-            move.move_line_ids.write({"qty_done": 0.00})
-        self.qty_applied = False
 
     @api.multi
     def action_print_picking(self):
@@ -340,6 +184,7 @@ class StockBatchPicking(models.Model):
         picks_to_split = self.env['stock.picking']
         precision_digits = self.env[
             'decimal.precision'].precision_get('Product Unit of Measure')
+
         for batch in self:
             picking_ids = batch.picking_ids
             for picking_id in picking_ids.filtered(lambda x:x.state in ('confirmed', 'assigned')):
@@ -347,10 +192,13 @@ class StockBatchPicking(models.Model):
                     raise ValidationError('El albarán {} no tiene nada realizado. Debes sacarlo de la agrupación o marcar alguna cantidad para hacer'.format(picking_id.name))
             ## Hago el split de todos los albaranes
             picks_to_split += picking_ids.filtered(lambda x: not x.all_assigned)
+
             picks_to_split.split_process()
+
         super().action_transfer()
         back_domain = [('backorder_id', 'in', picks_to_split.ids)]
         backorder_ids = self.env['stock.picking'].search(back_domain)
+        backorder_ids.write({'move_type': 'one'})
         action = self.env.ref('stock.action_picking_tree_all').read()[0]
         action['context'] = self._context
         if backorder_ids:
