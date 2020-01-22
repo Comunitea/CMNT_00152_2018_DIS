@@ -107,7 +107,7 @@
                     <t t-foreach="website_sale_sortable" t-as="sortby">
                         <form t-attf-action="#{url_simulated_products}" role="search" method="get">
                             <a role="menuitem" rel="noindex,nofollow" t-attf-href="#{url_simulated_products}" class="dropdown-item">
-                                <input type="hidden" name="category" t-attf-value="#{category}"/>
+                                <input type="hidden" name="category" t-attf-value="#{category.id}"/>
                                 <input type="hidden" name="order" t-attf-value="#{sortby[1]}"/>
                                 <button type="hidden" class="btn btn-secondary" ><span t-raw="sortby[0]"/></button>
                             </a>
