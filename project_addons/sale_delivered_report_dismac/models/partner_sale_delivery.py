@@ -40,7 +40,6 @@ class SaleOrderLine(models.Model):
                 res = super(SaleOrderLine, self)._search(args, offset=new_off, limit=new_limit, order=order, count=count,
                                                    access_rights_uid=access_rights_uid)
                 limit += len(res)
-                print ("Nuevos: {}".format(len(res)))
                 if not res:
                     break
                 purchases += self.browse(res).filtered(lambda x: x.purchase_order_needed)
@@ -93,7 +92,7 @@ class SaleOrderLine(models.Model):
                 date_expected = max(today, max(x.date_expected for x in line_moves))
                 line.estimated_delivery_date = (date_expected + relativedelta.relativedelta(days=1 or 0)).strftime(DEFAULT_SERVER_DATE_FORMAT)
                 continue
-            print ('Linea :{}'.format(line.name))
+
 
             need_qty = line.product_uom_qty
 
@@ -109,8 +108,8 @@ class SaleOrderLine(models.Model):
                 continue
             ##BAJO PEDIDO
             if line.move_ids and line.move_ids.mapped("created_purchase_line_id"):
-                print("--- TIene una compra asociada {}".format(
-                    line.move_ids.mapped("created_purchase_line_id").mapped('order_id').mapped('name')))
+                # print("--- TIene una compra asociada {}".format(
+                #     line.move_ids.mapped("created_purchase_line_id").mapped('order_id').mapped('name')))
                 purchase_line = line.move_ids.mapped("created_purchase_line_id")
                 ## si ya tiene movimientos
                 if purchase_line.mapped('move_ids'):
@@ -128,7 +127,6 @@ class SaleOrderLine(models.Model):
 
             if not wh_id or wh_id != line.order_id.warehouse_id:
                 wh_id, loc_domain = line.get_loc_domain(estimated_date.strftime(DEFAULT_SERVER_DATE_FORMAT))
-                print(loc_domain)
 
             moves_domain = [('state', 'not in', ('draft', 'done', 'cancel')),
                             ('product_id', '=', product_id.id),
@@ -143,12 +141,12 @@ class SaleOrderLine(models.Model):
                 ##
                 if move.created_purchase_line_id:
                     ##bajo pedido
-                    print("---Bajo pedido. No afecta al stock")
+                    #print("---Bajo pedido. No afecta al stock")
                     if move.sale_line_id == line:
                         move_orig_ids = move.move_orig_ids.filtered(lambda x: x.state not in ('draft', 'cancel'))
                         if move_orig_ids:
                             ##bajo pedido de la línea de venta
-                            print("Movimeinto bajo pedido {} para el pedido {} CON movimeintos de destino enel albaran {}".format(move.created_purchase_line_id.order_id.name, line.order_id.name, move.picking_id.name))
+                            #print("Movimeinto bajo pedido {} para el pedido {} CON movimeintos de destino enel albaran {}".format(move.created_purchase_line_id.order_id.name, line.order_id.name, move.picking_id.name))
                             purchase_moves_id = move_orig_ids[0]
                             line.purchase_order_needed = purchase_moves_id.purchase_line_id.order_id
                             estimated_date = max(today, purchase_moves_id.date_expected )
@@ -162,7 +160,7 @@ class SaleOrderLine(models.Model):
 
                 if move.purchase_line_id and move.move_dest_ids and move.move_dest_ids[0].created_purchase_line_id == move.purchase_line_id:
                     ## es un pedido de compra bajo pedido. Ignoro el movimeinto y voy al siguiente movimiento
-                    print("---Entrada de una compra bajo pedido {}. No afecta al stock".format(move.purchase_line_id.order_id.name))
+                    #print("---Entrada de una compra bajo pedido {}. No afecta al stock".format(move.purchase_line_id.order_id.name))
                     continue
 
                 if move.sale_line_id == line:
@@ -175,7 +173,7 @@ class SaleOrderLine(models.Model):
                 if not move.sale_line_id and  move.location_id.usage == 'internal' and move.location_dest_id.usage != 'internal' and move.date_expected <= estimated_date:
                     ##Movieminto de salida de stock
                     ## Si es posterior a la fecha del movimeinto de la línea, estonces lo ignoro ya que no afecta
-                    print ('El movimineto {}-{} es un envío a clientes: {}'.format(move.id, move.name, move.picking_id.name))
+                    #print ('El movimineto {}-{} es un envío a clientes: {}'.format(move.id, move.name, move.picking_id.name))
                     # if move.date_expected > estimated_date:
                     #     continue
                     outgoing = True
@@ -183,8 +181,7 @@ class SaleOrderLine(models.Model):
                     available_qty = available_qty - move.product_uom_qty
 
                 elif move.location_dest_id.usage == 'internal' and move.location_id.usage != 'internal':
-                    print('El movimineto {}-{} es una entrada a stcok: {}'.format(move.id, move.name,
-                                                                                  move.picking_id.name))
+                    #print('El movimineto {}-{} es una entrada a stcok: {}'.format(move.id, move.name,move.picking_id.name))
                     ## Es una entrada en stock
                     if available_qty < need_qty and available_qty + move.product_uom_qty >= need_qty:
 
