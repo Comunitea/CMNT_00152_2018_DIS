@@ -10,6 +10,7 @@
     "depends": ["sale_stock", "delivery"],
     "data": [
         "views/stock_picking.xml",
+        "views/stock_move.xml",
         "report/stock_picking_delivery_tag.xml",
         #"security/ir.model.access.csv",
 
