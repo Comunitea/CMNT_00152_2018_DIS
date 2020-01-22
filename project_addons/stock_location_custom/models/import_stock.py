@@ -192,7 +192,7 @@ class ProductImportWzd(models.TransientModel):
             view = False
             location = pasillo_id
             while location and not view:
-                print ('Ubicación {} y padre {}'.format(location.name, location.location_id.name))
+                #print ('Ubicación {} y padre {}'.format(location.name, location.location_id.name))
                 if location.usage == 'view' and location.posx == 0:
                     view = location
                 location = location.location_id
@@ -273,7 +273,7 @@ class ProductImportWzd(models.TransientModel):
         view = False
         location = loc
         while location and not view:
-            print ('Ubicación {} y padre {}'.format(location.name, location.location_id.name))
+            #print ('Ubicación {} y padre {}'.format(location.name, location.location_id.name))
             if location.usage == 'view' and location.posx == 0:
                 view = location
             location = location.location_id
