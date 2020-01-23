@@ -51,6 +51,7 @@ class StockRule(models.Model):
                                   'location_id': location_id.id,
                                   'location_dest_id': location_dest_id.id})
             new_move = move.sudo().copy(new_move_vals)
+            move.write({'move_dest_ids': [(6, 0, [new_move.id])]})
             new_move._action_confirm()
             move.write({'move_dest_ids': [(6, 0, [new_move.id])]})
         else:
@@ -60,15 +61,43 @@ class StockMove(models.Model):
 
     _inherit = 'stock.move'
 
+    @api.multi
+    def action_cancel(self):
+        self.ensure_one()
+        if self._context.get('write_message', False):
+            body = "El usuario {} ha cancelado el movimiento {}".format(self.env.user.display_name, self.name)
+            self.picking_id.message_post(body=body)
+            self._action_cancel()
+
+            action = self.env.ref('stock.stock_picking_action_picking_type').read()[0]
+            view_form = self.env.ref(
+                'stock.'
+                'view_picking_form')
+
+            action['context'] = {'search_default_picking_type_id': [self.picking_type_id.id],
+             'default_picking_type_id': self.picking_type_id.id,
+             'contact_display': 'partner_address', }
+
+            action['res_id'] = self.id
+            action['views'] = [(view_form.id, 'form')]
+            action['view_id'] = view_form.id
+            action['view_mode'] = 'form'
+            return action
+
     def _action_done(self):
 
+        # for move in self:
+        #     for ml in move.move_line_ids:
+        #         ml._push_apply(move)
+        #auto_picks = self.mapped('move_dest_ids').filtered(lambda x: x.rule_id.model == 'move.line' and x.rule_id.auto == 'manual').mapped('picking_id')
+        res = super(StockMove, self)._action_done()
+        #if auto_picks:
+        #    auto_picks.action_done()
+
+        ##TODO MEJORAR ESTO PARA NO LLAMAR SIEMPRE
         for move in self:
             for ml in move.move_line_ids:
                 ml._push_apply(move)
-        auto_picks = self.mapped('move_dest_ids').filtered(lambda x: x.rule_id.model == 'move.line' and x.rule_id.auto == 'manual').mapped('picking_id')
-        res = super(StockMove, self)._action_done()
-        if auto_picks:
-            auto_picks.action_done()
         return res
 
 class StockLine(models.Model):
@@ -76,6 +105,7 @@ class StockLine(models.Model):
 
 
     def _push_apply(self, move):
+        ##Esto es una copia de _push_apply pero para move line
             # if the move is already chained, there is no need to check push rules
         if move.move_dest_ids:
             return False
