@@ -70,7 +70,8 @@ class SaleOrderWzd(models.TransientModel):
 
             delivery_partner = self.env['res.partner'].get_delivery_for_api_partner(delivery_name, punto_entrega)
 
-            invoice_partner = self.env['res.partner'].get_invoice_for_api_partner(unidad_responsable_gasto, oficina_contable, organo_gestor, unidad_tramitadora)
+            invoice_partner = self.env['res.partner'].get_invoice_for_api_partner(unidad_responsable_gasto, oficina_contable,
+                         organo_gestor, unidad_tramitadora, delivery_name, punto_entrega)
 
             sale_order = self.env['sale.order'].get_sale_order_for_uvigo(data['datos_pedido'], self.uvigo_url, delivery_partner, invoice_partner)
 

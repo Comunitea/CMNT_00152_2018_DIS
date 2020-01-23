@@ -216,7 +216,8 @@ class SaleOrder(models.Model):
             delivery_partner = self.env['res.partner'].get_delivery_for_api_partner(delivery_name, punto_entrega)
             self.partner_shipping_id = delivery_partner.id
 
-            invoice_partner = self.env['res.partner'].get_invoice_for_api_partner(unidad_responsable_gasto, oficina_contable, organo_gestor, unidad_tramitadora)
+            invoice_partner = self.env['res.partner'].get_invoice_for_api_partner(unidad_responsable_gasto, oficina_contable,
+                            organo_gestor, unidad_tramitadora, delivery_name, punto_entrega)
             self.partner_invoice_id = invoice_partner.id
 
             if data['lineas_detalle']:                

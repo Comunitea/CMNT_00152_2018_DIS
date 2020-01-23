@@ -61,7 +61,7 @@ class ResPartner(models.Model):
         return delivery_partner
 
 
-    def get_invoice_for_api_partner(self, unidad_responsable_gasto, oficina_contable, organo_gestor, unidad_tramitadora):
+    def get_invoice_for_api_partner(self, unidad_responsable_gasto, oficina_contable, organo_gestor, unidad_tramitadora, delivery_name, punto_entrega):
 
         api_partner = self.env['ir.config_parameter'].sudo().get_param('rest_api_dismac.api_partner', False)
 
@@ -70,25 +70,30 @@ class ResPartner(models.Model):
         else:
             raise ValidationError(_('API partner not defined.'))
 
-        invoice_partner = self.env['res.partner'].search([
-            ('oficina_contable', '=', oficina_contable),
-            ('organo_gestor', '=', organo_gestor),
-            ('unidad_tramitadora', '=', unidad_tramitadora),
-            ('parent_id', '=' , api_partner.id), 
-        ], limit=1)
+        # invoice_partner = self.env['res.partner'].search([
+        #     ('oficina_contable', '=', oficina_contable),
+        #     ('organo_gestor', '=', organo_gestor),
+        #     ('unidad_tramitadora', '=', unidad_tramitadora),
+        #     ('parent_id', '=' , api_partner.id), 
+        # ], limit=1)
 
-        if not invoice_partner:
+        #if not invoice_partner:
 
-            invoice_partner = self.env['res.partner'].create({
-                'name': unidad_responsable_gasto, 
-                'active': True,
-                'parent_id': api_partner.id,
-                'type': 'invoice',
-                'oficina_contable': oficina_contable,
-                'organo_gestor': organo_gestor,
-                'unidad_tramitadora': unidad_tramitadora,
-                'facturae': True,
-                'customer_invoice_transmit_method_id': 1   #HARDCODEADO... deberíamod buscar solución aalternativ"
-            })
+        invoice_partner = self.env['res.partner'].create({
+            'name': unidad_responsable_gasto, 
+            'vat': api_partner.vat,
+            'country_id': api_partner.country_id.id,
+            'state_id': api_partner.state_id.id,
+            'active': True,
+            'parent_id': api_partner.id,
+            'type': 'invoice',
+            'oficina_contable': oficina_contable,
+            'organo_gestor': organo_gestor,
+            'unidad_tramitadora': unidad_tramitadora,
+            'facturae': True,
+            'street': delivery_name,
+            'street2': punto_entrega['centro'] + "- " + punto_entrega['campus'],
+            'customer_invoice_transmit_method_id': 1   #HARDCODEADO... deberíamos buscar solución alternativa"
+        })
 
         return invoice_partner
