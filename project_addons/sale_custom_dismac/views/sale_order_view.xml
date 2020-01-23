@@ -59,7 +59,13 @@
                 </div>
 
             </field>
-
+            <field name="partner_id" position="after">
+                <field name="commercial_partner_id" invisible="True"/>
+            </field>
+            <field name="partner_invoice_id" position="attributes">
+                <attribute name="domain">[('parent_id', 'child_of', commercial_partner_id)]</attribute>>
+                <attribute name="context">{'default_type': 'invoice', 'search_default_invoice': True}</attribute>>
+            </field>
             <field name="fiscal_position_id" position="after">
                 <field name="pending_invoice_amount"/>
             </field>
@@ -142,6 +148,7 @@
         <field name="arch" type="xml">
             <field name="amount_total" position="after">
                 <field name="pending_invoice_amount"/>
+                <field name="client_order_ref"/>
             </field>
         </field>
     </record>
