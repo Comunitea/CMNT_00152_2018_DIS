@@ -92,6 +92,9 @@ class SimulateProductController(http.Controller):
         if order != '':
             post['order'] = order
 
+        if search != '':
+            post['search'] = search
+
         pager = request.website.pager(url=url_simulated_products, total=search_count, page=page,
                                       step=ppg, scope=7, url_args=post)
 

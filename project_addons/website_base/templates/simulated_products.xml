@@ -109,6 +109,7 @@
                             <a role="menuitem" rel="noindex,nofollow" t-attf-href="#{url_simulated_products}" class="dropdown-item">
                                 <input type="hidden" name="category" t-attf-value="#{category.id}"/>
                                 <input type="hidden" name="order" t-attf-value="#{sortby[1]}"/>
+                                <input type="hidden" name="search" t-att-value="search" />
                                 <button type="hidden" class="btn btn-secondary" ><span t-raw="sortby[0]"/></button>
                             </a>
                         </form>
