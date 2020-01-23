@@ -143,7 +143,7 @@ class ProductTemplate(models.Model):
 
             context = self._context
             current_uid = context.get('uid')
-            partner_id = self.env['res.users'].browse(current_uid).partner_id
+            partner_id = self.env['res.users'].browse(current_uid).partner_id._get_domain_partner()
 
             if context.get('selected_partner'):
                 partner_id = self.env['res.users'].browse(context.get('selected_partner'))
@@ -161,7 +161,7 @@ class ProductTemplate(models.Model):
 
             context = self._context
             current_uid = context.get('uid')
-            partner_id = self.env['res.users'].browse(current_uid).partner_id
+            partner_id = self.env['res.users'].browse(current_uid).partner_id._get_domain_partner()
 
             if context.get('selected_partner'):
                 partner_id = self.env['res.users'].browse(context.get('selected_partner'))

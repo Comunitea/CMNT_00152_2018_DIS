@@ -20,29 +20,40 @@ PPR = 4   # Products Per Row
 
 class CustomerPortal(CustomerPortal):
 
+    @http.route(['/my/invoices', '/my/invoices/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_my_invoices(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
+        if not request.env.user.partner_id.show_invoices:
+            return request.redirect('/my')
+        return super(CustomerPortal, self).portal_my_invoices(page, date_begin, date_end, sortby, **kw)
+
     def _prepare_portal_layout_values(self):
         values = super(CustomerPortal, self)._prepare_portal_layout_values()
-        partner_id = request.env.user.partner_id
+        partner_id = request.env.user.partner_id._get_domain_partner()
 
         SaleReport = request.env['sale.order.line']
 
-        history_count = len(SaleReport.read_group([('is_delivery', '=', False), ('order_partner_id', 'child_of', partner_id.id), ('state', 'in', ('sale', 'done'))],
-                                                  ['product_uom_qty'], ['product_id', 'order_partner_id']))
+        updated_values = {}
+
+        if request.env.user.partner_id.show_history:
+
+            history_count = len(SaleReport.read_group([('product_id.type', 'in', ('consu', 'product')), ('order_partner_id', 'child_of', partner_id.id), ('state', 'in', ('sale', 'done'))],
+                                                    ['product_uom_qty'], ['product_id', 'order_partner_id']))
+            updated_values['history_count'] = history_count
+
+        if not request.env.user.partner_id.show_invoices:
+            updated_values['invoice_count'] = 0.0
         
         review_count = len(request.env.user.review_ids.filtered(lambda x: x.status == 'pending' and x.model == 'sale.order').ids)
-        #review_count = len(request.env.user.review_ids.ids)
+        updated_values['review_count'] = review_count
 
-        values.update({
-            'history_count': history_count,
-            'review_count': review_count,
-        })
+        values.update(updated_values)
         return values
 
     def _get_my_history_domain(self, filterby):
         domain = []
         user = request.env.user
 
-        partner_id = user.partner_id.id
+        partner_id = user.partner_id._get_domain_partner().id
         ctx = request.env.context.copy()
         
         if 'selected_partner' in ctx:
@@ -69,7 +80,9 @@ class CustomerPortal(CustomerPortal):
     @http.route(['/my/history'], type='http', auth="user", website=True)
     def portal_my_history(self, page=1, sortby=None, search=None, search_in='all', filterby=None, **kw):
         values = self._prepare_portal_layout_values()
-        partner = request.env.user.partner_id
+        if not request.env.user.partner_id.show_history:
+            return request.redirect('/my')
+        partner = request.env.user.partner_id._get_domain_partner()
         product_template = request.env['product.template']
 
         ctx = request.env.context.copy()
@@ -157,11 +170,10 @@ class CustomerPortal(CustomerPortal):
     @http.route(['/my/reviews', '/my/reviews/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_reviews(self, page=1, sortby=None, date_begin=None, date_end=None, search=None, search_in='all', filterby=None, **kw):
         values = self._prepare_portal_layout_values()
-        partner = request.env.user.partner_id
+        partner = request.env.user.partner_id._get_domain_partner()
         reviews = request.env.user.review_ids
         
         sale_order_ids = request.env['tier.review'].search([('status', '=', 'pending'), ('model', '=', 'sale.order'), ('id', 'in', reviews.ids)]).mapped('res_id')
-        #sale_order_ids = request.env['tier.review'].search([('model', '=', 'sale.order'), ('id', 'in', reviews.ids)]).mapped('res_id')
         SaleOrder = request.env['sale.order']
 
         domain = [
@@ -251,7 +263,7 @@ class CustomerPortal(CustomerPortal):
     @http.route(['/my/reviews/validation'], type='http', auth="user", website=True)
     def portal_review_validation(self, order_id, validation, **kw):
 
-        partner = request.env.user.partner_id
+        partner = request.env.user.partner_id._get_domain_partner()
         reviews = request.env.user.review_ids
         review = request.env['tier.review'].search([('model', '=', 'sale.order'), ('id', 'in', reviews.ids), ('res_id', '=', order_id)])
         
@@ -282,7 +294,7 @@ class CustomerPortal(CustomerPortal):
     def portal_my_orders(self, page=1, date_begin=None, date_end=None, sortby=None, filterby=None, **kw):
         res = super(CustomerPortal, self).portal_my_orders(page, date_begin, date_end, sortby, **kw)
 
-        partner = request.env.user.partner_id
+        partner = request.env.user.partner_id._get_domain_partner()
 
         searchbar_filters = {
             'all': {'label': _('All'), 'domain': []},
@@ -304,7 +316,7 @@ class CustomerPortal(CustomerPortal):
             SaleOrder = request.env['sale.order']
 
             domain = [
-                ('message_partner_ids', 'child_of', [partner.commercial_partner_id.id]),
+                ('message_partner_ids', 'child_of', [partner.id]),
                 ('state', 'in', ['sale', 'done'])
             ]
 
@@ -363,7 +375,7 @@ class WebsiteSaleContext(WebsiteSale):
             user = request.env.user
             today = time.strftime('%Y-%m-%d')
             
-            customer_domain = [('partner_id', '=', user.partner_id.id),
+            customer_domain = [('partner_id', '=', user.partner_id._get_domain_partner().id),
                                '|', ('date_start', '=', False), ('date_start', '<=', today),
                                '|', ('date_end', '=', False), ('date_end', '>=', today),
                                ('product_tmpl_id', '!=', False)]
