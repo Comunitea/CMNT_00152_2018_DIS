@@ -134,16 +134,24 @@ class SaleOrder(models.Model):
 
         else:
 
-            sale_order = self.env['sale.order'].create({
+            sale_order = self.env['sale.order'].new({
                 'partner_id': api_partner.id,
+                'type_id': 2,   #HARDCODEADO, necesario buscar alternativa
+            })
+            sale_order.onchange_partner_id()
+            sale_order_vals = sale_order._convert_to_write(sale_order._cache)
+            sale_order_vals.update({
                 'partner_invoice_id': invoice_partner.id,
                 'partner_shipping_id': delivery_partner.id,
                 'uvigo_order': datos_pedido['numero'],
+                'client_order_ref': datos_pedido['numero'],
                 'observations': datos_pedido['observaciones'],
                 'uvigo_url': uvigo_url,
-                'commitment_date': datos_pedido['fecha_entrega']
+                'commitment_date': datos_pedido['fecha_entrega'],
+                'type_id': 2,    #HARDCODEADO, necesario buscar alternativa
+                'team_id': 6    #HARDCODEADO, necesario buscar alternativa
             })
-
+            sale_order = self.env['sale.order'].create(sale_order_vals)
         return sale_order
 
     def check_if_already_an_order(self, uvigo_order):
@@ -156,20 +164,30 @@ class SaleOrder(models.Model):
                 order_line.unlink()
 
         for line in lineas_detalle:
-
+            ## SI NO HAY line['codigo_articulo_proveedor'] asociar a 999PAP y mantener descripcion
+            if not line['codigo_articulo_proveedor']:
+                line['codigo_articulo_proveedor'] = '999PAP'
             product = self.env['product.product'].search([('default_code', '=', line['codigo_articulo_proveedor'])])
 
             if product.id:
             
-                sale_order_line = self.env['sale.order.line'].create({
+                sale_order_line = self.env['sale.order.line'].new({
                     'order_id': self.id,
                     'partner_id': self.partner_id.id,
                     'product_id': product.id,
                     'price_unit': line['precio_unitario'],
                     'product_uom': product.uom_id.id,
                     'product_uom_qty': line['cantidad'],
+                })
+                sale_order_line.product_id_change()
+                sale_order_line_vals = sale_order_line._convert_to_write(sale_order_line._cache)
+                sale_order_line_vals.update({
+                    'price_unit': line['precio_unitario'],
+                    'product_uom': product.uom_id.id,
+                    'product_uom_qty': line['cantidad'],
                     'name': line['descripcion'],
                 })
+                sol = self.env['sale.order.line'].create(sale_order_line_vals)
 
                 _logger.info("Añadiendo {} cantidad(es) de {} al pedido {}.".format(line['cantidad'], product.name, self.id))
             
@@ -196,6 +214,7 @@ class SaleOrder(models.Model):
                 raise ValidationError(_("The UVigo code ({}) is already in the system: Order {}.".format(data['datos_pedido']['numero'], already_an_order.name)))
 
             self.uvigo_order = data['datos_pedido']['numero']
+            self.client_order_ref = data['datos_pedido']['numero']
             self.observations = data['datos_pedido']['observaciones']
             self.commitment_date = data['datos_pedido']['fecha_entrega']
             log_entry.sudo().update({
@@ -207,11 +226,13 @@ class SaleOrder(models.Model):
             oficina_contable = data['datos_facturacion']['datos_facturacion_dir3']['oficina_contable']
             organo_gestor = data['datos_facturacion']['datos_facturacion_dir3']['organo_gestor']
             unidad_tramitadora = data['datos_facturacion']['datos_facturacion_dir3']['unidad_contratacion']
+            unidad_responsable_gasto = data['datos_pedido']['unidad_responsable_gasto']
 
             delivery_partner = self.env['res.partner'].get_delivery_for_api_partner(delivery_name, punto_entrega)
             self.partner_shipping_id = delivery_partner.id
 
-            invoice_partner = self.env['res.partner'].get_invoice_for_api_partner(punto_entrega, oficina_contable, organo_gestor, unidad_tramitadora)
+            invoice_partner = self.env['res.partner'].get_invoice_for_api_partner(unidad_responsable_gasto, oficina_contable,
+                            organo_gestor, unidad_tramitadora, delivery_name, punto_entrega)
             self.partner_invoice_id = invoice_partner.id
 
             if data['lineas_detalle']:                

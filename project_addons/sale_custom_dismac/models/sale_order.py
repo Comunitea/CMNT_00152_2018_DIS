@@ -28,6 +28,11 @@ class SaleOrder(models.Model):
         compute="_compute_pending_invoice_amount"
     )
     project_reference = fields.Char('Project Reference')
+    transmit_method_id = fields.Many2one(
+        related='partner_invoice_id.customer_invoice_transmit_method_id', string='Transmission Method',
+        store=True
+        )
+    commercial_partner_id = fields.Many2one(related='partner_id.commercial_partner_id')
 
     # Por compatibilidad entre sale_order_revision y sale_order_type
     @api.multi
