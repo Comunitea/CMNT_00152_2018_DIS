@@ -93,7 +93,8 @@ class ResPartner(models.Model):
             'facturae': True,
             'street': delivery_name,
             'street2': punto_entrega['centro'] + "- " + punto_entrega['campus'],
-            'customer_invoice_transmit_method_id': 1   #HARDCODEADO... deberíamos buscar solución alternativa"
+            'customer_invoice_transmit_method_id': 1,  #HARDCODEADO... deberíamos buscar solución alternativa"
+            'invoice_integration_method_ids': [(6,0,[2])]
         })
 
         return invoice_partner
