@@ -59,17 +59,18 @@ class SaleOrderWzd(models.TransientModel):
             if not data:
                 raise ValidationError(_('No data to fetch.'))
 
-            delivery_name = data['datos_pedido']['destinatario']
+            delivery_name = data['datos_pedido']['solicitante']
             punto_entrega = data['datos_pedido']['punto_entrega']
             oficina_contable = data['datos_facturacion']['datos_facturacion_dir3']['oficina_contable']
             organo_gestor = data['datos_facturacion']['datos_facturacion_dir3']['organo_gestor']
             unidad_tramitadora = data['datos_facturacion']['datos_facturacion_dir3']['unidad_contratacion']
             uvigo_order = data['datos_pedido']['numero']
-            observations = data['datos_pedido']['observaciones'],
+            observations = data['datos_pedido']['observaciones']
+            unidad_responsable_gasto = data['datos_pedido']['unidad_responsable_gasto']
 
             delivery_partner = self.env['res.partner'].get_delivery_for_api_partner(delivery_name, punto_entrega)
 
-            invoice_partner = self.env['res.partner'].get_invoice_for_api_partner(punto_entrega, oficina_contable, organo_gestor, unidad_tramitadora)
+            invoice_partner = self.env['res.partner'].get_invoice_for_api_partner(unidad_responsable_gasto, oficina_contable, organo_gestor, unidad_tramitadora)
 
             sale_order = self.env['sale.order'].get_sale_order_for_uvigo(data['datos_pedido'], self.uvigo_url, delivery_partner, invoice_partner)
 

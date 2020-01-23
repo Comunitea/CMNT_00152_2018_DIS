@@ -61,7 +61,7 @@ class ResPartner(models.Model):
         return delivery_partner
 
 
-    def get_invoice_for_api_partner(self, punto_entrega, oficina_contable, organo_gestor, unidad_tramitadora):
+    def get_invoice_for_api_partner(self, unidad_responsable_gasto, oficina_contable, organo_gestor, unidad_tramitadora):
 
         api_partner = self.env['ir.config_parameter'].sudo().get_param('rest_api_dismac.api_partner', False)
 
@@ -73,23 +73,22 @@ class ResPartner(models.Model):
         invoice_partner = self.env['res.partner'].search([
             ('oficina_contable', '=', oficina_contable),
             ('organo_gestor', '=', organo_gestor),
-            ('unidad_tramitadora', '=', unidad_tramitadora)
+            ('unidad_tramitadora', '=', unidad_tramitadora),
+            ('parent_id', '=' , api_partner.id), 
         ], limit=1)
 
         if not invoice_partner:
 
             invoice_partner = self.env['res.partner'].create({
-                'name': api_partner.name, 
-                'active': False,
+                'name': unidad_responsable_gasto, 
+                'active': True,
                 'parent_id': api_partner.id,
                 'type': 'invoice',
-                'street': punto_entrega['centro'],
-                'street2': punto_entrega['campus'],
-                'vat': api_partner.vat,
                 'oficina_contable': oficina_contable,
                 'organo_gestor': organo_gestor,
                 'unidad_tramitadora': unidad_tramitadora,
-                'facturae': True
+                'facturae': True,
+                'customer_invoice_transmit_method_id': 1   #HARDCODEADO... deberíamod buscar solución aalternativ"
             })
 
         return invoice_partner
