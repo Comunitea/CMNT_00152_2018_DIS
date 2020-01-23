@@ -478,7 +478,12 @@ class SaleOrderLine(models.Model):
 
     def _compute_qty_to_invoice_on_date(self):
         for line in self:
-            if self._context.get("invoice_until"):
+            if line.invoice_policy == 'order' or line.invoice_policy == 'product' and line.product_id.invoice_policy:
+                line.qty_to_invoice_on_date = (
+                        line.product_uom_qty - line.qty_invoiced
+                )
+                continue
+            elif self._context.get("invoice_until"):
                 invoice_until = fields.Date.to_date(
                     self._context.get("invoice_until")
                 )
