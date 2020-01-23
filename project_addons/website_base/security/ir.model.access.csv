@@ -21,3 +21,5 @@
 "access_ir_model_public","rir_model_public","base.model_ir_model",,1,0,0,0
 "access_tier_validation_public","tier_validation_public","base_tier_validation.model_tier_validation",,1,0,0,0
 "access_sale_order_portal_dismac","sale_order_portal_dismac","sale.model_sale_order","base.group_portal",1,1,1,0
+
+"access_report_website_offer_public",report_website_offer_public","model_report_website_offer",,1,0,0,0
