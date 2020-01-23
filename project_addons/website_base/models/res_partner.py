@@ -28,6 +28,12 @@ class ResPartnerAccess(models.Model):
         default=True
     )
 
+    show_all_catalogue = fields.Boolean(
+        string='Show all products',
+        help='If False the user will only see the products on his pricelist',
+        default=True
+    )
+
     def _get_domain_partner(self):
         if self.website_access_rights == 'own':
             return self.env['res.partner'].browse(self.id)
