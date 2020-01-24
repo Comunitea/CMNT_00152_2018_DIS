@@ -32,7 +32,8 @@
         'views/quote_views.xml',
         'security/ir.model.access.csv',
         'security/sale_security.xml',
-        'templates/payment.xml'
+        'templates/payment.xml',
+        'views/res_partner.xml'
     ],
     'images': [
         '/static/description/icon.png',
