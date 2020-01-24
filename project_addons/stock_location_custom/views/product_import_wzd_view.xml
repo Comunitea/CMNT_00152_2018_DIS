@@ -22,7 +22,7 @@
                     <field name="is_pos_x"/>
                 </field>
                 <field name="usage" position="before">
-                    <field name="import_name" readonly="1" attrs="{'invisible': [('import_name','=','')]}"/>
+                    <field name="import_name" attrs="{'invisible': [('usage','!=','internal')]}"/>
                 </field>
                 <field name="removal_priority" position="after">
                     <field name="inverse_order" attrs="{'invisible': [('is_pos_x','!=',True)]}"/>

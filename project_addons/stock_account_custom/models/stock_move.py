@@ -13,6 +13,7 @@ class StockMove(models.Model):
         default=False,
         help="If true, this move is from a purchase, no include in cost computes",
     )
+    picking_partner_id = fields.Many2one(related='picking_id.partner_id', string='Empresa asociada', store=True)
 
     @api.model
     def _get_all_base_domain(self, company_id=False):
@@ -21,7 +22,7 @@ class StockMove(models.Model):
             domain = expression.AND(
                 [
                     [
-                        (
+                        (   
                             "exclude_compute_cost",
                             "=",
                             not self._context.get("exclude_compute_cost"),

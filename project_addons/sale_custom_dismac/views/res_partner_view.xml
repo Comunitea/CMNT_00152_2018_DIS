@@ -58,6 +58,7 @@
         <field name="inherit_id" ref="base.view_partner_tree" />
         <field name="arch" type="xml">
             <field name="phone" position="before">
+                <field name="ref"/>
                 <field name="type"/>
                 <field name="facturae"/>
                 <field name="default_partner_by_type"/>

@@ -7,7 +7,7 @@
     "version": "12.0.1.0.0",
     "author": "Comunitea",
     "category": "Inventory",
-    "depends": ["sale_stock", "delivery"],
+    "depends": ["sale_stock", "delivery", "sale_order_line_invoice_policy"],
     "data": [
         "views/stock_picking.xml",
         "views/stock_move.xml",

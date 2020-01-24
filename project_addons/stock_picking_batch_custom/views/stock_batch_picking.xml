@@ -162,33 +162,13 @@
 
             <button name="action_view_stock_picking"
                                 class="oe_stat_button"
-                                icon="fa-cart-arrow-down"
+                                icon="fa-track"
                                 type="object">
-                            <field string="Picks" name="picking_count" widget="statinfo"/>
+                            <field string="Albaranes" name="picking_count" widget="statinfo"/>
                         </button>
 
             </xpath>
 
-             <xpath expr="//div[@name='button_box']" position="inside">
-
-                        <button name="action_view_stock_picking_related"
-                                string="Albaranes" class="oe_stat_button" icon="fa-truck" type="object">
-
-                        </button>
-                        <!--<button name="action_show_moves_kanban"
-                                string="Operations"
-                                type="object"
-                                class="oe_stat_button"
-                                icon="fa-list"/>
-                            <button name="action_get_moves_done"
-                                type="object"
-                                class="oe_stat_button"
-                                icon="fa-pencil-square-o">
-                            <field name="moves_all_count" widget="statinfo" string="Grouped moves"/>
-                        </button>-->
-
-
-            </xpath>
             <!--xpath expr="//page/field[@name='move_lines']/.." position="attributes">
                     <attribute name="attrs">{'invisible': [('moves_all_count', '=', 0)]}</attribute>
 
