@@ -28,6 +28,11 @@ class SaleOrder(models.Model):
         compute="_compute_pending_invoice_amount"
     )
     project_reference = fields.Char('Project Reference')
+    transmit_method_id = fields.Many2one(
+        related='partner_invoice_id.customer_invoice_transmit_method_id', string='Transmission Method',
+        store=True
+        )
+    commercial_partner_id = fields.Many2one(related='partner_id.commercial_partner_id')
 
     # Por compatibilidad entre sale_order_revision y sale_order_type
     @api.multi
@@ -478,7 +483,12 @@ class SaleOrderLine(models.Model):
 
     def _compute_qty_to_invoice_on_date(self):
         for line in self:
-            if self._context.get("invoice_until"):
+            if line.invoice_policy == 'order' or line.invoice_policy == 'product' and line.product_id.invoice_policy:
+                line.qty_to_invoice_on_date = (
+                        line.product_uom_qty - line.qty_invoiced
+                )
+                continue
+            elif self._context.get("invoice_until"):
                 invoice_until = fields.Date.to_date(
                     self._context.get("invoice_until")
                 )

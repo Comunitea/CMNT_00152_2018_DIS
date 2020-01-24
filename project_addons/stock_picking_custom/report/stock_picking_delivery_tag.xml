@@ -167,6 +167,13 @@
                                     </span>
                                 </div>
                             </t>
+                            <t t-if="o.sale_id and o.sale_id.observations">
+                                <div style="width:100%; font-size: small">
+                                    <span>
+                                        <span t-field="o.sale_id.observations"/>
+                                    </span>
+                                </div>
+                            </t>
                             <!--div>
                              <table class="table" width="100%">
                                   <thead>

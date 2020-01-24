@@ -51,5 +51,49 @@
         </field>
     </record>
 
+
+    <record id="view_partner_tree_custom" model="ir.ui.view">
+        <field name="name">view.partner.tree.custom</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree" />
+        <field name="arch" type="xml">
+            <field name="phone" position="before">
+                <field name="ref"/>
+                <field name="type"/>
+                <field name="facturae"/>
+                <field name="default_partner_by_type"/>
+                <field name="street"/>
+                <field name="city"/>
+                <field name="zip"/>
+                <field name="state_id"/>
+                
+            </field>
+        </field>
+    </record>
+
+
+    <record id="view_res_partner_filter_custom" model="ir.ui.view">
+        <field name="name">view.partner.filter.state.custom</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="street"/>
+                <field name="zip"/>
+                <field name="state_id"/>
+                <field name="type"/>
+                <field name="city"
+                       filter_domain="['|',('state_id','ilike',self),('city','ilike',self)]"/>
+            </field>
+            <xpath expr="//filter[@name='salesperson']" position="after">
+                <filter string="State" name="group_by_state_id" context="{'group_by': 'state_id'}"/>
+                <filter string="Type" name="group_by_type" context="{'group_by': 'type'}"/>
+            </xpath>
+            <xpath expr="//filter[@name='supplier']" position="after">
+                <filter string="Facturación" name="invoice" domain="['|', ('type','=', 'invoice'), ('parent_id', '=', False)]"/>
+            </xpath>
+        </field>
+    </record>|
+
 </odoo>
 

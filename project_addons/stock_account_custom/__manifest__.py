@@ -21,5 +21,6 @@
         "views/product.xml",
         "views/pricelist_item.xml",
         "views/customer_price.xml",
+        "views/stock_move.xml",
     ],
 }

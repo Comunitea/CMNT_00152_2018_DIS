@@ -55,6 +55,7 @@ class StockMoveLine(models.Model):
     src_removal_priority = fields.Integer(related='location_id.removal_priority', store=True)
     dest_removal_priority = fields.Integer(related='location_dest_id.removal_priority', store=True)
     ordered_qty = fields.Float(related="move_id.product_uom_qty")
+    empty_line = fields.Boolean('Creada vacía')
 
     @api.onchange('lot_id')
     def onchange_serial_lot_id(self):
@@ -65,3 +66,9 @@ class StockMoveLine(models.Model):
                 else:
                     self.qty_done = 0
 
+    @api.multi
+    def force_assigned_qty_done(self, reset=True, field='product_uom_qty'):
+        if reset:
+            return super().force_assigned_qty_done(reset=reset, field=field)
+        else:
+            return super(StockMoveLine, self.filtered(lambda x: not x.empty_line)).force_assigned_qty_done(reset=reset, field=field)

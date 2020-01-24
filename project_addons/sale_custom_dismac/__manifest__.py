@@ -18,7 +18,9 @@
         "sale_order_revision",
         "sale_order_line_form_button",
         "sale_order_action_invoice_create_hook",
-        "stock_picking_complete_info"
+        "stock_picking_complete_info",
+        "l10n_es_facturae",
+        'sale_order_line_invoice_policy'
     ],
     "data": [
         "security/ir.model.access.csv",

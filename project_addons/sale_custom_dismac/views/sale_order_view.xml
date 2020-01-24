@@ -59,7 +59,13 @@
                 </div>
 
             </field>
-
+            <field name="partner_id" position="after">
+                <field name="commercial_partner_id" invisible="True"/>
+            </field>
+            <field name="partner_invoice_id" position="attributes">
+                <attribute name="domain">[('parent_id', 'child_of', commercial_partner_id)]</attribute>>
+                <attribute name="context">{'default_type': 'invoice', 'search_default_invoice': True}</attribute>>
+            </field>
             <field name="fiscal_position_id" position="after">
                 <field name="pending_invoice_amount"/>
             </field>
@@ -69,7 +75,15 @@
             </field>
         </field>
     </record>
+    <record id="view_order_form_ip_custom" model="ir.ui.view">
+        <field name="name">sale_order_hide_invoice_policy</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_order_line_invoice_policy.view_order_form_ip"/>
+        <field name="arch" type="xml">
+            <field name="invoice_policy" position="replace"></field>
 
+        </field>
+    </record>
     <!-- model.name inherit form view -->
     <record id="sale_order_line_form_view_custom" model="ir.ui.view">
         <field name="name">sale_order_line_form_view_custom</field>
@@ -79,7 +93,9 @@
 
             <!-- Campo descripción enb la vista custom del otro módulo -->
              <field name="tax_id" position="before">
+
                  <field name="image_medium" widget="image" class="oe_avatar" />
+                 <field name="invoice_policy"/>
              </field>
              <field name="name" position="after">
                 <label for="notes" string="Advanced Description"/>
@@ -142,6 +158,7 @@
         <field name="arch" type="xml">
             <field name="amount_total" position="after">
                 <field name="pending_invoice_amount"/>
+                <field name="client_order_ref"/>
             </field>
         </field>
     </record>

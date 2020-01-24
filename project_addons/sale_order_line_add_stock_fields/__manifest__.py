@@ -9,6 +9,8 @@
     "author": "Comunitea",
     "license": "AGPL-3",
     "installable": True,
-    "depends": ["sale", "sale_order_line_form_button", "web_tree_dynamic_colored_field"],
+    "depends": ["sale",
+                "sale_order_line_form_button",
+                "web_tree_dynamic_colored_field"],
     "data": ["views/sale_order_view.xml"],
 }

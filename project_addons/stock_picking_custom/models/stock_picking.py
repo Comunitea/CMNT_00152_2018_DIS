@@ -21,10 +21,10 @@ class StockPicking(models.Model):
         backorder = super()._create_backorder(backorder_moves=backorder_moves)
         backorder.write({'move_type': 'one'})
         return backorder
-
+    
     @api.multi
     @api.depends('state', 'is_locked', 'batch_id')
     def _compute_show_validate(self):
         super()._compute_show_validate()
-        for pick in self.filtered(lambda x: x.batch_id):
-            pick.show_validate=False
+        # for pick in self.filtered(lambda x: x.batch_id):
+        #     pick.show_validate = False
