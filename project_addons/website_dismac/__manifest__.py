@@ -18,7 +18,7 @@
     'data': [
         'data/website_data.xml',
         'data/menu_data.xml',
-        # 'data/default_data.xml',
+        'data/default_data.xml',
         'templates/forms.xml',
         'templates/cookies.xml',
         #'templates/account.xml',
