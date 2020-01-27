@@ -16,6 +16,7 @@
         "sale_order_report_product_image",
         "stock_picking_report_valued",
         "account_payment_partner",
+        "account_invoice_report_grouped_by_picking"
     ],
     "data": [
         "views/list_reports.xml",

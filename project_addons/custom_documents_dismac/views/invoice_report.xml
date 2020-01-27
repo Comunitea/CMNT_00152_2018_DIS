@@ -93,17 +93,33 @@
                     </div>
             </xpath>
 
-            <!-- <xpath expr="//span[@t-field='line.quantity']" position="attributes">
-                <attribute name="t-field">line.quantity_signed</attribute>
+        <xpath expr="//td/span[@t-field='line.quantity']" position="attributes">
+            <attribute name="id">quantity_field</attribute>
+        </xpath>
+        </template>
+
+        <template id="report_invoice_document_signed" inherit_id="account_invoice_report_grouped_by_picking.report_invoice_document">
+            <xpath expr="//t[@t-set='o']" position="after">
+                <t t-set="invoice_sign" t-value="o.type in ['in_refund', 'out_refund'] and -1 or 1"/>
+            </xpath>
+            <xpath expr="//td/span[@id='quantity_field']" position="attributes">
+                <attribute name="t-esc">invoice_sign * lines_group['quantity']</attribute>
+            </xpath>
+            <xpath expr="//t[@t-set='line_picking_subtotal']" position="after">
+                <t t-set="line_picking_subtotal" t-value="invoice_sign * line_picking_subtotal"/>
+            </xpath>
+            <xpath expr="//t[@t-value='(subtotal or 0.0) + l.price_subtotal']" position="attributes">
+                <attribute name="t-value">(subtotal or 0.0) + (invoice_sign * l.price_subtotal)</attribute>
+
+            </xpath>
+            <xpath expr="//span[@t-field='line.price_subtotal']" position="attributes">
+                <attribute name="t-field">line.price_subtotal_signed</attribute>
             </xpath>
             <xpath expr="//t[@t-value='current_subtotal + line.price_subtotal']" position="attributes">
                 <attribute name="t-value">current_subtotal + line.price_subtotal_signed</attribute>
             </xpath>
             <xpath expr="//t[@t-value='current_subtotal + line.price_total']" position="attributes">
                 <attribute name="t-value">current_subtotal + line.price_total_signed</attribute>
-            </xpath>
-            <xpath expr="//span[@t-field='line.price_subtotal']" position="attributes">
-                <attribute name="t-field">line.price_subtotal_signed</attribute>
             </xpath>
             <xpath expr="//span[@t-field='line.price_total']" position="attributes">
                 <attribute name="t-field">line.price_total_signed</attribute>
@@ -116,14 +132,14 @@
             </xpath>
             <xpath expr="//t[@t-if='len(o.tax_line_ids) == 1 and o.amount_untaxed == amount_by_group[2]']" position="attributes">
                 <attribute name="t-if">len(o.tax_line_ids) == 1 and o.amount_untaxed_signed == amount_by_group[2]</attribute>
-            </xpath> -->
+            </xpath>
         </template>
 
-        <!-- <template id="report_invoice_document_with_payments_signed" inherit_id="account.report_invoice_document_with_payments">
+        <template id="report_invoice_document_with_payments_signed" inherit_id="account.report_invoice_document_with_payments">
             <xpath expr="//span[@t-field='o.residual']" position="attributes">
                 <attribute name="t-field">o.residual_signed</attribute>
             </xpath>
-        </template> -->
+        </template>
 
         <template id="report_invoice_payment_mode_custom" inherit_id="account_payment_partner.report_invoice_payment_mode">
             <xpath expr="//p[@t-if='o.payment_mode_id.note']" position="replace">
