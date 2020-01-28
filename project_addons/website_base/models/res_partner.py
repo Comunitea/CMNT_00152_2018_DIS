@@ -34,6 +34,12 @@ class ResPartnerAccess(models.Model):
         default=True
     )
 
+    show_customer_price = fields.Boolean(
+        string='Show products with customer price in catalogue',
+        help='If False the user will not see the products with customer price on the catalogue',
+        default=True
+    )
+
     def _get_domain_partner(self):
         if self.website_access_rights == 'own':
             return self.env['res.partner'].browse(self.id)

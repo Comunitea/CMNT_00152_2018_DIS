@@ -2,6 +2,10 @@
 <odoo>
 
     <template id="website_base_website_assets_frontend" inherit_id="website.assets_frontend">
+        <xpath expr="link[last()]" position="after">
+            <!-- Theme Dismac -->
+            <link href="/website_base/static/css/portal.less" rel="stylesheet" type="text/less"/>
+        </xpath>
         <!--Add custom scripts-->
         <xpath expr="script[last()]" position="after">
             <script type="text/javascript" src="/website_base/static/js/my_portal_history.js" />

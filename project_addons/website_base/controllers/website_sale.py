@@ -9,6 +9,7 @@ from odoo.http import request
 from odoo.osv.expression import OR
 from odoo.addons.website_sale.controllers.main import WebsiteSale, TableCompute
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager
+from werkzeug.exceptions import Unauthorized
 
 PPG = 20  # Products Per Page
 PPR = 4   # Products Per Row
@@ -46,26 +47,43 @@ class WebsiteSale(WebsiteSale):
 
         return super(WebsiteSale, self).payment(**post)
 
+    def _get_customer_products_template_from_customer_prices(self):
+        user = request.env.user
+        today = time.strftime('%Y-%m-%d')
+        
+        customer_domain = [('partner_id', '=', user.partner_id.id),
+                            '|', ('date_start', '=', False), ('date_start', '<=', today),
+                            '|', ('date_end', '=', False), ('date_end', '>=', today),
+                            '|', ('product_tmpl_id', '!=', False), ('product_id', '!=', False)]
+
+        customer_products = []
+        customer_products += request.env['customer.price'].sudo().search(customer_domain).filtered(lambda x: x.product_tmpl_id != False and \
+            x.product_id.website_published).mapped('product_tmpl_id').ids
+        customer_products += request.env['customer.price'].sudo().search(customer_domain).filtered(lambda x: x.product_id != False and \
+            x.product_id.website_published).mapped('product_id').mapped('product_tmpl_id').ids
+        return customer_products
+
+
     def _get_search_domain(self, search, category, attrib_values):
         domain = super(WebsiteSale, self)._get_search_domain(search=search, category=category, attrib_values=attrib_values)
+        customer_products = False
         if request.env.context.get('customer_prices', False) or not request.env.user.partner_id.show_all_catalogue:
-            user = request.env.user
-            today = time.strftime('%Y-%m-%d')
-            
-            customer_domain = [('partner_id', '=', user.partner_id.id),
-                               '|', ('date_start', '=', False), ('date_start', '<=', today),
-                               '|', ('date_end', '=', False), ('date_end', '>=', today),
-                               '|', ('product_tmpl_id', '!=', False), ('product_id', '!=', False)]
 
-            customer_products = []
-            customer_products += request.env['customer.price'].search(customer_domain).filtered(lambda x: x.product_tmpl_id != False).mapped('product_tmpl_id').ids
-            customer_products += request.env['customer.price'].search(customer_domain).filtered(lambda x: x.product_id != False).mapped('product_id').mapped('product_tmpl_id').ids
+            customer_products = self._get_customer_products_template_from_customer_prices()        
 
             if len(customer_products) > 0:         
                 domain += [('id', 'in', customer_products)]
             else:
-                domain = [('id', '=', None)]
+                domain += [('id', '=', None)]
 
+        if not request.env.context.get('customer_prices', False) and not request.env.user.partner_id.show_customer_price:
+            
+            if not customer_products:
+                customer_products = self._get_customer_products_template_from_customer_prices()                
+
+            if len(customer_products) > 0:         
+                domain += [('id', 'not in', customer_products)]
+            
         return domain
 
     def recalculate_product_list(self, list_type=None, page=0, category=None, search='', ppg=False, **post):
@@ -126,3 +144,20 @@ class WebsiteSale(WebsiteSale):
     def customer_prices_shop(self, page=0, category=None, search='', ppg=False, **post):
         return self.recalculate_product_list(list_type='pricelist', page=page, category=category, search=search,
                                              ppg=ppg, **post)
+    
+    @http.route(['/shop/product/<model("product.template"):product>'], type='http', auth="public", website=True)
+    def product(self, product, category='', search='', **kwargs):
+        if not request.env.user.partner_id.show_all_catalogue:
+            customer_products = self._get_customer_products_template_from_customer_prices()
+            if product.id not in customer_products:
+                raise Unauthorized(_("You are not authorized to see this product."))
+        return super(WebsiteSale, self).product(product=product, category=category, search=search, **kwargs)
+
+    @http.route('/product/<path:path>', type='http', auth="public", website=True)
+    def slug_product(self, path, category='', search='', **kwargs):
+        res = super(WebsiteSale, self).slug_product(path=path, category=category, search=search, **kwargs)
+        if not request.env.user.partner_id.show_all_catalogue and res.qcontext['product']:
+            customer_products = self._get_customer_products_template_from_customer_prices()
+            if res.qcontext['product'].id not in customer_products:
+               raise Unauthorized(_("You are not authorized to see this product.")) 
+        return super(WebsiteSale, self).slug_product(path=path, category=category, search=search, **kwargs)

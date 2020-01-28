@@ -18,6 +18,7 @@
                             <field name="show_history"/>
                             <field name="show_invoices"/>
                             <field name="show_all_catalogue"/>
+                            <field name="show_customer_price"/>
                         </group>
                     </group>
                 </page>

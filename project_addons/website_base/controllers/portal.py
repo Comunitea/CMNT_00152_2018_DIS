@@ -11,13 +11,14 @@ from odoo.osv.expression import OR
 from odoo.addons.website.controllers.main import QueryURL
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager, get_records_pager
 from odoo.addons.website_sale.controllers.main import WebsiteSale, TableCompute
+from werkzeug.exceptions import Unauthorized
 
 class CustomerPortal(CustomerPortal):
 
     @http.route(['/my/invoices', '/my/invoices/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_invoices(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
         if not request.env.user.partner_id.show_invoices:
-            return request.redirect('/my')
+            raise Unauthorized(_("You are not authorized to see invoices."))
         return super(CustomerPortal, self).portal_my_invoices(page, date_begin, date_end, sortby, **kw)
 
     def _prepare_portal_layout_values(self):
@@ -75,7 +76,7 @@ class CustomerPortal(CustomerPortal):
     def portal_my_history(self, page=1, sortby=None, search=None, search_in='all', filterby=None, **kw):
         values = self._prepare_portal_layout_values()
         if not request.env.user.partner_id.show_history:
-            return request.redirect('/my')
+            raise Unauthorized(_("You are not authorized to see purchase history."))
         partner = request.env.user.partner_id._get_domain_partner()
         product_template = request.env['product.template']
 
