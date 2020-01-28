@@ -14,18 +14,41 @@
             </field>
         </record>
 
-
-
         <delete id="stock_picking_custom.view_picking_withcarrier_custom" model="ir.ui.view"/>
         <record id="view_spci" model="ir.ui.view">
             <field name="name">stock_picking_complete_info.form.view</field>
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
+                <field name="state" position="before">
+                    <field name="to_split_process" invisible="1"/>
+                    <button name="split_process_done"
+                            class="btn-warning"
+                            attrs="{'invisible': ['|', ('state', '!=', 'done'), ('to_split_process', '!=', True)]}"
+                            string="Confirmar dividir"
+                            confirm="Estás seguro que quieres dividir este albarán? No se puede desahacer"
+                            groups="stock.group_stock_user"
+                            type="object"/>
+                    <button name="cancel_split_process_done"
+                            attrs="{'invisible': ['|', ('state', '!=', 'done'), ('to_split_process', '!=', True)]}"
+                            string="Cancelar división"
+                            groups="stock.group_stock_user"
+                            type="object"/>
+                    <button name="set_split_process_done"
+                            attrs="{'invisible': ['|', ('state', '!=', 'done'), ('to_split_process', '=', True)]}"
+                            string="Dividir"
+                            groups="stock.group_stock_user"
+                            type="object"/>
+
+                </field>
+
                 <xpath expr="//field[@name='reserved_availability']" position="attributes">
                     <attribute name="options">
                         {"fg_color": "red: state == 'confirmed'; orange: state == 'partially_available'"}
                     </attribute>
+                </xpath>
+                <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="before">
+                    <field name="to_split_process" attrs="{'column_invisible': [('parent.state', '!=', 'done'), ('parent.to_split_process', '=', False)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="attributes">
                     <attribute name="context">{'partner_id': parent.partner_id}</attribute>

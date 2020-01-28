@@ -61,6 +61,8 @@ class StockMove(models.Model):
 
     _inherit = 'stock.move'
 
+    to_split_process = fields.Boolean('Para dividir', copy=False, default=False)
+
     @api.multi
     def action_cancel(self):
         self.ensure_one()
