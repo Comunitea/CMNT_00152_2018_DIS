@@ -65,36 +65,88 @@
             </field>
         </record>
 
-        <!--<record id="view_stock_group_move_tree_operations" model="ir.ui.view">
+        <record id="view_stock_group_move_tree_operations" model="ir.ui.view">
             <field name="name">stock.move.group.operations.tree</field>
-            <field name="model">batch.picking.group.move</field>
+            <field name="model">batch.group.move.line</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree editable="top"
-                        decoration-muted="product_uom_qty == 0"
-                        decoration-danger="qty_done&lt;product_uom_qty and qty_done&gt;0 "
-                        decoration-success="qty_done==product_uom_qty">
+                        decoration-muted="qty_ordered == 0"
+                        decoration-danger="qty_done&lt;qty_ordered and qty_done&gt;0 "
+                        decoration-success="qty_done==qty_ordered">
                         <field name="product_id"/>
                         <field name="tracking"/>
+                        <field name="edit_tree" readonly="1"/>
                         <button name="action_apply_qties"
                                 attrs="{'invisible': [('qty_done', '!=', 0)]}" context="{'fill_qty_done': True}"
-                            type="object" icon="fa-cart-arrow-down" aria-label="Show details" title="Marcar realizado"/>
+                                type="object" icon="fa-cart-arrow-down" aria-label="Show details" title="Marcar realizado"/>
                         <button name="action_apply_qties"
                                 attrs="{'invisible': ['|', ('qty_done', '=', 0), ('qty_done', '=', 'product_uom_qty') ]}"
                                 type="object" icon="fa-edit" aria-label="Show details" title="Repartir cantidad realizada realizado"/>
-                         <field name="location_id"/>
-                         <field name="n_moves"/>
-                         <field name="product_uom_qty"/>
-                         <field name="qty_done" attrs="{'readonly':[('n_moves', '!=', 1), ('tracking', '!=', 'none')]}"/>
+                         <field name="location_id" attrs="{'readonly': [('edit_tree', '!=', False)]}"/>
+                         <field name="move_lines"/>
+                         <field name="qty_ordered"/>
+                         <field name="qty_done"/>
                          <button name="action_show_details"
-
                                  type="object" icon="fa-list" aria-label="Show details" title="Show details"/>
-
-
                 </tree>
                 </field>
             </record>
-    <record id="view_stock_group_move_operations" model="ir.ui.view">
+
+         <record id="action_stock_group_move_tree_operations" model="ir.actions.act_window">
+            <field name="name">Listado de picking</field>
+            <field name="res_model">batch.group.move.line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form</field>
+        </record>
+
+        <record id="view_stock_group_move_operations" model="ir.ui.view">
+            <field name="name">batch.group.move.line.form</field>
+            <field name="model">batch.group.move.line</field>
+            <field name="arch" type="xml">
+                <form string="Detalle">
+                    <group>
+                    <field name="batch_id" invisible="0" readonly="1"/>
+                    <div name="location_ids" string="Ubiaciones">
+                        <label for="llocation_id" string="Ubicaciones"/>
+                        <div class="o_row">
+                            <span>Desde <field name="location_id" readonly="1" nolabel="1"/> </span>
+                            <span>A <field name="location_dest_id" readonly="1" nolabel="1"/></span>
+
+                        </div>
+                    </div>
+                    <div name="product_qties" string="Producto">
+                        <label for="product_id"/>
+                        <div class="o_row">
+                            <span>Pedido: <field name="qty_ordered" readonly="1" nolabel="1"/> </span>
+                            <span>Disponible: <field name="qty_reserved" readonly="1" nolabel="1"/></span>
+                            <span><field name="product_uom_id" readonly="1" nolabel="1"/></span>
+
+                        </div>
+                    </div>
+                    </group>
+                    <group>
+                        <field name="move_lines" nolabel="1" cols="2">
+                            <tree editable="top" create="1" delete="1" decoration-warning="not_stock != 0">
+                                <field name="sale_order" readonly="1"/>
+                                <field name="picking_id" readonly="1"/>
+                                <field name="location_id"></field>
+                                <field name="product_uom_qty" readonly="1"></field>
+                                <field name="qty_done" ></field>
+                                <field name="not_stock" readonly="1"/>
+                            </tree>
+                        </field>
+
+                    </group>
+                    <footer class="oe_edit_only">
+                        <button string="Confirm" special="save" class="oe_highlight"/>
+                        <button string="Discard" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>-->
+    <!--record id="view_stock_group_move_operations" model="ir.ui.view">
             <field name="name">stock.move.group.operations.form</field>
             <field name="model">batch.picking.group.move</field>
             <field name="priority">1000</field>
@@ -159,13 +211,17 @@
 
             </xpath>
             <xpath expr="//button[@name='action_view_stock_picking']" position="replace">
-
-            <button name="action_view_stock_picking"
-                                class="oe_stat_button"
-                                icon="fa-track"
-                                type="object">
-                            <field string="Albaranes" name="picking_count" widget="statinfo"/>
-                        </button>
+                <button name="action_view_stock_picking"
+                    class="oe_stat_button"
+                    icon="fa-truck"
+                    type="object">
+                    <field string="Albaranes" name="picking_count" widget="statinfo"/>
+                </button>
+                <button name="action_view_grouped_line"
+                    class="oe_stat_button"
+                    icon="fa-list"
+                    type="object">
+                </button>
 
             </xpath>
 
@@ -313,3 +369,4 @@
     </record>-->
 
 </odoo>
+

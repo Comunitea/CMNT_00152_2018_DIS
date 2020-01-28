@@ -1,13 +1,11 @@
-# Copyright 2018 Tecnativa - Carlos Dauden
 # Copyright 2019 Comunitea - Kiko Sánchez
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 import logging
 
 from odoo import api, fields, models
-
+from odoo import tools
 
 _logger = logging.getLogger(__name__)
-
 
 class ReportPrintBatchPicking(models.AbstractModel):
     _name = "report.stock_picking_batch_custom.report_batch_picking_custom"

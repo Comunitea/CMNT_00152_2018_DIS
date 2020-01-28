@@ -125,7 +125,7 @@ class StockBatchPicking(models.Model):
 
     moves_all_count = fields.Integer("Moves count", compute=get_moves_count)
     qty_applied = fields.Boolean(default=False)
-
+    grouped_move_line = fields.One2many('batch.group.move.line', 'batch_id', string="Lineas agrupadas de picking")
 
     def action_view_stock_picking_related(self):
         self.ensure_one()
@@ -133,6 +133,11 @@ class StockBatchPicking(models.Model):
         action['domain'] = [('id', 'in', self.picking_dest_ids.ids)]
         return action
 
+    def action_view_grouped_line(self):
+        self.ensure_one()
+        action = self.env.ref('stock_picking_batch_custom.action_stock_group_move_tree_operations').read([])[0]
+        action['domain'] = [('id', 'in', self.grouped_move_line.ids)]
+        return action
 
     def action_show_moves_kanban(self):
         self.ensure_one()

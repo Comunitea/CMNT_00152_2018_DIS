@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
- <report string="Agrupación de picking"
+    <report string="Agrupación de picking"
             id="action_report_batch_picking_custom"
             model="stock.picking.batch"
             report_type="qweb-pdf"
@@ -13,6 +13,7 @@
             <t t-call="web.internal_layout">
                     <t t-foreach="docs" t-as="doc">
                         <div class="page">
+
                             <div class="row" style="margin: 5px">
                                 <div class="col-3">
                                     <strong>Date:</strong>
