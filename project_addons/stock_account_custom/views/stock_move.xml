@@ -16,9 +16,9 @@
                 <field name="reference" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
-                <field name="name" position="attributes">
+                <!--field name="name" position="attributes">
                     <attribute name="invisible">1</attribute>
-                </field>
+                </field-->
             </field>
     </record>
 </odoo>
