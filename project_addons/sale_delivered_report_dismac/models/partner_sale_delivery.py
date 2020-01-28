@@ -78,8 +78,22 @@ class SaleOrderLine(models.Model):
         ctx = self._context.copy()
         wh_id = False
         loc_domain = []
+        sm = self.env['stock.move']
+        ctx = self._context.copy()
+
 
         for line in self:
+            ctx.update(location=line.order_id.warehouse_id.lot_stock_id.id)
+
+            #
+            # domain = [('sale_line_id', '=', line.id), ('state', 'in', ('assigned', 'partially_available', 'confirmed'))]
+            # line_moves = sm.search(domain).filtered(lambda x: not x.move_orig_ids)
+            # if all(x.state == 'assigned' for x in line_moves.filtered(lambda x: x.location_dest_id.usage == 'customers')):
+            #
+            #
+            # outgoing_qty = sum(x.poduct_uom_qty for x in line_moves.filtered(lambda x: x.location_id.usage == 'internal' and x.location_dest_id.usage == 'customers'))
+            # incoming_qty = sum(x.poduct_uom_qty for x in line_moves.filtered(lambda x: x.location_id.usage == 'customers' and x.location_dest_id.usage == 'internal'))
+            # line_qty_pending = outgoing_qty - incoming_qty
             #
 
             line_moves = line.move_ids.filtered(lambda x: not x.move_orig_ids)
@@ -88,11 +102,11 @@ class SaleOrderLine(models.Model):
             else:
                 estimated_date = line.order_id.expected_date or line.order_id.confirmation_date or line.order_id.date_order
             ##SI TODOS LOS MOVIMEINTOS DE LA LINEA ESTÁN ASIGNADOS
+
             if line_moves and all(x.state=='assigned' for x in line_moves):
                 date_expected = max(today, max(x.date_expected for x in line_moves))
                 line.estimated_delivery_date = (date_expected + relativedelta.relativedelta(days=1 or 0)).strftime(DEFAULT_SERVER_DATE_FORMAT)
                 continue
-
 
             need_qty = line.product_uom_qty
 
@@ -124,19 +138,22 @@ class SaleOrderLine(models.Model):
                     line.purchase_order_needed = purchase_line.order_id
                     line.estimated_delivery_date = False
                 continue
-
             if not wh_id or wh_id != line.order_id.warehouse_id:
                 wh_id, loc_domain = line.get_loc_domain(estimated_date.strftime(DEFAULT_SERVER_DATE_FORMAT))
 
-            moves_domain = [('state', 'not in', ('draft', 'done', 'cancel')),
+            moves_domain = [('state', '=', 'assigned'), ('created_purchase_line_id', '=', False),
                             ('product_id', '=', product_id.id),
-                            '|', ('location_id.usage', '=', 'internal'), ('location_dest_id.usage', '=', 'internal')]
-
-            moves_domain = expression.AND ([[('state', 'not in', ('draft', 'done', 'cancel')),('product_id', '=', product_id.id)], loc_domain])
-            moves = self.env['stock.move'].search(moves_domain, order='date_expected asc')
+                            ('location_id.usage', '=', 'supplier'), ('location_dest_id.usage', '=', 'internal')]
+            move = self.env['stock.move'].search(moves_domain, order='date_expected asc', limit = 1)
             po = self.env['purchase.order']
             line.estimated_delivery_date = False
-
+            if move:
+                line.purchase_order_needed = move.purchase_line_id and move.purchase_line_id.order_id or False
+                estimated_date = max(today, move.date_expected)
+                line.estimated_delivery_date = (estimated_date + relativedelta.relativedelta(days=1 or 0)).strftime(
+                    DEFAULT_SERVER_DATE_FORMAT)
+                line.move_needed = move
+            continue
             for move in moves:
                 ##
                 if move.created_purchase_line_id:
