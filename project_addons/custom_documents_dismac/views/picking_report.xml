@@ -30,11 +30,28 @@
                 </div>
             </div>
         </xpath>
+    </template>
+    <template id="report_delivery_document_client_ref" inherit_id="stock.report_delivery_document">
+        <xpath expr="//th[@t-if='o.origin']" position="after">
+                <th t-if="o.origin">
+                    <t t-if="o.partner_id and o.partner_id.ref">
+                        <strong>Ref</strong>
+                    </t>
+                </th>
+        </xpath>
+        <xpath expr="//td[@t-if='o.origin']" position="after">
+                <td t-if="o.origin">
+                    <t t-if="o.partner_id and o.partner_id.ref">
+                        <span t-field="o.partner_id.ref"/>
+                    </t>
+                </td>
 
-
+        </xpath>
     </template>
 
     <template id="report_delivery_document" inherit_id="stock_picking_report_valued.valued_report_picking">
+
+
         <xpath expr="//span[@t-field='o.date_done']" position="attributes">
             <attribute name="t-options">{"widget": "date"}</attribute>
         </xpath>
