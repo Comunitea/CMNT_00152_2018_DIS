@@ -158,10 +158,11 @@ class WebsiteSale(WebsiteSale):
     @http.route('/product/<path:path>', type='http', auth="public", website=True)
     def slug_product(self, path, category='', search='', **kwargs):
         res = super(WebsiteSale, self).slug_product(path=path, category=category, search=search, **kwargs)
-        if not res.qcontext['product']:
+        context = dict(request.env.context)
+        if not 'product' in res.qcontext and not 'product_redirect' in context:
             raise NotFound() 
-        if not request.env.user.partner_id.show_all_catalogue and res.qcontext['product']:
+        if not request.env.user.partner_id.show_all_catalogue and 'product' in res.qcontext:
             customer_products = self._get_customer_products_template_from_customer_prices()
             if res.qcontext['product'].id not in customer_products:
                raise Unauthorized(_("You are not authorized to see this product.")) 
-        return super(WebsiteSale, self).slug_product(path=path, category=category, search=search, **kwargs)
+        return res
