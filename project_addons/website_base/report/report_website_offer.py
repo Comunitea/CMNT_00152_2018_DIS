@@ -18,6 +18,7 @@ class WebsiteOffer(models.Model):
     description_full = fields.Char('Full description', readonly=True)
     website_id = fields.Many2one('website', 'Website ID', readonly=True)
     product_public_category_id = fields.Many2one('product.public.category', 'Product Category', readonly=True)
+    website_published = fields.Boolean('Is published', readonly=True)
 
     def _query(self, with_clause='', fields={}, orderby='', from_clause=''):
         with_ = ("WITH %s" % with_clause) if with_clause else ""
@@ -30,7 +31,8 @@ class WebsiteOffer(models.Model):
             website_id, 
             product_public_category_id,
             description_short,
-            description_full
+            description_full,
+            website_published
         """
 
         for field in fields.values():
@@ -44,10 +46,11 @@ class WebsiteOffer(models.Model):
                     po.description_full as description_full, 
                     po.website_id as website_id,
                     po.category_id as product_public_category_id,
-                    'product.offer' AS odoo_model
+                    'product.offer' AS odoo_model,
+                    po.website_published as website_published
                     from product_offer po 
                     JOIN product_public_category ppc ON po.category_id = ppc.id
-                    where po.website_published = True and po.end_date >= NOW() and po.start_date <= NOW()
+                    where po.end_date >= NOW() and po.start_date <= NOW()
                     AND ppc.website_published = True
                     AND (ppc.parent_id IS NULL OR ppc.parent_id IN (SELECT id from product_public_category WHERE website_published = True))
 
@@ -59,7 +62,8 @@ class WebsiteOffer(models.Model):
                     pt.description_full as description_full, 
                     pt.website_id as website_id,
                     ppcpt.product_public_category_id as product_public_category_id,
-                    'product.template' AS odoo_model
+                    'product.template' AS odoo_model,
+                    pt.is_published AS website_published
                     from product_template pt
                     LEFT JOIN product_public_category_product_template_rel ppcpt ON pt.id = ppcpt.product_template_id
                     LEFT JOIN product_style_product_template_rel pspt ON pt.id = pspt.product_template_id

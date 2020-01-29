@@ -9,7 +9,7 @@ from odoo.http import request
 from odoo.osv.expression import OR
 from odoo.addons.website_sale.controllers.main import WebsiteSale, TableCompute
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager
-from werkzeug.exceptions import Unauthorized
+from werkzeug.exceptions import Unauthorized, NotFound
 
 PPG = 20  # Products Per Page
 PPR = 4   # Products Per Row
@@ -147,6 +147,8 @@ class WebsiteSale(WebsiteSale):
     
     @http.route(['/shop/product/<model("product.template"):product>'], type='http', auth="public", website=True)
     def product(self, product, category='', search='', **kwargs):
+        if not product:
+            raise NotFound() 
         if not request.env.user.partner_id.show_all_catalogue:
             customer_products = self._get_customer_products_template_from_customer_prices()
             if product.id not in customer_products:
@@ -156,6 +158,8 @@ class WebsiteSale(WebsiteSale):
     @http.route('/product/<path:path>', type='http', auth="public", website=True)
     def slug_product(self, path, category='', search='', **kwargs):
         res = super(WebsiteSale, self).slug_product(path=path, category=category, search=search, **kwargs)
+        if not res.qcontext['product']:
+            raise NotFound() 
         if not request.env.user.partner_id.show_all_catalogue and res.qcontext['product']:
             customer_products = self._get_customer_products_template_from_customer_prices()
             if res.qcontext['product'].id not in customer_products:

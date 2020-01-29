@@ -3,13 +3,13 @@
 import datetime
 import shlex
 
-from odoo import http
+from odoo import http, _
 from odoo.http import request
 
 from odoo.addons.website.controllers.main import QueryURL
 from odoo.addons.website_sale.controllers.main import TableCompute
 
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, Unauthorized
 
 # TODO: Change this by settings
 PPG = 20  # Products Per Page
@@ -101,6 +101,7 @@ class SimulateProductController(http.Controller):
         offers = Offer.search(domain_offers, order=order, limit=PPG, offset=offset)
 
         for offer in offers:
+            
             if offer['odoo_model'] == 'product.offer':
                 bins_table.append(request.env['product.offer'].search([('id', '=', int(offer['model_id']))]))
             elif offer['odoo_model'] == 'product.template':
