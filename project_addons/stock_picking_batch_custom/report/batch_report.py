@@ -122,8 +122,10 @@ class ReportPrintBatchPicking(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
+
         model = "stock.picking.batch"
         docs = self.env[model].browse(docids)
+        docs.write({'state': 'in_progress'})
         return {
             "doc_ids": docids,
             "doc_model": model,

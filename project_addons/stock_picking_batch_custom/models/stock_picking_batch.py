@@ -166,12 +166,27 @@ class StockBatchPicking(models.Model):
         to_apply = self.filtered(lambda x: not x.qty_applied)
         to_apply.force_set_qty_done()
 
+    @api.multi
+    def action_back_to_draft(self):
+        self.picking_ids.do_unreserve()
+        self.action_assign()
+        for batch in self:
+            batch.write({'state': 'draft'})
+
 
     @api.multi
     def action_print_picking(self):
         if len(self)==1 and self.picking_type_id and self.picking_type_id.code == 'internal':
             return self.env.ref('stcok_picking_batch_custom.action_report_batch_picking_custom')
         return super().action_print_picking()
+
+    @api.multi
+    def action_assign(self):
+        for batch in self:
+            for pick in batch.picking_ids:
+
+                pick.action_assign()
+        return True
 
     @api.multi
     def action_transfer(self):

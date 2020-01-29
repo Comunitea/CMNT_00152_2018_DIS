@@ -75,7 +75,7 @@
                         decoration-danger="qty_done&lt;qty_ordered and qty_done&gt;0 "
                         decoration-success="qty_done==qty_ordered">
                         <field name="product_id"/>
-                        <field name="tracking"/>
+                        <field name="tracking" invisible="1"/>
                         <field name="edit_tree" readonly="1"/>
                         <button name="action_apply_qties"
                                 attrs="{'invisible': [('qty_done', '!=', 0)]}" context="{'fill_qty_done': True}"
@@ -84,7 +84,7 @@
                                 attrs="{'invisible': ['|', ('qty_done', '=', 0), ('qty_done', '=', 'product_uom_qty') ]}"
                                 type="object" icon="fa-edit" aria-label="Show details" title="Repartir cantidad realizada realizado"/>
                          <field name="location_id" attrs="{'readonly': [('edit_tree', '!=', False)]}"/>
-                         <field name="move_lines"/>
+                         <field name="move_lines" />
                          <field name="qty_ordered"/>
                          <field name="qty_done"/>
                          <button name="action_show_details"
@@ -109,7 +109,7 @@
                     <group>
                     <field name="batch_id" invisible="0" readonly="1"/>
                     <div name="location_ids" string="Ubiaciones">
-                        <label for="llocation_id" string="Ubicaciones"/>
+                        <label for="location_id" string="Ubicaciones"/>
                         <div class="o_row">
                             <span>Desde <field name="location_id" readonly="1" nolabel="1"/> </span>
                             <span>A <field name="location_dest_id" readonly="1" nolabel="1"/></span>
@@ -198,6 +198,9 @@
 
 
             <button name="action_assign" position="after">
+                <button name="action_back_to_draft" string="Pasar a borrador" type="object" class="btn-danger"
+
+                        states="in_progress,assigned" />
                 <button name="action_apply_qty" class="oe_highlight" string="Apply qties"
                         context = "{'reset': False, 'field': 'reserved_availability'}"
                         attrs="{'invisible': ['|', '|', ('qty_applied','=', True), ('moves_all_count','=', 0),('state', '!=', 'assigned')]}" type="object"/>
