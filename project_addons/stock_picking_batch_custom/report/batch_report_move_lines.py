@@ -7,6 +7,30 @@ from odoo import tools
 
 _logger = logging.getLogger(__name__)
 
+class BatchGroupedMovesWzd(models.TransientModel):
+    _name = "batch.group.move.line.wzd"
+    
+    product_id = fields.Many2one('product.product', 'Articulo', readonly=True)
+    move_id = fields.Many2one('stock.move', 'Movimiento', readonly=True)
+    picking_id = fields.Many2one('stock.picking', 'Albarán', readonly=True)
+    picking_type_id = fields.Many2one('stock.picking.type', 'Tipo de operación', readonly=True)
+    batch_id = fields.Many2one('stock.picking.batch', 'Agrupación', readonly=True)
+    location_id = fields.Many2one('stock.location', 'Origen')
+    location_dest_id = fields.Many2one('stock.location', 'Destino')
+    src_removal_priority = fields.Integer('Prioridad O.', readonly=True)
+    dest_removal_priority = fields.Integer('Prioridad D.', readonly=True)
+    qty_ordered = fields.Float('C. Pedida', readonly=1)
+    qty_reserved = fields.Float('C. Reservada', readonly=1)
+    qty_no_stock = fields.Float('C. sin stock', readonly=1)
+    qty_done = fields.Float('C. Hecha')
+    product_uom_id = fields.Many2one(related='move_id.product_uom', string='Unidad de medida')
+    move_lines = fields.Many2many('stock.move.line', string='Operaciones')
+    n_lines = fields.Integer('Nº líneas')
+    edit_tree = fields.Boolean('Editable en vista')
+    all_assigned = fields.Boolean( string="100% asignado")
+    tracking = fields.Selection(related='product_id.tracking')
+    grouped_id = fields.Many2one('batch.group.move.line')
+    
 
 class BatchGroupedMoves(models.Model):
 
@@ -26,10 +50,11 @@ class BatchGroupedMoves(models.Model):
                       ('location_dest_id', '=', gm.location_dest_id.id)]
             sml_ids =self.env['stock.move.line'].search(domain)
             gm.move_lines = sml_ids
-            gm.move_lines_count = len(sml_ids)
+            gm.n_lines = len(sml_ids)
 
             gm.all_assigned = not any(x.state in ('waiting', 'confirmed', 'partially_available') for x in sml_ids.mapped('move_id') )
-            gm.edit_tree = gm.move_lines_count == 1
+            gm.edit_tree = gm.n_lines == 1
+            gm.show_apply_qties = gm.qty_done != (gm.qty_reserved + gm.qty_no_stock)
             print ("{}".format(sml_ids.mapped('move_id').mapped('state')))
             print ("{} - {}".format(gm.id, gm.all_assigned))
 
@@ -44,7 +69,7 @@ class BatchGroupedMoves(models.Model):
     src_removal_priority = fields.Integer('Prioridad O.', readonly=True)
     dest_removal_priority = fields.Integer('Prioridad D.', readonly=True)
     qty_ordered = fields.Float('C. Pedida', readonly=1)
-    qty_reserved = fields.Float('C. Sin Stock', readonly=1)
+    qty_reserved = fields.Float('C. Reservada', readonly=1)
     qty_no_stock = fields.Float('C. sin stock', readonly=1)
     qty_done = fields.Float('C. Hecha')
     product_uom_id = fields.Many2one(related='move_id.product_uom', string='Unidad de medida')
@@ -53,11 +78,40 @@ class BatchGroupedMoves(models.Model):
     edit_tree = fields.Boolean('Editable en vista', compute='_get_move_lines')
     all_assigned = fields.Boolean( compute='_get_move_lines', string="100% asignado")
     tracking = fields.Selection(related='product_id.tracking')
+    show_apply_qties = fields.Boolean(compute="_get_move_lines")
+
+    @api.multi
+    def action_apply_qties(self):
+        for g_line in self:
+            for sml_line in g_line.move_lines:
+                sml_line.qty_done = sml_line.not_stock + sml_line.product_uom_qty
 
 
+
+    def creategroup_wzd(self):
+
+        vals = {'product_id': self.product_id.id,
+                'grouped_id': self.id,
+                'move_id': self.move_id.id,
+                'picking_type_id': self.picking_type_id.id,
+                'batch_id': self.batch_id.id,
+                'location_id': self.location_id.id,
+                'location_dest_id': self.location_dest_id.id,
+                'qty_ordered': self.qty_ordered,
+                'qty_reserved': self.qty_reserved,
+                'qty_no_stock': self.qty_no_stock,
+                'qty_done': self.qty_done,
+                'product_uom_id': self.product_uom_id.id,
+                'move_lines': [(6,0, self.move_lines.ids)],
+                'n_selfs': self.n_lines,
+                'edit_tree': self.edit_tree,
+                'tracking': self.tracking,
+                'all_assigned': self.all_assigned}
+        return self.env['batch.group.move.line.wzd'].create(vals)
+        
     def action_show_details(self):
-
-        self.ensure_one()
+        new_wzd = self.creategroup_wzd()
+        new_wzd.ensure_one()
         view = self.env.ref(
             "stock_picking_batch_custom.view_stock_group_move_operations"
         )
@@ -66,13 +120,13 @@ class BatchGroupedMoves(models.Model):
             "type": "ir.actions.act_window",
             "view_type": "form",
             "view_mode": "form",
-            "res_model": "batch.group.move.line",
+            "res_model": "batch.group.move.line.wzd",
             "views": [(view.id, "form")],
             "view_id": view.id,
             "target": "new",
-            "res_id": self.id,
+            "res_id": new_wzd.id,
             "context": dict(
-                self.env.context,
+                new_wzd.env.context,
             ),
         }
 
@@ -98,7 +152,7 @@ class BatchGroupedMoves(models.Model):
                   "sm.picking_type_id as picking_type_id,  " \
                   "sp.batch_id as batch_id, " \
                   "spb.name as batch,  " \
-                  "sum(sm.product_uom_qty) as qty_ordered," \
+                  "sum(not_stock + sml.product_uom_qty) as qty_ordered," \
                   "sum(sml.product_uom_qty) as qty_reserved," \
                   "sum(not_stock) as qty_no_stock," \
                   "sum(sml.qty_done) as qty_done, sml.location_id as location_id, sml.location_dest_id as location_dest_id, " \
@@ -133,7 +187,6 @@ class ReportPrintOpesrations(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-
         model = "stock.picking.batch"
         docs = self.env[model].browse(docids)
         docs.write({'state': 'in_progress'})

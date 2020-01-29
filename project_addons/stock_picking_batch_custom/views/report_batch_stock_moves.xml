@@ -24,7 +24,7 @@
                                  border-top: 1px solid #dee2e6;
                                  }
                             .product_size{font-size: smaller; }
-                            .gray {color: orange;}
+                            .gray {color: red;}
                             </style>
 
                             <div class="row" style="margin: 5px">
@@ -56,8 +56,8 @@
                                                     <span>Artículo</span>
                                                 </b>
                                             </th>
-                                            <th width="14" style="padding: 3px">INFO</th>
-                                            <th width="9%" style="padding: 3px">Origen</th>
+                                            <th width="15" style="padding: 3px">INFO</th>
+                                            <th width="8%" style="padding: 3px">Origen</th>
                                             <th width="5%" style="padding: 3px" ><span>ORD</span></th>
                                             <th width="5%" style="padding: 3px" ><span>RSV</span></th>
                                             <!--th width="5%" style="padding: 3px" ><span>H</span></th-->
@@ -70,9 +70,13 @@
                                                 <td style="padding: 3px">
                                                     <span t-field="move.product_id.display_name"/>
                                                 </td>
-                                                <td style="padding: 3px; text-align: right">
-                                                    <t t-if="move.product_id.import_location_str"><span t-field="move.product_id.import_location_str"/>-</t>
+                                                <td style="padding: 3px; text-align: left; color: #333333">
                                                     <span t-field="move.product_id.qty_available"/>
+                                                    <t t-if="move.product_id.import_location_str">
+                                                        -
+                                                        <span t-field="move.product_id.import_location_str"/>
+                                                    </t>
+
 
                                                 </td>
                                                 <td style="padding: 3px; text-align: center">
@@ -95,11 +99,13 @@
 
                                                             <td style="padding: 3px">
                                                             </td>
-                                                            <td style="padding: 3px">
-                                                                <span t-field="ml.move_id.picking_id.name"/>
+                                                            <td style="padding: 3px; text-align: right">
+                                                                 <span t-field="ml.move_id.picking_id.name"/>
+
                                                             </td>
                                                              <td style="padding: 3px; text-align: center">
-                                                                <t t-if="ml.not_stock == 0"><span t-field="ml.location_id.name"/></t>
+                                                                <t t-if="ml.not_stock == 0">
+                                                                    <span t-field="ml.location_id.name"/></t>
                                                             </td>
 
                                                             <td style="padding: 3px">
@@ -118,18 +124,17 @@
                                                     </t>
                                                     <t t-if="ml.not_stock != 0">
                                                         <tr class="product_size gray">
-
                                                             <td style="padding: 3px">
                                                             </td>
-                                                            <td style="padding: 3px">
+                                                            <td style="padding: 3px; text-align: right; color: red">
                                                                 <span t-field="ml.move_id.picking_id.name"/>
                                                             </td>
-                                                             <td style="padding: 3px; text-align: center">
+                                                             <td style="padding: 3px; text-align: right">
 
                                                             </td>
 
                                                             <td style="padding: 3px">
-                                                                <span t-field="ml.not_stock"/>
+                                                                <span t-field="ml.not_stock" />
                                                             </td>
 
                                                             <td style="padding: 3px">

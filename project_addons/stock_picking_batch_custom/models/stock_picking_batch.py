@@ -55,7 +55,7 @@ class BatchPickingGroupMove(models.Model):
 
         if self._context.get('fill_qty_done', False):
             for line in self:
-                for sm_id in line.move_line_ids:
+                for sm_id in line.move_line_ids.filtered(lambda x: x.not_stock == 0):
                     sm_id.qty_done = sm_id.product_uom_qty
                 line.qty_done = sum(x.qty_done for x in line.move_line_ids)
         else:
@@ -177,15 +177,17 @@ class StockBatchPicking(models.Model):
     @api.multi
     def action_print_picking(self):
         if len(self)==1 and self.picking_type_id and self.picking_type_id.code == 'internal':
-            return self.env.ref('stcok_picking_batch_custom.action_report_batch_picking_custom')
+            return self.env.ref('stock_picking_batch_custom.action_report_batch_picking_custom')
         return super().action_print_picking()
 
     @api.multi
     def action_assign(self):
         for batch in self:
             for pick in batch.picking_ids:
-
                 pick.action_assign()
+        ## Creo líneas vacías para los movvimientos que no existen
+        self.mapped('picking_ids').mapped('move_lines').create_empty_move_lines()
+        self.write({'state': 'in_progress'})
         return True
 
     @api.multi
