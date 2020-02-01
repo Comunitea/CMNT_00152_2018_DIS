@@ -43,6 +43,31 @@ class StockPicking(models.Model):
         for pick in self.filtered(lambda x: 'ALB_P/' in x.name):
             pick.sale_id.remig_act_qties()
 
+    @api.multi
+    def mig_picks_with_moves_with_out_sale_lines(self):
+        
+        for pick in self.filtered(lambda x: 'ALB_P/' in x.name):
+
+            if all(smp.sale_line_id for smp in pick.move_lines):
+                continue
+            sale_id = pick.sale_id
+            if not sale_id:
+                continue
+            product_ids = pick.move_lines.mapped('product_id')
+            print ('Revisando {}'.format(pick.name))
+            for product in product_ids:
+                smp = pick.move_lines.filtered(lambda x: x.product_id == product)
+                solp = sale_id.order_line.filtered(lambda x: x.product_id == product)
+                if len(smp) == 1 and len(solp) == 1 and not smp.sale_line_id:
+                    msg= "Actualizado el movimiento {}: {} \n con la línea {}".format(pick.name, smp.display_name, solp.display_name)
+                    print (msg)
+                    msg = "Actualizado el movimiento {}: {} <br/> con la línea {}".format(pick.name, smp.display_name,
+                                                                                       solp.display_name)
+                    pick.message_post(body=msg)
+
+                    smp.sale_line_id = solp
+
+
 
 
 

@@ -62,6 +62,29 @@ class StockMove(models.Model):
     _inherit = 'stock.move'
 
     to_split_process = fields.Boolean('Para dividir', copy=False, default=False)
+    new_picking_id = fields.Many2one('stock.picking', string="Asignar a un nuevo picking")
+    show_advance = fields.Boolean('Mostrar/ocultar avanzado', store=False)
+    sale_id = fields.Many2one(related='sale_line_id.order_id', string="Venta" )
+    picking_id_sale_id= fields.Many2one(related='picking_id.sale_id', string="Venta")
+
+    @api.multi
+    def picking_change(self):
+        for move in self:
+            if move.new_picking_id:
+                body = "El usuario {} ha sacado el movimiento {} y se ha movido al albarán  {}".format(self.env.user.display_name, move.name, move.new_picking_id.name)
+                move.picking_id.message_post(body=body)
+                body = "El usuario {} ha traido el movimiento {} y del albarán {}".format(
+                    self.env.user.display_name, self.name, self.picking_id.name)
+                move.new_picking_id.message_post(body=body)
+                sql = "update stock_move set picking_id={} where id={}".format(move.new_picking_id.id, move.id)
+                self._cr.execute(sql)
+                self.cr.commit()
+
+    @api.multi
+    def back_to_confirm(self):
+        for move in self:
+            move.action_back_to_draft()
+            move._action_confirm()
 
     @api.multi
     def action_cancel(self):

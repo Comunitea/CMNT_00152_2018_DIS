@@ -5,11 +5,50 @@
             <field name="model">stock.move</field>
             <field name="inherit_id" ref="stock.view_stock_move_operations"/>
             <field name="arch" type="xml">
+                <field name="state" position="before">
+                    <header groups="base.group_no_one" attrs="{'invisible': [('show_advance', '=', False)]}">
+                        <button name="action_cancel"
+                                groups="base.group_no_one"
+                            class="btn-warning"
+                            confirm="Vas a cancelar un movimiento, estás seguro?"
+                            context="{'write_message': True}"
+                            states="draft,waiting,confirmed,partially_available,assigned"
+                            string="Cancelar"
+                            type="object"/>
+
+                        <button name="back_to_confirm"
+                                groups="base.group_no_one"
+                            class="btn-warning"
+                            confirm="Vas a confirmar y asignar un movimiento de albarán, estás seguro?"
+                            string="RE-Confirmar"
+                            type="object"/>
+                        <button name="picking_change"
+                                states="cancel"
+                                groups="base.group_no_one"
+                            class="btn-warning"
+                            confirm="Vas a mover un movimiento de albarán, estás seguro?"
+                            string="Cambiar de albarán"
+                            type="object"/>
+                    </header>
+                </field>
                 <xpath expr="//group/group" position="after">
                     <group>
-                    <field name="date_expected"/>
+                        <field name="date_expected"/>
+                        <field name="show_advance" groups="base.group_no_one"/>
+
                     </group>
                 </xpath>
+                <field name="move_line_ids" position="before">
+                    <group string="Modo avanzado" groups="base.group_no_one" attrs="{'invisible': [('show_advance', '=', False)]}">
+                        <field name="sale_id"/>
+                        <field name="sale_line_id" groups="base.group_no_one" domain="[('picking_id_sale_id', '=', sale_id)]"/>
+
+                        <field name="picking_id" groups="base.group_no_one"/>
+                        <field name="picking_id_sale_id" groups="base.group_no_one"/>
+
+                        <field name="new_picking_id" groups="base.group_no_one" domain="[('sale_id', '=', sale_id)]"/>
+                    </group>
+                </field>
             </field>
     </record>
     <record id="view_move_picking_form_custom" model="ir.ui.view">
