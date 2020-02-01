@@ -2,10 +2,48 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import api, fields, models
 
+class SaleOrder(models.Model):
+
+    _inherit = 'sale.order'
+
+    @api.multi
+    def remig_act_qties(self, force=False):
+        print ("Revisando {}".format(self.mapped('name')))
+        for so in self:
+            print ("Pedido {}".format(so.name))
+            pick = so.picking_ids.filtered(lambda x: ('ALB/' in x.name or'WH/OUT/' in x.name) and x.state == 'cancel')
+            alb_p = so.picking_ids.filtered(lambda x: 'ALB_P/' in x.name and any(not move.sale_line_id for move in x.move_lines))
+
+            if pick and alb_p:
+
+                for sol in so.order_line:
+                    print ('-    > Linea {}'.format(sol.display_name))
+                    product_id = sol.product_id
+                    pick_move = pick.move_lines.filtered(lambda x: x.sale_line_id and x.state == 'cancel' and x.product_id == product_id)
+
+                    if pick_move:
+                        print('-    -    > PICK MOVE {}: {}'.format(pick_move.display_name, product_id.display_name))
+                        alb_p_id = pick_move.id + 1
+                        out_move = alb_p.move_lines.filtered(lambda x: x.product_id == product_id and not x.sale_line_id )
+
+                        if out_move:
+                            print('-    -    > OUT MOVE {}: {}'.format(out_move.display_name, product_id.display_name))
+                            if out_move.id != alb_p_id and not force:
+                                print ("\n -------------- Revisar el albaran {} -------------------".format(alb_p.name))
+                            else:
+                                print ('LINK ....')
+                                out_move.sale_line_id = pick_move.sale_line_id
 
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
+
+    @api.multi
+    def remig_act_qties(self):
+        for pick in self.filtered(lambda x: 'ALB_P/' in x.name):
+            pick.sale_id.remig_act_qties()
+
+
 
 
     @api.multi
@@ -34,7 +72,7 @@ class StockPicking(models.Model):
                 print ("Transfiero {}".format(pick.name))
                 #pick.action_done()
 
-        print("Transfiero {}".format(pick_to_transfer.mapped('name')))
+        #print("Transfiero {}".format(pick_to_transfer.mapped('name')))
 
 
     def do_migration(self, dest_pick):
