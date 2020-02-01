@@ -4,6 +4,8 @@ from odoo import fields, models, api
 from dateutil import relativedelta
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from odoo.osv import expression
+
+
 class SaleOrderLine(models.Model):
 
     _inherit = 'sale.order.line'
@@ -14,15 +16,6 @@ class SaleOrderLine(models.Model):
     partner_id = fields.Many2one(related='order_id.partner_id', string="Empresa", store=True)
     moves_state = fields.Selection([('none', 'Sin movimientos'), ('pending', 'Pendientes'), ('done', 'Finalizado')], string='Estado almacén', compute="get_warehouse_state", store=True)
     expected_date = fields.Datetime(related="order_id.expected_date", string="Entrega en pedido")
-    qty_pending = fields.Float('Cantidad pendiente',
-                               compute='_compute_qty_pending', store=True)
-
-    @api.depends('qty_cancelled', 'qty_delivered')
-    def _compute_qty_pending(self):
-
-        for line in self:
-            line.qty_pending = line.product_uom_qty - line.qty_delivered - \
-                               line.qty_cancelled
 
     @api.model
     def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
