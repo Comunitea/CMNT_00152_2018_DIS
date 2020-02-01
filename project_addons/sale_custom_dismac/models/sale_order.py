@@ -33,7 +33,13 @@ class SaleOrder(models.Model):
         store=True
         )
     commercial_partner_id = fields.Many2one(related='partner_id.commercial_partner_id')
+    order_line_count = fields.Integer('# Líneas', compute="_get_sale_line_count", store=True)
 
+    @api.multi
+    @api.depends ('order_line')
+    def _get_sale_line_count(self):
+        for order in self:
+            order.order_line_count = len(order.order_line)
     # Por compatibilidad entre sale_order_revision y sale_order_type
     @api.multi
     @api.returns('self', lambda value: value.id)
