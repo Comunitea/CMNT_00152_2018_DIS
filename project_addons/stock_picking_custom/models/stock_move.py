@@ -78,7 +78,7 @@ class StockMove(models.Model):
                 move.new_picking_id.message_post(body=body)
                 sql = "update stock_move set picking_id={} where id={}".format(move.new_picking_id.id, move.id)
                 self._cr.execute(sql)
-                self.cr.commit()
+                self._cr.commit()
 
     @api.multi
     def back_to_confirm(self):

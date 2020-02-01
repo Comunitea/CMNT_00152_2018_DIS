@@ -38,6 +38,10 @@ class SaleOrder(models.Model):
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
+
+    def check_sale_lines(self):
+        return all(x.sale_line_id for x in self.move_lines)
+
     @api.multi
     def remig_act_qties(self):
         for pick in self.filtered(lambda x: 'ALB_P/' in x.name):
@@ -45,7 +49,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def mig_picks_with_moves_with_out_sale_lines(self):
-        
+
         for pick in self.filtered(lambda x: 'ALB_P/' in x.name):
 
             if all(smp.sale_line_id for smp in pick.move_lines):
