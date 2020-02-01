@@ -385,6 +385,9 @@ class SaleOrderLine(models.Model):
         "Alternative image for line", compute='_compute_images',
         inverse='_set_image_medium',
         help="Image of the product variant (Medium-sized image of product template if false).")
+    package_qty = fields.Float(
+        related='product_id.package_qty', readonly=True
+    )
 
     @api.multi
     def write(self, values):

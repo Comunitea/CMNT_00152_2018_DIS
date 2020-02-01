@@ -33,31 +33,42 @@ class ResPartner(models.Model):
             api_partner = self.env['res.partner'].browse(int(api_partner))
         else:
             raise ValidationError(_('API partner not defined.'))
+        
+        delivery_point_name = punto_entrega['centro'] + " - " + punto_entrega['campus']
 
         lastname, name = delivery_name.split(', ')
 
-        delivery_partner = self.env['res.partner'].search([
+        delivery_point = self.env['res.partner'].search([
             '|',
             ('active', '=', True),
             ('active', '=', False),
-            ('firstname', '=', name),
-            ('lastname', '=', lastname),
-            ('street', '=', punto_entrega['centro']),
-            ('street2', '=', punto_entrega['campus'])
-        ], limit=1)
+            ('parent_id', '=', api_partner.id),
+            ('name', '=', delivery_point_name),
+            ], limit=1)
 
-        if not delivery_partner:
+        if not delivery_point:
 
-            delivery_partner = self.env['res.partner'].create({
-                'firstname': name, 
-                'lastname': lastname, 
-                'active': False,
+            delivery_point = self.env['res.partner'].create({
+                'name': delivery_point_name, 
+                'active': True,
                 'parent_id': api_partner.id,
                 'type': 'delivery',
-                'street': punto_entrega['centro'],
-                'street2': punto_entrega['campus']
             })
         
+        delivery_partner = self.env['res.partner'].create({
+                'name': name, 
+                'lastname': lastname, 
+                'street': delivery_point.name,
+                'street2': delivery_point.street,
+                'city': delivery_point.city,
+                'state_id': delivery_point.state_id and delivery_point.state_id.id or False, 
+                'zip': delivery_point.zip,
+                'country_id': delivery_point.country_id and delivery_point.country_id.id or False,
+                'active': False,
+                'parent_id': delivery_point.id,
+                'type': 'delivery',
+            })
+
         return delivery_partner
 
 

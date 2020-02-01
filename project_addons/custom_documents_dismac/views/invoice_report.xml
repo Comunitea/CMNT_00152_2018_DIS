@@ -99,6 +99,10 @@
         </template>
 
         <template id="report_invoice_document_signed" inherit_id="account_invoice_report_grouped_by_picking.report_invoice_document">
+            <xpath expr="//span[@t-field='picking.sale_id.client_order_ref']" position="before">
+                <span>Su Ref:  </span>
+            </xpath>
+       
             <xpath expr="//t[@t-set='o']" position="after">
                 <t t-set="invoice_sign" t-value="o.type in ['in_refund', 'out_refund'] and -1 or 1"/>
             </xpath>
