@@ -267,6 +267,10 @@
                     <h1>Tarifa Bienvenida</h1>
                     <p>Esta es la Tarifa bienvenida, donde ver los artículos con el precio de cliente Dismac. Si lo desea puede ordenar también el listado en función de los códigos de producto</p>
                 </t>
+                <t t-if="list_type and list_type == 'tags'">
+                    <span class="text-uppercase" t-esc="'Bienvenido a Dismac, {}'.format(request.env.user.name)"/>
+                    <h1><span class="text-uppercase" t-esc="current_tag.name if current_tag else 'Tienda'"/></h1>
+                </t>
                 <t t-else="">
                     <span class="text-uppercase" t-esc="category.parent_id.name if category and category.parent_id else 'Bienvenido a Dismac, {}'.format(request.env.user.name)"/>
                     <h1><span class="text-uppercase" t-esc="category.name if category else 'Tienda'"/></h1>
