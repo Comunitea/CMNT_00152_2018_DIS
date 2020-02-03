@@ -86,8 +86,8 @@ class BaseRestUVigoApiController(main.RestController):
         
         #now = datetime.now() + timedelta(minutes=60)
         tz = pytz.timezone(request.env.user.tz)
-        now = datetime.now().astimezone(tz).strptime(timestamp, '%Y%m%d%H%M%S')
-
+        now = datetime.now().astimezone(tz).strftime('%Y%m%d%H%M%S')
+        now = datetime.strptime(now, '%Y%m%d%H%M%S')
         if timedelta(minutes=5) < now - datetime.strptime(timestamp, '%Y%m%d%H%M%S') or \
             timedelta(minutes=5) < datetime.strptime(timestamp, '%Y%m%d%H%M%S') - now:
             _logger.error(
