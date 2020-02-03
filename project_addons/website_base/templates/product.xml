@@ -32,4 +32,41 @@
         <!--        </xpath>-->
 <!--    </template>-->
 
+    <template id="simulate_products_tags" name="Simulate Product Dismac Tags" inherit_id="website_base.simulate_products">
+        <xpath expr="//div[@id='products_grid_before']" position="inside">
+            <t t-set="tags" t-value="request.env['product.template.tag'].search([], limit=50)"/>
+            <t t-if="tags">
+                <div class="nav nav-pills flex-column menu-category mt16 pt8">
+                    <span>Tags</span>
+                    <div class="oe_structure mt16">
+                        <t t-foreach="tags" t-as="tag">
+                            <t t-call="website_seo_settings.website_tag_template">
+                                <t t-set="tag" t-value="tag"/>
+                            </t>  
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="website_sale_search_for_pricelist" name="Search Box Pricelist">
+        <form t-att-action="keep('/tarifas', search=0)" method="get" t-att-class="_classes">
+            <t t-if="attrib_values">
+                <t t-foreach="attrib_values" t-as="a">
+                    <input type="hidden" name="attrib" t-att-value="'%s-%s' % (a[0], a[1])" />
+                </t>
+            </t>
+            <t t-call="website.website_search_box" />
+        </form>
+    </template>
+
+    <template id="website_sale_products_pricelist" name="Product Dismac Pricelist" inherit_id="website_sale.products">
+        <xpath expr="//t[@t-call='website_sale.search']" position="after">
+            <t t-if="list_type and list_type == 'pricelist'" t-call="website_base.website_sale_search_for_pricelist">
+                <t t-set="_classes">o_website_sale_search</t>
+            </t>
+        </xpath>
+    </template>
+
 </odoo>
