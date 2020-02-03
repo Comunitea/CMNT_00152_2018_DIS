@@ -428,7 +428,7 @@ class SaleOrderLine(models.Model):
     def _compute_qty_delivered(self):
         super()._compute_qty_delivered()
         for line in self:  # TODO: maybe one day, this should be done in SQL for performance sake
-            if line.qty_delivered_method == 'stock_move':
+            if line.qty_delivered_method == 'stock_move' or line.qty_delivered_method == 'manual':
                 if line.import_qty_delivered and line.picking_imported:
                     line.qty_delivered += line.import_qty_delivered
 
