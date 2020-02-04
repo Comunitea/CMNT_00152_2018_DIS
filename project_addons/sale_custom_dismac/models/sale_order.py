@@ -266,6 +266,7 @@ class SaleOrder(models.Model):
                     if group_key not in invoices:
                         inv_data = line._prepare_invoice()
                         invoice = inv_obj.create(inv_data)
+                        #invoice = inv_obj.with_context(mail_create_nosubscribe=True).create(inv_data)
                         references[invoice] = order
                         invoices[group_key] = invoice
                     elif group_key in invoices:
