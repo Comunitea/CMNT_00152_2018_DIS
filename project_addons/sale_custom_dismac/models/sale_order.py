@@ -33,7 +33,13 @@ class SaleOrder(models.Model):
         store=True
         )
     commercial_partner_id = fields.Many2one(related='partner_id.commercial_partner_id')
+    order_line_count = fields.Integer('# Líneas', compute="_get_sale_line_count", store=True)
 
+    @api.multi
+    @api.depends ('order_line')
+    def _get_sale_line_count(self):
+        for order in self:
+            order.order_line_count = len(order.order_line)
     # Por compatibilidad entre sale_order_revision y sale_order_type
     @api.multi
     @api.returns('self', lambda value: value.id)
@@ -260,6 +266,7 @@ class SaleOrder(models.Model):
                     if group_key not in invoices:
                         inv_data = line._prepare_invoice()
                         invoice = inv_obj.create(inv_data)
+                        #invoice = inv_obj.with_context(mail_create_nosubscribe=True).create(inv_data)
                         references[invoice] = order
                         invoices[group_key] = invoice
                     elif group_key in invoices:
@@ -379,6 +386,9 @@ class SaleOrderLine(models.Model):
         "Alternative image for line", compute='_compute_images',
         inverse='_set_image_medium',
         help="Image of the product variant (Medium-sized image of product template if false).")
+    package_qty = fields.Float(
+        related='product_id.package_qty', readonly=True
+    )
 
     @api.multi
     def write(self, values):
@@ -419,7 +429,7 @@ class SaleOrderLine(models.Model):
     def _compute_qty_delivered(self):
         super()._compute_qty_delivered()
         for line in self:  # TODO: maybe one day, this should be done in SQL for performance sake
-            if line.qty_delivered_method == 'stock_move':
+            if line.qty_delivered_method == 'stock_move' or line.qty_delivered_method == 'manual':
                 if line.import_qty_delivered and line.picking_imported:
                     line.qty_delivered += line.import_qty_delivered
 
@@ -483,7 +493,12 @@ class SaleOrderLine(models.Model):
 
     def _compute_qty_to_invoice_on_date(self):
         for line in self:
-            if line.invoice_policy == 'order' or line.invoice_policy == 'product' and line.product_id.invoice_policy:
+            if line.invoice_policy == 'product':
+                invoice_policy = line.product_id.invoice_policy
+            else:
+                invoice_policy = line.invoice_policy
+
+            if invoice_policy == 'order':
                 line.qty_to_invoice_on_date = (
                         line.product_uom_qty - line.qty_invoiced
                 )
@@ -500,8 +515,11 @@ class SaleOrderLine(models.Model):
                         [x.quantity for x in deliveries]
                     )
                     line.qty_to_invoice_on_date = (
-                        qty_delivered_in_date - line.qty_invoiced
+                        qty_delivered_in_date - line.qty_invoiced + line.import_qty_delivered
                     )
+                else:
+                    line.qty_to_invoice_on_date = line.import_qty_delivered - line.qty_invoiced
+
             else:
                 line.qty_to_invoice_on_date = (
                     line.qty_delivered - line.qty_invoiced

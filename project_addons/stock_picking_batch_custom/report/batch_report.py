@@ -1,13 +1,11 @@
-# Copyright 2018 Tecnativa - Carlos Dauden
 # Copyright 2019 Comunitea - Kiko Sánchez
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 import logging
 
 from odoo import api, fields, models
-
+from odoo import tools
 
 _logger = logging.getLogger(__name__)
-
 
 class ReportPrintBatchPicking(models.AbstractModel):
     _name = "report.stock_picking_batch_custom.report_batch_picking_custom"
@@ -124,8 +122,10 @@ class ReportPrintBatchPicking(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
+
         model = "stock.picking.batch"
         docs = self.env[model].browse(docids)
+        docs.write({'state': 'in_progress'})
         return {
             "doc_ids": docids,
             "doc_model": model,

@@ -2,10 +2,77 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import api, fields, models
 
+class SaleOrder(models.Model):
+
+    _inherit = 'sale.order'
+
+    @api.multi
+    def remig_act_qties(self, force=False):
+        print ("Revisando {}".format(self.mapped('name')))
+        for so in self:
+            print ("Pedido {}".format(so.name))
+            pick = so.picking_ids.filtered(lambda x: ('ALB/' in x.name or'WH/OUT/' in x.name) and x.state == 'cancel')
+            alb_p = so.picking_ids.filtered(lambda x: 'ALB_P/' in x.name and any(not move.sale_line_id for move in x.move_lines))
+
+            if pick and alb_p:
+
+                for sol in so.order_line:
+                    print ('-    > Linea {}'.format(sol.display_name))
+                    product_id = sol.product_id
+                    pick_move = pick.move_lines.filtered(lambda x: x.sale_line_id and x.state == 'cancel' and x.product_id == product_id)
+
+                    if pick_move:
+                        print('-    -    > PICK MOVE {}: {}'.format(pick_move.display_name, product_id.display_name))
+                        alb_p_id = pick_move.id + 1
+                        out_move = alb_p.move_lines.filtered(lambda x: x.product_id == product_id and not x.sale_line_id )
+
+                        if out_move:
+                            print('-    -    > OUT MOVE {}: {}'.format(out_move.display_name, product_id.display_name))
+                            if out_move.id != alb_p_id and not force:
+                                print ("\n -------------- Revisar el albaran {} -------------------".format(alb_p.name))
+                            else:
+                                print ('LINK ....')
+                                out_move.sale_line_id = pick_move.sale_line_id
 
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
+
+
+    def check_sale_lines(self):
+        return all(x.sale_line_id for x in self.move_lines)
+
+    @api.multi
+    def remig_act_qties(self):
+        for pick in self.filtered(lambda x: 'ALB_P/' in x.name):
+            pick.sale_id.remig_act_qties()
+
+    @api.multi
+    def mig_picks_with_moves_with_out_sale_lines(self):
+
+        for pick in self.filtered(lambda x: 'ALB_P/' in x.name):
+
+            if all(smp.sale_line_id for smp in pick.move_lines):
+                continue
+            sale_id = pick.sale_id
+            if not sale_id:
+                continue
+            product_ids = pick.move_lines.mapped('product_id')
+            print ('Revisando {}'.format(pick.name))
+            for product in product_ids:
+                smp = pick.move_lines.filtered(lambda x: x.product_id == product)
+                solp = sale_id.order_line.filtered(lambda x: x.product_id == product)
+                if len(smp) == 1 and len(solp) == 1 and not smp.sale_line_id:
+                    msg= "Actualizado el movimiento {}: {} \n con la línea {}".format(pick.name, smp.display_name, solp.display_name)
+                    print (msg)
+                    msg = "Actualizado el movimiento {}: {} <br/> con la línea {}".format(pick.name, smp.display_name,
+                                                                                       solp.display_name)
+                    pick.message_post(body=msg)
+
+                    smp.sale_line_id = solp
+
+
+
 
 
     @api.multi
@@ -34,7 +101,7 @@ class StockPicking(models.Model):
                 print ("Transfiero {}".format(pick.name))
                 #pick.action_done()
 
-        print("Transfiero {}".format(pick_to_transfer.mapped('name')))
+        #print("Transfiero {}".format(pick_to_transfer.mapped('name')))
 
 
     def do_migration(self, dest_pick):

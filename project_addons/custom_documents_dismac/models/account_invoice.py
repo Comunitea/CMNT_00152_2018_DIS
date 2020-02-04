@@ -49,15 +49,9 @@ class AccountInvoiceLine(models.Model):
                 line.invoice_id.type in ["in_refund", "out_refund"] and -1 or 1
             )
             line.price_total_signed = line.price_total * sign
-            line.quantity_signed = line.quantity * sign
 
     price_total_signed = fields.Monetary(
         string="Amount (with Taxes)",
         compute="_compute_price_signed",
         help="Total amount with taxes",
-    )
-
-    quantity_signed = fields.Float(
-        string="quantity",
-        compute="_compute_price_signed",
     )

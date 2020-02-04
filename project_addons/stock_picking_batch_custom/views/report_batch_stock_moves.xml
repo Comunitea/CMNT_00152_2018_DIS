@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report string="Listado de picking"
+            id="action_report_batch_stock_moves_custom"
+            model="stock.picking.batch"
+            report_type="qweb-html"
+            name="stock_picking_batch_custom.report_batch_stock_move"
+            file="stock_picking_batch_custom.report_batch_stock_move"/>
+
+
+
+    <template id="report_batch_stock_move">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                    <t t-foreach="docs" t-as="doc">
+                        <div class="page" >
+                             <style type="text/css">
+
+                            .table td {
+                              border-top: 0px solid #dee2e6;
+
+                            }
+                            .border_top {
+                                 border-top: 1px solid #dee2e6;
+                                 }
+                            .product_size{font-size: smaller; }
+                            .gray {color: red;}
+                            </style>
+
+                            <div class="row" style="margin: 5px">
+                                <div class="col-3">
+                                    <strong>Date:</strong>
+                                    <span t-esc="now" t-options="{'widget': 'datetime'}"/>
+                                </div>
+                                <div class="col-3">
+                                    <strong>Order:</strong>
+                                    <span t-field="doc.name"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Picked By:</strong>
+                                    <span t-field="doc.user_id.name"/>
+                                </div>
+                            </div>
+                        <t t-if="doc.notes">
+                            <p t-esc="doc.notes"/>
+                        </t>
+                        <br/>
+
+
+                            <t t-if="doc.grouped_move_line">
+
+                                <table class="table table-condensed " string="ARTICULOS SIN STOCK">
+                                        <thead string="Moviemintos">
+                                            <th width="67%" style="padding: 3px">
+                                                <b>
+                                                    <span>Artículo</span>
+                                                </b>
+                                            </th>
+                                            <th width="15" style="padding: 3px">INFO</th>
+                                            <th width="8%" style="padding: 3px">Origen</th>
+                                            <th width="5%" style="padding: 3px" ><span>ORD</span></th>
+                                            <th width="5%" style="padding: 3px" ><span>RSV</span></th>
+                                            <!--th width="5%" style="padding: 3px" ><span>H</span></th-->
+
+                                        </thead>
+                                    <tbody class="product_size" >
+
+                                        <t t-foreach="doc.grouped_move_line" t-as="move">
+                                            <tr class="product_size border_top">
+                                                <td style="padding: 3px">
+                                                    <span t-field="move.product_id.display_name"/>
+                                                </td>
+                                                <td style="padding: 3px; text-align: left; color: #333333">
+                                                    <span t-field="move.product_id.qty_available"/>
+                                                    <t t-if="move.product_id.import_location_str">
+                                                        -
+                                                        <span t-field="move.product_id.import_location_str"/>
+                                                    </t>
+
+
+                                                </td>
+                                                <td style="padding: 3px; text-align: center">
+                                                    <span t-field="move.location_id.name"/>
+                                                </td>
+                                                <td style="padding: 3px">
+                                                    <span t-field="move.qty_ordered"/>
+                                                </td>
+                                                <td style="padding: 3px">
+                                                    <span t-field="move.qty_reserved"/>
+                                                </td>
+                                                <!--td style="padding: 3px">
+                                                    <span t-field="move.qty_done"/>
+                                                </td-->
+                                            </tr>
+                                            <t t-if="not move.all_assigned and move.move_lines">
+                                                <t t-foreach="move.move_lines" t-as="ml">
+                                                    <t t-if="ml.not_stock == 0">
+                                                        <tr class="product_size">
+
+                                                            <td style="padding: 3px">
+                                                            </td>
+                                                            <td style="padding: 3px; text-align: right">
+                                                                 <span t-field="ml.move_id.picking_id.name"/>
+
+                                                            </td>
+                                                             <td style="padding: 3px; text-align: center">
+                                                                <t t-if="ml.not_stock == 0">
+                                                                    <span t-field="ml.location_id.name"/></t>
+                                                            </td>
+
+                                                            <td style="padding: 3px">
+                                                                <span t-field="ml.product_uom_qty"/>
+                                                            </td>
+
+                                                            <td style="padding: 3px">
+                                                                <span t-field="ml.not_stock"/>
+
+                                                            </td>
+                                                            <!--td style="padding: 3px">
+                                                                <span t-field="ml.qty_done"/>
+                                                            </td-->
+
+                                                        </tr>
+                                                    </t>
+                                                    <t t-if="ml.not_stock != 0">
+                                                        <tr class="product_size gray">
+                                                            <td style="padding: 3px">
+                                                            </td>
+                                                            <td style="padding: 3px; text-align: right; color: red">
+                                                                <span t-field="ml.move_id.picking_id.name"/>
+                                                            </td>
+                                                             <td style="padding: 3px; text-align: right">
+
+                                                            </td>
+
+                                                            <td style="padding: 3px">
+                                                                <span t-field="ml.not_stock" />
+                                                            </td>
+
+                                                            <td style="padding: 3px">
+                                                                 _____
+
+                                                            </td>
+                                                            <!--td style="padding: 3px">
+
+                                                            </td-->
+
+                                                        </tr>
+                                                    </t>
+
+
+
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </tbody>
+
+
+                            </table>
+                        </t>
+
+                        </div>
+                    </t>
+
+            </t>
+        </t>
+    </template>
+</odoo>

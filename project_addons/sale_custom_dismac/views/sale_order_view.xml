@@ -33,6 +33,9 @@
             <xpath expr="//field[@name='order_line']/tree//field[@name='analytic_tag_ids']" position="attributes">
                 <attribute name="attrs">{'column_invisible': True}</attribute>
             </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='product_uom_qty']" position="after">
+                <field name="package_qty"/>
+            </xpath>
             <xpath expr="//field[@name='order_line']/tree//field[@name='price_subtotal']" position="after">
                 <button name="duplicate_line"
                         icon="fa-copy"
@@ -158,6 +161,7 @@
         <field name="arch" type="xml">
             <field name="amount_total" position="after">
                 <field name="pending_invoice_amount"/>
+                <!--field name="order_line_count"/-->
                 <field name="client_order_ref"/>
             </field>
         </field>

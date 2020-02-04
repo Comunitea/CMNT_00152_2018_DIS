@@ -5,10 +5,12 @@
              <field name="model">sale.order</field>
              <field name="inherit_id" ref="sale.view_order_form" />
              <field name="arch" type="xml">
+<!--                <field name="warehouse_id">-->
+<!--                    <field name="default_location_src_id" ></field>-->
+<!--                </field>-->
                 <xpath expr="//tree/field[@name='product_uom_qty']" position="after">
-                    <field name="qty_available" attrs="{'column_invisible': [('parent.state', '=', 'sale')]}"/>
+                    <field name="virtual_stock_conservative"/>
                 </xpath>
-
             </field>
         </record>
 
@@ -18,12 +20,24 @@
             <field name="model">sale.order.line</field>
             <field name="inherit_id" ref="sale_order_line_form_button.sale_order_line_form_view" />
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='route_id']" position="before">
-                    <field name="stock_str" readonly="1"/>
-                    <field name="virtual_available"/>
-                    <field name="qty_available"/>
+                <xpath expr="//label[@for='name']" position="before">
+                    <group >
+                        <group string="Stock Actual">
+                            <field name="qty_available"/>
+                            <field name="virtual_stock_conservative"/>
+                            <field name="virtual_available"/>
+                            <field name="incoming_qty"/>
+                            <field name="outgoing_qty"/>
+                        </group>
+                        <group string="Stock al confirmar la venta">
+                            <p colspan="2" >Se calcula al confirmar la venta, no la línea</p>
+                             <field name="line_qty_available"/>
+                            <field name="line_virtual_available"/>
+                        </group>
+                    </group>
                 </xpath>
             </field>
     </record>
 </odoo>
+
 

@@ -7,4 +7,12 @@ class ProductProduct(models.Model):
 
     _inherit = 'product.product'
 
-    review_order = fields.Boolean()
+    review_order = fields.Boolean() 
+   
+    
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    package_qty = fields.Float(
+        string='Package Quantity', 
+    )

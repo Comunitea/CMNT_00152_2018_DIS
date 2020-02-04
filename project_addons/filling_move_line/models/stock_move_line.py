@@ -27,6 +27,7 @@ class StockMove(models.Model):
                 if move.product_id.tracking != 'serial':
                     vals = move._prepare_move_line_vals()
                     vals.update(not_stock=qty,
+                                product_uom_qty=0,
                                 location_dest_id=sugested_location_dest.id,
                                 location_id=sugested_location.id)
                     move_line = self.env['stock.move.line'].create(vals)
@@ -54,8 +55,13 @@ class StockMoveLine(models.Model):
     sale_line_id = fields.Many2one(related='move_id.sale_line_id', string='Venta')
     src_removal_priority = fields.Integer(related='location_id.removal_priority', store=True)
     dest_removal_priority = fields.Integer(related='location_dest_id.removal_priority', store=True)
-    ordered_qty = fields.Float(related="move_id.product_uom_qty")
+    ordered_qty = fields.Float(string="C. Ordenada", compute="_get_ordered_qty")
     empty_line = fields.Boolean('Creada vacía')
+
+    @api.multi
+    def _get_ordered_qty(self):
+        for sml in self.filtered(lambda x: not x.not_stock):
+            sml.ordered_qty = sml.move_id.product_uom_qty
 
     @api.onchange('lot_id')
     def onchange_serial_lot_id(self):

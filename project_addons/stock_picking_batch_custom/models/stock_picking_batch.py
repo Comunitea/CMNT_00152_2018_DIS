@@ -55,7 +55,7 @@ class BatchPickingGroupMove(models.Model):
 
         if self._context.get('fill_qty_done', False):
             for line in self:
-                for sm_id in line.move_line_ids:
+                for sm_id in line.move_line_ids.filtered(lambda x: x.not_stock == 0):
                     sm_id.qty_done = sm_id.product_uom_qty
                 line.qty_done = sum(x.qty_done for x in line.move_line_ids)
         else:
@@ -100,16 +100,7 @@ class BatchPickingGroupMove(models.Model):
             "target": "new",
             "res_id": self.id,
             "context": dict(
-                self.env.context,
-                show_lots_m2o=move_id.has_tracking != "none",
-                show_lots_text=move_id.has_tracking != "none"
-                and self.batch_id.picking_type_id.use_create_lots
-                and not self.batch_id.picking_type_id.use_existing_lots,
-                show_source_location=self.location_id.child_ids,
-                show_destination_location=self.location_dest_id.child_ids,
-                show_package=not self.location_id.usage == "supplier",
-                show_reserved_quantity=move_id.state != "done",
-            ),
+                self.env.context),
         }
 
 
@@ -125,7 +116,7 @@ class StockBatchPicking(models.Model):
 
     moves_all_count = fields.Integer("Moves count", compute=get_moves_count)
     qty_applied = fields.Boolean(default=False)
-
+    grouped_move_line = fields.One2many('batch.group.move.line', 'batch_id', string="Lineas agrupadas de picking")
 
     def action_view_stock_picking_related(self):
         self.ensure_one()
@@ -133,6 +124,11 @@ class StockBatchPicking(models.Model):
         action['domain'] = [('id', 'in', self.picking_dest_ids.ids)]
         return action
 
+    def action_view_grouped_line(self):
+        self.ensure_one()
+        action = self.env.ref('stock_picking_batch_custom.action_stock_group_move_tree_operations').read([])[0]
+        action['domain'] = [('id', 'in', self.grouped_move_line.ids)]
+        return action
 
     def action_show_moves_kanban(self):
         self.ensure_one()
@@ -170,42 +166,71 @@ class StockBatchPicking(models.Model):
         to_apply = self.filtered(lambda x: not x.qty_applied)
         to_apply.force_set_qty_done()
 
+    @api.multi
+    def action_back_to_draft(self):
+        self.picking_ids.do_unreserve()
+        self.action_assign()
+        for batch in self:
+            batch.write({'state': 'draft'})
+
 
     @api.multi
     def action_print_picking(self):
         if len(self)==1 and self.picking_type_id and self.picking_type_id.code == 'internal':
-            return self.env.ref('stcok_picking_batch_custom.action_report_batch_picking_custom')
+            return self.env.ref('stock_picking_batch_custom.action_report_batch_picking_custom')
         return super().action_print_picking()
+
+    @api.multi
+    def action_assign(self):
+        for batch in self:
+            for pick in batch.picking_ids:
+                pick.action_assign()
+        ## Creo líneas vacías para los movvimientos que no existen
+        self.mapped('picking_ids').mapped('move_lines').create_empty_move_lines()
+        self.write({'state': 'in_progress'})
+        return True
 
     @api.multi
     def action_transfer(self):
         """ Create wizard to process all active pickings in these batches
         """
+
+        self.ensure_one()
         picks_to_split = self.env['stock.picking']
         precision_digits = self.env[
             'decimal.precision'].precision_get('Product Unit of Measure')
-
         for batch in self:
             picking_ids = batch.picking_ids
             for picking_id in picking_ids.filtered(lambda x:x.state in ('confirmed', 'assigned')):
                 if float_compare(picking_id.quantity_done, 0, precision_digits=precision_digits) == 0:
                     raise ValidationError('El albarán {} no tiene nada realizado. Debes sacarlo de la agrupación o marcar alguna cantidad para hacer'.format(picking_id.name))
             ## Hago el split de todos los albaranes
-            picks_to_split += picking_ids.filtered(lambda x: not x.all_assigned)
 
-            picks_to_split.split_process()
+            #picks_to_split += picking_ids.filtered(lambda x: not x.all_assigned)
+            for pick in picking_ids:
+                for move in pick.move_lines:
+                    if move.product_uom_qty < move.quantity_done:
+                        picks_to_split += pick
+                        pick.message_post(body='Este albarán se ha sacado de la agrupación {} por una incidencia'.format(batch.name))
 
-        super().action_transfer()
-        back_domain = [('backorder_id', 'in', picks_to_split.ids)]
-        backorder_ids = self.env['stock.picking'].search(back_domain)
-        backorder_ids.write({'move_type': 'one'})
-        action = self.env.ref('stock.action_picking_tree_all').read()[0]
-        action['context'] = self._context
-        if backorder_ids:
-            action['domain'] = [('id', 'in', backorder_ids.ids)]
+            #picks_to_split += picking_ids.filtered(lambda x:  x.all_assigned)
+            #picks_to_split.split_process()
+        picks_to_split.write({'batch_id': False})
+        if self.picking_ids:
+            return super().action_transfer()
         else:
-            if len(self) == 1:
-                action['domain'] = [('id', 'in', self.picking_dest_ids.ids)]
+
+
+
+
+        # picks_to_split.write({'batch_id': batch.id})
+        # back_domain = [('backorder_id', 'in', picks_to_split.ids)]
+        # backorder_ids = self.env['stock.picking'].search(back_domain)
+        # backorder_ids.write({'move_type': 'one'})
+            action = self.env.ref('stock.action_picking_tree_all').read()[0]
+            action['context'] = self._context
+            if picks_to_split:
+                action['domain'] = [('id', 'in', picks_to_split.ids)]
             else:
-                action['domain'] = [('id', 'in', self.mapped('picking_dest_ids').ids)]
-        return action
+                action['domain'] = [('id', 'in', self.picking_ids.ids)]
+            return action

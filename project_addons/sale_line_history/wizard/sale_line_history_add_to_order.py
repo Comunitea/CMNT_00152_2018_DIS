@@ -21,4 +21,7 @@ class SaleOrderLineHistoryAddToOrder(models.TransientModel):
         vals = self.env["sale.order.line"].play_onchanges(
             line_values, ["product_id", "product_uom_qty"]
         )
+        if vals.get('product_image', False):
+            del vals['product_image']
+
         self.env["sale.order.line"].create(vals)
