@@ -515,7 +515,7 @@ class SaleOrderLine(models.Model):
                         [x.quantity for x in deliveries]
                     )
                     line.qty_to_invoice_on_date = (
-                        qty_delivered_in_date - line.qty_invoiced
+                        qty_delivered_in_date - line.qty_invoiced + line.import_qty_delivered
                     )
             else:
                 line.qty_to_invoice_on_date = (
