@@ -80,11 +80,11 @@
             <div class="quote-section">
                 <div class="form-group row form-field">
                     <div class="col-lg-3 col-md-4 text-md-right">
-                        <label class="col-form-label" for="products_found">Productos añadidos desde tienda:</label>
+                        <label class="col-form-label" for="products_add">Productos añadidos desde tienda:</label>
                     </div>
                     <div class="col-lg-9 col-md-8">
                         <t t-foreach="current_quote.product_ids" t-as="product" t-if="current_quote and current_quote.product_ids">
-                            <p class="mt8 mb0" t-if="product">
+                            <p class="mt8 mb0" t-if="product" name="products_add">
                                 <a t-att-href="'/product/%s' % product.slug if product.slug else keep('/shop/product/%s' % slug(product))" t-att-content="product.name" t-field="product.name" />
                                 <span> - </span>
                                 <a t-att-href="'/presupuestos?delete_product=%s' % product.id" class="o_remove" title="Eliminar" alt="Eliminar" rel="noindex, nofollow">
@@ -111,7 +111,7 @@
                 </div>
                 <div class="form-group row form-field o_website_form_custom">
                     <div class="col-lg-3 col-md-4 text-md-right">
-                        <label class="col-form-label" for="products_not_found">Productos No encontrados en la web:</label>
+                        <label class="col-form-label" for="products_not_found">Productos NO encontrados en la web:</label>
                     </div>
                     <div class="col-lg-9 col-md-8">
                         <textarea class="form-control o_website_form_input" rows="8" name="products_not_found"
@@ -255,7 +255,7 @@
             </t>
             <h6><strong>Productos encontrados en la web: </strong><span t-if="not current_quote.products_found" class="text-muted">No proporcionados</span></h6>
             <span t-field="current_quote.products_found"/>
-            <h6><strong>Productos no encontrados en la web: </strong><span t-if="not current_quote.products_not_found" class="text-muted">No proporcionados</span></h6>
+            <h6><strong>Productos NO encontrados en la web: </strong><span t-if="not current_quote.products_not_found" class="text-muted">No proporcionados</span></h6>
             <span t-field="current_quote.products_not_found"/>
         </div>
 

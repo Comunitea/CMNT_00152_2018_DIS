@@ -164,7 +164,7 @@ msgstr ""
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.quote
-msgid "<strong>Productos no encontrados en la web: </strong>"
+msgid "<strong>Productos NO encontrados en la web: </strong>"
 msgstr ""
 
 #. module: website_base
@@ -1076,7 +1076,7 @@ msgstr ""
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.quote_form
-msgid "Productos No encontrados en la web:"
+msgid "Productos NO encontrados en la web:"
 msgstr ""
 
 #. module: website_base
@@ -1113,7 +1113,7 @@ msgstr "Productos añadidos desde la tienda"
 #: model_terms:ir.ui.view,arch_db:website_base.sale_quote_form_view
 #: model_terms:ir.ui.view,arch_db:website_base.sale_quote_view
 msgid "Products find on website"
-msgstr "Productos encontrados"
+msgstr "Productos encontrados en la web"
 
 #. module: website_base
 #: code:addons/website_base/models/quote.py:32
