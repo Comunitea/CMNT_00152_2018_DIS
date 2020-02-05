@@ -66,7 +66,7 @@
                                 <field name="website_meta_description"/>
                             </group>
                         </page>
-                        <page string="Categories">
+                        <page string="Category">
                             <group>
                                 <field name="category_id" widget="one2many_tags"/>
                             </group>
@@ -345,7 +345,7 @@
               parent="website_sale.menu_catalog" sequence="5"/>
 
     <!-- Configuration sub-menus -->
-    <menuitem id="menu_product_offers"
+    <menuitem id="menu_product_offers" name="Offers"
               action="product_offer_action"
               parent="website_sale.menu_product_settings" sequence="4"/>
 
