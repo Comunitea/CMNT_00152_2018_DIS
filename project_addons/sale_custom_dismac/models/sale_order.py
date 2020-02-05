@@ -25,7 +25,8 @@ class SaleOrder(models.Model):
     )
     priority = fields.Selection(PROCUREMENT_PRIORITIES, "Priority", default="1")
     pending_invoice_amount = fields.Float(
-        compute="_compute_pending_invoice_amount"
+        compute="_compute_pending_invoice_amount", 
+        search="_search_pending_invoice_amount"
     )
     project_reference = fields.Char('Project Reference')
     transmit_method_id = fields.Many2one(
@@ -58,7 +59,7 @@ class SaleOrder(models.Model):
             for line in order.order_line:
                 if line.qty_to_invoice_on_date:
                     order_amount += (
-                        line.qty_to_invoice_on_date * line.price_unit
+                        line.qty_to_invoice_on_date * line.price_unit * (1 - line.discount/100)
                     )
             order.pending_invoice_amount = order_amount
 
@@ -189,9 +190,65 @@ class SaleOrder(models.Model):
         else:
             return [("invoice_status", "=", "to invoice")]
 
+    def _compute_sale_complete(self):
+        for order in self:
+            for line in order.order_line:
+                if line.product_uom_quantity != line.qty_delivered_in_date:
+                    order.sale_complete = False
+                    continue
+            
+            order.sale_complete = True
+
+    def _search_sale_complete(self, operator, operand):
+        if self._context.get("invoice_until"):
+            query = """
+            SELECT DISTINCT sol.order_id
+            FROM sale_order_line_delivery soly
+                JOIN sale_order_line sol on soly.line_id = sol.id
+            WHERE sol.invoice_status = 'to invoice'
+                and sol.company_id = %(company_id)s
+                and soly.delivery_date <= %(delivery_date)s
+            GROUP BY soly.line_id, sol.order_id
+            HAVING SUM(soly.quantity) - SUM(sol.product_uom_qty) = 0
+            """
+            params = {
+                "company_id": self.env.user.company_id.id,
+                "delivery_date": self._context.get("invoice_until"),
+            }
+        else:
+            query = """
+            SELECT DISTINCT sol.order_id
+            FROM sale_order_line_delivery soly
+                JOIN sale_order_line sol on soly.line_id = sol.id
+            WHERE sol.invoice_status = 'to invoice'
+                and sol.company_id = %(company_id)s
+            GROUP BY soly.line_id, sol.order_id
+            HAVING SUM(soly.quantity) - SUM(sol.product_uom_qty) = 0
+            """
+            params = {
+                "company_id": self.env.user.company_id.id,
+            }
+        self.env.cr.execute(query, params)
+        results = self.env.cr.fetchall()
+        if results:
+            if operand == True:
+                return [("id", "in", [x[0] for x in results])]
+            else:
+                return [("id", "not in", [x[0] for x in results])]
+        if operand == True:
+            return [("id", "in", [])]
+        else:
+            return []
+
+
     has_invoiceable_lines = fields.Boolean(
         compute="_compute_has_invoiceable_lines",
         search="_search_has_invoiceable_lines",
+    )
+
+    sale_complete = fields.Boolean(
+        compute="_compute_sale_complete",
+        search="_search_sale_complete",
     )
 
     @api.model_cr

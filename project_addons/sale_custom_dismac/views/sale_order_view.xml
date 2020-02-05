@@ -150,6 +150,7 @@
             <filter name="my_sale_orders_filter" position="after">
                 <filter name="invoiceable_sales" string="Search invoiceable sales" domain="[('has_invoiceable_lines', '=', True)]"/>
                 <filter name="pending_review" string="pending review sales" domain="[('pending_review', '=', True)]"/>
+                <filter name="complete_sales" string="Sales complete" domain="[('sale_complete', '=', True)]"/>
             </filter>
         </field>
     </record>
