@@ -4,7 +4,7 @@
 #
 ##############################################################################
 #
-#    Copyright (C) 2018 Comunitea Servicios Tecnológicos S.L. All Rights Reserved
+#    Copyright (C) 2020 Comunitea Servicios Tecnológicos S.L. All Rights Reserved
 #    Vicente Ángel Gutiérrez Fernández <vicente@comunitea.com>
 #
 #    This program is free software: you can redistribute it and/or modify
