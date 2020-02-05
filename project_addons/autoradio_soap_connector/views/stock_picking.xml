@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_autoradio_buttons_form" model="ir.ui.view">
+        <field name="name">view.picking.autoradio.buttons.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_confirm']" position="after">
+                <button name="send_autoradio_picking_tar"
+                        string="Autoradio TAR" type="object" class="oe_highlight"
+                        groups="stock.group_stock_manager" attrs="{'invisible': [('delivery_type', 'not in', ['autoradio'])]}"/>
+                <button name="delete_autoradio_shipping"
+                        string="Delete from Autoradio" type="object" class="oe_highlight"
+                        groups="stock.group_stock_manager" attrs="{'invisible': ['|', ('delivery_type', 'not in', ['autoradio']), ('autoradio_expedition_number', '=', False)]}"/>
+                <button name="add_autoradio_package"
+                        string="Autoradio Package" type="object" class="oe_highlight"
+                        groups="stock.group_stock_manager" attrs="{'invisible': [('delivery_type', 'not in', ['autoradio'])]}"/>
+            </xpath>
+            <xpath expr="//page[@name='extra']" position="inside">
+                <separator string="Autoradio Information" attrs="{'invisible': [('delivery_type', 'not in', ['autoradio'])]}"/>
+                <group attrs="{'invisible': [('delivery_type', 'not in', ['autoradio'])]}">
+                    <group>
+                        <field name="autoradio_type"/>
+                        <field name="autoradio_refund_amount"/>
+                        <field name="autoradio_obs"/>
+                        <field name="autoradio_obs_extra"/>
+                        <field name="autoradio_hard_to_handle"/>
+                        <button name="get_estimated_price_rate_from_autoradio" groups="stock.group_stock_manager" string="Calculate Autoradio Price" type="object" class="btn-link" icon="fa-arrow-right"/>
+                        <field name="autoradio_estimated_price_rate" readonly="1" attrs="{'invisible': [('autoradio_estimated_price_rate', '=', False)]}"/>
+                        <field name="autoradio_expedition_number" readonly="1" attrs="{'invisible': [('autoradio_expedition_number', '=', False)]}"/>
+                        <button name="get_label_from_autoradio" attrs="{'invisible': [('autoradio_expedition_number', '=', False)]}" groups="stock.group_stock_manager" string="Get Autoradio Tag" type="object" class="btn-link" icon="fa-arrow-right"/>
+                        <button name="get_barcode_from_autoradio" attrs="{'invisible': [('autoradio_expedition_number', '=', False)]}" groups="stock.group_stock_manager" string="Get Autoradio Barcode" type="object" class="btn-link" icon="fa-arrow-right"/>
+                        <field name="autoradio_ccbb" readonly="1" attrs="{'invisible': [('autoradio_ccbb', '=', False)]}"/>
+                        <field name="autoradio_ccbb_type" readonly="1" attrs="{'invisible': [('autoradio_ccbb_type', '=', False)]}"/>
+                        <field name="autoradio_channelling" readonly="1" attrs="{'invisible': [('autoradio_channelling', '=', False)]}"/>
+                    </group>
+                    <group>
+                        <field name="autoradio_send_today"/>
+                        <field name="autoradio_close_shipping"/>
+                        <field name="autoradio_payment"/>
+                        <field name="autoradio_declared_value"/>
+                        <field name="autoradio_cash_on_delivery_payment"/>
+                        <field name="autoradio_check_1_amount" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                        <field name="autoradio_check_1_date" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                        <field name="autoradio_check_2_amount" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                        <field name="autoradio_check_2_date" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                        <field name="autoradio_check_3_amount" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                        <field name="autoradio_check_3_date" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                        <field name="autoradio_check_4_amount" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                        <field name="autoradio_check_4_date" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
