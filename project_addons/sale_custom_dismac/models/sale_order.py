@@ -204,12 +204,17 @@ class SaleOrder(models.Model):
             query = """
             SELECT DISTINCT sol.order_id
             FROM sale_order_line_delivery soly
-                JOIN sale_order_line sol on soly.line_id = sol.id
-            WHERE sol.invoice_status = 'to invoice'
-                and sol.company_id = %(company_id)s
-                and soly.delivery_date <= %(delivery_date)s
+                RIGHT JOIN sale_order_line sol on soly.line_id = sol.id
+            WHERE 
+                sol.company_id = %(company_id)s
+                
             GROUP BY soly.line_id, sol.order_id
-            HAVING SUM(soly.quantity) - SUM(sol.product_uom_qty) = 0
+            HAVING SUM(
+                CASE WHEN soly.quantity is Null or soly.delivery_date > %(delivery_date)s
+                    THEN 0
+                ELSE soly.quantity
+                END
+            ) - SUM(sol.product_uom_qty) != 0
             """
             params = {
                 "company_id": self.env.user.company_id.id,
@@ -219,11 +224,16 @@ class SaleOrder(models.Model):
             query = """
             SELECT DISTINCT sol.order_id
             FROM sale_order_line_delivery soly
-                JOIN sale_order_line sol on soly.line_id = sol.id
-            WHERE sol.invoice_status = 'to invoice'
-                and sol.company_id = %(company_id)s
+                RIGHT JOIN sale_order_line sol on soly.line_id = sol.id
+            WHERE 
+                sol.company_id = %(company_id)s
             GROUP BY soly.line_id, sol.order_id
-            HAVING SUM(soly.quantity) - SUM(sol.product_uom_qty) = 0
+            HAVING SUM(
+                CASE WHEN soly.quantity is Null
+                    THEN 0
+                ELSE soly.quantity
+                END
+            ) - SUM(sol.product_uom_qty) != 0
             """
             params = {
                 "company_id": self.env.user.company_id.id,
@@ -232,9 +242,9 @@ class SaleOrder(models.Model):
         results = self.env.cr.fetchall()
         if results:
             if operand == True:
-                return [("id", "in", [x[0] for x in results])]
-            else:
                 return [("id", "not in", [x[0] for x in results])]
+            else:
+                return [("id", "in", [x[0] for x in results])]
         if operand == True:
             return [("id", "in", [])]
         else:
