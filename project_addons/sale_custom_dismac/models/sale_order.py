@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 from .res_partner import PROCUREMENT_PRIORITIES
 from odoo.tools import float_is_zero
 from odoo.tools import float_compare, pycompat
+from datetime import datetime
 
 
 class SaleOrder(models.Model):
@@ -25,32 +26,38 @@ class SaleOrder(models.Model):
     )
     priority = fields.Selection(PROCUREMENT_PRIORITIES, "Priority", default="1")
     pending_invoice_amount = fields.Float(
-        compute="_compute_pending_invoice_amount", 
-        search="_search_pending_invoice_amount"
+        compute="_compute_pending_invoice_amount",
+        search="_search_pending_invoice_amount",
     )
-    project_reference = fields.Char('Project Reference')
+    project_reference = fields.Char("Project Reference")
     transmit_method_id = fields.Many2one(
-        related='partner_invoice_id.customer_invoice_transmit_method_id', string='Transmission Method',
-        store=True
-        )
-    commercial_partner_id = fields.Many2one(related='partner_id.commercial_partner_id')
-    order_line_count = fields.Integer('# Líneas', compute="_get_sale_line_count", store=True)
+        related="partner_invoice_id.customer_invoice_transmit_method_id",
+        string="Transmission Method",
+        store=True,
+    )
+    commercial_partner_id = fields.Many2one(
+        related="partner_id.commercial_partner_id"
+    )
+    order_line_count = fields.Integer(
+        "# Líneas", compute="_get_sale_line_count", store=True
+    )
 
     @api.multi
-    @api.depends ('order_line')
+    @api.depends("order_line")
     def _get_sale_line_count(self):
         for order in self:
             order.order_line_count = len(order.order_line)
+
     # Por compatibilidad entre sale_order_revision y sale_order_type
     @api.multi
-    @api.returns('self', lambda value: value.id)
+    @api.returns("self", lambda value: value.id)
     def copy(self, default=None):
         if default is None:
             default = {}
-        if default.get('name', '/') == '/' and self.type_id:
+        if default.get("name", "/") == "/" and self.type_id:
             if self.type_id.sequence_id:
-                default['name'] = self.type_id.sequence_id.next_by_id()
-                default['unrevisioned_name'] = default['name']
+                default["name"] = self.type_id.sequence_id.next_by_id()
+                default["unrevisioned_name"] = default["name"]
         return super(SaleOrder, self).copy(default=default)
 
     def _compute_pending_invoice_amount(self):
@@ -59,7 +66,9 @@ class SaleOrder(models.Model):
             for line in order.order_line:
                 if line.qty_to_invoice_on_date:
                     order_amount += (
-                        line.qty_to_invoice_on_date * line.price_unit * (1 - line.discount/100)
+                        line.qty_to_invoice_on_date
+                        * line.price_unit
+                        * (1 - line.discount / 100)
                     )
             order.pending_invoice_amount = order_amount
 
@@ -78,7 +87,7 @@ class SaleOrder(models.Model):
                         reference number"
                 )
                 raise UserError(msg)
-            if any(order.mapped('order_line.product_id.review_order')):
+            if any(order.mapped("order_line.product_id.review_order")):
                 order.pending_review = True
             else:
                 order.pending_review = False
@@ -196,7 +205,7 @@ class SaleOrder(models.Model):
                 if line.product_uom_quantity != line.qty_delivered_in_date:
                     order.sale_complete = False
                     continue
-            
+
             order.sale_complete = True
 
     def _search_sale_complete(self, operator, operand):
@@ -205,9 +214,9 @@ class SaleOrder(models.Model):
             SELECT DISTINCT sol.order_id
             FROM sale_order_line_delivery soly
                 RIGHT JOIN sale_order_line sol on soly.line_id = sol.id
-            WHERE 
+            WHERE
                 sol.company_id = %(company_id)s
-                
+
             GROUP BY soly.line_id, sol.order_id
             HAVING SUM(
                 CASE WHEN soly.quantity is Null or soly.delivery_date > %(delivery_date)s
@@ -225,7 +234,7 @@ class SaleOrder(models.Model):
             SELECT DISTINCT sol.order_id
             FROM sale_order_line_delivery soly
                 RIGHT JOIN sale_order_line sol on soly.line_id = sol.id
-            WHERE 
+            WHERE
                 sol.company_id = %(company_id)s
             GROUP BY soly.line_id, sol.order_id
             HAVING SUM(
@@ -235,9 +244,7 @@ class SaleOrder(models.Model):
                 END
             ) - SUM(sol.product_uom_qty) != 0
             """
-            params = {
-                "company_id": self.env.user.company_id.id,
-            }
+            params = {"company_id": self.env.user.company_id.id}
         self.env.cr.execute(query, params)
         results = self.env.cr.fetchall()
         if results:
@@ -250,15 +257,13 @@ class SaleOrder(models.Model):
         else:
             return []
 
-
     has_invoiceable_lines = fields.Boolean(
         compute="_compute_has_invoiceable_lines",
         search="_search_has_invoiceable_lines",
     )
 
     sale_complete = fields.Boolean(
-        compute="_compute_sale_complete",
-        search="_search_sale_complete",
+        compute="_compute_sale_complete", search="_search_sale_complete"
     )
 
     @api.model_cr
@@ -333,7 +338,7 @@ class SaleOrder(models.Model):
                     if group_key not in invoices:
                         inv_data = line._prepare_invoice()
                         invoice = inv_obj.create(inv_data)
-                        #invoice = inv_obj.with_context(mail_create_nosubscribe=True).create(inv_data)
+                        # invoice = inv_obj.with_context(mail_create_nosubscribe=True).create(inv_data)
                         references[invoice] = order
                         invoices[group_key] = invoice
                     elif group_key in invoices:
@@ -421,7 +426,9 @@ class SaleOrder(models.Model):
     @api.multi
     def action_propagate_priority(self):
         for order in self:
-            order.picking_ids.filtered(lambda x: x.state != 'done').mapped('move_lines').write({'priority': order.priority})
+            order.picking_ids.filtered(lambda x: x.state != "done").mapped(
+                "move_lines"
+            ).write({"priority": order.priority})
 
 
 class SaleOrderLine(models.Model):
@@ -433,43 +440,54 @@ class SaleOrderLine(models.Model):
     import_qty_delivered = fields.Float("Imported qty delivered", default=0)
     picking_imported = fields.Char("Imported picking")
     date_picking_imported = fields.Date("Date Imported picking")
-    product_categ_id = fields.Many2one(related="product_id.categ_id",
-                                       readonly=True)
-    review_order = fields.Boolean(related="product_id.review_order",
-                                       readonly=True)
+    product_categ_id = fields.Many2one(
+        related="product_id.categ_id", readonly=True
+    )
+    review_order = fields.Boolean(
+        related="product_id.review_order", readonly=True
+    )
 
     image_variant = fields.Binary(
-        "Alternative image for line", attachment=True,
-        help="This field holds the image used as image for the product variant, limited to 1024x1024px.")
-    image = fields.Binary(
-        "Big-sized image", compute='_compute_images', inverse='_set_image',
-        help="Image of the product variant (Big-sized image of product template if false). It is automatically "
-             "resized as a 1024x1024px image, with aspect ratio preserved.")
-    image_small = fields.Binary(
-        "Small-sized image", compute='_compute_images',
-        inverse='_set_image_small',
-        help="Image of the product variant (Small-sized image of product template if false).")
-    image_medium = fields.Binary(
-        "Alternative image for line", compute='_compute_images',
-        inverse='_set_image_medium',
-        help="Image of the product variant (Medium-sized image of product template if false).")
-    package_qty = fields.Float(
-        related='product_id.package_qty', readonly=True
+        "Alternative image for line",
+        attachment=True,
+        help="This field holds the image used as image for the product variant, limited to 1024x1024px.",
     )
+    image = fields.Binary(
+        "Big-sized image",
+        compute="_compute_images",
+        inverse="_set_image",
+        help="Image of the product variant (Big-sized image of product template if false). It is automatically "
+        "resized as a 1024x1024px image, with aspect ratio preserved.",
+    )
+    image_small = fields.Binary(
+        "Small-sized image",
+        compute="_compute_images",
+        inverse="_set_image_small",
+        help="Image of the product variant (Small-sized image of product template if false).",
+    )
+    image_medium = fields.Binary(
+        "Alternative image for line",
+        compute="_compute_images",
+        inverse="_set_image_medium",
+        help="Image of the product variant (Medium-sized image of product template if false).",
+    )
+    package_qty = fields.Float(related="product_id.package_qty", readonly=True)
 
     @api.multi
     def write(self, values):
 
-        lines = self.env['sale.order.line']
-        if 'product_id' in values and 'product_uom_qty' not in values:
+        lines = self.env["sale.order.line"]
+        if "product_id" in values and "product_uom_qty" not in values:
             lines = self.filtered(
-                lambda r: r.state == 'sale' and not r.is_expense and
-                          r.product_id.review_order == True)
+                lambda r: r.state == "sale"
+                and not r.is_expense
+                and r.product_id.review_order == True
+            )
         res = super(SaleOrderLine, self).write(values)
         if lines:
-            orders = lines.mapped('order_id')
+            orders = lines.mapped("order_id")
             for order in orders:
-                if not any(order.mapped('order_line.product_id.review_order')):
+                if not any(order.mapped("order_line.product_id.review_order")):
                     order.pending_review = False
             lines._action_launch_stock_rule()
         return res
@@ -481,7 +499,7 @@ class SaleOrderLine(models.Model):
             self = self - rev_lines
         return super()._action_launch_stock_rule()
 
-####### PARTE TEMPORAL PARA ASUMIR LA PARTE NO ENTREGADA EN LOS PEDIDOS DE
+    ####### PARTE TEMPORAL PARA ASUMIR LA PARTE NO ENTREGADA EN LOS PEDIDOS DE
     # VENTA IMPORTADOS
 
     def _get_qty_procurement(self):
@@ -491,31 +509,42 @@ class SaleOrderLine(models.Model):
         return qty
 
     @api.multi
-    @api.depends('move_ids.state', 'move_ids.scrapped',
-                 'move_ids.product_uom_qty', 'move_ids.product_uom')
+    @api.depends(
+        "move_ids.state",
+        "move_ids.scrapped",
+        "move_ids.product_uom_qty",
+        "move_ids.product_uom",
+    )
     def _compute_qty_delivered(self):
         super()._compute_qty_delivered()
-        for line in self:  # TODO: maybe one day, this should be done in SQL for performance sake
-            if line.qty_delivered_method == 'stock_move' or line.qty_delivered_method == 'manual':
+        for (
+            line
+        ) in (
+            self
+        ):  # TODO: maybe one day, this should be done in SQL for performance sake
+            if (
+                line.qty_delivered_method == "stock_move"
+                or line.qty_delivered_method == "manual"
+            ):
                 if line.import_qty_delivered and line.picking_imported:
                     line.qty_delivered += line.import_qty_delivered
 
-#############################################################################
+    #############################################################################
 
     @api.one
-    @api.depends('image_variant')
+    @api.depends("image_variant")
     def _compute_images(self):
-        if self._context.get('bin_size'):
+        if self._context.get("bin_size"):
             self.image_medium = self.image_variant
             self.image_small = self.image_variant
             self.image = self.image_variant
         else:
-            resized_images = tools.image_get_resized_images(self.image_variant,
-                                                            return_big=True,
-                                                            avoid_resize_medium=True)
-            self.image_medium = resized_images['image_medium']
-            self.image_small = resized_images['image_small']
-            self.image = resized_images['image']
+            resized_images = tools.image_get_resized_images(
+                self.image_variant, return_big=True, avoid_resize_medium=True
+            )
+            self.image_medium = resized_images["image_medium"]
+            self.image_small = resized_images["image_small"]
+            self.image = resized_images["image"]
 
     @api.one
     def _set_image(self):
@@ -532,7 +561,7 @@ class SaleOrderLine(models.Model):
     @api.one
     def _set_image_value(self, value):
         if isinstance(value, pycompat.text_type):
-            value = value.encode('ascii')
+            value = value.encode("ascii")
         image = tools.image_resize_image_big(value)
 
         # This is needed because when there is only one variant, the user
@@ -541,12 +570,12 @@ class SaleOrderLine(models.Model):
 
         self.image_variant = image
 
-    @api.onchange('product_uom', 'product_uom_qty')
+    @api.onchange("product_uom", "product_uom_qty")
     def product_uom_change(self):
         prev_price = self.price_unit
         prev_name = self.name
         res = super().product_uom_change()
-        #self.product_id_change()
+        # self.product_id_change()
         if self.order_id.type_id.no_change_price and prev_price != 0:
             self.price_unit = prev_price
         if self.product_id.review_order:
@@ -560,14 +589,14 @@ class SaleOrderLine(models.Model):
 
     def _compute_qty_to_invoice_on_date(self):
         for line in self:
-            if line.invoice_policy == 'product':
+            if line.invoice_policy == "product":
                 invoice_policy = line.product_id.invoice_policy
             else:
                 invoice_policy = line.invoice_policy
 
-            if invoice_policy == 'order':
+            if invoice_policy == "order":
                 line.qty_to_invoice_on_date = (
-                        line.product_uom_qty - line.qty_invoiced
+                    line.product_uom_qty - line.qty_invoiced
                 )
                 continue
             elif self._context.get("invoice_until"):
@@ -582,10 +611,14 @@ class SaleOrderLine(models.Model):
                         [x.quantity for x in deliveries]
                     )
                     line.qty_to_invoice_on_date = (
-                        qty_delivered_in_date - line.qty_invoiced + line.import_qty_delivered
+                        qty_delivered_in_date
+                        - line.qty_invoiced
+                        + line.import_qty_delivered
                     )
                 else:
-                    line.qty_to_invoice_on_date = line.import_qty_delivered - line.qty_invoiced
+                    line.qty_to_invoice_on_date = (
+                        line.import_qty_delivered - line.qty_invoiced
+                    )
 
             else:
                 line.qty_to_invoice_on_date = (
@@ -623,6 +656,43 @@ class SaleOrderLine(models.Model):
         search="_search_qty_to_invoice_on_date",
     )
     deliveries = fields.One2many("sale.order.line.delivery", "line_id")
+
+    @api.multi
+    def invoice_line_create_vals(self, invoice_id, qty):
+        res = super().invoice_line_create_vals(invoice_id, qty)
+        if self._context.get("invoice_until"):
+            invoice_until = datetime.strptime(
+                self._context.get("invoice_until") + " 23:59:59",
+                "%Y-%m-%d %H:%M:%S",
+            )
+            self.mapped("move_ids").filtered(
+                lambda x: x.state == "done"
+                and not x.invoice_line_id
+                and not x.location_dest_id.scrap_location
+                and x.location_dest_id.usage == "customer"
+                and x.date <= invoice_until
+            ).mapped("picking_id").write(
+                {"invoice_ids": [(6, 0, [invoice_id])]}
+            )
+        return res
+
+    @api.multi
+    def _prepare_invoice_line(self, qty):
+        vals = super(SaleOrderLine, self)._prepare_invoice_line(qty)
+        if self._context.get("invoice_until") and vals.get("move_line_ids"):
+            invoice_until = invoice_until = datetime.strptime(
+                self._context.get("invoice_until") + " 23:59:59",
+                "%Y-%m-%d %H:%M:%S",
+            )
+            moves = self.env["stock.move"].browse(
+                vals.get("move_line_ids")[0][2]
+            )
+            move_line_ids = []
+            for move in moves:
+                if move.date <= invoice_until:
+                    move_line_ids.append(move.id)
+            vals["move_line_ids"] = [(6, 0, move_line_ids)]
+        return vals
 
 
 class SaleOrderLineDelivery(models.Model):
