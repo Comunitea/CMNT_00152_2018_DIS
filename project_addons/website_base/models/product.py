@@ -24,7 +24,7 @@ class ProductPublicCategory(models.Model):
 
 class ProductOffer(models.Model):
     _name = "product.offer"
-    _description = _("Product Offer")
+    _description = "Oferta"
     _order = "website_sequence, name"
     _rec_name = 'name'
 
@@ -67,8 +67,8 @@ class ProductOffer(models.Model):
     slug = fields.Char(_("Friendly URL"))
     attachment_id = fields.Binary(string=_("Attachment"), attachment=True)
     attachment_filename = fields.Char(string=_("Attachment Filename"))
-    start_date = fields.Date(required=True, default=fields.Date.context_today)
-    end_date = fields.Date()
+    start_date = fields.Date(string='Start Date', required=True, default=fields.Date.context_today)
+    end_date = fields.Date(string='End Date')
     # TODO: Include them in xml offer views to set by settings
     website_size_x = fields.Integer('Size X', default=1)
     website_size_y = fields.Integer('Size Y', default=1)

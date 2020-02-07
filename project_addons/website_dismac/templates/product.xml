@@ -139,7 +139,7 @@
 
                             <!-- Product content -->
                             <div itemscope="itemscope" itemtype="http://schema.org/Product" class="js_sale">
-                                <section t-attf-class="container oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''} #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}" id="product_detail">
+                                <section id="product_detail" t-attf-class="container oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''} #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">
                                     <div class="row">
                                         <!-- Product Carousel Image -->
                                         <div class="col-md-6">
@@ -214,7 +214,7 @@
                                                     <p t-if="True" class="css_not_available_msg alert alert-warning">This combination does not exist.</p>
                                                     <!-- Miniature buttons -->
                                                     <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#" rel="noindex, nofollow"><span class="fa fa-shopping-cart" /></a>
-                                                    <t t-if="request.website.viewref('website_sale_comparison.add_to_compare').active">
+                                                    <t t-if="request.env['ir.ui.view'].search([('key', '=', 'website_sale_comparison.add_to_compare'), ('website_id', '=', request.website.id)]).active">
                                                         <t t-set="product_variant" t-value="product_variant or product._create_first_product_variant()"/>
                                                         <button t-if="product_variant" type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-lg mt8 o_add_compare_dyn" title="Compare" aria-label="Compare" t-att-data-product-product-id="product_variant.id" data-action="o_comparelist"><span class="fa fa-exchange"/></button>
                                                     </t>
@@ -267,8 +267,8 @@
                     <h1>Tarifa Bienvenida</h1>
                     <p>Esta es la Tarifa bienvenida, donde ver los artículos con el precio de cliente Dismac. Si lo desea puede ordenar también el listado en función de los códigos de producto</p>
                 </t>
-                <t t-if="list_type and list_type == 'tags'">
-                    <span class="text-uppercase" t-esc="'Bienvenido a Dismac, {}'.format(request.env.user.name)"/>
+                <t t-elif="list_type and list_type == 'tags'">
+                    <span class="text-uppercase">Etiqueta</span>
                     <h1><span class="text-uppercase" t-esc="current_tag.name if current_tag else 'Tienda'"/></h1>
                 </t>
                 <t t-else="">

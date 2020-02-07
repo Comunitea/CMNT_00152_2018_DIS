@@ -5,6 +5,7 @@ import shlex
 
 from odoo import http, _
 from odoo.http import request
+from odoo.osv import expression
 
 from odoo.addons.website.controllers.main import QueryURL
 from odoo.addons.website_sale.controllers.main import TableCompute
@@ -51,7 +52,11 @@ class SimulateProductController(http.Controller):
         # Offers only published, with validate dates and published categories
         Offer = request.env['report.website.offer']
         current_date = datetime.date.today()
-        domain_offers = request.website.website_domain()
+        domain_offers = request.website.website_domain() + [('start_date', '<=', current_date)]
+        domain_offers = expression.OR([domain_offers, [('odoo_model', '=', 'product.template'),
+                                                       ('start_date', '=', False)]])
+        domain_offers = expression.AND([domain_offers, ['|', ('end_date', '>=', current_date),
+                                                        ('end_date', '=', False)]])
         if public_category:
             domain_offers += [('product_public_category_id', '=', public_category.id)]
         if search:
@@ -87,7 +92,7 @@ class SimulateProductController(http.Controller):
             ppg = PPG
         
         if page != 1:
-            offset = (page-1)*PPG    
+            offset = (int(page)-1)*PPG
 
         if order != '':
             post['order'] = order
@@ -137,7 +142,7 @@ class SimulateProductController(http.Controller):
             if offer:
                 values.update({'main_object': offer, 'offer': offer, 'product_category': offer, 'offer_list': False, })
                 if not public_category and offer.category_id:
-                    values.update({'category': offer.category_id })
+                    values.update({'category': offer.category_id})
             else:
                 return request.env['ir.http'].reroute('/404')
         return request.render('website_base.simulate_product_offer', values)

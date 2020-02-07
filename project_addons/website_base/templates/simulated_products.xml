@@ -4,6 +4,8 @@
     <!-- Show simulated products like products shop -->
     <template id="simulate_products" name="Simulate Products Base">
         <t t-call="website.layout">
+            <t t-set="additional_title" t-if="offer_list">Ofertas</t>
+            <t t-set="title" t-else="">Oferta <t t-esc="offer.name"/></t>
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
                 <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">
@@ -72,7 +74,9 @@
     <!-- Show categories and Catch not published categories if their child are published -->
     <template id="simulate_products_categories" name="eCommerce Categories Base" inherit_id="website_base.simulate_products">
         <xpath expr="//div[@id='products_grid_before']" position="inside">
-            <ul class="nav nav-pills flex-column menu-category mt16" id="o_shop_collapse_category_custom">
+            <!-- Categories -->
+            <h5 class="text-uppercase text-primary mt16 ml16"><strong>Categorias</strong></h5>
+            <ul class="nav nav-pills flex-column menu-category" id="o_shop_collapse_category_custom">
                 <li class="nav-item">
                     <a t-att-href="keep('/shop', category=0)"
                        t-attf-class="pt8 pb0 text-uppercase nav-link#{'' if category or product_category and product_category.category_id else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
@@ -81,6 +85,20 @@
                     <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
                 </t>
             </ul>
+            <!-- Product Tags -->
+            <t t-set="tags" t-value="request.env['product.template.tag'].search([], limit=50)"/>
+            <t t-if="tags">
+                <h5 class="text-uppercase text-primary mt16 ml16"><strong>Etiquetas</strong></h5>
+                <div class="nav nav-pills flex-column menu-category pt8">
+                    <div class="oe_structure">
+                        <t t-foreach="tags" t-as="tag">
+                            <t t-call="website_seo_settings.website_tag_template">
+                                <t t-set="tag" t-value="tag"/>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </t>
         </xpath>
     </template>
 
@@ -162,7 +180,7 @@
                         </b>
                         <!-- Miniature buttons -->
                         <t t-set="product_variant_id" t-value="product._get_first_possible_variant_id()"/>
-                        <t t-if="product_variant_id and len(request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_add_to_cart')])) &gt; 1">
+                        <t t-if="product_variant_id and request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_add_to_cart'), ('website_id', '=', request.website.id)]).active">
                             <input name="product_id" t-att-value="product_variant_id" type="hidden"/>
                             <t t-if="product_variant_id">
                                 <a href="#" role="button" class="btn btn-secondary btn-sm a-submit" aria-label="Shopping cart" title="Shopping cart">
@@ -171,12 +189,12 @@
                             </t>
                         </t>
                         <t t-set="in_wish" t-value="product._is_in_wishlist()"/>
-                        <button t-if="product_variant_id and request.env['ir.ui.view'].search([('key', '=', 'website_sale_wishlist.add_to_wishlist')]).active "
+                        <button t-if="product_variant_id and request.env['ir.ui.view'].search([('key', '=', 'website_sale_wishlist.add_to_wishlist'), ('website_id', '=', request.website.id)]).active "
                                 type="button" role="button" class="btn btn-secondary btn-sm o_add_wishlist" t-att-disabled='in_wish or None' title="Add to Wishlist"
                                 t-att-data-product-template-id="product.id" t-att-data-product-product-id="product_variant_id" data-action="o_wishlist">
                             <span class="fa fa-heart" role="img" aria-label="Add to wishlist"/>
                         </button>
-                        <button t-if="product_variant_id and request.env['ir.ui.view'].search([('key', '=', 'website_sale_comparison.add_to_compare')]).active"
+                        <button t-if="product_variant_id and request.env['ir.ui.view'].search([('key', '=', 'website_sale_comparison.add_to_compare'), ('website_id', '=', request.website.id)]).active"
                                 type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-sm o_add_compare" title="Compare" aria-label="Compare"
                                 t-att-data-product-product-id="product_variant_id" data-action="o_comparelist">
                             <span class="fa fa-exchange"/>
