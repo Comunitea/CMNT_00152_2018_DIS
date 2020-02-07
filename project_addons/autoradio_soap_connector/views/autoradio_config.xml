@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="autoradio_config_tree_view" model="ir.ui.view">
+        <field name="name">autoradio.config.tree</field>
+        <field name="model">autoradio.config</field>
+        <field name="arch" type="xml">
+            <tree string="AUTORADIO Config">
+                <field name="soap_url"/>
+                <field name="soap_user"/>
+                <field name="soap_center"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="autoradio_config_form_view" model="ir.ui.view">
+        <field name="name">autoradio.config.form</field>
+        <field name="model">autoradio.config</field>
+        <field name="arch" type="xml">
+            <form string="autoradio Config" version="7.0">
+                <sheet string="AUTORADIO Config">
+                    <group>
+                        <group>
+                            <field name="soap_url"/>
+                            <field name="soap_client_code"/>
+                            <field name="soap_center"/>
+                        </group>
+                        <group>
+                            <field name="soap_user"/>
+                            <field name="soap_pass" password="True"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="autoradio_config_action" model="ir.actions.act_window">
+        <field name="name">Config</field>
+        <field name="res_model">autoradio.config</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="autoradio_config_tree_view"/>
+    </record>
+
+    <menuitem id="autoradio_config_main_menu" parent="base_delivery_carrier_label.menu_carriers_config"
+        name="Autoradio" sequence="20"/>
+    
+    <menuitem id="autoradio_config_menu" parent="autoradio_soap_connector.autoradio_config_main_menu"
+        action="autoradio_config_action" sequence="1"/>
+        
+
+</odoo>

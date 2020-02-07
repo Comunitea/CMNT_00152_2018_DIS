@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<odoo>
+
+    <record id="autoradio_shipping_search_wzd_form" model="ir.ui.view">
+        <field name="name">autoradio.shipping.search.wzd.form</field>
+        <field name="model">autoradio.shipping.search.wzd</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="s_type"/>
+                    <field name="reference"/>
+                    <field name="year"/>
+                    <field name="r_type"/>
+                </group>
+                <footer>
+                    <button name="autoradio_shipping_search" string="Search" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window name="Shipping Search"
+        res_model="autoradio.shipping.search.wzd"
+        view_id="autoradio_shipping_search_wzd_form"
+        view_mode="form"
+        target="new"
+        id="autoradio_shipping_search_wzd_action"/>
+
+    <menuitem id="autoradio_shipping_search_wzd_menu" name="Shipping Search" action="autoradio_shipping_search_wzd_action" 
+        parent="autoradio_soap_connector.autoradio_config_main_menu"/>
+
+</odoo>
