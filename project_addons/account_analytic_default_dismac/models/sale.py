@@ -28,7 +28,7 @@ class SaleOrderLine(models.Model):
             self.order_id.user_id.id, fields.Date.today())
         if not self.analytic_tag_ids:
             if rec and rec.analytic_tag_ids:
-                res['analytic_tag_ids'] = rec.analytic_tag_ids.ids
+                res['analytic_tag_ids'] = [(6, 0, rec.analytic_tag_ids.ids)]
         if not self.order_id.analytic_account_id:
             if rec and rec.analytic_id.id:
                 res['account_analytic_id'] = rec.analytic_id.id
