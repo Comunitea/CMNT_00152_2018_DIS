@@ -20,6 +20,11 @@
                         <t t-call="website.pager">
                             <t t-set="_classes">ml-2</t>
                         </t>
+                        <div type="button" id="products_grid_before_toggle" data-toggle="collapse" data-target="#products_grid_before" class="dropdown ml-2 d-block d-md-none ml8 full collapsed">
+                            <button class="btn btn-secondary">
+                                <i class="fa fa-bars"/>
+                            </button>
+                        </div>
                     </div>
                     <div class="row mt-3">
                         <!-- Set SGEEDE Infinite Scroll for products grid -->
@@ -27,7 +32,7 @@
                         <!-- Set lateral categories menu for products grid -->
                         <t t-set="menu_categories" t-value="'col-lg-9 mt16 mb32' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'col-lg-12 mb32'"/>
                         <!-- Categories lateral menu -->
-                        <div t-att-class="'col-lg-3 d-none d-md-block' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'd-none'"
+                        <div t-att-class="'col-lg-3 d-md-block collapse' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'd-none'"
                              id="products_grid_before"/>
                         <!-- Products with or without SGEEDE Infinite Scroll and lateral categories menu-->
                         <div t-attf-class="#{menu_categories} #{infinity_scroll}" id="products_grid"/>
