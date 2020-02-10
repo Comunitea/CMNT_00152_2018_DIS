@@ -34,5 +34,6 @@
         "views/report_sale_order.xml",
         "views/product_view.xml",
         "views/stock_picking.xml",
+        "views/sale_report_view.xml",
     ],
 }
