@@ -6,14 +6,13 @@ from os.path import join
 import base64
 import csv
 
-session.open(db='odoo_12_DIS_PREPROD')
+session.open(db='DISMAC')
 script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
 #path = '/home/santi/Documentos/DISMAC/IMPORTACION/2019-12
 # -18_Fotos_Articulos_Dismac_Enviados_a_Comunitea'
-path = '/home/santi/Documentos/DISMAC/IMPORTACION/Ficheros/'
-path_csv = '/home/santi/Documentos/DISMAC/IMPORTACION/2019-12' \
-           '-19_Documentos_adjuntos_a_la_ficha_de_clientes_prov_enviados_a_Comunitea_TEST_20.csv'
+path = '/home/comunitea/documentos_import/'
+path_csv = '/home/comunitea/adjuntos_partners.csv'
 file_not_found = []
 partner_not_found = []
 

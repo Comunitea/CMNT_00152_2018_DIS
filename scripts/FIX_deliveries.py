@@ -6,11 +6,11 @@ from os.path import join
 import base64
 import csv
 
-session.open(db='odoo_12_DISMAC_31_01')
+session.open(db='DISMAC')
 
 script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
-domain = [('state', 'not in', ['cancel', 'draft']),('order_id', '=', 4210)]
+domain = [('state', 'not in', ['cancel', 'draft'])]
 lines = session.env['sale.order.line'].search(domain)
 deliv_obj = session.env['sale.order.line.delivery']
 count = 0

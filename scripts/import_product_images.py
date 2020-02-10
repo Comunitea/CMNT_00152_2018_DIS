@@ -5,17 +5,18 @@ from os.path import abspath
 from os.path import join
 import base64
 
-session.open(db='odoo_12_DIS_PREPROD')
+session.open(db='DISMAC')
 script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
 #path = '/home/santi/Documentos/DISMAC/IMPORTACION/2019-12
 # -18_Fotos_Articulos_Dismac_Enviados_a_Comunitea'
-path = '/home/santi/Documentos/DISMAC/IMPORTACION/FOTOS_PRUEBA'
+path = '/home/comunitea/FOTOS_CARGA'
 not_found = []
 dir = os.scandir(path)
 for arch in dir:
     if arch.is_file():
         arch_name = arch.name
+        print(arch_name)
         name = arch_name[0:arch_name.rfind(".")]
         name_up = name.upper()
 
@@ -25,11 +26,13 @@ for arch in dir:
                       ('catalogue_code', '=', name_up)]
         products = session.env['product.product'].search(domain)
         if products:
+            print('Encontrado')
             with open(join(path, arch_name), "rb") as f:
                 data = f.read()
                 products[0].write({'image_medium': base64.encodestring(
                     data).decode()})
         else:
+            print ('NO encontrado')
             not_found.append(arch_name)
 
 output_file = open(script_path + '/productos_no_encontrados.csv', 'w')

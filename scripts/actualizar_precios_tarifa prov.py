@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-session.open(db='odoo_12_DISMAC_14_01')
+session.open(db='DISMAC')
 
 domain = [('price', '=', 0)]
 pricelists = session.env['product.supplierinfo'].search(domain)
