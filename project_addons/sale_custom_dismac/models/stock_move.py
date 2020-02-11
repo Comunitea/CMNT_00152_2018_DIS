@@ -37,5 +37,6 @@ class StockMove(models.Model):
                         'line_id': line.id,
                         'quantity': qty,
                         'delivery_date': date.today(),
+                        'move_id': move.id
                     })
         return result

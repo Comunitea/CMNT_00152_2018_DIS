@@ -700,5 +700,6 @@ class SaleOrderLineDelivery(models.Model):
     _name = "sale.order.line.delivery"
 
     line_id = fields.Many2one("sale.order.line")
+    move_id = fields.Many2one("stock.move")
     quantity = fields.Float()
     delivery_date = fields.Date()
