@@ -162,6 +162,9 @@ class SaleOrder(models.Model):
     invoice_until = fields.Date(
         store=False, search=lambda operator, operand, vals: []
     )
+    delivery_until = fields.Date(
+        store=False, search=lambda operator, operand, vals: []
+    )
 
     def _compute_has_invoiceable_lines(self):
         for order in self:
@@ -202,7 +205,7 @@ class SaleOrder(models.Model):
     def _compute_sale_complete(self):
         for order in self:
             for line in order.order_line:
-                if line.product_uom_quantity != line.qty_delivered_in_date:
+                if line.product_uom_quantity != line.qty_delivery_on_date:
                     order.sale_complete = False
                     continue
 
@@ -655,6 +658,10 @@ class SaleOrderLine(models.Model):
         compute="_compute_qty_to_invoice_on_date",
         search="_search_qty_to_invoice_on_date",
     )
+    qty_delivery_on_date = fields.Float(
+        compute="_compute_qty_delivery_on_date",
+        search="_search_qty_delivery_on_date",
+    )
     deliveries = fields.One2many("sale.order.line.delivery", "line_id")
 
     @api.multi
@@ -675,6 +682,79 @@ class SaleOrderLine(models.Model):
                 {"invoice_ids": [(6, 0, [invoice_id])]}
             )
         return res
+
+
+    def _compute_qty_delivery_on_date(self):
+        for line in self:
+            if self._context.get("delivery_until"):
+                invoice_until = fields.Date.to_date(
+                    self._context.get("invoice_until"))
+                deliveries = line.deliveries.filtered(
+                    lambda r: r.delivery_date <= invoice_until
+                )
+                if deliveries:
+                    line.qty_delivery_on_date = sum(
+                        [x.quantity for x in deliveries])
+                else:
+                    line.qty_delivery_on_date = 0
+            else:
+                line.qty_delivery_on_date = line.qty_delivered
+
+    def _search_qty_delivery_on_date(self, operator, operand):
+        if self._context.get("delivery_until"):
+            query = """
+            SELECT soly.line_id
+            FROM sale_order_line_delivery soly
+                JOIN sale_order_line sol on soly.line_id = sol.id
+            WHERE sol.invoice_status = 'to invoice'
+                and sol.company_id = %(company_id)s
+                and soly.delivery_date <= %(delivery_date)s
+            GROUP BY soly.line_id
+            HAVING SUM(soly.quantity) - SUM(sol.qty_invoiced) %(operator)s %(operand)s
+            """
+            params = {
+                "company_id": self.env.user.company_id.id,
+                "operator": operator,
+                "operand": operand,
+                "delivery_date": self._context.get("delivery_until"),
+            }
+
+            self.env.cr.execute(query, params)
+            results = self.env.cr.fetchall()
+            if results:
+                return [("id", "in", [x[0] for x in results])]
+        else:
+            return [("qty_to_invoice", operator, operand)]
+
+    qty_to_invoice_on_date = fields.Float(
+        compute="_compute_qty_to_invoice_on_date",
+        search="_search_qty_to_invoice_on_date",
+    )
+    qty_delivery_on_date = fields.Float(
+        compute="_compute_qty_delivery_on_date",
+        search="_search_qty_delivery_on_date",
+    )
+    deliveries = fields.One2many("sale.order.line.delivery", "line_id")
+
+    @api.multi
+    def invoice_line_create_vals(self, invoice_id, qty):
+        res = super().invoice_line_create_vals(invoice_id, qty)
+        if self._context.get("invoice_until"):
+            invoice_until = datetime.strptime(
+                self._context.get("invoice_until") + " 23:59:59",
+                "%Y-%m-%d %H:%M:%S",
+            )
+            self.mapped("move_ids").filtered(
+                lambda x: x.state == "done"
+                and not x.invoice_line_id
+                and not x.location_dest_id.scrap_location
+                and x.location_dest_id.usage == "customer"
+                and x.date <= invoice_until
+            ).mapped("picking_id").write(
+                {"invoice_ids": [(6, 0, [invoice_id])]}
+            )
+        return res
+
 
     @api.multi
     def _prepare_invoice_line(self, qty):
@@ -700,6 +780,6 @@ class SaleOrderLineDelivery(models.Model):
     _name = "sale.order.line.delivery"
 
     line_id = fields.Many2one("sale.order.line")
-    move_id = fields.Many2one("stock.move")
+    move_id = fields.Many2one('stock.move')
     quantity = fields.Float()
     delivery_date = fields.Date()

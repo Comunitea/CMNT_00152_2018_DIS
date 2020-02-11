@@ -27,11 +27,11 @@ class StockMove(models.Model):
                             (move.origin_returned_move_id and
                                 move.to_refund):
                         qty = move.product_uom._compute_quantity(
-                            move.product_uom_qty, move.product_uom)
+                            move.product_uom_qty, line.product_uom)
                 elif move.location_dest_id.usage != "customer" and \
                         move.to_refund:
                     qty = -move.product_uom._compute_quantity(
-                        move.product_uom_qty, move.product_uom)
+                        move.product_uom_qty, line.product_uom)
                 if qty:
                     self.env['sale.order.line.delivery'].create({
                         'line_id': line.id,

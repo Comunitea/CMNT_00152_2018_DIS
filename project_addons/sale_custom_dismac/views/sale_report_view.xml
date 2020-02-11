@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_sales_order_report_filter_custom" model="ir.ui.view">
+        <field name="name">sale.order.report.custom.view.search</field>
+        <field name="model">sale.report</field>
+        <field name="inherit_id" ref="sale.view_order_product_search"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="delivery_until" context="{'delivery_until': self}"/>   
+            </field>
+        </field>
+    </record>
+</odoo>
+
+
