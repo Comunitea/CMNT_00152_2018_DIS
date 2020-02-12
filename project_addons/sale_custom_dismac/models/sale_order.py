@@ -726,35 +726,8 @@ class SaleOrderLine(models.Model):
         else:
             return [("qty_to_invoice", operator, operand)]
 
-    qty_to_invoice_on_date = fields.Float(
-        compute="_compute_qty_to_invoice_on_date",
-        search="_search_qty_to_invoice_on_date",
-    )
-    qty_delivery_on_date = fields.Float(
-        compute="_compute_qty_delivery_on_date",
-        search="_search_qty_delivery_on_date",
-    )
+
     deliveries = fields.One2many("sale.order.line.delivery", "line_id")
-
-    @api.multi
-    def invoice_line_create_vals(self, invoice_id, qty):
-        res = super().invoice_line_create_vals(invoice_id, qty)
-        if self._context.get("invoice_until"):
-            invoice_until = datetime.strptime(
-                self._context.get("invoice_until") + " 23:59:59",
-                "%Y-%m-%d %H:%M:%S",
-            )
-            self.mapped("move_ids").filtered(
-                lambda x: x.state == "done"
-                and not x.invoice_line_id
-                and not x.location_dest_id.scrap_location
-                and x.location_dest_id.usage == "customer"
-                and x.date <= invoice_until
-            ).mapped("picking_id").write(
-                {"invoice_ids": [(6, 0, [invoice_id])]}
-            )
-        return res
-
 
     @api.multi
     def _prepare_invoice_line(self, qty):
