@@ -29,6 +29,7 @@
         "views/furniture_new_report.xml",
         "views/picking_report.xml",
         "views/sale_order_type.xml",
+        "data/mail_data.xml"
     ],
     "installable": True,
 }
