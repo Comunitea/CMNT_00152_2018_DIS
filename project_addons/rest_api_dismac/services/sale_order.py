@@ -169,31 +169,33 @@ class SaleOrder(models.Model):
                 line['codigo_articulo_proveedor'] = '999PAP'
             product = self.env['product.product'].search([('default_code', '=', line['codigo_articulo_proveedor'])])
 
-            if product.id:
-            
-                sale_order_line = self.env['sale.order.line'].new({
-                    'order_id': self.id,
-                    'partner_id': self.partner_id.id,
-                    'product_id': product.id,
-                    'price_unit': line['precio_unitario'],
-                    'product_uom': product.uom_id.id,
-                    'product_uom_qty': line['cantidad'],
-                })
-                sale_order_line.product_id_change()
-                sale_order_line_vals = sale_order_line._convert_to_write(sale_order_line._cache)
-                sale_order_line_vals.update({
-                    'price_unit': line['precio_unitario'],
-                    'product_uom': product.uom_id.id,
-                    'product_uom_qty': line['cantidad'],
-                    'name': line['descripcion'],
-                })
-                sol = self.env['sale.order.line'].create(sale_order_line_vals)
-
-                _logger.info("Añadiendo {} cantidad(es) de {} al pedido {}.".format(line['cantidad'], product.name, self.id))
-            
-            else:
+            if not product.id:
                 _logger.error("No se ha encontrado el producto con default_code: {}.".format(line['codigo_articulo_proveedor']))
-                raise ValidationError(_('Product with default_code {} not found.'.format(line['codigo_articulo_proveedor'])))
+                line['codigo_articulo_proveedor'] = '999PAP'
+                product = self.env['product.product'].search([('default_code', '=', line['codigo_articulo_proveedor'])])
+
+
+            
+            sale_order_line = self.env['sale.order.line'].new({
+                'order_id': self.id,
+                'partner_id': self.partner_id.id,
+                'product_id': product.id,
+                'price_unit': line['precio_unitario'],
+                'product_uom': product.uom_id.id,
+                'product_uom_qty': line['cantidad'],
+            })
+            sale_order_line.product_id_change()
+            sale_order_line_vals = sale_order_line._convert_to_write(sale_order_line._cache)
+            sale_order_line_vals.update({
+                'price_unit': line['precio_unitario'],
+                'product_uom': product.uom_id.id,
+                'product_uom_qty': line['cantidad'],
+                'name': line['descripcion'],
+            })
+            sol = self.env['sale.order.line'].create(sale_order_line_vals)
+
+            _logger.info("Añadiendo {} cantidad(es) de {} al pedido {}.".format(line['cantidad'], product.name, self.id))
+            
 
     def read_json_data(self):
         log_entry = self.env['api.access.log'].sudo().create({
