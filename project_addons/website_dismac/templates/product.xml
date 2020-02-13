@@ -95,7 +95,7 @@
         <xpath expr="//div[@id='wrap']" position="replace">
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
-                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">
+                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.layout_website').active else 'py-4'}">
                     <div class="products_pager form-inline justify-content-center">
                         <t t-call="website_sale.search">
                             <t t-set="_classes">o_website_sale_search</t>
@@ -144,7 +144,7 @@
 
                             <!-- Product content -->
                             <div itemscope="itemscope" itemtype="http://schema.org/Product" class="js_sale">
-                                <section id="product_detail" t-attf-class="container oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''} #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">
+                                <section id="product_detail" t-attf-class="container oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''} #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.layout_website').active else 'py-4'}">
                                     <div class="row">
                                         <!-- Product Carousel Image -->
                                         <div class="col-md-6">
@@ -261,7 +261,7 @@
     <template id="website_sale_products" name="Products Dismac" inherit_id="website_sale.products">
         <!-- Set padding by breadcrumbs bar -->
         <xpath expr="//div[hasclass('container', 'py-2', 'oe_website_sale')]" position="attributes">
-            <attribute name="t-attf-class">container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}</attribute>
+            <attribute name="t-attf-class">container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.layout_website').active else 'py-4'}</attribute>
         </xpath>
 
         <!-- Toggler button -->

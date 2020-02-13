@@ -8,7 +8,7 @@
             <t t-set="title" t-else="">Oferta <t t-esc="offer.name"/></t>
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
-                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">
+                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.layout_website').active else 'py-4'}">
                     <!-- Searchbox and related buttons -->
                     <div class="products_pager form-inline justify-content-center">
                         <form t-attf-action="#{url_simulated_products}" role="search" method="get" class="o_website_sale_search">
@@ -308,7 +308,7 @@
         <t t-set="additional_title" t-value="product.name" />
         <div itemscope="itemscope" itemtype="http://schema.org/Product" id="wrap" class="js_sale">
             <!--<section t-attf-class="container py-2 oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''}" id="product_detail">-->
-            <section t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}" id="product_detail">
+            <section t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.layout_website').active else 'py-4'}" id="product_detail">
                 <div class="row">
                     <div class="col-sm-6">
                         <!-- Ribbon -->

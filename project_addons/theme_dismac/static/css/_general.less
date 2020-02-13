@@ -1,8 +1,9 @@
-/* Import new fonts */
+/* Fonts */
 @import url('https://fonts.googleapis.com/css?family=Lato:400,400i,700&subset=latin-ext');
 
 @main-font-family: 'Lato';
 
+/* Main colors */
 @color-main: #777777;
 @color-secondary: #006bb6;
 @color-white: #fff;
@@ -15,13 +16,15 @@
 @color-bg-header: rgba(53,61,71,0.6);
 @color-bg-footer: #3d4045;
 
-/* breadcrumbs */
-@color-bg: @color-white; // (background of breadcrumbs bar)
-@color-href: @color-secondary; // (color of links)
-@color-current: @color-text-main; // (color of current element)
+/* Breadcrumbs colors */
+:root {
+    --color-bg: @color-white;
+    --color-href: @color-secondary;
+    --color-current: @color-text-main;
+}
 
 /* Scroll with muk_website_scroll_up */
-@scroll-bg-color: @color-secondary; // circle background color (Arrow circle is allways transparent)
+@scroll-bg-color: @color-secondary; // circle background color (Arrow circle is always transparent)
 
 /* Categories menu */
 @border-cat: 1px solid rgba(100, 100, 100, 0.2);
