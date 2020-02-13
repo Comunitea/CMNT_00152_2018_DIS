@@ -18,7 +18,7 @@ class StockMove(models.Model):
 
     def _action_done(self):
         result = super(StockMove, self)._action_done()
-        for move in self:
+        for move in self.filtered(lambda x: x.sale_line_id):
             if move.state == 'done':
                 qty = 0.0
                 line = move.sale_line_id
