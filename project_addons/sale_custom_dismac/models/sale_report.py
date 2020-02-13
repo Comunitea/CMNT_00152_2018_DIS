@@ -34,7 +34,8 @@ class SaleReport(models.Model):
 
             #'remain_qty': " , l.product_uom_qty - d.delivered_qty as remain_qty",
         })
-        from_clause += " left join (SELECT sum(quantity) as delivered_qty, min(line_id) as line_id FROM sale_order_line_delivery  WHERE delivery_date <= '01/31/2020' GROUP BY line_id) d on (d.line_id = l.id)"
+        from_clause += " left join (SELECT sum(quantity) as delivered_qty, min(line_id) as line_id FROM sale_order_line_delivery " \
+                       " GROUP BY line_id) d on (d.line_id = l.id)"
         groupby += ", d.delivered_qty, s.type_id"
         return super(SaleReport, self)._query(with_clause, fields, groupby, from_clause)
 1
