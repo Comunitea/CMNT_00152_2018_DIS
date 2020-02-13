@@ -144,6 +144,7 @@
         <field name="inherit_id" ref="sale.view_sales_order_filter"/>
         <field name="arch" type="xml">
             <field name="user_id" position="after">
+                 <field name="partner_shipping_id"  string="Por envío" filter_domain="[('partner_shipping_id', 'ilike', self)]"/>
                 <field name="name" string="Project Reference" filter_domain="[('project_reference','ilike',self)]"/>
                 <field name="invoice_until" context="{'invoice_until': self}"/>
             </field>

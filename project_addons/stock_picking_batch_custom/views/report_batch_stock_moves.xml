@@ -58,8 +58,17 @@
                                             </th>
                                             <th width="15" style="padding: 3px">INFO</th>
                                             <th width="8%" style="padding: 3px">Origen</th>
-                                            <th width="5%" style="padding: 3px" ><span>ORD</span></th>
-                                            <th width="5%" style="padding: 3px" ><span>RSV</span></th>
+                                            <t t-if="doc.state != 'done'">
+                                                <th width="5%" style="padding: 3px" ><span>ORD</span></th>
+                                            </t>
+                                            <th width="5%" style="padding: 3px" >
+                                                <t t-if="doc.state != 'done'">
+                                                        <span>RSV</span>
+                                                    </t>
+                                                    <t t-if="doc.state == 'done'">
+                                                        <span>OK</span>
+                                                    </t>
+                                            </th>
                                             <!--th width="5%" style="padding: 3px" ><span>H</span></th-->
 
                                         </thead>
@@ -82,11 +91,18 @@
                                                 <td style="padding: 3px; text-align: center">
                                                     <span t-field="move.location_id.name"/>
                                                 </td>
+                                                <t t-if="doc.state != 'done'">
+                                                    <td style="padding: 3px">
+                                                        <span t-field="move.qty_ordered"/>
+                                                    </td>
+                                                </t>
                                                 <td style="padding: 3px">
-                                                    <span t-field="move.qty_ordered"/>
-                                                </td>
-                                                <td style="padding: 3px">
-                                                    <span t-field="move.qty_reserved"/>
+                                                    <t t-if="doc.state != 'done'">
+                                                        <span t-field="move.qty_reserved"/>
+                                                    </t>
+                                                    <t t-if="doc.state == 'done'">
+                                                        <span t-field="move.qty_done"/>
+                                                    </t>
                                                 </td>
                                                 <!--td style="padding: 3px">
                                                     <span t-field="move.qty_done"/>
