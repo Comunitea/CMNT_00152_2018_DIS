@@ -28,14 +28,14 @@ class StockMove(models.Model):
                 sugested_location = move.location_id.get_putaway_strategy(move.product_id) or move.location_id
                 sugested_location_dest = move.location_dest_id.get_putaway_strategy(move.product_id) or move.location_dest_id
 
-            if move.product_id.tracking != 'serial':
+            if move.product_id.tracking == 'serial':
                 new_serial_lines = self.env['stock.move.line']
                 vals = move._prepare_move_line_vals()
                 vals.update(not_stock=1,
                             product_uom_qty=0,
                             location_dest_id=sugested_location_dest.id,
                             location_id=sugested_location.id)
-                for l in range(0,not_stock):
+                for l in range(0, not_stock):
                     new_serial_lines |= self.env['stock.move.line'].create(vals)
                     move.write({'move_line_ids': [(4, new_serial_lines.ids)]})
             else:
