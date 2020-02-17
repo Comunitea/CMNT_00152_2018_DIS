@@ -613,16 +613,17 @@ class SaleOrderLine(models.Model):
                     qty_delivered_in_date = sum(
                         [x.quantity for x in deliveries]
                     )
-                    line.qty_to_invoice_on_date = (
-                        qty_delivered_in_date
-                        - line.qty_invoiced
-                        + line.import_qty_delivered
-                    )
-                else:
-                    line.qty_to_invoice_on_date = (
-                        line.import_qty_delivered - line.qty_invoiced
-                    )
+                    if line.picking_imported:
+                        qty_delivered_in_date = qty_delivered_in_date + line.import_qty_delivered
+                    line.qty_to_invoice_on_date = qty_delivered_in_date - line.qty_invoiced
 
+                else:
+                    if line.picking_imported:
+                        line.qty_to_invoice_on_date = (
+                            line.import_qty_delivered - line.qty_invoiced
+                        )
+                    else:
+                        line.qty_to_invoice_on_date = -line.qty_invoiced
             else:
                 line.qty_to_invoice_on_date = (
                     line.qty_delivered - line.qty_invoiced

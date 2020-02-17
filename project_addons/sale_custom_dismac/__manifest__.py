@@ -21,7 +21,8 @@
         "stock_picking_complete_info",
         "l10n_es_facturae",
         'sale_order_line_invoice_policy',
-        'stock_picking_invoice_link'
+        'stock_picking_invoice_link',
+        'stock_picking_report_valued'
     ],
     "data": [
         "security/ir.model.access.csv",
