@@ -183,12 +183,22 @@ class SaleOrder(models.Model):
             query = """
             SELECT DISTINCT sol.order_id
             FROM sale_order_line_delivery soly
-                JOIN sale_order_line sol on soly.line_id = sol.id
+                RIGHT JOIN sale_order_line sol on soly.line_id = sol.id
             WHERE sol.invoice_status = 'to invoice'
                 and sol.company_id = %(company_id)s
                 and soly.delivery_date <= %(delivery_date)s
             GROUP BY soly.line_id, sol.order_id
-            HAVING SUM(soly.quantity) - SUM(sol.qty_invoiced) > 0
+            HAVING SUM(
+                CASE 
+                WHEN soly.quantity is Not Null THEN soly.quantity
+                ELSE 0
+                END)
+                + SUM(
+                CASE 
+                WHEN picking_imported is not Null THEN sol.import_qty_delivered
+                ELSE 0
+                END)
+                - SUM(sol.qty_invoiced) > 0
             """
             params = {
                 "company_id": self.env.user.company_id.id,
