@@ -12,4 +12,16 @@
             </field>
         </record>
 
+        <record id="stock_picking_tree_add_supplier_ref" model="ir.ui.view">
+            <field name="name">stock.picking.tree.supplier_ref</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <field name="origin" position="after">
+                    <field name="picking_type_code" invisible="1"/>
+                    <field name="supplier_ref" attrs="{'invisible': [('picking_type_code', '!=', 'incoming')]}"/>
+                </field>
+            </field>
+        </record>
+
 </odoo>
