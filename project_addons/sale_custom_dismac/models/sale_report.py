@@ -38,4 +38,3 @@ class SaleReport(models.Model):
                        " GROUP BY line_id) d on (d.line_id = l.id)"
         groupby += ", d.delivered_qty, s.type_id"
         return super(SaleReport, self)._query(with_clause, fields, groupby, from_clause)
-1

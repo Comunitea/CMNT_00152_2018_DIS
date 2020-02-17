@@ -196,10 +196,10 @@ class ProductProduct(models.Model):
                     key=lambda l: l.invoice_id.date_invoice, reverse=True
                 )
                 if inv_lines:
-                    lpp = inv_lines[:1].price_unit
+                    lpp = inv_lines[:1].price_unit * (1 - inv_lines[:1].discount/100)
                     uom_id = inv_lines[:1].uom_id
                 else:
-                    lpp = lines[:1].price_unit
+                    lpp = lines[:1].price_unit * (1 - lines[:1].discount/100)
                     uom_id = lines[:1].product_uom
                 if uom_id and uom_id.id != product.uom_id.id:
                     lpp = uom_id._compute_price(lpp, product.uom_id)
