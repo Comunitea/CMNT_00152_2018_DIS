@@ -80,7 +80,7 @@
                             </div>
 
                             <div style="width:100%">
-                                    <span><strong><span t-field="o.partner_id.name"/></strong></span>
+                                    <span><strong><span t-field="o.partner_id.display_name"/></strong></span>
                             </div>
 
                             <div style="width:95%; font-size: small;">
