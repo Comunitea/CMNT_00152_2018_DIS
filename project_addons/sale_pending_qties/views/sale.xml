@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_tree_pending_moves" model="ir.ui.view">
+            <field name="name">stock.move.tree.pending.moves</field>
+            <field name="model">stock.move</field>
+            <field name="sequence">999</field>
+            <field name="arch" type="xml">
+                <tree decoration-success="product_uom_qty==reserved_availability">
+                    <field name="date_expected" string="F. Estimada"/>
+                    <field name="picking_id" string="Reference" invisible="1"/>
+                    <field name="product_id" string="Producto"/>
+                    <field name="name" string="Descripción"/>
+                    <field name="product_uom_qty" string="Cantidad"/>
+                    <field name="reserved_availability" string="Reservado"/>
+                    <field name="product_uom" options="{'no_open': True, 'no_create': True}" string="Unidad" groups="uom.group_uom"/>
+                    <field name="state" string="Estado"/>
+
+                </tree>
+            </field>
+        </record>
+    <record id="view_order_form_add_line_history" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_invoice']" position="before">
+                <button type="object" name="action_tree_pending_moves" class="oe_stat_button" states="done,sale"
+                        icon="fa-pause-circle-o" groups="base.group_user">
+                    <span>Por servir</span>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
