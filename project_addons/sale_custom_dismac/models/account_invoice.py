@@ -12,6 +12,11 @@ class AccountInvoice(models.Model):
         return []
 
     date = fields.Date(default=lambda self: self._default_date())
+    invoice_integration_method_ids = fields.Many2many(
+        related='partner_id.invoice_integration_method_ids',
+        string='Integration Method',
+    )
+    
 
     @api.model
     def _default_date(self):

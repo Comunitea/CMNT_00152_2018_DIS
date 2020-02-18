@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="invoice_integration_by_mail" model="ir.ui.view">
+        <field name="name">Integration by Mail</field>
+        <field name="model">account.invoice.integration</field>
+        <field name="inherit_id" ref="l10n_es_facturae.account_invoice_integration_form"/>
+        <field name="arch" type="xml">
+            <button name="send_action" position="after">
+                <button name="send_by_mail" type="object" string="Send by mail" attrs="{'invisible': [('can_send', '=', False)]}"/>
+            </button>
+        </field>
+    </record>
+
+</odoo>
