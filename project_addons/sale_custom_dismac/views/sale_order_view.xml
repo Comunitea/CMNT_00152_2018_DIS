@@ -106,6 +106,12 @@
                  <label for="internal_notes" string="Internal Notes"/>
                 <field name="internal_notes" />
             </field>
+            <field name="route_id" position="after">
+                <field name="purchase_price"/>
+            </field>
+            <field name="qty_delivered" position="after">
+                (En 2019: <field name="import_qty_delivered" readonly="1"/>)
+            </field>
         </field>
     </record>
 
@@ -166,6 +172,20 @@
                 <!--field name="order_line_count"/-->
                 <field name="client_order_ref"/>
             </field>
+        </field>
+    </record>
+
+    <record id="partner_company_group.view_res_partner_filter" model="ir.ui.view">
+        <field name="name">res.partner.select</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="company_group_id" />
+            </field>
+            <filter name="group_company" position="before">
+               <filter name="group_company_group" string="Company Group" context="{'group_by': 'company_group_id'}"/>
+            </filter>
         </field>
     </record>
 
