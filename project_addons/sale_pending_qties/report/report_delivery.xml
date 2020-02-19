@@ -3,7 +3,10 @@
 
    <template id="sale_pending_qties.rdd_pending_qties" inherit_id="stock.report_delivery_document">
         <xpath expr="//t[@t-if=&quot;o.backorder_ids and o.backorder_ids.filtered(lambda x: x.state not in (&apos;done&apos;, &apos;cancel&apos;))&quot;]" position="after">
-            <t t-if="pending">
+
+            <t t-set="pending" t-value="o.compute_pending()" />
+            <t t-set="count_pending" t-value="len(pending)"/>
+            <t t-if="count_pending>0">
                 <table class="table table-sm mt48">
                     <thead>
                         <tr>
