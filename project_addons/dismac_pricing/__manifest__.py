@@ -12,5 +12,7 @@
         "product_pricelist_custom_dismac",
         "stock_account_custom",
     ],
-    "data": ["views/res_partner_view.xml", "views/sale.xml"],
+    "data": ["views/res_partner_view.xml",
+            "views/sale.xml",
+            "views/product_view.xml"],
 }
