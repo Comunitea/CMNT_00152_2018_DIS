@@ -28,6 +28,7 @@
                         <group>
                             <field name="soap_user"/>
                             <field name="soap_pass" password="True"/>
+                            <field name="soap_persona_ordena"/>
                         </group>
                     </group>
                 </sheet>
@@ -47,7 +48,7 @@
         name="Autoradio" sequence="20"/>
     
     <menuitem id="autoradio_config_menu" parent="autoradio_soap_connector.autoradio_config_main_menu"
-        action="autoradio_config_action" sequence="1"/>
+        action="autoradio_config_action" sequence="2"/>
         
 
 </odoo>

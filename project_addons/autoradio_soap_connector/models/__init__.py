@@ -18,4 +18,4 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from . import autoradio_config, delivery_carrier, stock_picking
+from . import autoradio_config, delivery_carrier, autoradio_picking_delivery, stock_picking

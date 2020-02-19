@@ -18,5 +18,26 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
-from . import models, wizard, report
+
+class AutoradioLabelReport(models.AbstractModel):
+    _name = 'report.autoradio_soap_connector.autoradio_label_template'
+
+    @api.model
+    def _get_report_values(self, docids, data=None):
+        docs_tag_data = []
+        for doc in docids:
+            docs_tag_data += [self.env['autoradio.picking.delivery'].browse(doc).WSObtenerDatosEtiqueta()]
+            print(docs_tag_data)
+        
+        if not docs_tag_data:
+            UserError("Tag data not found")
+
+        docargs = {
+            'doc_ids': docids,
+            'docs_tag_data': docs_tag_data
+        }
+        
+        return docargs

@@ -43,6 +43,7 @@ class DeliveryCarrier(models.Model):
     ]
 
     delivery_type = fields.Selection(selection_add=[('autoradio', 'AUTORADIO')])
+    integration_level = fields.Selection(selection_add=[('none', 'None')])
     autoradio_service_code = fields.Selection(AUTORADIO_SERVICES)
     autoradio_delivery_instructions = fields.Selection(DELIVERY_INSTRUCTIONS)
     autoradio_config_id = fields.Many2one('autoradio.config', string='AUTORADIO Config')

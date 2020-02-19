@@ -31,7 +31,7 @@
         target="new"
         id="autoradio_delivery_agreement_search_wzd_action"/>
 
-    <menuitem id="autoradio_delivery_agreement_search_wzd_menu" name="Delivery Agreement Search" action="autoradio_delivery_agreement_search_wzd_action" 
-        parent="autoradio_soap_connector.autoradio_config_main_menu"/>
+    <!-- <menuitem id="autoradio_delivery_agreement_search_wzd_menu" name="Delivery Agreement Search" action="autoradio_delivery_agreement_search_wzd_action" 
+        parent="autoradio_soap_connector.autoradio_config_main_menu"/> -->
 
 </odoo>

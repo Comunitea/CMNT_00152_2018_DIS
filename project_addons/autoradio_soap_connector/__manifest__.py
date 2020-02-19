@@ -30,18 +30,24 @@
         "delivery",
         "stock",
         "base_delivery_carrier_label",
+        'delivery_carrier_label_default',
         "base_report_to_printer",
-        'queue_job'
+        'queue_job',
+        'stock_picking_custom'
     ],
     'data': [
         'security/ir.model.access.csv',
+        'data/autoradio_picking_delivery.xml',
         'views/autoradio_config.xml',
         'views/delivery_views.xml',
         'views/stock_picking.xml',
+        #'views/report_default_label.xml',
+        'views/autoradio_picking_delivery.xml',
         'wizard/autoradio_shipping_search_wzd.xml',
         'wizard/autoradio_tracking_search_wzd.xml', 
         'wizard/autoradio_delivery_agreement_search_wzd.xml',
-        'wizard/autoradio_picking_sheet_data_search_wzd.xml'
+        'wizard/autoradio_picking_sheet_data_search_wzd.xml',
+        'report/autoradio_label.xml'
     ],
     "external_dependencies": {
         "python": [

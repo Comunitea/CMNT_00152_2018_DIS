@@ -24,6 +24,7 @@ from zeep import Client
 from zeep.cache import SqliteCache
 from zeep.transports import Transport
 from zeep.wsse.username import UsernameToken
+from zeep.plugins import HistoryPlugin
 from datetime import datetime
 from lxml import etree
 import base64
@@ -49,7 +50,7 @@ import logging.config
 #    'handlers': {
 #        'console': {
 #            'level': 'DEBUG',
-#            'class': 'logging.StreamHandler',
+#           'class': 'logging.StreamHandler',
 #            'formatter': 'verbose',
 #        },
 #    },
@@ -58,8 +59,8 @@ import logging.config
 #            'level': 'DEBUG',
 #            'propagate': True,
 #            'handlers': ['console'],
-#        },
-#    }
+#       },
+#   }
 #})
 
 
@@ -73,6 +74,7 @@ class ConfigAutoradio(models.Model):
     soap_pass = fields.Char('SOAP password')
     soap_client_code = fields.Integer('SOAP Client Code')
     soap_center = fields.Integer('SOAP Center Code')
+    soap_persona_ordena = fields.Char('SOAP Persona Ordena')
 
     def getWSRequestHeader(self, client):
         try:
@@ -92,11 +94,12 @@ class ConfigAutoradio(models.Model):
 
         try:
             transport = Transport(cache=SqliteCache(), session=session)
-            client = Client(self.soap_url, transport=transport)
+            history = HistoryPlugin()
+            client = Client(self.soap_url, transport=transport, plugins=[history])
 
             if client:
                 print("client: {}".format(client))
-                return client
+                return client, history
             else:
                 raise AccessError(_("Not possible to establish a client."))
         except Exception as e:
@@ -107,7 +110,7 @@ class ConfigAutoradio(models.Model):
         config = self.search([('soap_url', '!=', None)])
         self = self.browse(config.id)
 
-        client = self.create_client()
+        client, history = self.create_client()
         if client:
             try:
                 header = self.getWSRequestHeader(client)
@@ -116,7 +119,7 @@ class ConfigAutoradio(models.Model):
                 current_year = datetime.now().astimezone(tz).strftime('%Y')
 
                 buscadorEnvio = {
-                    'loginCliente': self.soap_user,
+                    'loginCliente': self.soap_persona_ordena,
                     'codigoCliente': self.soap_client_code,
                     'codigoCentro': self.soap_center,
                     'ano': year if year else int(current_year),
@@ -137,7 +140,7 @@ class ConfigAutoradio(models.Model):
         config = self.search([('soap_url', '!=', None)])
         self = self.browse(config.id)
 
-        client = self.create_client()
+        client, history = self.create_client()
         if client:
             try:
                 header = self.getWSRequestHeader(client)
@@ -146,7 +149,7 @@ class ConfigAutoradio(models.Model):
                 current_year = datetime.now().astimezone(tz).strftime('%Y')
 
                 buscadorRecogida = {
-                    'loginCliente': self.soap_user,
+                    'loginCliente': self.soap_persona_ordena,
                     'codigoCliente': self.soap_client_code,
                     'codigoCentro': self.soap_center,
                     'ano': year if year else int(current_year),
@@ -165,13 +168,13 @@ class ConfigAutoradio(models.Model):
         config = self.search([('soap_url', '!=', None)])
         self = self.browse(config.id)
 
-        client = self.create_client()
+        client, history = self.create_client()
         if client:
             try:
                 header = self.getWSRequestHeader(client)
 
                 buscadorTracking = {
-                    'loginCliente': self.soap_user,
+                    'loginCliente': self.soap_persona_ordena,
                     'codigoCliente': self.soap_client_code,
                     'codigoCentroCliente': self.soap_center,
                     'codCentro': codigoCentro if codigoCentro else '',
@@ -180,8 +183,9 @@ class ConfigAutoradio(models.Model):
                 }
             
                 res = client.service.WSBuscadorTracking(**buscadorTracking, _soapheaders=[header])
-
                 print(res)
+                #res_2 = etree.tostring(res['_value_1'], encoding="unicode", pretty_print=True)
+                #print(res_2)
                 
             except Exception as e:
                 raise AccessError(_("Access error message: {}".format(e)))
@@ -192,13 +196,13 @@ class ConfigAutoradio(models.Model):
         config = self.search([('soap_url', '!=', None)])
         self = self.browse(config.id)
 
-        client = self.create_client()
+        client, history = self.create_client()
         if client:
             try:
                 header = self.getWSRequestHeader(client)
 
                 buscadorTrackingEntreFechas = {
-                    'loginCliente': self.soap_user,
+                    'loginCliente': self.soap_persona_ordena,
                     'codigoCliente': self.soap_client_code,
                     'codigoCentroCliente': self.soap_center,
                     'tipo': tipo if tipo else 'E',
@@ -207,6 +211,7 @@ class ConfigAutoradio(models.Model):
                 }
             
                 res = client.service.WSBuscadorTrackingEntreFechas(**buscadorTrackingEntreFechas, _soapheaders=[header])
+                print(res)
                 
             except Exception as e:
                 raise AccessError(_("Access error message: {}".format(e)))
@@ -217,13 +222,13 @@ class ConfigAutoradio(models.Model):
         config = self.search([('soap_url', '!=', None)])
         self = self.browse(config.id)
 
-        client = self.create_client()
+        client, history = self.create_client()
         if client:
             try:
                 header = self.getWSRequestHeader(client)
 
                 buscadorConformeEntrega = {
-                    'loginCliente': self.soap_user,
+                    'loginCliente': self.soap_persona_ordena,
                     'codigoCliente': self.soap_client_code,
                     'codigoCentroCliente': self.soap_center,
                     'referencia': reference if reference else '',
@@ -241,13 +246,13 @@ class ConfigAutoradio(models.Model):
         config = self.search([('soap_url', '!=', None)])
         self = self.browse(config.id)
 
-        client = self.create_client()
+        client, history = self.create_client()
         if client:
             try:
                 header = self.getWSRequestHeader(client)
 
                 buscadorConformeEntregaEntreFechas = {
-                    'loginCliente': self.soap_user,
+                    'loginCliente': self.soap_persona_ordena,
                     'codigoCliente': self.soap_client_code,
                     'codigoCentroCliente': self.soap_center,
                     'fechaDesde': date_from if date_from else '',
@@ -261,7 +266,7 @@ class ConfigAutoradio(models.Model):
         else:
             raise AccessError(_("Not possible to establish a client."))
 
-
+    #Deprecated
     def WSCalculoTarifa(self, picking=False):
         if not picking:
             raise UserError(_("You need to select a picking to calculate the estimated shipping cost."))
@@ -269,13 +274,13 @@ class ConfigAutoradio(models.Model):
         config = self.search([('soap_url', '!=', None)])
         self = self.browse(config.id)
 
-        client = self.create_client()
+        client, history = self.create_client()
         if client:
             try:
                 header = self.getWSRequestHeader(client)
 
                 calculoTarifa = {
-                    'LoginCliente': self.soap_user,
+                    'LoginCliente': self.soap_persona_ordena,
                     'CodCliente': self.soap_client_code,                  
                     'CodServicio': picking.carrier_id.autoradio_service_code,
                     # package data
@@ -300,156 +305,8 @@ class ConfigAutoradio(models.Model):
                 raise AccessError(_("Access error message: {}".format(e)))
         else:
             raise AccessError(_("Not possible to establish a client."))
-
-    def WSGrabarEnvioTAR(self, picking=False):
-        if not picking:
-            raise UserError(_("You need to select a picking to calculate the estimated shipping cost."))
-
-        config = self.search([('soap_url', '!=', None)])
-        self = self.browse(config.id)
-
-        client = self.create_client()
-        if client:
-            try:
-                header = self.getWSRequestHeader(client)
-
-                grabarEnvioTAR = {
-                    'LoginCliente': self.soap_user,
-                    'CodCliente': self.soap_client_code,
-                    'CodCentro': self.soap_center,
-                    'Fecha': picking.scheduled_date.strftime('%Y/%m/%d %H:%M'),
-                    'CodServicio': picking.carrier_id.autoradio_service_code,
-                    # Sender
-                    'Remitente': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **picking.company_id.name,
-                    'CifRemi': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **picking.company_id.vat,
-                    'DireccionRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **"{}, {}".format(picking.company_id.street, picking.company_id.street2),
-                    'PoblacionRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **picking.company_id.city,
-                    'CodPosRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **picking.company_id.zip.zfill(5),
-                    'CodPosPorRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **000,
-                    'PaisRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **'ESP' if picking.company_id.country_id.code == 'ES' else 'POR' if picking.company_id.country_id.code == 'PT' else False,
-                    'MailRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **picking.company_id.email or '',
-                    'TlfRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **picking.company_id.phone or '',
-                    'MovilRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **'',
-                    # Recipient
-                    'Destinatario': picking.partner_id.name,
-                    'CifDes': picking.partner_id.vat or '',
-                    'DireccionDes': "{}, {}".format(picking.partner_id.street or '', picking.partner_id.street2 or ''),
-                    'PoblacionDes': picking.partner_id.city,
-                    'CodPosDes': picking.partner_id.zip.zfill(5) if picking.partner_id.country_id.code == 'ES' else picking.partner_id.zip.split("-")[0].zfill(0) if picking.partner_id.country_id.code == 'PT' else False,
-                    'CodPosPorDes': 000 if picking.partner_id.country_id.code == 'ES' else picking.partner_id.zip.split("-")[1].zfill(0) if picking.partner_id.country_id.code == 'PT' else False,
-                    'PaisDes': 'ESP' if picking.partner_id.country_id.code == 'ES' else 'POR' if picking.partner_id.country_id.code == 'PT' else False,
-                    'MailDes': picking.partner_id.email or '',
-                    'TlfDes': picking.partner_id.phone or '',
-                    'MovilDes': picking.partner_id.mobile or '',
-                    'ContactoDes': picking.partner_id.name,
-                    # Other data
-                    'Bultos': picking.number_of_packages,
-                    'Kilos': picking.shipping_weight,
-                    'TipoPorte': picking.autoradio_type, # P for paid, D for debt
-                    'Reembolso': picking.autoradio_refund_amount, # Amount in EUR
-                    'TipoComision': picking.autoradio_refund_type, # P for paid, D for debt
-                    'Obser': picking.autoradio_obs if picking.autoradio_obs else '', # Comments
-                    'AmpliaObser': picking.autoradio_obs_extra if picking.autoradio_obs_extra else '',
-                    'RefCliente': picking.partner_id.ref, # ref client
-                    'InstOp': picking.carrier_id.autoradio_delivery_instructions,
-                    'PersonaOrdena': self.soap_user,
-                    'FlagEnviarHoy': 1 if picking.autoradio_close_shipping or picking.autoradio_send_today else 0, # send today = 1.
-                    'Cierre': 1 if picking.autoradio_close_shipping else 0, # 0 or 1. Cerrar envío.
-                    'FormaCobroReembolso': picking.autoradio_cash_on_delivery_payment if picking.autoradio_cash_on_delivery_payment else 9, # 9 - Efectivo, 10 - Cheque/Pagaré, 11 - Cheque a la vista, 12- Indiferente.
-                    'Cheque1': picking.autoradio_check_1_amount if picking.autoradio_cash_on_delivery_payment in [10] else 0.0, # Se rellena si FormaCobroReembolso es 10
-                    'Fecha1': picking.autoradio_check_1_date.strftime('%Y/%m/%d %H:%M') if picking.autoradio_cash_on_delivery_payment in [10] else '', # Se rellena si FormaCobroReembolso es 10
-                    'Cheque2': picking.autoradio_check_2_amount if picking.autoradio_cash_on_delivery_payment in [10] else 0.0, # Se rellena si FormaCobroReembolso es 10
-                    'Fecha2': picking.autoradio_check_2_date.strftime('%Y/%m/%d %H:%M') if picking.autoradio_cash_on_delivery_payment in [10] else '', # Se rellena si FormaCobroReembolso es 10
-                    'Cheque3': picking.autoradio_check_3_amount if picking.autoradio_cash_on_delivery_payment in [10] else 0.0, # Se rellena si FormaCobroReembolso es 10
-                    'Fecha3': picking.autoradio_check_3_date.strftime('%Y/%m/%d %H:%M') if picking.autoradio_cash_on_delivery_payment in [10] else '', # Se rellena si FormaCobroReembolso es 10
-                    'Cheque4': picking.autoradio_check_4_amount if picking.autoradio_cash_on_delivery_payment in [10] else 0.0, # Se rellena si FormaCobroReembolso es 10
-                    'Fecha4': picking.autoradio_check_4_date.strftime('%Y/%m/%d %H:%M') if picking.autoradio_cash_on_delivery_payment in [10] else '', # Se rellena si FormaCobroReembolso es 10
-                    'Desembolso': picking.autoradio_payment, # Importe de los portes?
-                    'Referencia': picking.name
-                }
-            
-                res = client.service.WSGrabarEnvioTAR(**grabarEnvioTAR, _soapheaders=[header])
-                
-            except Exception as e:
-                raise AccessError(_("Access error message: {}".format(e)))
-        else:
-            raise AccessError(_("Not possible to establish a client."))
-
-    def WSEditarEnvioTAR(self, picking=False):
-        if not picking:
-            raise UserError(_("You need to select a picking to calculate the estimated shipping cost."))
-
-        config = self.search([('soap_url', '!=', None)])
-        self = self.browse(config.id)
-
-        client = self.create_client()
-        if client:
-            try:
-                header = self.getWSRequestHeader(client)
-
-                editarEnvioTAR = {
-                    'RefEnvio': picking.autoradio_expedition_number,
-                    'LoginCliente': self.soap_user,
-                    'CodCliente': self.soap_client_code,
-                    'CodCentro': self.soap_center,
-                    'Fecha': picking.scheduled_date.strftime('%Y/%m/%d %H:%M'),
-                    'CodServicio': picking.carrier_id.autoradio_service_code,
-                    # Sender
-                    'Remitente': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **picking.company_id.name,
-                    'CifRemi': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **picking.company_id.vat,
-                    'DireccionRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **"{}, {}".format(picking.company_id.street, picking.company_id.street2),
-                    'PoblacionRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **picking.company_id.city,
-                    'CodPosRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **picking.company_id.zip.zfill(5),
-                    'CodPosPorRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **000,
-                    'PaisRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **'ESP' if picking.company_id.country_id.code == 'ES' else 'POR' if picking.company_id.country_id.code == 'PT' else False,
-                    'MailRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **picking.company_id.email or '',
-                    'TlfRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **picking.company_id.phone or '',
-                    'MovilRem': '', # Si se envía un string vacío lo rellena Autoradio de la ficha de cliente. **'',
-                    # Recipient
-                    'Destinatario': picking.partner_id.name,
-                    'CifDes': picking.partner_id.vat or '',
-                    'DireccionDes': "{}, {}".format(picking.partner_id.street or '', picking.partner_id.street2 or ''),
-                    'PoblacionDes': picking.partner_id.city,
-                    'CodPosDes': picking.partner_id.zip.zfill(5) if picking.partner_id.country_id.code == 'ES' else picking.partner_id.zip.split("-")[0].zfill(0) if picking.partner_id.country_id.code == 'PT' else False,
-                    'CodPosPorDes': 000 if picking.partner_id.country_id.code == 'ES' else picking.partner_id.zip.split("-")[1].zfill(0) if picking.partner_id.country_id.code == 'PT' else False,
-                    'PaisDes': 'ESP' if picking.partner_id.country_id.code == 'ES' else 'POR' if picking.partner_id.country_id.code == 'PT' else False,
-                    'MailDes': picking.partner_id.email or '',
-                    'TlfDes': picking.partner_id.phone or '',
-                    'MovilDes': picking.partner_id.mobile or '',
-                    'ContactoDes': picking.partner_id.name,
-                    # Other data
-                    'Bultos': picking.number_of_packages,
-                    'Kilos': picking.shipping_weight,
-                    'TipoPorte': picking.autoradio_type, # P for paid, D for debt
-                    'Reembolso': picking.autoradio_refund_amount, # Amount in EUR
-                    'TipoComision': picking.autoradio_refund_type, # P for paid, D for debt
-                    'Obser': picking.autoradio_obs if picking.autoradio_obs else '', # Comments
-                    'AmpliaObser': picking.autoradio_obs_extra if picking.autoradio_obs_extra else '',
-                    'RefCliente': picking.partner_id.ref, # ref client
-                    'InstOp': picking.carrier_id.autoradio_delivery_instructions,
-                    'PersonaOrdena': self.soap_user,
-                    'FlagEnviarHoy': 1 if picking.autoradio_close_shipping or picking.autoradio_send_today else 0, # send today = 1.
-                    'Cierre': 1 if picking.autoradio_close_shipping else 0, # 0 or 1. Cerrar envío.
-                    'FormaCobroReembolso': picking.autoradio_cash_on_delivery_payment if picking.autoradio_cash_on_delivery_payment else 9, # 9 - Efectivo, 10 - Cheque/Pagaré, 11 - Cheque a la vista, 12- Indiferente.
-                    'Cheque1': picking.autoradio_check_1_amount if picking.autoradio_cash_on_delivery_payment in [10] else 0.0, # Se rellena si FormaCobroReembolso es 10
-                    'Fecha1': picking.autoradio_check_1_date.strftime('%Y/%m/%d %H:%M') if picking.autoradio_cash_on_delivery_payment in [10] else '', # Se rellena si FormaCobroReembolso es 10
-                    'Cheque2': picking.autoradio_check_2_amount if picking.autoradio_cash_on_delivery_payment in [10] else 0.0, # Se rellena si FormaCobroReembolso es 10
-                    'Fecha2': picking.autoradio_check_2_date.strftime('%Y/%m/%d %H:%M') if picking.autoradio_cash_on_delivery_payment in [10] else '', # Se rellena si FormaCobroReembolso es 10
-                    'Cheque3': picking.autoradio_check_3_amount if picking.autoradio_cash_on_delivery_payment in [10] else 0.0, # Se rellena si FormaCobroReembolso es 10
-                    'Fecha3': picking.autoradio_check_3_date.strftime('%Y/%m/%d %H:%M') if picking.autoradio_cash_on_delivery_payment in [10] else '', # Se rellena si FormaCobroReembolso es 10
-                    'Cheque4': picking.autoradio_check_4_amount if picking.autoradio_cash_on_delivery_payment in [10] else 0.0, # Se rellena si FormaCobroReembolso es 10
-                    'Fecha4': picking.autoradio_check_4_date.strftime('%Y/%m/%d %H:%M') if picking.autoradio_cash_on_delivery_payment in [10] else '', # Se rellena si FormaCobroReembolso es 10
-                    'Desembolso': picking.autoradio_payment, # Importe de los portes?
-                    'Referencia': picking.name
-                }
-            
-                res = client.service.WSEditarEnvioTAR(**editarEnvioTAR, _soapheaders=[header])
-                
-            except Exception as e:
-                raise AccessError(_("Access error message: {}".format(e)))
-        else:
-            raise AccessError(_("Not possible to establish a client."))
     
+    #Sin uso ya que utilizamos autoradio.picking.delivery como gestor de envíos.
     def WSAgregarBulto(self, picking=False):
         if not picking:
             raise UserError(_("You need to select a picking to calculate the estimated shipping cost."))
@@ -457,13 +314,14 @@ class ConfigAutoradio(models.Model):
         config = self.search([('soap_url', '!=', None)])
         self = self.browse(config.id)
 
-        client = self.create_client()
+        client, history = self.create_client()
         if client:
             try:
                 header = self.getWSRequestHeader(client)
 
+                #cambiar por paquete
                 agregarBulto = {
-                    'LoginCliente': self.soap_user,
+                    'LoginCliente': self.soap_persona_ordena,
                     'CodCliente': self.soap_client_code,
                     'CodCentro': self.soap_center,
                     'Fecha': picking.scheduled_date.strftime('%Y/%m/%d %H:%M'),
@@ -485,7 +343,7 @@ class ConfigAutoradio(models.Model):
                     'DireccionDes': "{}, {}".format(picking.partner_id.street or '', picking.partner_id.street2 or ''),
                     'PoblacionDes': picking.partner_id.city,
                     'CodPosDes': picking.partner_id.zip.zfill(5) if picking.partner_id.country_id.code == 'ES' else picking.partner_id.zip.split("-")[0].zfill(0) if picking.partner_id.country_id.code == 'PT' else False,
-                    'CodPosPorDes': 000 if picking.partner_id.country_id.code == 'ES' else picking.partner_id.zip.split("-")[1].zfill(0) if picking.partner_id.country_id.code == 'PT' else False,
+                    'CodPosPorDes': '000' if picking.partner_id.country_id.code == 'ES' else picking.partner_id.zip.split("-")[1].zfill(0) if picking.partner_id.country_id.code == 'PT' else False,
                     'PaisDes': 'ESP' if picking.partner_id.country_id.code == 'ES' else 'POR' if picking.partner_id.country_id.code == 'PT' else False,
                     'MailDes': picking.partner_id.email or '',
                     'TlfDes': picking.partner_id.phone or '',
@@ -501,7 +359,7 @@ class ConfigAutoradio(models.Model):
                     'AmpliaObser': picking.autoradio_obs_extra if picking.autoradio_obs_extra else '',
                     'RefCliente': picking.partner_id.ref, # ref client
                     'InstOp': picking.carrier_id.autoradio_delivery_instructions,
-                    'PersonaOrdena': self.soap_user,
+                    'PersonaOrdena': self.soap_persona_ordena,
                     'FlagEnviarHoy': 1 if picking.autoradio_close_shipping or picking.autoradio_send_today else 0, # send today = 1.
                     'Cierre': 1 if picking.autoradio_close_shipping else 0, # 0 or 1. Cerrar envío.
                     'FormaCobroReembolso': picking.autoradio_cash_on_delivery_payment if picking.autoradio_cash_on_delivery_payment else 9, # 9 - Efectivo, 10 - Cheque/Pagaré, 11 - Cheque a la vista, 12- Indiferente.
@@ -518,99 +376,32 @@ class ConfigAutoradio(models.Model):
                 }
             
                 res = client.service.WSAgregarBulto(**agregarBulto, _soapheaders=[header])
+
+                if res:
+                    picking.carrier_tracking_ref = res[1]
+                    picking.autoradio_ccbb = res[2]
+                    picking.autoradio_channelling = res[3]
+                    picking.autoradio_ccbb_type = res[4]
                 
             except Exception as e:
                 raise AccessError(_("Access error message: {}".format(e)))
         else:
             raise AccessError(_("Not possible to establish a client."))
     
-    def WSBorrarEnvio(self, picking=False):
-        if not picking:
-            raise UserError(_("You need to select a picking to calculate the estimated shipping cost."))
-
-        config = self.search([('soap_url', '!=', None)])
-        self = self.browse(config.id)
-
-        client = self.create_client()
-        if client:
-            try:
-                header = self.getWSRequestHeader(client)
-
-                borrarEnvio = {
-                    'RefEnvio': picking.autoradio_expedition_number,
-                    'LoginCliente': self.soap_user,
-                    'CodCliente': self.soap_client_code,
-                    'CodCentro': self.soap_center
-                }
-            
-                res = client.service.WSBorrarEnvio(**borrarEnvio, _soapheaders=[header])
-                
-            except Exception as e:
-                raise AccessError(_("Access error message: {}".format(e)))
-        else:
-            raise AccessError(_("Not possible to establish a client."))
-
-    def WSObtenerCCBB(self, picking=False):
-        if not picking:
-            raise UserError(_("You need to select a picking to calculate the estimated shipping cost."))
-
-        config = self.search([('soap_url', '!=', None)])
-        self = self.browse(config.id)
-
-        client = self.create_client()
-        if client:
-            try:
-                header = self.getWSRequestHeader(client)
-
-                obtenerCCBB = {
-                    'LoginCliente': self.soap_user,
-                    'RefEnvio': picking.autoradio_expedition_number
-                }
-            
-                res = client.service.WSObtenerCCBB(**obtenerCCBB, _soapheaders=[header])
-                
-            except Exception as e:
-                raise AccessError(_("Access error message: {}".format(e)))
-        else:
-            raise AccessError(_("Not possible to establish a client."))
-    
-    def WSObtenerDatosEtiqueta(self, picking=False):
-        if not picking:
-            raise UserError(_("You need to select a picking to calculate the estimated shipping cost."))
-
-        config = self.search([('soap_url', '!=', None)])
-        self = self.browse(config.id)
-
-        client = self.create_client()
-        if client:
-            try:
-                header = self.getWSRequestHeader(client)
-
-                obtenerDatosEtiqueta = {
-                    'LoginCliente': self.soap_user,
-                    'RefEnvio': picking.autoradio_expedition_number
-                }
-            
-                res = client.service.WSObtenerDatosEtiqueta(**obtenerDatosEtiqueta, _soapheaders=[header])
-                
-            except Exception as e:
-                raise AccessError(_("Access error message: {}".format(e)))
-        else:
-            raise AccessError(_("Not possible to establish a client."))
 
     def WSObtenerDatosHojaRecogida(self, client_code=False, date=False):
 
         config = self.search([('soap_url', '!=', None)])
         self = self.browse(config.id)
 
-        client = self.create_client()
+        client, history = self.create_client()
         if client:
             try:
                 header = self.getWSRequestHeader(client)
 
                 obtenerDatosHojaRecogida = {
                     'Fecha': date if date else datetime.now().strftime('%d/%m/%Y'),
-                    'LoginCliente': self.soap_user,
+                    'LoginCliente': self.soap_persona_ordena,
                     'IdEmpresa': client_code if client_code else self.soap_client_code
                 }
             
@@ -626,14 +417,14 @@ class ConfigAutoradio(models.Model):
         config = self.search([('soap_url', '!=', None)])
         self = self.browse(config.id)
 
-        client = self.create_client()
+        client, history = self.create_client()
         if client:
             try:
                 header = self.getWSRequestHeader(client)
 
                 obtenerDatosHojaRecogidaCentro = {
                     'Fecha': date if date else datetime.now().strftime('%d/%m/%Y'),
-                    'LoginCliente': self.soap_user,
+                    'LoginCliente': self.soap_persona_ordena,
                     'IdEmpresa': client_code if client_code else self.soap_client_code,
                     'CodCentro': center_code if center_code else self.soap_center
                 }
@@ -652,13 +443,13 @@ class ConfigAutoradio(models.Model):
         config = self.search([('soap_url', '!=', None)])
         self = self.browse(config.id)
 
-        client = self.create_client()
+        client, history = self.create_client()
         if client:
             try:
                 header = self.getWSRequestHeader(client)
 
                 ordenarRecogida = {
-                    'LoginCliente': self.soap_user,
+                    'LoginCliente': self.soap_persona_ordena,
                     'CodCliente': self.soap_client_code,
                     'CodCentro': self.soap_center,
                     'FechaRecogida': picking.scheduled_date.strftime('%Y/%m/%d %H:%M'),
@@ -682,7 +473,7 @@ class ConfigAutoradio(models.Model):
                     'DireccionDes': "{}, {}".format(picking.partner_id.street or '', picking.partner_id.street2 or ''),
                     'PoblacionDes': picking.partner_id.city,
                     'CodPosDes': picking.partner_id.zip.zfill(5) if picking.partner_id.country_id.code == 'ES' else picking.partner_id.zip.split("-")[0].zfill(0) if picking.partner_id.country_id.code == 'PT' else False,
-                    'CodPosPorDes': 000 if picking.partner_id.country_id.code == 'ES' else picking.partner_id.zip.split("-")[1].zfill(0) if picking.partner_id.country_id.code == 'PT' else False,
+                    'CodPosPorDes': '000' if picking.partner_id.country_id.code == 'ES' else picking.partner_id.zip.split("-")[1].zfill(0) if picking.partner_id.country_id.code == 'PT' else False,
                     'PaisDes': 'ESP' if picking.partner_id.country_id.code == 'ES' else 'POR' if picking.partner_id.country_id.code == 'PT' else False,
                     'MailDes': picking.partner_id.email or '',
                     'TlfDes': picking.partner_id.phone or '',
@@ -698,7 +489,7 @@ class ConfigAutoradio(models.Model):
                     'AmpliaObser': picking.autoradio_obs_extra if picking.autoradio_obs_extra else '',
                     'RefCliente': picking.partner_id.ref, # ref client
                     'InstOp': picking.carrier_id.autoradio_delivery_instructions,
-                    'PersonaOrdena': self.soap_user,
+                    'PersonaOrdena': self.soap_persona_ordena,
                     'FlagEnviarHoy': 1 if picking.autoradio_close_shipping or picking.autoradio_send_today else 0, # send today = 1.
                     'Cierre': 1 if picking.autoradio_close_shipping else 0, # 0 or 1. Cerrar envío.
                     'FormaCobroReembolso': picking.autoradio_cash_on_delivery_payment if picking.autoradio_cash_on_delivery_payment else 9, # 9 - Efectivo, 10 - Cheque/Pagaré, 11 - Cheque a la vista, 12- Indiferente.

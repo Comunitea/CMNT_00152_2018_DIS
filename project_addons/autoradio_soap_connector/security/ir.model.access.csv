@@ -1,3 +1,6 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 access_autoradio_config,access_autoradio_config,model_autoradio_config,sales_team.group_sale_salesman,1,0,0,0
 access_autoradio_config_manager,access_autoradio_config_manager,model_autoradio_config,sales_team.group_sale_manager,1,1,1,1
+
+access_autoradio_picking_delivery,access_autoradio_picking_delivery,model_autoradio_picking_delivery,sales_team.group_sale_salesman,1,0,0,0
+access_autoradio_picking_delivery_manager,access_autoradio_picking_delivery_manager,model_autoradio_picking_delivery,sales_team.group_sale_manager,1,1,1,1
