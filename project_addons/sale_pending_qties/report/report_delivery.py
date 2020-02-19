@@ -4,13 +4,13 @@
 from odoo import api, models, _
 from odoo.exceptions import UserError
 
-class ReportDelivery(models.AbstractModel):
-    _name = 'report.stock.report_deliveryslip'
-    _description = 'Report stock delivery'
+class StockPicking(models.Model):
 
-    def compute_pending(self, docids):
-        picking_id = self.env['stock.picking'].browse(docids)
+    _inherit = "stock.picking"
 
+    def compute_pending(self):
+
+        picking_id = self
         sale_id = picking_id.sale_id  # s = picking.move_lines.mapped('sale_line_id').mapped('order_id')
 
         domain = [('sale_line_id.order_id', '=', sale_id.id),
@@ -53,6 +53,10 @@ class ReportDelivery(models.AbstractModel):
         return res
 
 
+class ReportDelivery(models.AbstractModel):
+    _name = 'report.stock.report_deliveryslip'
+    _description = 'Report stock delivery'
+
     @api.model
     def _get_report_values(self, docids, data=None):
         picks = self.env['stock.picking'].browse(docids)
@@ -61,5 +65,4 @@ class ReportDelivery(models.AbstractModel):
             'doc_model': 'stock.picking',
             'docs': picks,
             'data': data,
-            'pending': self.compute_pending(docids)
             }
