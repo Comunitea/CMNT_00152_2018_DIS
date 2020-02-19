@@ -20,8 +20,8 @@
         "sale_order_action_invoice_create_hook",
         "stock_picking_complete_info",
         "l10n_es_facturae",
-        'sale_order_line_invoice_policy',
-        'stock_picking_invoice_link'
+        "sale_order_line_invoice_policy",
+        "stock_picking_invoice_link",
     ],
     "data": [
         "security/ir.model.access.csv",
@@ -34,5 +34,6 @@
         "views/report_sale_order.xml",
         "views/product_view.xml",
         "views/stock_picking.xml",
+        "views/report_facturae.xml",
     ],
 }
