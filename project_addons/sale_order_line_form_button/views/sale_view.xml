@@ -64,7 +64,6 @@
                             <label for="qty_delivered" string="Delivered Quantity" attrs="{'invisible': [('order_state', 'not in', ['sale', 'done'])]}"/>
                             <div attrs="{'invisible': [('order_state', 'not in', ['sale', 'done'])]}">
                                 <field name="qty_delivered" attrs="{'readonly': [('qty_delivered_method', '!=', 'manual')]}"/>
-                                (En 2019: <field name="import_qty_delivered" readonly="1"/>)
                             </div>
                             <label for="qty_invoiced" string="Invoiced Quantity" attrs="{'invisible': [('order_state', 'not in', ['sale', 'done'])]}"/>
                             <div attrs="{'invisible': [('order_state', 'not in', ['sale', 'done'])]}">

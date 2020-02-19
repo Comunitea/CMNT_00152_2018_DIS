@@ -22,7 +22,9 @@
         "l10n_es_facturae",
         'sale_order_line_invoice_policy',
         'stock_picking_invoice_link',
-        'stock_picking_report_valued'
+        'stock_picking_report_valued',
+        'partner_company_group',
+        "sale_order_line_form_button",
     ],
     "data": [
         "security/ir.model.access.csv",
