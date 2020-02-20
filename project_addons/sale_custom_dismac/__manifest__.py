@@ -37,6 +37,7 @@
         "views/report_sale_order.xml",
         "views/product_view.xml",
         "views/stock_picking.xml",
+        "views/report_facturae.xml",
         "views/sale_report_view.xml",
         "views/invoice_integration_view.xml"
     ],

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="entity" inherit_id="l10n_es_facturae.entity">
+        <xpath expr="//t[@t-set='buyer_type']" position="replace">
+            <t t-set="buyer_type" t-value="'J' if partner.vat else 'F'"/>
+        </xpath>
+    </template>
+</odoo>
