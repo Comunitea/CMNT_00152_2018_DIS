@@ -24,6 +24,7 @@ class ProductPublicCategory(models.Model):
 
 class ProductOffer(models.Model):
     _name = "product.offer"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Oferta"
     _order = "website_sequence, name"
     _rec_name = 'name'
