@@ -25,6 +25,31 @@ from odoo.exceptions import ValidationError
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
+    
+
+    def get_delivery_point(self, delivery_point_name, api_partner):
+        api_partner = self.env['ir.config_parameter'].sudo().get_param('rest_api_dismac.api_partner', False)
+
+        if api_partner:
+            api_partner = self.env['res.partner'].browse(int(api_partner))
+        delivery_point = self.env['res.partner'].search([
+            '|',
+            ('active', '=', True),
+            ('active', '=', False),
+            ('parent_id', '=', api_partner.id),
+            ('name', '=', delivery_point_name),
+            ], limit=1)
+        if not delivery_point:
+            delivery_point = self.env['res.partner'].create({
+                'name': delivery_point_name, 
+                'active': True,
+                'parent_id': api_partner.id,
+                'type': 'delivery',
+                'country_id': api_partner.country_id and api_partner.country_id.id or False,
+            })
+        return delivery_point
+
+
     def get_delivery_for_api_partner(self, delivery_name, punto_entrega):
 
         api_partner = self.env['ir.config_parameter'].sudo().get_param('rest_api_dismac.api_partner', False)
@@ -37,24 +62,8 @@ class ResPartner(models.Model):
         delivery_point_name = punto_entrega['centro'] + " - " + punto_entrega['campus']
 
         lastname, name = delivery_name.split(', ')
+        delivery_point = self.get_delivery_point(delivery_point_name, api_partner)
 
-        delivery_point = self.env['res.partner'].search([
-            '|',
-            ('active', '=', True),
-            ('active', '=', False),
-            ('parent_id', '=', api_partner.id),
-            ('name', '=', delivery_point_name),
-            ], limit=1)
-
-        if not delivery_point:
-
-            delivery_point = self.env['res.partner'].create({
-                'name': delivery_point_name, 
-                'active': True,
-                'parent_id': api_partner.id,
-                'type': 'delivery',
-            })
-        
         delivery_partner = self.env['res.partner'].create({
                 'name': name, 
                 'lastname': lastname, 
@@ -63,7 +72,7 @@ class ResPartner(models.Model):
                 'city': delivery_point.city,
                 'state_id': delivery_point.state_id and delivery_point.state_id.id or False, 
                 'zip': delivery_point.zip,
-                'country_id': delivery_point.country_id and delivery_point.country_id.id or False,
+                'country_id': delivery_point.country_id and delivery_point.country_id.id or api_partner.country_id.id,
                 'active': False,
                 'parent_id': delivery_point.id,
                 'type': 'delivery',
@@ -81,31 +90,28 @@ class ResPartner(models.Model):
         else:
             raise ValidationError(_('API partner not defined.'))
 
-        # invoice_partner = self.env['res.partner'].search([
-        #     ('oficina_contable', '=', oficina_contable),
-        #     ('organo_gestor', '=', organo_gestor),
-        #     ('unidad_tramitadora', '=', unidad_tramitadora),
-        #     ('parent_id', '=' , api_partner.id), 
-        # ], limit=1)
+        delivery_point_name = punto_entrega['centro'] + " - " + punto_entrega['campus']
 
-        #if not invoice_partner:
+        delivery_point = self.get_delivery_point(delivery_point_name, api_partner)
 
         invoice_partner = self.env['res.partner'].create({
             'name': unidad_responsable_gasto, 
             'vat': api_partner.vat,
-            'country_id': api_partner.country_id.id,
-            'state_id': api_partner.state_id.id,
+            'country_id':delivery_point.country_id and delivery_point.country_id.id or api_partner.country_id.id,
+            'state_id': delivery_point.state_id.id or api_partner.state_id.id,
             'active': True,
-            'parent_id': api_partner.id,
+            'parent_id': delivery_point.id,
+            'zip': delivery_point.zip,
             'type': 'invoice',
             'oficina_contable': oficina_contable,
             'organo_gestor': organo_gestor,
             'unidad_tramitadora': unidad_tramitadora,
+            'street': delivery_point.name,
+            'street2': delivery_point.street,
             'facturae': True,
-            'street': delivery_name,
-            'street2': punto_entrega['centro'] + "- " + punto_entrega['campus'],
             'customer_invoice_transmit_method_id': 1,  #HARDCODEADO... deberíamos buscar solución alternativa"
-            'invoice_integration_method_ids': [(6,0,[2])]
+            'invoice_integration_method_ids': [(6,0,[2])]        
         })
+
 
         return invoice_partner
