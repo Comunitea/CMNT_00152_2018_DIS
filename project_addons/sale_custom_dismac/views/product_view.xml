@@ -98,6 +98,53 @@
             </field>
      </record>
 
+    <record id="view_product_customer_search" model="ir.ui.view">
+            <field name="name">product.customerinfo.search</field>
+            <field name="model">product.customerinfo</field>
+
+            <field name="arch" type="xml">
+                <search string="Busqueda de info de productos en clientes">
+                    <field name="product_code" string="Producto Order" filter_domain="['|', ('product_id','ilike',self),('product_code','child_of',self)]"/>
+                    <field name="name" filter_domain="[('name','child_of',self)]"/>
+                    <field name="product_id"/>
+                    <field name="product_code"/>
+
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Clientes" name="name" domain="[]" context="{'group_by':'name'}"/>
+                        <filter name="product_id" string="Articulo" domain="[]" context="{'group_by':'product_id'}"/>
+                        <!--filter string="Order Date" name="order_month" domain="[]" context="{'group_by':'product_tmpl_id'}"/-->
+                    </group>
+               </search>
+            </field>
+        </record>
+     <record id="product_customerinfo_tree_view_simple" model="ir.ui.view">
+        <field name="name">product.customerinfo.tree.view</field>
+        <field name="model">product.customerinfo</field>
+        <field name="arch" type="xml">
+            <tree string="Customer Information" editable="top" create="1" delete="1">
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Cliente"/>
+                <field name="product_id" string="Articulo"/>
+                <field name="product_tmpl_id" string="Product" invisible="1"/>
+                <field name="product_name" string="Nombre en cliente"/>
+                <field name="product_code" string="Codigo en cliente"/>
+                <field name="min_qty" groups="product.group_pricelist_item" invisible="1"/>
+                <field name="price" string="Price" groups="product.group_pricelist_item" invisible="1"/>
+                <field name="date_start" groups="product.group_pricelist_item" invisible="1"/>
+                <field name="date_end" groups="product.group_pricelist_item" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+ <record id="action_show_product_customer_info" model="ir.actions.act_window">
+        <field name="name">Productos en clientes</field>
+        <field name="res_model">product.customerinfo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="sale_custom_dismac.product_customerinfo_tree_view_simple"/>
+    </record>
+
+    <menuitem action="action_show_product_customer_info" id="menu_show_product_customer_info" parent="sale.product_menu_catalog" sequence="99"/>
 
 
 </odoo>
