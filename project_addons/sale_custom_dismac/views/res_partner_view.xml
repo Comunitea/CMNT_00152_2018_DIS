@@ -116,6 +116,7 @@
             </xpath>
             <xpath expr="//filter[@name='supplier']" position="after">
                 <filter string="Facturación" name="invoice" domain="['|', ('type','=', 'invoice'), ('parent_id', '=', False)]"/>
+                <filter string="Entrega" name="delivery" domain="['|', ('type','=', 'delivery'), ('parent_id', '=', False)]"/>
             </xpath>
         </field>
     </record>|
