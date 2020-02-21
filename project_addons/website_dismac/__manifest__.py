@@ -13,18 +13,21 @@
         'Vicente Gutiérrez, <vicente@comunitea.com>',
     ],
     'depends': [
+        'web',
         'website_base',
     ],
     'data': [
         'data/website_data.xml',
         'data/menu_data.xml',
         'data/default_data.xml',
+        'templates/head.xml',
         'templates/forms.xml',
         'templates/cookies.xml',
         #'templates/account.xml',
         'templates/footer.xml',
         'templates/header.xml',
         'templates/product.xml',
+        'templates/simulated_product.xml',
         'views/customize_views.xml',
         'templates/sale_order_portal.xml',
         'security/ir.model.access.csv'
