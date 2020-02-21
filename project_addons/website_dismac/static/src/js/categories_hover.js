@@ -25,9 +25,7 @@ odoo.define('website_dismac.collapsable_categories_hover',
          * @param {Event} ev
          */
         _onOpenClick: function (ev) {
-            console.log("ENTRA OPEN");
             var $fa = $(ev.currentTarget);
-            console.log($fa);
             $fa.parent().siblings().find('.fa-chevron-down:first').click();
             // Changed parent by closets
             // $fa.parents('li').find('ul:first').show('normal');
@@ -39,7 +37,6 @@ odoo.define('website_dismac.collapsable_categories_hover',
          * @param {Event} ev
          */
         _onCloseClick: function (ev) {
-            console.log("ENTRA CLOSE");
             var $fa = $(ev.currentTarget);
             // Changed parent by closets
             // $fa.parent().find('ul:first').hide('normal');
@@ -54,9 +51,7 @@ odoo.define('website_dismac.collapsable_categories_hover',
             if (config.device.isMobile) {
                 return;
             }
-            console.log("ENTRA");
             var $fa = $(ev.currentTarget);
-            console.log($fa);
             var $i = $fa.find("i");
             if ($i.hasClass('fa-chevron-right')){
                 $i.trigger('click');
@@ -70,7 +65,6 @@ odoo.define('website_dismac.collapsable_categories_hover',
             if (config.device.isMobile) {
                 return;
             }
-            console.log("SALE");
             clearTimeout(this.hoverTimer);
             this.hoverTimer = setTimeout(function () {
                 var $fa = $(ev.currentTarget);
