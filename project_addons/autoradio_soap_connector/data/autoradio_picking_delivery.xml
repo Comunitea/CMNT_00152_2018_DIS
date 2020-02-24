@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sel_autoradio_picking_delivery" model="ir.sequence">
+            <field name="name">Autoradio Picking Delivery</field>
+            <field name="code">autoradio.picking.delivery</field>
+            <field name="prefix">ARD-</field>
+            <field name="padding">6</field>
+    </record>
+</odoo>

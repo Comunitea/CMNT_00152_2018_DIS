@@ -1,0 +1,981 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* autoradio_soap_connector
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-19 16:52+0000\n"
+"PO-Revision-Date: 2020-02-19 16:52+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,delivery_type:0
+msgid "AUTORADIO"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_delivery_carrier__autoradio_config_id
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_config_form_view
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_config_tree_view
+msgid "AUTORADIO Config"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:106
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:135
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:163
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:191
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:217
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:241
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:265
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:305
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:387
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:411
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:435
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:511
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:259
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:343
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:379
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:417
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:444
+#, python-format
+msgid "Access error message: {}"
+msgstr "Error de acceso: {}"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,help:autoradio_soap_connector.field_delivery_carrier__integration_level
+msgid "Action while validating Delivery Orders"
+msgstr "Acción al validar órdenes de entrega"
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,autoradio_delivery_instructions:0
+msgid "Acuse de recibo"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_check_1_amount
+msgid "Amount of the 1st payment"
+msgstr "Cantidad del primer pago"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_check_2_amount
+msgid "Amount of the 2nd payment"
+msgstr "Cantidad del segundo pago"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_check_3_amount
+msgid "Amount of the 3rd payment"
+msgstr "Cantidad del tercer pago"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_check_4_amount
+msgid "Amount of the 4th payment"
+msgstr "Cantidad del cuarto pago"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:114
+#: selection:autoradio.picking.delivery,autoradio_cash_on_delivery_payment:0
+#, python-format
+msgid "Any"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.menu,name:autoradio_soap_connector.autoradio_config_main_menu
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.view_delivery_autoradio_carrier_form
+msgid "Autoradio"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_delivery_carrier__autoradio_delivery_instructions
+msgid "Autoradio Delivery Instructions"
+msgstr "Instrucciones de entrega"
+
+#. module: autoradio_soap_connector
+#: model:ir.actions.report,name:autoradio_soap_connector.autoradio_label_report
+msgid "Autoradio Label"
+msgstr "Etiqueta Autoradio"
+
+#. module: autoradio_soap_connector
+#: model:ir.actions.act_window,name:autoradio_soap_connector.autoradio_picking_delivery_action
+#: model:ir.ui.menu,name:autoradio_soap_connector.autoradio_picking_delivery_menu
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_tree
+msgid "Autoradio Picking Deliveries"
+msgstr "Entregas Autoradio"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_stock_picking__autoradio_picking_delivery_id
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_form
+msgid "Autoradio Picking Delivery"
+msgstr "Entrega Autoradio"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_form
+msgid "Autoradio Picking Delivery Name"
+msgstr "Entrega Autoradio"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/wizard/autoradio_shipping_search_wzd.py:49
+#: selection:autoradio.shipping.search.wzd,r_type:0
+#, python-format
+msgid "Autoradio Ref."
+msgstr "Referencia de Autoradio"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_delivery_carrier__autoradio_service_code
+msgid "Autoradio Service Code"
+msgstr "Código de servicio"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_form
+msgid "Autoradio TAR"
+msgstr "Grabar Envío Autoradio"
+
+#. module: autoradio_soap_connector
+#: model:ir.model,name:autoradio_soap_connector.model_autoradio_picking_delivery
+msgid "Autoradio picking delivery"
+msgstr "Entrega Autoradio"
+
+#. module: autoradio_soap_connector
+#: model:ir.model,name:autoradio_soap_connector.model_report_autoradio_label
+msgid "Autoradio report label"
+msgstr "Etiqueta Autoradio"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_ccbb
+msgid "Barcode"
+msgstr "Código de barras"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_ccbb_type
+msgid "Barcode Type"
+msgstr "Tipo de código de barras"
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,delivery_type:0
+msgid "Based on Rules"
+msgstr "En base a reglas"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:113
+#: selection:autoradio.picking.delivery,autoradio_cash_on_delivery_payment:0
+#, python-format
+msgid "Bearer Check"
+msgstr "Cheque Al Portador"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_delivery_agreement_search_wzd_form
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_sheet_data_search_wzd_form
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_shipping_search_wzd_form
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_tracking_search_wzd_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:49
+#: selection:autoradio.picking.delivery,state:0
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
+#, python-format
+msgid "Canceled"
+msgstr "Cancelado"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__carrier_id
+msgid "Carrier"
+msgstr "Transportista"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__carrier_tracking_ref
+msgid "Carrier Tracking Ref"
+msgstr "Código Tracking"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:111
+#: selection:autoradio.picking.delivery,autoradio_cash_on_delivery_payment:0
+#, python-format
+msgid "Cash"
+msgstr "Efectivo"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_cash_on_delivery_payment
+msgid "Cash on delivery payment"
+msgstr "Pago Contrarreembolso"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_delivery_agreement_search_wzd__center_code
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_sheet_data_search_wzd__center_code
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd__center_code
+msgid "Center code"
+msgstr "Código del centro"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_channelling
+msgid "Channelling"
+msgstr "Canalización"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:112
+#: selection:autoradio.picking.delivery,autoradio_cash_on_delivery_payment:0
+#, python-format
+msgid "Check/Promissory Note"
+msgstr "Cheque/Pagaré"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_sheet_data_search_wzd__client_code
+msgid "Client code"
+msgstr "Código de cliente"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_close_shipping
+msgid "Close shipping"
+msgstr "Cerrar envío"
+
+#. module: autoradio_soap_connector
+#: selection:autoradio.picking.delivery,autoradio_ccbb_type:0
+msgid "Code128"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.actions.act_window,name:autoradio_soap_connector.autoradio_config_action
+#: model:ir.ui.menu,name:autoradio_soap_connector.autoradio_config_menu
+msgid "Config"
+msgstr "Configuración"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_config__create_uid
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_delivery_agreement_search_wzd__create_uid
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__create_uid
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_sheet_data_search_wzd__create_uid
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_shipping_search_wzd__create_uid
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_config__create_date
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_delivery_agreement_search_wzd__create_date
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__create_date
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_sheet_data_search_wzd__create_date
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_shipping_search_wzd__create_date
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,autoradio_service_code:0
+msgid "DDIA 48H"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_label_individual_template
+msgid "DESTINATARIO"
+msgstr "DESTINATARIO"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_sheet_data_search_wzd__date
+msgid "Date"
+msgstr "Fecha"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_delivery_agreement_search_wzd__date_from
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__delivery_date
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd__date_from
+msgid "Date from"
+msgstr "Desde"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_check_1_date
+msgid "Date of the 1st payment"
+msgstr "Fecha del primer pago"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_check_2_date
+msgid "Date of the 2nd payment"
+msgstr "Fecha del segundo pago"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_check_3_date
+msgid "Date of the 3rd payment"
+msgstr "Fecha del tercer pago"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_check_4_date
+msgid "Date of the 4th payment"
+msgstr "Fecha del cuarto pago"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_delivery_agreement_search_wzd__date_to
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd__date_to
+msgid "Date to"
+msgstr "Hasta"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:99
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:104
+#: selection:autoradio.picking.delivery,autoradio_refund_type:0
+#: selection:autoradio.picking.delivery,autoradio_type:0
+#, python-format
+msgid "Debt"
+msgstr "Debido"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_declared_value
+msgid "Declared Value"
+msgstr "Valor Declarado"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_form
+msgid "Delete from Autoradio"
+msgstr "Borrar Envío Autoradio"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:48
+#: selection:autoradio.picking.delivery,state:0
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
+#, python-format
+msgid "Delivered"
+msgstr "Entregado"
+
+#. module: autoradio_soap_connector
+#: model:ir.actions.act_window,name:autoradio_soap_connector.autoradio_delivery_agreement_search_wzd_action
+msgid "Delivery Agreement Search"
+msgstr "Buscador Confirme Entrega"
+
+#. module: autoradio_soap_connector
+#: model:ir.model,name:autoradio_soap_connector.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Método de envío"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__state
+msgid "Delivery Status"
+msgstr "Estado de entrega"
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,autoradio_delivery_instructions:0
+msgid "Devolver albarán firmado"
+msgstr "Devolver albarán firmado"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_config__display_name
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_delivery_agreement_search_wzd__display_name
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__display_name
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_sheet_data_search_wzd__display_name
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_shipping_search_wzd__display_name
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd__display_name
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_report_autoradio_soap_connector_autoradio_label_template__display_name
+msgid "Display Name"
+msgstr "Nombre"
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,autoradio_delivery_instructions:0
+msgid "Envío con retorno"
+msgstr "Envío con retorno"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_label_individual_template
+msgid "Exp:"
+msgstr "Exp"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_obs_extra
+msgid "Extra info about the shipping"
+msgstr "Información extra"
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,delivery_type:0
+msgid "Fixed Price"
+msgstr "Precio fijo"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_form
+msgid "Get Autoradio Barcode"
+msgstr "Obtener Código de Barras Autoradio"
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,integration_level:0
+msgid "Get Rate"
+msgstr "Obtener tarifa"
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,integration_level:0
+msgid "Get Rate and Create Shipment"
+msgstr "Obtener tarifas y crear envíos"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
+msgid "Group By..."
+msgstr "Agrupar por..."
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_hard_to_handle
+msgid "Hard to handle"
+msgstr "Difícil de manejar"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,help:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_hard_to_handle
+msgid "Hard to handle merchandise."
+msgstr "Mercancía difícil de manejar"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_config__id
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_delivery_agreement_search_wzd__id
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__id
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_sheet_data_search_wzd__id
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_shipping_search_wzd__id
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd__id
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_report_autoradio_soap_connector_autoradio_label_template__id
+msgid "ID"
+msgstr "ID"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
+msgid "In Transition"
+msgstr "En reparto"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:47
+#: selection:autoradio.picking.delivery,state:0
+#, python-format
+msgid "In transition"
+msgstr "En reparto"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_obs
+msgid "Info about the shipping"
+msgstr "Información sobre el envío"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_delivery_carrier__integration_level
+msgid "Integration Level"
+msgstr "Nivel de integración"
+
+#. module: autoradio_soap_connector
+#: selection:autoradio.picking.delivery,autoradio_ccbb_type:0
+msgid "Interleaved 2of5"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,autoradio_service_code:0
+msgid "LMKD"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_config____last_update
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_delivery_agreement_search_wzd____last_update
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery____last_update
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_sheet_data_search_wzd____last_update
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_shipping_search_wzd____last_update
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd____last_update
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_report_autoradio_soap_connector_autoradio_label_template____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_config__write_uid
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_delivery_agreement_search_wzd__write_uid
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__write_uid
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_sheet_data_search_wzd__write_uid
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_shipping_search_wzd__write_uid
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_config__write_date
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_delivery_agreement_search_wzd__write_date
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__write_date
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_sheet_data_search_wzd__write_date
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_shipping_search_wzd__write_date
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,autoradio_service_code:0
+msgid "MDIA"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__name
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_form
+msgid "Name"
+msgstr "Nombre"
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,autoradio_delivery_instructions:0
+msgid "Ninguna"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:406
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:412
+#, python-format
+msgid "No existen datos para este envío."
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,integration_level:0
+msgid "None"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
+msgid "Not Sent"
+msgstr "Sin enviar"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:104
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:137
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:165
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:193
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:219
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:243
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:267
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:307
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:389
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:413
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:437
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:513
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:261
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:345
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:381
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:419
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:446
+#, python-format
+msgid "Not possible to establish a client."
+msgstr "No es posible establecer el cliente para la conexión."
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:44
+#: selection:autoradio.picking.delivery,state:0
+#, python-format
+msgid "Not sent"
+msgstr "Sin enviar"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__number_of_packages
+msgid "Number of packages"
+msgstr "Número de paquetes"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
+msgid "Order Date"
+msgstr "Fecha de petición"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/wizard/autoradio_shipping_search_wzd.py:50
+#: selection:autoradio.shipping.search.wzd,r_type:0
+#, python-format
+msgid "Own Ref."
+msgstr "Referencia propia"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:98
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:103
+#: selection:autoradio.picking.delivery,autoradio_refund_type:0
+#: selection:autoradio.picking.delivery,autoradio_type:0
+#, python-format
+msgid "Paid"
+msgstr "Pagados"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__partner_id
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_payment
+msgid "Payment"
+msgstr "Pago"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:46
+#: selection:autoradio.picking.delivery,state:0
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
+#, python-format
+msgid "Pending"
+msgstr "Pendiente"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/wizard/autoradio_shipping_search_wzd.py:44
+#: code:addons/autoradio_soap_connector/wizard/autoradio_tracking_search_wzd.py:53
+#: selection:autoradio.shipping.search.wzd,s_type:0
+#: selection:autoradio.tracking.search.wzd,s_type:0
+#, python-format
+msgid "Picking"
+msgstr "Recogida"
+
+#. module: autoradio_soap_connector
+#: model:ir.actions.act_window,name:autoradio_soap_connector.autoradio_picking_sheet_data_search_wzd_action
+msgid "Picking Sheet Data Search"
+msgstr "Buscador Hoja de Recogida"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_form
+msgid "Picking delivery config"
+msgstr "Configuración"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_form
+msgid "Picking delivery info"
+msgstr "Información"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__picking_ids
+msgid "Pickings"
+msgstr "Albaranes"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_form
+msgid "Pickings list"
+msgstr "Albaranes"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_delivery_carrier__delivery_type
+msgid "Provider"
+msgstr "Proveedor"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_label_individual_template
+msgid "REMITENTE"
+msgstr "REMITENTE"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_label_individual_template
+msgid "Reembolso:"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_label_individual_template
+msgid "Ref. Cliente:"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_delivery_agreement_search_wzd__reference
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd__reference
+msgid "Reference"
+msgstr "Referencia"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_shipping_search_wzd__r_type
+msgid "Reference type"
+msgstr "Tipo de referencia"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_refund_type
+msgid "Refund Type"
+msgstr "Tipo de reembolso"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_refund_amount
+msgid "Refund amount"
+msgstr "Cantidad reembolso"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,help:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_refund_amount
+msgid "Refund amount allows to calculate the commission"
+msgstr "La cantidad de reembolso sirve para calcular la comisión"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:45
+#: selection:autoradio.picking.delivery,state:0
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
+#, python-format
+msgid "Requested"
+msgstr "Solicitado"
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,autoradio_delivery_instructions:0
+msgid "Retornar mercancía"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,autoradio_service_code:0
+msgid "SABADOS"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,autoradio_service_code:0
+msgid "SDIA 10H"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: selection:delivery.carrier,autoradio_service_code:0
+msgid "SDIA 24H"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_config__soap_center
+msgid "SOAP Center Code"
+msgstr "Código de centro"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_config__soap_client_code
+msgid "SOAP Client Code"
+msgstr "Código de cliente"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_config__soap_persona_ordena
+msgid "SOAP Persona Ordena"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_config__soap_user
+msgid "SOAP User"
+msgstr "Usuario"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_config__soap_pass
+msgid "SOAP password"
+msgstr "Contraseña"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_delivery_agreement_search_wzd_form
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_sheet_data_search_wzd_form
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_shipping_search_wzd_form
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_tracking_search_wzd_form
+msgid "Search"
+msgstr "Búsqueda"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_delivery_agreement_search_wzd__dates
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd__dates
+msgid "Search between dates"
+msgstr "Buscar entre fechas"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_shipping_search_wzd__s_type
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd__s_type
+msgid "Search type"
+msgstr "Tipo de búsqueda"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_send_today
+msgid "Send today"
+msgstr "Enviar hoy"
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/wizard/autoradio_shipping_search_wzd.py:43
+#: code:addons/autoradio_soap_connector/wizard/autoradio_tracking_search_wzd.py:52
+#: selection:autoradio.shipping.search.wzd,s_type:0
+#: selection:autoradio.tracking.search.wzd,s_type:0
+#, python-format
+msgid "Shipping"
+msgstr "Envío"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_type
+msgid "Shipping Charge"
+msgstr "Coste envío"
+
+#. module: autoradio_soap_connector
+#: model:ir.actions.act_window,name:autoradio_soap_connector.autoradio_shipping_search_wzd_action
+msgid "Shipping Search"
+msgstr "Buscar envío"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__shipping_weight
+msgid "Shipping Weight"
+msgstr "Peso del envío"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_shipping_search_wzd__reference
+msgid "Shipping reference"
+msgstr "Referencia del envío"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_shipping_search_wzd__year
+msgid "Shipping year"
+msgstr "Año de envío"
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
+msgid "State"
+msgstr "Estado"
+
+#. module: autoradio_soap_connector
+#: model:ir.actions.act_window,name:autoradio_soap_connector.autoradio_tracking_search_wzd_action
+msgid "Tracking Search"
+msgstr "Buscar Tracking"
+
+#. module: autoradio_soap_connector
+#: model:ir.model,name:autoradio_soap_connector.model_stock_picking
+msgid "Transfer"
+msgstr "Albarán"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_config__soap_url
+msgid "Webservice URL"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:67
+#, python-format
+msgid "You can not add pickings from more than one partner."
+msgstr "No puedes añadir albaranes para más de un destinatario."
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:272
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:312
+#: code:addons/autoradio_soap_connector/models/autoradio_config.py:441
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:181
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:265
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:349
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:385
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:423
+#, python-format
+msgid "You need to select a picking to calculate the estimated shipping cost."
+msgstr "Necesitas seleccionar un albarán para estimar el coste del envío."
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/wizard/autoradio_shipping_search_wzd.py:59
+#: code:addons/autoradio_soap_connector/wizard/autoradio_tracking_search_wzd.py:63
+#, python-format
+msgid "You need to select a search type."
+msgstr "Necesitas seleccionar un tipo de búsqueda."
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/wizard/autoradio_delivery_agreement_search_wzd.py:63
+#: code:addons/autoradio_soap_connector/wizard/autoradio_tracking_search_wzd.py:69
+#, python-format
+msgid "You need to select the dates."
+msgstr "Necesitas seleccionar las fechas."
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/wizard/autoradio_picking_sheet_data_search_wzd.py:60
+#, python-format
+msgid "You need to send a client code."
+msgstr "Necesitas introducir un código de cliente."
+
+#. module: autoradio_soap_connector
+#: code:addons/autoradio_soap_connector/wizard/autoradio_picking_sheet_data_search_wzd.py:58
+#, python-format
+msgid "You need to send a date."
+msgstr "Necesitas enviar una fecha."
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_config_form_view
+msgid "autoradio Config"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.model,name:autoradio_soap_connector.model_autoradio_config
+msgid "autoradio.config"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.view,name:autoradio_soap_connector.autoradio_config_form_view
+msgid "autoradio.config.form"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.view,name:autoradio_soap_connector.autoradio_config_tree_view
+msgid "autoradio.config.tree"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.model,name:autoradio_soap_connector.model_autoradio_delivery_agreement_search_wzd
+msgid "autoradio.delivery.agreement.search.wzd"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.view,name:autoradio_soap_connector.autoradio_delivery_agreement_search_wzd_form
+msgid "autoradio.delivery.agreement.search.wzd.form"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.view,name:autoradio_soap_connector.autoradio_picking_delivery_form
+msgid "autoradio.picking.delivery.form"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.view,name:autoradio_soap_connector.autoradio_picking_delivery_search
+msgid "autoradio.picking.delivery.search"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.view,name:autoradio_soap_connector.autoradio_picking_delivery_tree
+msgid "autoradio.picking.delivery.tree"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.model,name:autoradio_soap_connector.model_autoradio_picking_sheet_data_search_wzd
+msgid "autoradio.picking.sheet.data.search.wzd"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.view,name:autoradio_soap_connector.autoradio_picking_sheet_data_search_wzd_form
+msgid "autoradio.picking.sheet.data.search.wzd.form"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.model,name:autoradio_soap_connector.model_autoradio_shipping_search_wzd
+msgid "autoradio.shipping.search.wzd"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.view,name:autoradio_soap_connector.autoradio_shipping_search_wzd_form
+msgid "autoradio.shipping.search.wzd.form"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.model,name:autoradio_soap_connector.model_autoradio_tracking_search_wzd
+msgid "autoradio.tracking.search.wzd"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.view,name:autoradio_soap_connector.autoradio_tracking_search_wzd_form
+msgid "autoradio.tracking.search.wzd.form"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.view,name:autoradio_soap_connector.autoradio_label_individual_template
+msgid "autoradio_soap_connector.autoradio_label_individual_template"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.view,name:autoradio_soap_connector.autoradio_label_template
+msgid "autoradio_soap_connector.autoradio_label_template"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_label_individual_template
+msgid "barcode"
+msgstr "código de barras"
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.view,name:autoradio_soap_connector.view_delivery_autoradio_carrier_form
+msgid "delivery_base.autardio_delivery.carrier.view_form"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_delivery_agreement_search_wzd_form
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_sheet_data_search_wzd_form
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_shipping_search_wzd_form
+#: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_tracking_search_wzd_form
+msgid "or"
+msgstr "o"
+
+#. module: autoradio_soap_connector
+#: model:ir.model,name:autoradio_soap_connector.model_report_autoradio_soap_connector_autoradio_label_template
+msgid "report.autoradio_soap_connector.autoradio_label_template"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.view,name:autoradio_soap_connector.view_picking_internal_search_autoradio_connector
+msgid "view_picking_internal_search_autoradio_connector"
+msgstr ""
+
+#. module: autoradio_soap_connector
+#: model:ir.ui.view,name:autoradio_soap_connector.vpicktree_autoradio_connector
+msgid "vpicktree_autoradio_connector"
+msgstr ""
+

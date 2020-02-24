@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+
+<odoo>
+
+    <record id="autoradio_picking_sheet_data_search_wzd_form" model="ir.ui.view">
+        <field name="name">autoradio.picking.sheet.data.search.wzd.form</field>
+        <field name="model">autoradio.picking.sheet.data.search.wzd</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="client_code"/>
+                    <field name="center_code"/>
+                    <field name="date"/>
+                </group>
+                <footer>
+                    <button name="autoradio_picking_sheet_data_search" string="Search" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window name="Picking Sheet Data Search"
+        res_model="autoradio.picking.sheet.data.search.wzd"
+        view_id="autoradio_picking_sheet_data_search_wzd_form"
+        view_mode="form"
+        target="new"
+        id="autoradio_picking_sheet_data_search_wzd_action"/>
+
+    <!-- <menuitem id="autoradio_picking_sheet_data_search_wzd_menu" name="Picking Sheet Data Search" action="autoradio_picking_sheet_data_search_wzd_action" 
+        parent="autoradio_soap_connector.autoradio_config_main_menu"/> -->
+
+</odoo>

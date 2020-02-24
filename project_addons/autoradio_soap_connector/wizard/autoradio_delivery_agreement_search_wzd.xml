@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+
+<odoo>
+
+    <record id="autoradio_delivery_agreement_search_wzd_form" model="ir.ui.view">
+        <field name="name">autoradio.delivery.agreement.search.wzd.form</field>
+        <field name="model">autoradio.delivery.agreement.search.wzd</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="center_code" attrs="{'invisible': [('dates', '=', True)]}"/>
+                    <field name="reference" attrs="{'invisible': [('dates', '=', True)]}"/>
+                    <field name="dates"/>
+                    <field name="date_from" attrs="{'invisible': [('dates', '=', False)]}"/>
+                    <field name="date_to" attrs="{'invisible': [('dates', '=', False)]}"/>
+                </group>
+                <footer>
+                    <button name="autoradio_delivery_agreement_search" string="Search" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window name="Delivery Agreement Search"
+        res_model="autoradio.delivery.agreement.search.wzd"
+        view_id="autoradio_delivery_agreement_search_wzd_form"
+        view_mode="form"
+        target="new"
+        id="autoradio_delivery_agreement_search_wzd_action"/>
+
+    <!-- <menuitem id="autoradio_delivery_agreement_search_wzd_menu" name="Delivery Agreement Search" action="autoradio_delivery_agreement_search_wzd_action" 
+        parent="autoradio_soap_connector.autoradio_config_main_menu"/> -->
+
+</odoo>

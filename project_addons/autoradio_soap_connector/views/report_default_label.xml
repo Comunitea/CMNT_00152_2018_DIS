@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_default_label_autoradio" inherit_id="delivery_carrier_label_default.report_default_label">
+        <xpath expr="//div[hasclass('address')]" position="inside">
+            <t t-if="o.carrier_id.delivery_type == 'autoradio'">
+                <div class="col-md-12">
+                    <img alt="barcode" t-if="o.autoradio_ccbb" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128' if o.autoradio_ccbb_type == 1 else 'Interleaved 2of5', o.autoradio_ccbb, 600, 120)" style="max-height:50pt;max-width:100%;" align="center"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="stock_picking_tag_autoradio" inherit_id="stock_picking_custom.stock_picking_tag">
+        <xpath expr="//div[hasclass('page')]/div[last()]" position="after">
+            <t t-if="o.carrier_id.delivery_type == 'autoradio'">
+                <hr style="margin:3px"/>
+                <div class="row">
+                    <div style="width: 100%">
+                        <span>
+                            Barcode:
+                        </span>
+                    </div>
+                </div>
+
+                <div style="width: 100%">
+                    <img alt="barcode" t-if="o.autoradio_ccbb" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128' if o.autoradio_ccbb_type == 1 else 'Interleaved 2of5', o.autoradio_ccbb, 600, 120)" style="max-height:50pt;max-width:100%;" align="center"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>

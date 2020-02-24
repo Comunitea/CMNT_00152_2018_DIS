@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="vpicktree_autoradio_connector" inherit_id="stock.vpicktree">
+        <field name="state" position="before">
+            <field name="autoradio_picking_delivery_id" invisible="1"/>
+        </field>
+    </template>
+
+    <template id="view_picking_internal_search_autoradio_connector" inherit_id="stock.view_picking_internal_search">
+        <field name="product_id" position="before">
+            <field name="autoradio_picking_delivery_id"/>
+        </field>
+    </template>
+</odoo>

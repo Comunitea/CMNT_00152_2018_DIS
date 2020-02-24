@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+
+<odoo>
+
+    <record id="autoradio_tracking_search_wzd_form" model="ir.ui.view">
+        <field name="name">autoradio.tracking.search.wzd.form</field>
+        <field name="model">autoradio.tracking.search.wzd</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="s_type"/>
+                    <field name="center_code"/>
+                    <field name="reference" attrs="{'invisible': [('dates', '=', True)]}"/>
+                    <field name="dates"/>
+                    <field name="date_from" attrs="{'invisible': [('dates', '=', False)]}"/>
+                    <field name="date_to" attrs="{'invisible': [('dates', '=', False)]}"/>
+                </group>
+                <footer>
+                    <button name="autoradio_tracking_search" string="Search" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window name="Tracking Search"
+        res_model="autoradio.tracking.search.wzd"
+        view_id="autoradio_tracking_search_wzd_form"
+        view_mode="form"
+        target="new"
+        id="autoradio_tracking_search_wzd_action"/>
+
+    <!-- <menuitem id="autoradio_tracking_search_wzd_menu" name="Tracking Search" action="autoradio_tracking_search_wzd_action" 
+        parent="autoradio_soap_connector.autoradio_config_main_menu"/> -->
+
+</odoo>
