@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- autoradio.picking.delivery Form View -->
+    <record model="ir.ui.view" id="autoradio_picking_delivery_form">
+        <field name="name">autoradio.picking.delivery.form</field>
+        <field name="model">autoradio.picking.delivery</field>
+        <field name="arch" type="xml">
+            <form string="Autoradio Picking Delivery">
+                <header>
+                    <button name="send_autoradio_picking_tar"
+                        string="Autoradio TAR" type="object" class="oe_highlight"
+                        groups="stock.group_stock_manager" attrs="{'invisible': [('state', 'in', ['in_transition', 'delivered'])]}"/>
+                    <button name="delete_autoradio_shipping"
+                            string="Delete from Autoradio" type="object" class="oe_highlight"
+                            groups="stock.group_stock_manager" attrs="{'invisible': ['|', ('carrier_tracking_ref', '=', False),
+                                ('state', 'in', ['in_transition', 'delivered', 'canceled'])]}"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <div class="oe_edit_only">
+                            <label for="name" string="Autoradio Picking Delivery Name"/>
+                        </div>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    
+                    <h3 style="color: #7C7BAD">Picking delivery info</h3>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="carrier_id"/>
+                            <field name="shipping_weight"/>
+                            <field name="number_of_packages"/>
+                            <field name="carrier_tracking_ref"/>
+                            <field name="delivery_date"/>
+                        </group>
+                    </group>
+                    <h3 style="color: #7C7BAD">Picking delivery config</h3>
+                    <group>
+                        <group>
+                            <field name="autoradio_type"/>
+                            <field name="autoradio_refund_amount"/>
+                            <field name="autoradio_obs"/>
+                            <field name="autoradio_obs_extra"/>
+                            <field name="autoradio_hard_to_handle"/>
+                            <field name="autoradio_ccbb" readonly="1" attrs="{'invisible': [('autoradio_ccbb', '=', False)]}"/>
+                            <field name="autoradio_ccbb_type" readonly="1" attrs="{'invisible': [('autoradio_ccbb_type', '=', False)]}"/>
+                            <!-- <button name="get_label_from_autoradio" attrs="{'invisible': [('carrier_tracking_ref', '=', False)]}" groups="stock.group_stock_manager" string="Get Autoradio Tag" type="object" class="btn-link" icon="fa-arrow-right"/> -->
+                            <button name="get_barcode_from_autoradio" attrs="{'invisible': [('carrier_tracking_ref', '=', False)]}" groups="stock.group_stock_manager" string="Get Autoradio Barcode" type="object" class="btn-link" icon="fa-arrow-right"/>
+                            <field name="autoradio_channelling" readonly="1" attrs="{'invisible': [('autoradio_channelling', '=', False)]}"/>
+                        </group>
+                        <group>
+                            <field name="autoradio_send_today"/>
+                            <field name="autoradio_close_shipping"/>
+                            <field name="autoradio_payment"/>
+                            <field name="autoradio_declared_value"/>
+                            <field name="autoradio_cash_on_delivery_payment"/>
+                            <field name="autoradio_check_1_amount" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                            <field name="autoradio_check_1_date" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                            <field name="autoradio_check_2_amount" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                            <field name="autoradio_check_2_date" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                            <field name="autoradio_check_3_amount" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                            <field name="autoradio_check_3_date" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                            <field name="autoradio_check_4_amount" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                            <field name="autoradio_check_4_date" attrs="{'invisible': [('autoradio_cash_on_delivery_payment', 'not in', [10])]}"/>
+                        </group>
+                    </group>
+                    <!-- <field name="picking_ids" domain="[('picking_type_code', '=', 'outgoing'), ('state', '=', 'assigned'),
+                            ('autoradio_picking_delivery_id', '=', False)]"> -->
+                        <field name="picking_ids" widget="many2many" domain="[('autoradio_picking_delivery_id', '=', False), ('picking_type_code', '=', 'outgoing'), ('state', '=', 'assigned')]">
+                        <tree string="Pickings list">
+                            <field name="name" string="Name"/>
+                            <field name="number_of_packages"/>
+                            <field name="shipping_weight"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- autoradio.picking.delivery search view -->
+    <record id="autoradio_picking_delivery_search" model="ir.ui.view">
+        <field name="name">autoradio.picking.delivery.search</field>
+        <field name="model">autoradio.picking.delivery</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+                <field name="delivery_date"/>
+                <field name="carrier_tracking_ref"/>
+
+                <group expand="0" string="Group By...">
+                    <filter name="partner_id" string="Partner" context="{'group_by':'partner_id'}"/>
+                    <filter name="state" string="State" context="{'group_by':'state'}"/>
+                    <filter name="delivery_date" string="Order Date" context="{'group_by':'delivery_date'}"/>
+                </group>
+                <filter name="not_sent" string="Not Sent" domain="[('state','=', 'not_sent')]"/>
+                <filter name="requested" string="Requested" domain="[('state','=', 'requested')]"/>
+                <filter name="pending" string="Pending" domain="[('state','=', 'pending')]"/>
+                <filter name="in_transition" string="In Transition" domain="[('state','=', 'in_transition')]"/>
+                <filter name="delivered" string="Delivered" domain="[('state','=', 'delivered')]"/>
+                <filter name="canceled" string="Canceled" domain="[('state','=', 'canceled')]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- stock.batch.picking tree view -->
+    <record model="ir.ui.view" id="autoradio_picking_delivery_tree">
+        <field name="name">autoradio.picking.delivery.tree</field>
+        <field name="model">autoradio.picking.delivery</field>
+        <field name="arch" type="xml">
+            <tree string="Autoradio Picking Deliveries">
+                <field name="name" readonly="1"/>
+                <field name="partner_id" readonly="1"/>
+                <field name="carrier_id" readonly="1"/>
+                <field name="carrier_tracking_ref" readonly="1"/>
+                <field name="delivery_date" readonly="1"/>
+                <field name="state" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="autoradio_picking_delivery_action" model="ir.actions.act_window">
+        <field name="name">Autoradio Picking Deliveries</field>
+        <field name="res_model">autoradio.picking.delivery</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="autoradio_picking_delivery_menu" parent="autoradio_soap_connector.autoradio_config_main_menu"
+        action="autoradio_picking_delivery_action" sequence="1"/>
+
+</odoo>
