@@ -60,8 +60,25 @@ class AccountInvoice(models.Model):
 
         vals['quantity'] = quantity
         vals['receipt_move_id'] = move.id
+        new_line = self.env['account.invoice.line'].new(vals)
+        rec = self.env['account.analytic.default'].account_get(
+            vals['product_id'], self.partner_id.id, self.env.uid,
+            fields.Date.today(), company_id=self.company_id.id)
+        if rec:
+            if rec.analytic_id:
+                vals['account_analytic_id'] = rec.analytic_id.id
+            if rec.analytic_tag_ids:
+                vals['analytic_tag_ids'] = [(6, 0, rec.analytic_tag_ids.ids)]
+                cost_center = rec.analytic_tag_ids.mapped(
+                    'cost_center_id')
+                if cost_center:
+                    vals['cost_center_id'] = cost_center[0].id
+
+            
 
         new_line = self.env['account.invoice.line'].new(vals)
+
+        
 
         self.invoice_line_ids += new_line
         return new_line

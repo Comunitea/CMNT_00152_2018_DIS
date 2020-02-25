@@ -1,10 +1,10 @@
 # © 2018 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import models, fields, api
-from odoo.addons import decimal_precision as dp
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from odoo import models, fields, api
+from odoo.addons import decimal_precision as dp
 
 
 class ProductPriceRatio(models.Model):
@@ -118,13 +118,13 @@ class ProductProduct(models.Model):
                 product.real_stock_cost = (
                     product.stock_value / product.qty_at_date
                 )
-        # Fixed real stock_cost: Solo los movimientos con exclude_compute_cost = False
+        # Fixed real stock_cost: Solo los
+        #  movimientos con exclude_compute_cost = False
         ctx = self._context.copy()
         ctx.update(exclude_compute_cost=True)
         for product in self:
-            product.real_stock_cost_fixed = product._get_compute_custom_costs_with_context(
-                ctx
-            )
+            product.real_stock_cost_fixed = product.\
+                _get_compute_custom_costs_with_context(ctx)
             if product.product_tmpl_id.cost_ratio_id:
                 product.reference_cost = (
                     product.last_purchase_price_fixed
@@ -196,15 +196,17 @@ class ProductProduct(models.Model):
                     key=lambda l: l.invoice_id.date_invoice, reverse=True
                 )
                 if inv_lines:
-                    lpp = inv_lines[:1].price_unit
+                    lpp = inv_lines[:1].price_unit * (1 - inv_lines[:1].discount/100)
                     uom_id = inv_lines[:1].uom_id
                 else:
-                    lpp = lines[:1].price_unit
+                    lpp = lines[:1].price_unit * (1 - lines[:1].discount/100)
                     uom_id = lines[:1].product_uom
                 if uom_id and uom_id.id != product.uom_id.id:
                     lpp = uom_id._compute_price(lpp, product.uom_id)
                 if lpp == 0 and product.last_purchase_price != 0:
                     lpp = product.last_purchase_price
+                if lpp == 0 and product.standard_price != 0:
+                    lpp = product.standard_price
                 product.last_purchase_price_fixed = lpp
 
 

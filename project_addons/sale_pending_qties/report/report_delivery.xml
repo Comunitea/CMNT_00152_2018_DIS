@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+   <template id="sale_pending_qties.rdd_pending_qties" inherit_id="stock.report_delivery_document">
+        <xpath expr="//t[@t-if=&quot;o.backorder_ids and o.backorder_ids.filtered(lambda x: x.state not in (&apos;done&apos;, &apos;cancel&apos;))&quot;]" position="after">
+
+            <t t-set="pending" t-value="o.compute_pending()" />
+            <t t-set="count_pending" t-value="len(pending)"/>
+            <t t-if="count_pending>0">
+                <table class="table table-sm mt48">
+                    <thead>
+                        <tr>
+                            <th width="20%"><strong>Cantidades pendientes</strong></th>
+                            <th ><strong>Producto</strong></th>
+                            <th><strong>Cantidad</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="pending" t-as="lp">
+                            <td></td>
+                            <td>
+                                <span t-esc="lp['name']"/>
+                            </td>
+                            <td>
+                                <span t-esc="lp['pending']"/> <span t-esc="lp['uom_name']"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

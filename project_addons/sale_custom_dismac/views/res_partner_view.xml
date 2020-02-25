@@ -8,12 +8,11 @@
         <field name="arch" type="xml">
             <field name="industry_id" position="after">
                  <field name="whole_orders"/>
-                 <field name="no_valued_picking"/>
+                 <!--field name="no_valued_picking"/-->
                  <field name="require_num_order"/>
                  <field name="zone_id"/>
                  <field name="route_id"/>
-            </field>
-            <field name="user_id" position="after">
+            
                  <field name="priority"/>
             </field>
         </field>
@@ -32,6 +31,32 @@
                     <attribute name="groups">sales_team.group_sale_manager</attribute>
             </xpath>
 
+        </field>
+    </record>
+
+
+    <record id="res_partner_view_custom_change_valued_picking" model="ir.ui.view" >
+        <field name="name">res.partner.view.custom_valued</field>
+        <field name="model">res.partner</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="stock_picking_report_valued.view_partner_valued_picking"/>
+        <field name="arch" type="xml">
+            <field name="valued_picking" position="replace"/>
+            <field name="phone" position="before">
+                <field name="valued_picking"
+                       attrs="{'invisible': [('customer', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_partner_form_user_id" model="ir.ui.view">
+        <field name="name">Add user_id on partner form view</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="child_ids" position="attributes">
+                <attribute name="context">{'default_parent_id': active_id, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_supplier': supplier, 'default_customer': customer, 'default_lang': lang, 'default_customer_invoice_transmit_method_code': customer_invoice_transmit_method_code, 'default_supplier_invoice_transmit_method_code': supplier_invoice_transmit_method_code, 'default_user_id': user_id}</attribute>
+            </field>
         </field>
     </record>
 
@@ -91,6 +116,7 @@
             </xpath>
             <xpath expr="//filter[@name='supplier']" position="after">
                 <filter string="Facturación" name="invoice" domain="['|', ('type','=', 'invoice'), ('parent_id', '=', False)]"/>
+                <filter string="Entrega" name="delivery" domain="['|', ('type','=', 'delivery'), ('parent_id', '=', False)]"/>
             </xpath>
         </field>
     </record>|

@@ -21,6 +21,15 @@
                     </form>
                 </page>
             </notebook>
+            
+            <xpath expr="//field[@name= 'partner_invoice_id']" position="after">
+                <field name="invoice_zip" invisible="True"/>
+                <span style="color:red;" attrs="{'invisible': [('invoice_zip', '!=', False)]}">[Sin datos]</span>
+            </xpath>
+            <xpath expr="//field[@name= 'partner_shipping_id']" position="after">
+                <field name="shipping_zip" invisible="True"/>
+                <span style="color:red;" attrs="{'invisible': [('shipping_zip', '!=', False)]}">[Sin datos]</span>
+            </xpath>
         </field>
     </record>
 </odoo>

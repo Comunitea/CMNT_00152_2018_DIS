@@ -13,38 +13,43 @@ class StockMove(models.Model):
     def create_empty_move_lines(self):
 
         for move in self.filtered(lambda x: x.state in ('confirmed', 'partially_available')):
-            ## Si un movimiento ya tiene lineas creadas se salta ala siguiente
-            if not move.move_line_ids.filtered(lambda x: x.not_stock > 0.00):
-                ## Cantidad pendiente no reservada
-                qty = move.product_uom_qty - move.reserved_availability
-                if move.move_line_ids:
-                    sugested_location = move.move_line_ids[0].location_id
-                    sugested_location_dest = move.move_line_ids[0].location_dest_id
-                else:
-                    sugested_location = move.location_id.get_putaway_strategy(move.product_id) or move.location_id
-                    sugested_location_dest = move.location_dest_id.get_putaway_strategy(move.product_id) or move.location_dest_id
+            not_stock = sum(x.not_stock for x in move.move_line_ids)
+            # Si ya se ha creado, entonces salimos
+            if not_stock > 0:
+                continue
+            not_stock = move.product_uom_qty - move.reserved_availability
 
-                if move.product_id.tracking != 'serial':
-                    vals = move._prepare_move_line_vals()
-                    vals.update(not_stock=qty,
-                                product_uom_qty=0,
-                                location_dest_id=sugested_location_dest.id,
-                                location_id=sugested_location.id)
+            ## Si un movimiento ya tiene lineas creadas se salta ala siguiente
+            if move.move_line_ids:
+                last_move = move.move_line_ids[-1]
+                sugested_location = last_move.location_id
+                sugested_location_dest = last_move.location_dest_id
+            else:
+                sugested_location = move.location_id.get_putaway_strategy(move.product_id) or move.location_id
+                sugested_location_dest = move.location_dest_id.get_putaway_strategy(move.product_id) or move.location_dest_id
+
+            if move.product_id.tracking == 'serial':
+                new_serial_lines = self.env['stock.move.line']
+                vals = move._prepare_move_line_vals()
+                vals.update(not_stock=1,
+                            product_uom_qty=0,
+                            location_dest_id=sugested_location_dest.id,
+                            location_id=sugested_location.id)
+                for l in range(0, not_stock):
+                    new_serial_lines |= self.env['stock.move.line'].create(vals)
+                    move.write({'move_line_ids': [(4, new_serial_lines.ids)]})
+            else:
+
+                vals = move._prepare_move_line_vals()
+                vals.update(not_stock=not_stock,
+                            product_uom_qty=0,
+                            location_dest_id=sugested_location_dest.id,
+                            location_id=sugested_location.id)
+
+                if move.move_line_ids:
                     move_line = self.env['stock.move.line'].create(vals)
                     move.write({
                         'move_line_ids': [(4, move_line.id)]})
-                else:
-                    new_sml = self.env['stock.move.line']
-                    for i in range(0, int(qty)):
-
-                        vals = move._prepare_move_line_vals()
-                        vals.update(not_stock=1,
-                                    location_id=sugested_location.id)
-                        new_sml |= self.env['stock.move.line'].create(vals)
-
-                    move.write({'move_line_ids': [(4, new_sml.ids)]})
-
-
 
 
 class StockMoveLine(models.Model):

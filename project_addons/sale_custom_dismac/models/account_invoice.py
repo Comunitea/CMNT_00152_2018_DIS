@@ -10,3 +10,16 @@ class AccountInvoice(models.Model):
 
     def _message_auto_subscribe_followers(self, updated_values, default_subtype_ids):
         return []
+
+    date = fields.Date(default=lambda self: self._default_date())
+    invoice_integration_method_ids = fields.Many2many(
+        related='partner_id.invoice_integration_method_ids',
+        string='Integration Method',
+    )
+    
+
+    @api.model
+    def _default_date(self):
+        type = self.env.context.get('default_type')
+        if type in ['in_invoice', 'in_refund']:
+            return fields.Date.today()
