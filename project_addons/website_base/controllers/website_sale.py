@@ -19,11 +19,29 @@ class WebsiteSale(WebsiteSale):
     @http.route(['/shop/payment'], type='http', auth="public", website=True)
     def payment(self, **post):
         order = request.website.sale_get_order()
+        reason_list = []
 
-        if order.locked:
+        products_tmpl_on_cart = order.order_line.mapped('product_id').mapped('product_tmpl_id').ids
+        order_line_restrictions = request.env['product.customerinfo'].search_read([
+            ('name', '=', order.partner_id.id),
+            ('product_tmpl_id', 'in', products_tmpl_on_cart)], ['product_tmpl_id', 'min_product_qty'])
+        
+        if order_line_restrictions:
+            for restriction in order_line_restrictions:
+                res_check = request.env['sale.order.line'].search([
+                    ('product_id.product_tmpl_id', '=', restriction['product_tmpl_id'][0]),
+                    ('order_id', '=', order.id),
+                    ('product_uom_qty', '<', restriction['min_product_qty'])
+                ])
+                
+                if res_check:
+                    reason_list.append(
+                        _(("The product {} needs a minimum amount of {} to be shipped.").format(restriction['product_tmpl_id'][1], restriction['min_product_qty']))
+                    )
+
+        if order.locked or res_check:
             render_values = self._get_shop_payment_values(order, **post)
 
-            reason_list = []
             if order.risk_lock:
                 reason_list.append(_("Risk"))
             if order.unpaid_lock:

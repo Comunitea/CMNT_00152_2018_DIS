@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-21 11:30+0000\n"
-"PO-Revision-Date: 2020-02-04 13:42+0000\n"
-"Last-Translator: <ruben@comunitea.com>\n"
+"POT-Creation-Date: 2020-02-28 13:02+0000\n"
+"PO-Revision-Date: 2020-02-28 13:02+0000\n"
+"Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -96,14 +96,24 @@ msgid "<span class=\"fa fa-heart\" role=\"img\" aria-label=\"Add to wishlist\"/>
 msgstr "<span class=\"fa fa-heart\" role=\"img\" aria-label=\"Añadir a la lista de deseos\"/>"
 
 #. module: website_base
+#: model_terms:ir.ui.view,arch_db:website_base.product_offers
+msgid "<span>Dismac</span>"
+msgstr ""
+
+#. module: website_base
+#: model_terms:ir.ui.view,arch_db:website_base.product_offers
+msgid "<span>Oferta</span>"
+msgstr ""
+
+#. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.simulate_sort
 msgid "<span>Ordenar por:</span>"
 msgstr ""
 
 #. module: website_base
-#: model_terms:ir.ui.view,arch_db:website_base.simulate_products_tags
-msgid "<span>Tags</span>"
-msgstr "Etiquetas"
+#: model_terms:ir.ui.view,arch_db:website_base.simulate_products_categories
+msgid "<strong>Categorias</strong>"
+msgstr ""
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.quote
@@ -118,6 +128,11 @@ msgstr ""
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.quote
 msgid "<strong>Email de contacto: </strong>"
+msgstr ""
+
+#. module: website_base
+#: model_terms:ir.ui.view,arch_db:website_base.simulate_products_categories
+msgid "<strong>Etiquetas</strong>"
 msgstr ""
 
 #. module: website_base
@@ -154,17 +169,17 @@ msgstr ""
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.quote
+msgid "<strong>Productos NO encontrados en la web: </strong>"
+msgstr ""
+
+#. module: website_base
+#: model_terms:ir.ui.view,arch_db:website_base.quote
 msgid "<strong>Productos añadidos desde tienda: </strong>"
 msgstr ""
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.quote
 msgid "<strong>Productos encontrados en la web: </strong>"
-msgstr ""
-
-#. module: website_base
-#: model_terms:ir.ui.view,arch_db:website_base.quote
-msgid "<strong>Productos NO encontrados en la web: </strong>"
 msgstr ""
 
 #. module: website_base
@@ -210,10 +225,28 @@ msgid "Acepto los"
 msgstr ""
 
 #. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__message_needaction
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__message_needaction
+msgid "Action Needed"
+msgstr "Acción requerida"
+
+#. module: website_base
 #: model:ir.model.fields,field_description:website_base.field_product_offer__active
 #: model:ir.model.fields,field_description:website_base.field_sale_quote__active
 msgid "Active"
 msgstr "Activo"
+
+#. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__activity_ids
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__activity_ids
+msgid "Activities"
+msgstr "Actividades"
+
+#. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__activity_state
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__activity_state
+msgid "Activity State"
+msgstr "Estado de la actividad"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.simulate_products_item
@@ -267,7 +300,7 @@ msgid "Attach CV"
 msgstr "Adjuntar CV"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:68
+#: code:addons/website_base/models/product.py:69
 #: model:ir.model.fields,field_description:website_base.field_product_offer__attachment_id
 #: model_terms:ir.ui.view,arch_db:website_base.product_offer_form_view
 #: model_terms:ir.ui.view,arch_db:website_base.product_offers_view
@@ -276,7 +309,13 @@ msgid "Attachment"
 msgstr "Adjunto"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:69
+#: model:ir.model.fields,field_description:website_base.field_product_offer__message_attachment_count
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__message_attachment_count
+msgid "Attachment Count"
+msgstr "Conteo de archivos adjuntos"
+
+#. module: website_base
+#: code:addons/website_base/models/product.py:70
 #: model:ir.model.fields,field_description:website_base.field_product_offer__attachment_filename
 #, python-format
 msgid "Attachment Filename"
@@ -294,12 +333,12 @@ msgid "Avisos Legales"
 msgstr ""
 
 #. module: website_base
-#: model_terms:ir.ui.view,arch_db:website_base.product_offer_form_view
 #: model_terms:ir.ui.view,arch_db:website_base.product_offers_view
 msgid "Category"
 msgstr "Categoría"
 
 #. module: website_base
+#: model_terms:ir.ui.view,arch_db:website_base.product_offer_form_view
 #: model_terms:ir.ui.view,arch_db:website_base.product_offer_search_view
 msgid "Category"
 msgstr "Categoría"
@@ -375,6 +414,11 @@ msgid "Current Offers"
 msgstr "Ofertas Actuales"
 
 #. module: website_base
+#: model:ir.model,name:website_base.model_product_customerinfo
+msgid "Customer Pricelist"
+msgstr ""
+
+#. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.sale_quote_search_view
 msgid "Date"
 msgstr "Fecha"
@@ -410,7 +454,7 @@ msgid "Delivery Costs Counters"
 msgstr "Contador costes de envío"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:48
+#: code:addons/website_base/models/product.py:49
 #: model:ir.model.fields,help:website_base.field_product_offer__website_sequence
 #, python-format
 msgid "Determine the display order in the Website"
@@ -451,6 +495,7 @@ msgstr ""
 
 #. module: website_base
 #: model:ir.model.fields,field_description:website_base.field_product_offer__end_date
+#: model:ir.model.fields,field_description:website_base.field_report_website_offer__end_date
 msgid "End Date"
 msgstr "Fecha finalización"
 
@@ -497,7 +542,31 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_base.product_offer_form_view
 #: model_terms:ir.ui.view,arch_db:website_base.product_offers_view
 msgid "Extra Images"
-msgstr "Imágenes extra"
+msgstr "Imágenes extras"
+
+#. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__failed_message_ids
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__failed_message_ids
+msgid "Failed Messages"
+msgstr "Mensajes Fallidos"
+
+#. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__message_follower_ids
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__message_follower_ids
+msgid "Followers"
+msgstr "Seguidores"
+
+#. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__message_channel_ids
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__message_channel_ids
+msgid "Followers (Channels)"
+msgstr "Seguidores (Canales)"
+
+#. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__message_partner_ids
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Seguidores (Empresas)"
 
 #. module: website_base
 #: model:ir.model.fields,field_description:website_base.field_sale_order__needed_for_min_amount_order
@@ -510,14 +579,14 @@ msgid "For free Shipping"
 msgstr "Para envío gratuito"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:67
+#: code:addons/website_base/models/product.py:68
 #: model:ir.model.fields,field_description:website_base.field_product_offer__slug
 #, python-format
 msgid "Friendly URL"
 msgstr "URL amigable"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:39
+#: code:addons/website_base/models/product.py:40
 #: model:ir.model.fields,field_description:website_base.field_product_offer__description_full
 #, python-format
 msgid "Full HTML Description"
@@ -542,7 +611,7 @@ msgid "General Information"
 msgstr "Información General"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:46
+#: code:addons/website_base/models/product.py:47
 #: model:ir.model.fields,help:website_base.field_product_offer__sequence
 #, python-format
 msgid "Gives the sequence order when displaying a offer list"
@@ -612,8 +681,26 @@ msgid "If False the user will only see the products on his pricelist"
 msgstr "Si es Falso, el usuario solo verá los productos en su tarifa"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:52
-#: code:addons/website_base/models/product.py:130
+#: model:ir.model.fields,help:website_base.field_product_offer__message_unread
+#: model:ir.model.fields,help:website_base.field_sale_quote__message_unread
+msgid "If checked new messages require your attention."
+msgstr "Si está marcado, hay nuevos mensajes que requieren su atención"
+
+#. module: website_base
+#: model:ir.model.fields,help:website_base.field_product_offer__message_needaction
+#: model:ir.model.fields,help:website_base.field_sale_quote__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "Si está marcado hay nuevos mensajes que requieren su atención."
+
+#. module: website_base
+#: model:ir.model.fields,help:website_base.field_product_offer__message_has_error
+#: model:ir.model.fields,help:website_base.field_sale_quote__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Si se encuentra marcado, algunos mensajes tienen error de envío."
+
+#. module: website_base
+#: code:addons/website_base/models/product.py:53
+#: code:addons/website_base/models/product.py:131
 #: model:ir.model.fields,field_description:website_base.field_product_offer__image
 #: model:ir.model.fields,field_description:website_base.field_product_offer_image__image
 #, python-format
@@ -631,11 +718,17 @@ msgid "Images"
 msgstr "Imagenes"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:45
+#: code:addons/website_base/models/product.py:46
 #: model:ir.model.fields,field_description:website_base.field_product_offer__sequence
 #, python-format
 msgid "Internal Sequence"
 msgstr "Secuencia Interna"
+
+#. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__message_is_follower
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__message_is_follower
+msgid "Is Follower"
+msgstr "Es un seguidor"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.google_recaptcha_contact_form
@@ -690,48 +783,66 @@ msgid "Login Legal Base"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/controllers/website_sale.py:32
+#: model:ir.model.fields,field_description:website_base.field_product_offer__message_main_attachment_id
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Adjuntos principales"
+
+#. module: website_base
+#: code:addons/website_base/controllers/website_sale.py:50
 #, python-format
 msgid "Margin"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:54
+#: code:addons/website_base/models/product.py:55
 #: model:ir.model.fields,field_description:website_base.field_product_offer__image_medium
 #, python-format
 msgid "Medium-sized image"
 msgstr "Imagen de tamaño mediano"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:55
+#: code:addons/website_base/models/product.py:56
 #: model:ir.model.fields,help:website_base.field_product_offer__image_medium
 #, python-format
 msgid "Medium-sized image of the offer. It is automatically resized as a 128x128px image, with aspect ratio preserved, only when the image exceeds one of those sizes. Use this field in form views or some kanban views."
 msgstr "Imagen mediana de la oferta. Se redimensionará automáticamente a 128x128ppx, preservando el ratio de aspecto, sólo cuando la imagen exceda uno de esos tamaños. Este campo se usa en las vistas de formulario y en algunas vistas kanban."
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:65
+#: model:ir.model.fields,field_description:website_base.field_product_offer__message_has_error
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__message_has_error
+msgid "Message Delivery error"
+msgstr "Error de Envío de Mensaje"
+
+#. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__message_ids
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__message_ids
+msgid "Messages"
+msgstr "Mensajes"
+
+#. module: website_base
+#: code:addons/website_base/models/product.py:66
 #: model:ir.model.fields,field_description:website_base.field_product_offer__website_meta_description
 #, python-format
 msgid "Meta Description"
 msgstr "Descripción"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:66
+#: code:addons/website_base/models/product.py:67
 #: model:ir.model.fields,field_description:website_base.field_product_offer__website_meta_keywords
 #, python-format
 msgid "Meta Keywords"
 msgstr "Palabras Clave"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:64
+#: code:addons/website_base/models/product.py:65
 #: model:ir.model.fields,field_description:website_base.field_product_offer__website_meta_title
 #, python-format
 msgid "Meta Title"
 msgstr "Título"
 
 #. module: website_base
-#: code:addons/website_base/models/quote.py:31
+#: code:addons/website_base/models/quote.py:32
 #: model:ir.model.fields,field_description:website_base.field_sale_quote__metadata
 #: model_terms:ir.ui.view,arch_db:website_base.product_offer_form_view
 #: model_terms:ir.ui.view,arch_db:website_base.product_offers_view
@@ -746,6 +857,20 @@ msgid "Metadata Info"
 msgstr "Información Metadatos"
 
 #. module: website_base
+#: code:addons/website_base/models/product_customerinfo.py:9
+#: model:ir.model.fields,field_description:website_base.field_product_customerinfo__min_product_qty
+#, python-format
+msgid "Min. Product Qty"
+msgstr "Cantidad Mínima"
+
+#. module: website_base
+#: code:addons/website_base/models/product_customerinfo.py:10
+#: model:ir.model.fields,help:website_base.field_product_customerinfo__min_product_qty
+#, python-format
+msgid "Minimum product quantity to place an order."
+msgstr "Cantidad Mínima para hacer un pedido."
+
+#. module: website_base
 #: model:ir.model.fields,field_description:website_base.field_report_website_offer__model_id
 msgid "Model ID"
 msgstr "ID del Modelo"
@@ -753,21 +878,39 @@ msgstr "ID del Modelo"
 #. module: website_base
 #: model:ir.ui.view,name:website_base.portal_my_history
 msgid "My Purchases history"
-msgstr "Histórico Compras"
+msgstr "Histórico"
 
 #. module: website_base
 #: model:ir.ui.view,name:website_base.portal_my_orders_pending_reviews
 msgid "My Sales Orders Pending Reviews"
-msgstr "Revisiones Pedidos Venta Pendientes"
+msgstr "Revisiones pendientes"
 
 #. module: website_base
 #: code:addons/website_base/controllers/portal.py:88
-#: code:addons/website_base/models/product.py:129
+#: code:addons/website_base/models/product.py:130
 #: model:ir.model.fields,field_description:website_base.field_product_offer_image__name
 #: model_terms:ir.ui.view,arch_db:website_base.default_fields_forms
 #, python-format
 msgid "Name"
 msgstr "Nombre"
+
+#. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__activity_date_deadline
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Siguiente plazo de actividad"
+
+#. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__activity_summary
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__activity_summary
+msgid "Next Activity Summary"
+msgstr "Resumen de la siguiente actividad"
+
+#. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__activity_type_id
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__activity_type_id
+msgid "Next Activity Type"
+msgstr "Siguiente tipo de actividad"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.simulate_products_table_view
@@ -795,13 +938,13 @@ msgid "No publicado"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/controllers/website_sale.py:36
+#: code:addons/website_base/controllers/website_sale.py:54
 #, python-format
 msgid "No reach min amount order"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/controllers/website_sale.py:34
+#: code:addons/website_base/controllers/website_sale.py:52
 #, python-format
 msgid "No reach shipping min"
 msgstr "No se ha encontrado entrega mínima"
@@ -827,7 +970,37 @@ msgid "Nombre de producto"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/quote.py:30
+#: model:ir.model.fields,field_description:website_base.field_product_offer__message_needaction_counter
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Número de acciones"
+
+#. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__message_has_error_counter
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__message_has_error_counter
+msgid "Number of error"
+msgstr "Número de error"
+
+#. module: website_base
+#: model:ir.model.fields,help:website_base.field_product_offer__message_needaction_counter
+#: model:ir.model.fields,help:website_base.field_sale_quote__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr "Número de mensajes que requieren una acción"
+
+#. module: website_base
+#: model:ir.model.fields,help:website_base.field_product_offer__message_has_error_counter
+#: model:ir.model.fields,help:website_base.field_sale_quote__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Número de mensajes con error de envío"
+
+#. module: website_base
+#: model:ir.model.fields,help:website_base.field_product_offer__message_unread_counter
+#: model:ir.model.fields,help:website_base.field_sale_quote__message_unread_counter
+msgid "Number of unread messages"
+msgstr "Número de mensajes no leidos"
+
+#. module: website_base
+#: code:addons/website_base/models/quote.py:31
 #: model:ir.model.fields,field_description:website_base.field_sale_quote__observations
 #: model_terms:ir.ui.view,arch_db:website_base.sale_quote_form_view
 #: model_terms:ir.ui.view,arch_db:website_base.sale_quote_view
@@ -841,13 +1014,21 @@ msgid "Odoo Model"
 msgstr "Modelo Odoo"
 
 #. module: website_base
+#: model:ir.model,name:website_base.model_product_offer
 #: model_terms:ir.ui.view,arch_db:website_base.product_offer
-msgid "Oferta activa desde:"
+#: model_terms:ir.ui.view,arch_db:website_base.simulate_products
+msgid "Oferta"
+msgstr ""
+
+#. module: website_base
+#: model_terms:ir.ui.view,arch_db:website_base.product_offer
+msgid "Oferta activa hasta:"
 msgstr ""
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.product_offers
-#: model_terms:ir.ui.view,arch_db:website_base.simulate_product_offer
+#: model_terms:ir.ui.view,arch_db:website_base.simulate_products
+#: model:ir.ui.view,name:website_base.simulate_product_offer
 msgid "Ofertas"
 msgstr ""
 
@@ -893,7 +1074,7 @@ msgid "Offers that contains this category"
 msgstr "Ofertas que contienen esta categoría"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:63
+#: code:addons/website_base/models/product.py:64
 #: model:ir.model.fields,help:website_base.field_product_offer__website_published
 #, python-format
 msgid "Only published offers are visible on the website"
@@ -934,6 +1115,12 @@ msgid "Otros productos que no he encontrado en la web y en los que estoy interes
 msgstr ""
 
 #. module: website_base
+#: selection:product.offer,activity_state:0
+#: selection:sale.quote,activity_state:0
+msgid "Overdue"
+msgstr ""
+
+#. module: website_base
 #: selection:res.partner,website_access_rights:0
 msgid "Own"
 msgstr "Propios"
@@ -965,6 +1152,12 @@ msgstr "Revisiones pendientes"
 #: model_terms:ir.ui.view,arch_db:website_base.default_fields_forms
 msgid "Phone"
 msgstr "Teléfono"
+
+#. module: website_base
+#: selection:product.offer,activity_state:0
+#: selection:sale.quote,activity_state:0
+msgid "Planned"
+msgstr ""
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.acceptance_full_legal_terms_with_check
@@ -1036,19 +1229,12 @@ msgid "Product Name"
 msgstr "Nombre del producto"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:27
-#: model:ir.model,name:website_base.model_product_offer
-#, python-format
-msgid "Product Offer"
-msgstr "Oferta"
-
-#. module: website_base
 #: model:ir.ui.view,name:website_base.product_offer
 msgid "Product Offer Base"
 msgstr "Oferta"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:126
+#: code:addons/website_base/models/product.py:127
 #: model:ir.model,name:website_base.model_product_offer_image
 #, python-format
 msgid "Product Offer Image"
@@ -1063,6 +1249,11 @@ msgstr "Ofertas"
 #: model:ir.ui.view,name:website_base.product_offers
 msgid "Product Offers Base"
 msgstr "Ofertas"
+
+#. module: website_base
+#: model:ir.model,name:website_base.model_product_template_tag
+msgid "Product Tag"
+msgstr "Etiqueta de Producto"
 
 #. module: website_base
 #: model:ir.model,name:website_base.model_product_template
@@ -1095,7 +1286,7 @@ msgid "Productos que he encontrado en la web y sobre los que quiero un presupues
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/quote.py:35
+#: code:addons/website_base/models/quote.py:36
 #: model:ir.model.fields,field_description:website_base.field_sale_quote__product_ids
 #: model_terms:ir.ui.view,arch_db:website_base.sale_quote_form_view
 #: model_terms:ir.ui.view,arch_db:website_base.sale_quote_view
@@ -1116,7 +1307,7 @@ msgid "Products find on website"
 msgstr "Productos encontrados en la web"
 
 #. module: website_base
-#: code:addons/website_base/models/quote.py:32
+#: code:addons/website_base/models/quote.py:33
 #: model:ir.model.fields,field_description:website_base.field_sale_quote__products_found
 #, python-format
 msgid "Products found in website"
@@ -1129,14 +1320,14 @@ msgid "Products not find on website"
 msgstr "Productos NO encontrados en la web"
 
 #. module: website_base
-#: code:addons/website_base/models/quote.py:33
+#: code:addons/website_base/models/quote.py:34
 #: model:ir.model.fields,field_description:website_base.field_sale_quote__products_not_found
 #, python-format
 msgid "Products not found in website"
 msgstr "Productos NO encontrados en la web"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:62
+#: code:addons/website_base/models/product.py:63
 #: model:ir.model.fields,field_description:website_base.field_product_offer__website_published
 #: model_terms:ir.ui.view,arch_db:website_base.product_offer_search_view
 #, python-format
@@ -1203,7 +1394,7 @@ msgid "Related Offer"
 msgstr "Oferta Relacionada"
 
 #. module: website_base
-#: code:addons/website_base/models/quote.py:15
+#: code:addons/website_base/models/quote.py:16
 #: model:ir.model,name:website_base.model_sale_quote
 #, python-format
 msgid "Request Quote"
@@ -1231,7 +1422,13 @@ msgstr "Solicitud de Presupuestos"
 #: model:ir.model.fields,help:website_base.field_res_users__quotes_ids
 #, python-format
 msgid "Request quotes that contains this category"
-msgstr "Solicitudes de Presupuesto que contiene esta Categoría"
+msgstr "Buscar presupuestos de esta categoría"
+
+#. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__activity_user_id
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__activity_user_id
+msgid "Responsible User"
+msgstr "Usuario responsable"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.payment_tokens_list_lock
@@ -1241,7 +1438,7 @@ msgstr "Volver Tienda\n"
 "                <i class=\"fa fa-chevron-right\"/>"
 
 #. module: website_base
-#: code:addons/website_base/controllers/website_sale.py:28
+#: code:addons/website_base/controllers/website_sale.py:46
 #, python-format
 msgid "Risk"
 msgstr "Riesgo"
@@ -1269,8 +1466,8 @@ msgid "Search <span class=\"nolabel\"> by name</span>"
 msgstr "Buscar <span class=\"nolabel\"> por nombre</span>"
 
 #. module: website_base
-#: model:ir.ui.view,name:website_base.website_sale_search_for_pricelist
-msgid "Search Box Pricelist"
+#: model:ir.ui.view,name:website_base.website_sale_search_pricelist
+msgid "Search Box Pricelist Base"
 msgstr "Buscador Tarifas"
 
 #. module: website_base
@@ -1314,7 +1511,7 @@ msgid "Short description"
 msgstr "Descripción Corta"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:38
+#: code:addons/website_base/models/product.py:39
 #: model:ir.model.fields,help:website_base.field_product_offer__description_short
 #, python-format
 msgid "Short description to be show under title like a paragraph in plain text"
@@ -1365,16 +1562,6 @@ msgid "Simulate Product Base"
 msgstr ""
 
 #. module: website_base
-#: model:ir.ui.view,name:website_base.simulate_products_tags
-msgid "Simulate Product Dismac Tags"
-msgstr ""
-
-#. module: website_base
-#: model:ir.ui.view,name:website_base.simulate_product_offer
-msgid "Simulate Product Offer Base"
-msgstr ""
-
-#. module: website_base
 #: model:ir.ui.view,name:website_base.simulate_products
 msgid "Simulate Products Base"
 msgstr ""
@@ -1421,14 +1608,14 @@ msgid "Slug"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:58
+#: code:addons/website_base/models/product.py:59
 #: model:ir.model.fields,field_description:website_base.field_product_offer__image_small
 #, python-format
 msgid "Small-sized image"
 msgstr "Imagen de tamaño pequeño"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:59
+#: code:addons/website_base/models/product.py:60
 #: model:ir.model.fields,help:website_base.field_product_offer__image_small
 #, python-format
 msgid "Small-sized image of the offer. It is automatically resized as a 64x64px image, with aspect ratio preserved. Use this field anywhere a small image is required."
@@ -1448,15 +1635,28 @@ msgstr "Etapa"
 
 #. module: website_base
 #: model:ir.model.fields,field_description:website_base.field_product_offer__start_date
+#: model:ir.model.fields,field_description:website_base.field_report_website_offer__start_date
 msgid "Start Date"
 msgstr "Fecha Inicio"
 
 #. module: website_base
-#: code:addons/website_base/models/quote.py:29
+#: code:addons/website_base/models/quote.py:30
 #: model:ir.model.fields,field_description:website_base.field_sale_quote__state
 #, python-format
 msgid "State"
 msgstr "Estado"
+
+#. module: website_base
+#: model:ir.model.fields,help:website_base.field_product_offer__activity_state
+#: model:ir.model.fields,help:website_base.field_sale_quote__activity_state
+msgid "Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr "Estado basado en actividades\n"
+"Vencida: la fecha tope ya ha pasado\n"
+"Hoy: La fecha tope es hoy\n"
+"Planificada: futuras actividades."
 
 #. module: website_base
 #: model:ir.model.fields,field_description:website_base.field_product_offer__website_style_ids
@@ -1469,7 +1669,7 @@ msgid "Su consulta se ha enviado correctamente. En breve nos pondremos en contac
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/quote.py:20
+#: code:addons/website_base/models/quote.py:21
 #: model:ir.model.fields,field_description:website_base.field_sale_quote__name
 #: model_terms:ir.ui.view,arch_db:website_base.default_fields_forms
 #, python-format
@@ -1477,7 +1677,7 @@ msgid "Subject"
 msgstr "Asunto"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:37
+#: code:addons/website_base/models/product.py:38
 #: model:ir.model.fields,field_description:website_base.field_product_offer__description_short
 #, python-format
 msgid "Subtitle"
@@ -1494,14 +1694,14 @@ msgid "There are currently no products for your account."
 msgstr "Actualmente no hay productos en su cuenta"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:52
+#: code:addons/website_base/models/product.py:53
 #: model:ir.model.fields,help:website_base.field_product_offer__image
 #, python-format
 msgid "This field holds the image used as image for the offer, limited to 1024x1024px."
 msgstr "Este campo contiene la imagen usada como imagen de la Oferta, limitada a 1024x1024px"
 
 #. module: website_base
-#: code:addons/website_base/controllers/website_sale.py:41
+#: code:addons/website_base/controllers/website_sale.py:59
 #, python-format
 msgid "This order can not be finished becaused is locked"
 msgstr "Este pedido no se puede finalizar porque está bloqueado"
@@ -1517,7 +1717,7 @@ msgid "This product is unpublished."
 msgstr "Este producto no está publicado."
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:36
+#: code:addons/website_base/models/product.py:37
 #: model:ir.model.fields,field_description:website_base.field_product_offer__name
 #, python-format
 msgid "Title"
@@ -1530,6 +1730,8 @@ msgstr ""
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.sale_quote_search_view
+#: selection:product.offer,activity_state:0
+#: selection:sale.quote,activity_state:0
 msgid "Today"
 msgstr "Hoy"
 
@@ -1544,7 +1746,7 @@ msgid "Total"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/controllers/website_sale.py:30
+#: code:addons/website_base/controllers/website_sale.py:48
 #, python-format
 msgid "Unpaid"
 msgstr "No Pagado"
@@ -1555,7 +1757,19 @@ msgid "Unpublished"
 msgstr "No Publicado"
 
 #. module: website_base
-#: code:addons/website_base/models/quote.py:23
+#: model:ir.model.fields,field_description:website_base.field_product_offer__message_unread
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__message_unread
+msgid "Unread Messages"
+msgstr "Mensajes sin leer"
+
+#. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__message_unread_counter
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr "Contador de mensajes sin leer"
+
+#. module: website_base
+#: code:addons/website_base/models/quote.py:24
 #: model:ir.model.fields,field_description:website_base.field_sale_quote__user_id
 #: model_terms:ir.ui.view,arch_db:website_base.sale_quote_search_view
 #, python-format
@@ -1589,8 +1803,8 @@ msgid "Volver"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:34
-#: code:addons/website_base/models/quote.py:22
+#: code:addons/website_base/models/product.py:35
+#: code:addons/website_base/models/quote.py:23
 #: model:ir.model,name:website_base.model_website
 #: model:ir.model.fields,field_description:website_base.field_product_offer__website_id
 #: model:ir.model.fields,field_description:website_base.field_sale_quote__website_id
@@ -1622,6 +1836,12 @@ msgid "Website Menu"
 msgstr "Menú del sitio web"
 
 #. module: website_base
+#: model:ir.model.fields,field_description:website_base.field_product_offer__website_message_ids
+#: model:ir.model.fields,field_description:website_base.field_sale_quote__website_message_ids
+msgid "Website Messages"
+msgstr "Mensajes del sitio web"
+
+#. module: website_base
 #: model:ir.model,name:website_base.model_report_website_offer
 msgid "Website Offers"
 msgstr "Ofertas del Sitio Web"
@@ -1632,7 +1852,7 @@ msgid "Website Product Category"
 msgstr "Categoría del Producto"
 
 #. module: website_base
-#: code:addons/website_base/models/product.py:47
+#: code:addons/website_base/models/product.py:48
 #: model:ir.model.fields,field_description:website_base.field_product_offer__website_sequence
 #, python-format
 msgid "Website Sequence"
@@ -1653,6 +1873,12 @@ msgstr "Acceso a"
 #: model:ir.ui.view,name:website_base.website_public_category_tree
 msgid "Website category tree"
 msgstr ""
+
+#. module: website_base
+#: model:ir.model.fields,help:website_base.field_product_offer__website_message_ids
+#: model:ir.model.fields,help:website_base.field_sale_quote__website_message_ids
+msgid "Website communication history"
+msgstr "Historial de comunicaciones del sitio web"
 
 #. module: website_base
 #: model:ir.ui.view,name:website_base.work_contact_form
@@ -1677,8 +1903,8 @@ msgid "You are not authorized to see purchase history."
 msgstr "No está autorizado para ver el Histórico de Compras."
 
 #. module: website_base
-#: code:addons/website_base/controllers/website_sale.py:155
-#: code:addons/website_base/controllers/website_sale.py:167
+#: code:addons/website_base/controllers/website_sale.py:173
+#: code:addons/website_base/controllers/website_sale.py:185
 #, python-format
 msgid "You are not authorized to see this product."
 msgstr "No está autorizado para ver este Producto."
@@ -1743,6 +1969,11 @@ msgid "privacy policy and cookies"
 msgstr ""
 
 #. module: website_base
+#: model:ir.ui.view,name:website_base.product_customerinfo_min_qty_form_view
+msgid "product.customerinfo.min_qty.form.view"
+msgstr ""
+
+#. module: website_base
 #: model:ir.ui.view,name:website_base.product_offer_form_view
 msgid "product.offer.form"
 msgstr ""
@@ -1796,6 +2027,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_base.acceptance_full_legal_terms_without_check
 msgid "terms of use"
 msgstr "términos de Uso"
+
+#. module: website_base
+#: model:ir.model,name:website_base.model_tier_validation_sale_order
+msgid "tier.validation.sale.order"
+msgstr ""
 
 #. module: website_base
 #: model:ir.ui.view,name:website_base.website_base_website_assets_frontend
