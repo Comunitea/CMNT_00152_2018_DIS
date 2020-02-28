@@ -122,13 +122,15 @@
                         <div t-att-class="'col-lg-3 d-md-block collapse' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'd-none'"
                              id="products_grid_before">
                             <t t-set="parent_category_ids" t-value="request.env['product.public.category'].get_parent_categories(category or product.public_categ_ids[0] if product.public_categ_ids else 0)"/>
-                            <ul class="nav nav-pills flex-column menu-category mt16 pt8" id="o_shop_collapse_category_custom">
+                            <h5 class="text-uppercase grid-before-categ"><strong>Categories</strong></h5>
+                            <ul class="nav nav-pills flex-column menu-category" id="o_shop_collapse_category_custom">
                                 <li class="nav-item">
-                                    <a t-att-href="keep('/shop', category=0)" t-attf-class="pt8 pb0 text-uppercase nav-link#{'' if category or (product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0) else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
+                                    <a t-att-href="keep('/shop', category=0)"
+                                    t-attf-class="pt8 pb0 text-uppercase nav-link#{'' if category or product_category and product_category.category_id else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
                                 </li>
-                                <t t-foreach="categories" t-as="c">
+                                <t t-foreach="categories" t-as="categ">
                                     <!-- Catch not published categories if their child are published -->
-                                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
+                                    <t t-call="website_dismac.website_sale_option_collapse_categories_recursive" t-if="categ.website_published"/>
                                 </t>
                             </ul>
                         </div>
@@ -261,6 +263,35 @@
                     </div>
                 </div>
             </div>
+        </xpath>
+
+        <!-- Add Product Tags side menu -->
+        <xpath expr="//div[@id='products_grid_before']" position="inside">
+            <t t-set="tags" t-value="request.env['product.template.tag'].search([], limit=50)"/>
+            <t t-if="tags">
+                <h5 class="text-uppercase grid-before-tag mt16"><strong>Product Tags</strong></h5>
+                <div class="nav nav-pills flex-column menu-category pt8">
+                    <div class="oe_structure">
+                        <t t-foreach="tags" t-as="tag">
+                            <t t-call="website_seo_settings.website_tag_template">
+                                <t t-set="tag" t-value="tag"/>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+        <!-- Default search -->
+        <xpath expr="//t[@t-call='website_sale.search']" position="attributes">
+            <attribute name="t-if">not list_type</attribute>
+        </xpath>
+        <!-- Search products into tags context -->
+        <xpath expr="//t[@t-call='website_sale.search']" position="after">
+            <t t-if="list_type and list_type == 'tags'">
+                <t t-call="website_seo_settings.website_sale_search_for_tags">
+                    <t t-set="_classes">o_website_sale_search</t>
+                </t>
+            </t>
         </xpath>
     </template>
 
