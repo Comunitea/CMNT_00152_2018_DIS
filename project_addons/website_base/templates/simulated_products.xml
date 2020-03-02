@@ -174,7 +174,7 @@
                         <a role="button" t-if="not show_publish and not product.website_published" t-att-href="product_href" class="btn btn-secondary btn-sm btn-danger" title="This product is unpublished.">No publicado</a>
                     </h6>
                     <div itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer" class="product_price" t-if="product._get_combination_info()">
-                        <t t-set="combination_info" t-value="product._get_combination_info(only_template=True, add_qty=add_qty or 1, pricelist=pricelist)"/>
+                        <t t-set="combination_info" t-value="product._get_combination_info(only_template=False, add_qty=add_qty or 1, pricelist=pricelist)"/>
                         <b>
                             <t t-if="True"><!-- compatibility 12.0 -->
                                 <del t-attf-class="text-danger mr8 {{'' if combination_info['has_discounted_price'] else 'd-none'}}" style="white-space: nowrap;" t-esc="combination_info['list_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}" />
