@@ -101,6 +101,18 @@
             <t t-call="stock.report_delivery_document" t-lang="o.partner_id.lang"/>
         </t>
     </template>
+    <template id="add_sale_comment" inherit_id="stock.report_delivery_document">
+        <xpath expr="//t[@t-if=&quot;o.backorder_ids and o.backorder_ids.filtered(lambda x: x.state not in (&apos;done&apos;, &apos;cancel&apos;))&quot;]" position="after">
+            <t t-if="o.sale_id.observations">
+
+                <span><strong>Observaciones: </strong></span>
+                <div>
+                    <span t-field="o.sale_id.observations"/>
+                </div>
+                <hr/>
+            </t>
+        </xpath>
+    </template>
     <report
         string="Delivery Slip neutro"
         id="action_report_delivery_neutro"
