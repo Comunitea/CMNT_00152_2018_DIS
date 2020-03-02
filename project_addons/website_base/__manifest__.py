@@ -15,7 +15,8 @@
         'ecommerce_base',
         'website_seo_settings',
         'breadcrumbs_base_tmp',
-        'sale_order_lock'
+        'sale_order_lock',
+        'product_supplierinfo_for_customer'
     ],
     'data': [
         'templates/head.xml',
