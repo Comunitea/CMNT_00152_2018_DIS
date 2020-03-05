@@ -80,11 +80,11 @@
     <template id="simulate_products_categories" name="eCommerce Categories Base" inherit_id="website_base.simulate_products">
         <xpath expr="//div[@id='products_grid_before']" position="inside">
             <!-- Categories -->
-            <h5 class="text-uppercase text-primary mt16 ml16"><strong>Categorias</strong></h5>
+            <h5 class="text-uppercase text-primary mt16"><u><strong>Categorias</strong></u></h5>
             <ul class="nav nav-pills flex-column menu-category" id="o_shop_collapse_category_custom">
                 <li class="nav-item">
                     <a t-att-href="keep('/shop', category=0)"
-                       t-attf-class="pt8 pb0 text-uppercase nav-link#{'' if category or product_category and product_category.category_id else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
+                       t-attf-class="pt8 text-uppercase nav-link#{'' if category or product_category and product_category.category_id else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
                 </li>
                 <t t-foreach="categories" t-as="c">
                     <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
@@ -93,7 +93,7 @@
             <!-- Product Tags -->
             <t t-set="tags" t-value="request.env['product.template.tag'].search([], limit=50)"/>
             <t t-if="tags">
-                <h5 class="text-uppercase text-primary mt16 ml16"><strong>Etiquetas</strong></h5>
+                <h5 class="text-uppercase text-primary mt16"><u><strong>Etiquetas</strong></u></h5>
                 <div class="nav nav-pills flex-column menu-category pt8">
                     <div class="oe_structure">
                         <t t-foreach="tags" t-as="tag">
