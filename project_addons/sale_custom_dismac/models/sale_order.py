@@ -8,6 +8,7 @@ from odoo.tools import float_compare, pycompat
 from datetime import datetime
 
 
+
 class SaleOrder(models.Model):
 
     _inherit = "sale.order"
@@ -322,11 +323,13 @@ class SaleOrder(models.Model):
                 for line in order.order_line.sorted(
                     key=lambda l: l.qty_to_invoice_on_date < 0
                 ):
+                    # Evitamos multiples llamada al campo
+                    qty_to_invoice_date = line.qty_to_invoice_on_date 
                     if line.display_type == "line_section":
                         pending_section = line
                         continue
                     if float_is_zero(
-                        line.qty_to_invoice_on_date, precision_digits=precision
+                        qty_to_invoice_date, precision_digits=precision
                     ):
                         continue
                     # START HOOK
@@ -374,8 +377,8 @@ class SaleOrder(models.Model):
                                 invoice.name + ", " + order.client_order_ref
                             )
                         invoice.write(vals)
-                    if line.qty_to_invoice_on_date > 0 or (
-                        line.qty_to_invoice_on_date < 0 and final
+                    if qty_to_invoice_date > 0 or (
+                        qty_to_invoice_date < 0 and final
                     ):
                         if pending_section:
                             pending_section.invoice_line_create(
@@ -384,7 +387,7 @@ class SaleOrder(models.Model):
                             )
                             pending_section = None
                         line.invoice_line_create(
-                            invoices[group_key].id, line.qty_to_invoice_on_date
+                            invoices[group_key].id, qty_to_invoice_date
                         )
                         # START HOOK
                         # Change to true if new lines are added
@@ -405,7 +408,7 @@ class SaleOrder(models.Model):
             # END HOOK
 
             for invoice in invoices.values():
-                invoice.compute_taxes()
+                #invoice.compute_taxes()    # EVITAMOS LLAMARALA DOS VECES (SE HACE MÁS ADELANTTE)
                 if not invoice.invoice_line_ids:
                     raise UserError(_("There is no invoicable line."))
                 # If invoice is negative, do a refund invoice instead
