@@ -140,11 +140,9 @@ class SaleDelivery(models.Model):
         if lines:
             max_date = lines[0].date_expected
         last={}
-        sale_line_ids = lines.mapped("line.sale_order_line_id")
-        domain_move_ids = [('sale_line_id', 'in', sale_line_ids.ids), ('state', 'not in', ('draft', 'cancel', 'done')), ('location_dest_id.usage', '=', 'customer')]
-        group_ids = self.env['stock_move'].read_group (domain_move_ids, ['sale_line_id', 'product_uom_qty'], ['sale_line_id'])
-        import pdb; pdb.set_trace()
-
+        # sale_line_ids = lines.mapped("line.sale_order_line_id")
+        # domain_move_ids = [('sale_line_id', 'in', sale_line_ids.ids), ('state', 'not in', ('draft', 'cancel', 'done')), ('location_dest_id.usage', '=', 'customer')]
+        # group_ids = self.env['stock_move'].read_group (domain_move_ids, ['sale_line_id', 'product_uom_qty'], ['sale_line_id'])
 
         for line in lines:
             sale_line_id = line.sale_order_line_id
