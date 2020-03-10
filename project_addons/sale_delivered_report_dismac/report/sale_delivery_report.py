@@ -146,8 +146,8 @@ class SaleDelivery(models.Model):
 
         for line in lines:
             sale_line_id = line.sale_order_line_id
-            moves_domain = [('sale_line_id', '=', sale_line_id)]
-            sale_line_id_move_ids = self.env['stock.move'].search([('sale_line_id', '=', sale_line_id)])
+            #moves_domain = [('sale_line_id', '=', sale_line_id)]
+            #sale_line_id_move_ids = self.env['stock.move'].search([('sale_line_id', '=', sale_line_id)])
 
             product_uom_qty = line.product_uom._compute_quantity(
                 line.product_uom_qty, line.product_uom
