@@ -45,13 +45,13 @@ class SaleOrderLine(models.Model):
         # move_domain = [('sale_line_id', 'in', so_ids.mapped('order_line').ids), ('state', 'not in', ('draft', 'cancel', 'done')), ('location_dest_id.usage', '=', 'customer')]
         # need_qty = self.env['stock.move'].read_group(move_domain, ['sale_line_id'], ['product_uom_qty'])
         # print (need_qty)
-
-        for line in self:
+        for line in self.filtered('product_id'):
             ctx.update(location=line.order_id.warehouse_id.lot_stock_id.id, exclude_sale_line_id=line.id)
             product_id = line.product_id.with_context(ctx)
             move_domain = [('sale_line_id', '=', line.id), ('state', 'not in', ('draft', 'cancel', 'done')), ('location_dest_id.usage', '=', 'customer')]
             need_qty = self.env['stock.move'].read_group(move_domain, ['sale_line_id'], ['product_uom_qty'])
             qties = product_id._compute_quantities_dict(lot_id=False,owner_id=False,package_id=False)
+            print (qties)
             if need_qty:
                 qty_enough = qties[product_id.id]["virtual_available"] >= need_qty[0]['product_uom_qty']
             else:
