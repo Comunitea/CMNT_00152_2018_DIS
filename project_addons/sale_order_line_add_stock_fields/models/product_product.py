@@ -13,5 +13,5 @@ class ProductProduct(models.Model):
 
         if self._context.get('exclude_sale_line_id', False):
             sol_ids = self._context['exclude_sale_line_id']
-            d_out = [('sale_line_id', 'not in', sol_ids)] + d_out
+            d_out = [('sale_line_id', '!=', sol_ids)] + d_out
         return d_quant, d_in, d_out

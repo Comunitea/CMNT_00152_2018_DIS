@@ -23,6 +23,8 @@ class SaleOrderLine(models.Model):
 
     @api.multi
     def get_line_qties(self):
+
+        # print ("\n--------------------------\n##ENTRO EN EN GET_LINE_QTIES\n--------------------------")
         # if len(self)>40 and False:
         #     params = self._context.get('params', False)
         #     if params:
@@ -38,30 +40,47 @@ class SaleOrderLine(models.Model):
 
         #print ("Entro en get_line_qties con {} y contexto {}".format(len(self), self._context))
         ctx = self._context.copy()
-        for so in self.with_prefetch().mapped('order_id') :
-            ctx.update(exclude_sale_line_id=so.order_line.ids,
-                       location=so.warehouse_id.lot_stock_id.id)
-            for line in so.with_context(ctx).order_line.filtered(lambda x: x.product_id):
+        # import pdb; pdb.set_trace()
+        # so_ids = self.with_prefetch().mapped('order_id')
+        # move_domain = [('sale_line_id', 'in', so_ids.mapped('order_line').ids), ('state', 'not in', ('draft', 'cancel', 'done')), ('location_dest_id.usage', '=', 'customer')]
+        # need_qty = self.env['stock.move'].read_group(move_domain, ['sale_line_id'], ['product_uom_qty'])
+        # print (need_qty)
+        for line in self.filtered('product_id'):
+            ctx.update(location=line.order_id.warehouse_id.lot_stock_id.id, exclude_sale_line_id=line.id)
+            product_id = line.product_id.with_context(ctx)
+            move_domain = [('sale_line_id', '=', line.id), ('state', 'not in', ('draft', 'cancel', 'done')), ('location_dest_id.usage', '=', 'customer')]
+            need_qty = self.env['stock.move'].read_group(move_domain, ['sale_line_id'], ['product_uom_qty'])
+            qties = product_id._compute_quantities_dict(lot_id=False,owner_id=False,package_id=False)
+            print (qties)
+            if need_qty:
+                qty_enough = qties[product_id.id]["virtual_available"] >= need_qty[0]['product_uom_qty']
+            else:
+                qty_enough = True
+            #
+            # vals = {
+            #     'qty_enough': qty_enough,
+            #     "virtual_available": qties[product_id.id]["virtual_available"],
+            #     "line_qty_available": qties[product_id.id]["qty_available"],
+            #     "incoming_qty": qties[product_id.id]["incoming_qty"],
+            #     "outgoing_qty": qties[product_id.id]["outgoing_qty"],
+            #     #"virtual_stock_conservative": qties[line.product_id.id]["qty_available"] - qties[line.product_id.id]["outgoing_qty"]
+            # }
+            # if qties[line.product_id.id]["virtual_available"] == qties[line.product_id.id]["qty_available"]:
+            #     stock_str = '{}'.format(qties[line.product_id.id]["qty_available"])
+            # else:
+            #     stock_str = '{} / {}'.format(qties[line.product_id.id]["virtual_available"], qties[line.product_id.id]["qty_available"])
+            # vals.update(stock_str = stock_str)
+            # line.write(vals)
+            #print("{}: \n {}".format(line.product_id.display_name, vals))
+            line.qty_enough = qty_enough
+            line.line_qty_available = qties[product_id.id]["qty_available"]
+            line.incoming_qty = qties[product_id.id]["incoming_qty"]
+            line.outgoing_qty = qties[product_id.id]["outgoing_qty"]
+            line.virtual_available = qties[product_id.id]["virtual_available"]
 
-                ctx.update(exclude_sale_line_id=line.id)
-                qties = line.product_id._compute_quantities_dict(lot_id=False,owner_id=False,package_id=False)
-                qty_enough = qties[line.product_id.id]["virtual_available"] >= (line.product_uom_qty - line.qty_delivered)
 
-                vals = {
-                    'qty_enough': qty_enough,
-                    "virtual_available": qties[line.product_id.id]["virtual_available"],
-                    "qty_available": qties[line.product_id.id]["qty_available"],
-                    "incoming_qty": qties[line.product_id.id]["incoming_qty"],
-                    "outgoing_qty": qties[line.product_id.id]["outgoing_qty"],
-                    #"virtual_stock_conservative": qties[line.product_id.id]["qty_available"] - qties[line.product_id.id]["outgoing_qty"]
-                }
-                if qties[line.product_id.id]["virtual_available"] == qties[line.product_id.id]["qty_available"]:
-                    stock_str = '{}'.format(qties[line.product_id.id]["qty_available"])
-                else:
-                    stock_str = '{} / {}'.format(qties[line.product_id.id]["virtual_available"], qties[line.product_id.id]["qty_available"])
-                vals.update(stock_str = stock_str)
-                #print("{}: \n {}".format(line.product_id.display_name, vals))
-                line.update(vals)
+
+
 
     qty_enough = fields.Boolean('Qty enough', compute="get_line_qties")
 
@@ -88,8 +107,6 @@ class SaleOrderLine(models.Model):
         compute="get_line_qties",
         digits=dp.get_precision("Product Unit of Measure"),
     )
-
-
     line_stock_str = fields.Char('Disponible/Total')
     line_qty_available = fields.Float(
         "Line Quantity Available",
