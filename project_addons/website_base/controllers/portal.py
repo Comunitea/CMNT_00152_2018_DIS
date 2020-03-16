@@ -2,6 +2,9 @@
 # © 2019 Comunitea
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
+import datetime
+from dateutil.relativedelta import relativedelta
+
 from collections import OrderedDict
 
 from odoo import http, _
@@ -33,6 +36,8 @@ class CustomerPortal(CustomerPortal):
 
             history_count = len(SaleReport.read_group([('product_id.type', 'in', ('consu', 'product')), ('order_partner_id', 'child_of', partner_id.id), ('state', 'in', ('sale', 'done'))],
                                                     ['product_uom_qty'], ['product_id', 'order_partner_id']))
+
+
             updated_values['history_count'] = history_count
 
         if not request.env.user.partner_id.show_invoices:
@@ -73,7 +78,7 @@ class CustomerPortal(CustomerPortal):
         return domain
 
     @http.route(['/my/history'], type='http', auth="user", website=True)
-    def portal_my_history(self, page=1, sortby=None, search=None, search_in='all', filterby=None, **kw):
+    def portal_my_history(self, page=1, sortby=None, search=None, search_in='all', filterby=None, filterby_date=None, **kw):
         values = self._prepare_portal_layout_values()
         if not request.env.user.partner_id.show_history:
             raise Unauthorized(_("You are not authorized to see purchase history."))
@@ -91,6 +96,15 @@ class CustomerPortal(CustomerPortal):
 
         searchbar_filters = {
             'all': {'label': _('All'), 'domain': []},
+        }
+         
+        searchbar_date_filters = {
+            'all': {'label': _('All'), 'domain': []},
+            'last_year': {'label': _('Last 12 Months'), 'domain': [('create_date', '>=', (datetime.datetime.today() - relativedelta(years=1)).strftime('%Y-%m-%d'))]},
+            'six_months': {'label': _('Last 6 Months'), 'domain': [('create_date', '>=', (datetime.datetime.today() - relativedelta(months=6)).strftime('%Y-%m-%d'))]},
+            'three_months': {'label': _('Last 3 Months'), 'domain': [('create_date', '>=', (datetime.datetime.today() - relativedelta(months=3)).strftime('%Y-%m-%d'))]},
+            'last_month': {'label': _('Last 30 Days'), 'domain': [('create_date', '>=', (datetime.datetime.today() - relativedelta(days=30)).strftime('%Y-%m-%d'))]},
+            'last_week': {'label': _('This Week'), 'domain': [('create_date', '>=', (datetime.datetime.today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]},
         }
 
         searchbar_inputs = {
@@ -110,11 +124,18 @@ class CustomerPortal(CustomerPortal):
 
         request.env.context = ctx
 
+        # date filter
+        if not filterby_date:
+            filterby_date = 'six_months'
+        domain_date_filter = searchbar_date_filters[filterby_date]['domain']
+
         # default filter by value
         if not filterby:
             filterby = 'all'
         domain_filter = searchbar_filters[filterby]['domain']
-        domain = self._get_my_history_domain(domain_filter)
+        domain_filter += domain_date_filter
+        
+        domain = self._get_my_history_domain(domain_filter)        
 
         if search and search_in:
             search_domain = []
@@ -154,10 +175,12 @@ class CustomerPortal(CustomerPortal):
             'searchbar_sortings': searchbar_sortings,
             'searchbar_inputs': searchbar_inputs,
             'searchbar_filters': OrderedDict(sorted(searchbar_filters.items())),
+            'searchbar_date_filters': searchbar_date_filters,
             'sortby': sortby,
             'search': search,
             'search_in': search_in,
             'filterby': filterby,
+            'filterby_date': filterby_date,
             'keep': keep,
         })
         return request.render("website_base.portal_my_history", values)

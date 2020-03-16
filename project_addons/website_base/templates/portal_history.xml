@@ -19,6 +19,27 @@
         </xpath>
     </template>
 
+    <template id="portal_searchbar_date_filters" name="Portal Searchbar Date Filters" inherit_id="portal.portal_searchbar">
+        <xpath expr="//div[@t-if='searchbar_filters']" position="after">
+            <div t-if="searchbar_date_filters" class="form-inline ml-lg-2">
+                <span class="small mr-1 navbar-text">Filter Date By:</span>
+                <div class="btn-group">
+                    <button id="portal_searchbar_date_filters" data-toggle="dropdown" class="btn btn-secondary btn-sm dropdown-toggle">
+                        <t t-esc="searchbar_date_filters[filterby_date].get('label', 'All')"/>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="portal_searchbar_date_filters">
+                        <t t-foreach="searchbar_date_filters" t-as="option">
+                            <a t-att-href="default_url + '?' + keep_query('*', filterby_date=option)"
+                                t-attf-class="dropdown-item#{filterby_date == option and ' active' or ''}">
+                                <span t-esc="searchbar_date_filters[option].get('label')"/>
+                            </a>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
     <template id="portal_my_history" name="My Purchases history">
         <t t-call="portal.portal_layout">
             <t t-set="title"><t t-esc="website.name"/> | History</t>
