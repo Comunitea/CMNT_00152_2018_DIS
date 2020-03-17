@@ -148,8 +148,7 @@ class StockPicking(models.Model):
         if self.autoradio_return_goods:
             self.autoradio_delivery_instructions += 4 # 8 en la documentación oficial
         if self.autoradio_delivery_with_return:
-            self.autoradio_delivery_instructions += 16
-        print("delivery instructions: {}".format(self.autoradio_delivery_instructions))
+            self.autoradio_delivery_instructions += 8 # 16 en la documentación
 
     @api.onchange('picking_ids')
     def onchange_picking_ids(self):
