@@ -32,6 +32,12 @@ class CustomerPortal(CustomerPortal):
 
         updated_values = {}
 
+        SaleOrder = request.env['sale.order']
+        updated_values["order_count"] = SaleOrder.search_count([
+            ('message_partner_ids', 'child_of', [partner_id.id]),
+            ('state', 'in', ['sale', 'done'])
+        ])
+
         if request.env.user.partner_id.show_history:
 
             history_count = len(SaleReport.read_group([('product_id.type', 'in', ('consu', 'product')), ('order_partner_id', 'child_of', partner_id.id), ('state', 'in', ('sale', 'done'))],
@@ -330,54 +336,50 @@ class CustomerPortal(CustomerPortal):
 
         # If filterby is not 'own' we need to recalculate all the data
         
-        if filterby != 'all':
-            SaleOrder = request.env['sale.order']
+        SaleOrder = request.env['sale.order']
 
-            domain = [
-                ('message_partner_ids', 'child_of', [partner.id]),
-                ('state', 'in', ['sale', 'done'])
-            ]
+        domain = [
+            ('message_partner_ids', 'child_of', [partner.id]),
+            ('state', 'in', ['sale', 'done'])
+        ]
 
-            searchbar_sortings = {
-                'date': {'label': _('Order Date'), 'order': 'date_order desc'},
-                'name': {'label': _('Reference'), 'order': 'name'},
-                'stage': {'label': _('Stage'), 'order': 'state'},
-            }
+        searchbar_sortings = {
+            'date': {'label': _('Order Date'), 'order': 'date_order desc'},
+            'name': {'label': _('Reference'), 'order': 'name'},
+            'stage': {'label': _('Stage'), 'order': 'state'},
+        }
 
-            # adding our filter
-            domain += searchbar_filters[filterby]['domain']
+        # adding our filter
+        domain += searchbar_filters[filterby]['domain']
 
-            # default sortby order
-            if not sortby:
-                sortby = 'date'
-            sort_order = searchbar_sortings[sortby]['order']
+        # default sortby order
+        if not sortby:
+            sortby = 'date'
+        sort_order = searchbar_sortings[sortby]['order']
 
-            archive_groups = self._get_archive_groups('sale.order', domain)
-            if date_begin and date_end:
-                domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
+        archive_groups = self._get_archive_groups('sale.order', domain)
+        if date_begin and date_end:
+            domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
 
-            # count for pager
-            order_count = SaleOrder.search_count(domain)
-            # pager
-            pager = portal_pager(
-                url="/my/orders",
-                url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby, 'filterby': filterby},
-                total=order_count,
-                page=page,
-                step=self._items_per_page
-            )
-            # content according to pager and archive selected
-            orders = SaleOrder.search(domain, order=sort_order, limit=self._items_per_page, offset=pager['offset'])
-            request.session['my_orders_history'] = orders.ids[:100]
-
-            res.qcontext.update({
-                'archive_groups': archive_groups,
-                'orders': orders.sudo(),
-                'pager': pager,
-                'order_count': order_count
-            })
+        # count for pager
+        order_count = SaleOrder.search_count(domain)
+        # pager
+        pager = portal_pager(
+            url="/my/orders",
+            url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby, 'filterby': filterby},
+            total=order_count,
+            page=page,
+            step=self._items_per_page
+        )
+        # content according to pager and archive selected
+        orders = SaleOrder.search(domain, order=sort_order, limit=self._items_per_page, offset=pager['offset'])
+        request.session['my_orders_history'] = orders.ids[:100]
 
         res.qcontext.update({
+            'archive_groups': archive_groups,
+            'orders': orders.sudo(),
+            'pager': pager,
+            'order_count': order_count,
             'searchbar_filters': OrderedDict(sorted(searchbar_filters.items())),
             'filterby': filterby,
         })
