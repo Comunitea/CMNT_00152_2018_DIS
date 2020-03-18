@@ -23,3 +23,5 @@
 "access_sale_order_portal_dismac","sale_order_portal_dismac","sale.model_sale_order","base.group_portal",1,1,1,0
 
 "access_report_website_offer_public",report_website_offer_public","model_report_website_offer",,1,0,0,0
+
+"access_product_customerinfo_public",product_customerinfo_public","model_product_customerinfo","base.group_portal",1,0,0,0

@@ -20,6 +20,7 @@ class WebsiteSale(WebsiteSale):
     def payment(self, **post):
         order = request.website.sale_get_order()
         reason_list = []
+        res_check = False
 
         products_tmpl_on_cart = order.order_line.mapped('product_id').mapped('product_tmpl_id').ids
         order_line_restrictions = request.env['product.customerinfo'].search_read([
