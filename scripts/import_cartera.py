@@ -27,9 +27,9 @@ with open(path_csv, 'r') as file:
         processed += 1
         partner_ref = row[2]
         name = row[4]
-        date = datetime.strptime(row[5], '%d/%m/%Y')
+        date = datetime.strptime(row[5], '%d/%m/%y')
         date_str = datetime.strftime(date, '%Y-%m-%d')
-        date_maturity = datetime.strptime(row[6], '%d/%m/%Y')
+        date_maturity = datetime.strptime(row[6], '%d/%m/%y')
         date_maturity_str = datetime.strftime(date_maturity,'%Y-%m-%d')
         payment_mode = row[8]
         credit =0 
@@ -41,8 +41,8 @@ with open(path_csv, 'r') as file:
             blocked = False
         else:
             blocked = True
-        partner_bank = row[17]
-        mandate_cod = row[16]
+        partner_bank = row[16]
+        mandate_cod = row[18]
 
         domain = [('ref', '=', partner_ref)]
        
@@ -74,6 +74,7 @@ with open(path_csv, 'r') as file:
                 'blocked': blocked,
                 'partner_id': partners[0].id,
                 'mandate_id': mandate and mandate.id or False,
+                'payment_mode_id': payment_mode and payment_mode.id or False,
                 'account_id': account.id,
                 'move_id': 3741
             }
@@ -90,7 +91,7 @@ for arch in partner_not_found:
     output_file.write(arch + '\n')
 output_file = open(script_path + '/mandates_no_encontrados.csv', 'w')
 for arch in mandate_not_found:
-    output_file.write(arch + '\n'
+    output_file.write(arch + '\n')
 
 session.cr.commit()
 exit()

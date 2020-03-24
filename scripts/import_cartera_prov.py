@@ -13,22 +13,22 @@ script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 #path = '/home/santi/Documentos/DISMAC/IMPORTACION/2019-12
 # -18_Fotos_Articulos_Dismac_Enviados_a_Comunitea'
 path = '/home/santi/Documentos/DISMAC/IMPORTACION/cartera/'
-path_csv = '/home/santi/Documentos/DISMAC/IMPORTACION/cartera/Cartera_para_importar_prov.csv' 
+path_csv = '/home/santi/Documentos/DISMAC/IMPORTACION/cartera/Cartera_para_importar_acreed.csv' 
 file_not_found = []
 partner_not_found = []
 
 processed = 0
 
-account = session.env['account.account'].search([('code', '=', '40000001')])
+account = session.env['account.account'].search([('code', '=', '41000001')])
 with open(path_csv, 'r') as file:
     reader = csv.reader(file, delimiter=';')
     for row in reader:
         processed += 1
         partner_ref = row[2]
         name = row[4]
-        date = datetime.strptime(row[5], '%d/%m/%y')
+        date = datetime.strptime(row[5], '%d/%m/%Y')
         date_str = datetime.strftime(date, '%Y-%m-%d')
-        date_maturity = datetime.strptime(row[6], '%d/%m/%y')
+        date_maturity = datetime.strptime(row[6], '%d/%m/%Y')
         date_maturity_str = datetime.strftime(date_maturity,'%Y-%m-%d')
         payment_mode = row[8]
         debit =0 
@@ -49,7 +49,6 @@ with open(path_csv, 'r') as file:
         domain = [('name', '=', payment_mode)]
         payment_mode = session.env['account.payment.mode'].search(domain)
         
-
         if partners:
             data_dict = {
                 'name': name,
@@ -60,6 +59,7 @@ with open(path_csv, 'r') as file:
                 'blocked': blocked,
                 'partner_id': partners[0].id,
                 'account_id': account.id,
+                'payment_mode_id': payment_mode and payment_mode.id or False,
                 'move_id': 3741
             }
             session.env['account.move.line'].create(data_dict)
