@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <template id="template_facturae_references" inherit_id="l10n_es_facturae.template_facturae">
+        <xpath expr="//SequenceNumber" position="after">
+            <DeliveryNotesReferences>
+                <t t-foreach="line.move_line_ids" t-as="line_picking">
+                    <DeliveryNote>
+                        <DeliveryNoteNumber t-esc="line_picking.picking_id.name"/>  
+                        <DeliveryNoteDate t-esc="line_picking.picking_id.date_done.date()"/>
+                    </DeliveryNote>
+                </t>
+            </DeliveryNotesReferences>
+        </xpath>
+    </template>
+        
+</odoo>
