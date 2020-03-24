@@ -12,6 +12,96 @@ class ProductProduct(models.Model):
     )
     price_coeff = fields.Float("Price Coeff", compute="_compute_price_coeff")
 
+
+    def _get_price_and_discount(self, qty, partner_id, date):
+        res = {
+                'price': 0,
+                'discount': 0,
+                'explanation': ''
+                }
+        discount = 0
+        pricelist_price = pricelist_price_discount = self.price
+        pricelist_explanation = "Precio de tarifa "
+
+        # SE cpopia toda esta parte par mostrar el descuetno de forma explícita
+        # PEro se necesita en esta parte para poder comprar precios incluido el descuento
+        # Aplica descuento de categoría
+        categ_dis = self.env["category.discount"].get_customer_discount(
+                partner_id, self.categ_id.id
+        )
+
+        if categ_dis:
+
+            pricelist_price_discount = pricelist_price * (
+                1 - categ_dis[0].discount / 100
+            )
+            pricelist_explanation += (
+                " . Encontraro descuento de "
+                    "categoría  " + str(categ_dis[0].discount)
+            )
+            discount = categ_dis[0].discount
+
+            # get customet price
+        customer_price = (
+            self.env["customer.price"].get_customer_price(
+                partner_id, self, qty
+            )
+            or 0
+        )
+
+        # search promotion
+        rule = self.env["product.pricelist"].search_promotion(
+            self.id, qty, date
+        )
+        if rule:
+            promotion_price = rule.fixed_price
+        else:
+            promotion_price = 0
+
+        # Selecciona precio mínimo
+        if isinstance(partner_id, pycompat.integer_types):
+            partner = self.env["res.partner"].browse(partner_id)[0]
+        else:
+            partner = partner_id
+        if partner.fixed_prices:
+            discount = 0
+            if customer_price:
+                price = customer_price
+                explanation = (
+                    "Cliente con precios fijos: Precio " "pactado "
+                )
+            else:
+                price = pricelist_price
+                explanation = (
+                    "Cliente con precios fijos: Precio "
+                    "pactado no encontrado. Aplicado "
+                    "precio de tarifa: \n" + pricelist_explanation
+                )
+        else:
+            price = pricelist_price
+            explanation = pricelist_explanation
+            if customer_price and customer_price < pricelist_price_discount and pricelist_price_discount != 0:
+                price = customer_price
+                explanation = (
+                    "Encontrado precio pactado por debajo " "de tarifa "
+                )
+                discount = 0
+            if (
+                promotion_price
+                and promotion_price < pricelist_price_discount
+                and promotion_price < price
+                and price != 0
+            ):
+                price = promotion_price
+                explanation = "Aplicada promoción "
+                discount = 0
+                
+        res['price'] = price
+        res['discount'] = discount
+        res['explanation'] += explanation
+        return res
+
+
     def _compute_product_price(self):
         """
         When read price, search in customer prices first
@@ -24,77 +114,9 @@ class ProductProduct(models.Model):
         date = self._context.get("date") or fields.Date.context_today(self)
         if partner_id:
             for product in self:
-                pricelist_price = product.price
-                pricelist_explanation = "Precio de tarifa "
-
-                # SE mueve toda esta parte par mostrar el descuetno de forma explícita
-                # Aplica descuento de categoría
-                # categ_dis = self.env["category.discount"].get_customer_discount(
-                #     partner_id, product.categ_id.id
-                # )
-
-                # if categ_dis:
-
-                #     pricelist_price = pricelist_price * (
-                #         1 - categ_dis[0].discount / 100
-                #     )
-                #     pricelist_explanation += (
-                #         " . Aplicado descuento de "
-                #         "categoría  " + str(categ_dis[0].discount)
-                #     )
-
-                    # get customet price
-                customer_price = (
-                    self.env["customer.price"].get_customer_price(
-                        partner_id, product, qty
-                    )
-                    or 0
-                )
-
-                # search promotion
-                rule = self.env["product.pricelist"].search_promotion(
-                    product.id, qty, date
-                )
-                if rule:
-                    promotion_price = rule.fixed_price
-                else:
-                    promotion_price = 0
-
-                # Selecciona precio mínimo
-                if isinstance(partner_id, pycompat.integer_types):
-                    partner = self.env["res.partner"].browse(partner_id)[0]
-                else:
-                    partner = partner_id
-                if partner.fixed_prices:
-                    if customer_price:
-                        price = customer_price
-                        explanation = (
-                            "Cliente con precios fijos: Precio " "pactado "
-                        )
-                    else:
-                        price = pricelist_price
-                        explanation = (
-                            "Cliente con precios fijos: Precio "
-                            "pactado no encontrado. Aplicado "
-                            "precio de tarifa: \n" + pricelist_explanation
-                        )
-                else:
-                    price = pricelist_price
-                    explanation = pricelist_explanation
-                    if customer_price and customer_price < price and price != 0:
-                        price = customer_price
-                        explanation = (
-                            "Encontrado precio pactado por debajo " "de tarifa "
-                        )
-                    if (
-                        promotion_price
-                        and promotion_price < price
-                        and price != 0
-                    ):
-                        price = promotion_price
-                        explanation = "Aplicada promoción "
-                product.price = price
-                product.price_description = explanation
+                price_and_discount = product._get_price_and_discount (qty, partner_id, date)
+                product.price = price_and_discount['price']
+                product.price_description = price_and_discount['explanation']
         return res
 
     def _compute_price_coeff(self):
