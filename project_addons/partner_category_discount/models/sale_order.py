@@ -11,15 +11,9 @@ class SaleOrderLine(models.Model):
     @api.onchange('product_id')
     def product_id_change(self):
         res = super().product_id_change()
-        customer_price = (
-                    self.env["customer.price"].get_customer_price(
-                        self.partner_id, self.product_id, self.product_uom_qty
-                    )
-                )
-        if not customer_price:
-            categ_dis = self.env["category.discount"].get_customer_discount(
-                        self.partner_id, self.product_id.categ_id.id
-                    )
-            if categ_dis:
-                self.discount = categ_dis[0].discount
+        date = self.order_id.date_order or fields.Date.context_today(self)
+        price_and_discount = self.product_id._get_price_and_discount (self.product_uom_qty, self.partner_id, date)
+        self.price_unit = price_and_discount['price']
+        if not self.discount:   
+            self.discount = price_and_discount['discount']
         return res
