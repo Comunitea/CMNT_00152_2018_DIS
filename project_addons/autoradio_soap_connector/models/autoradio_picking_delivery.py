@@ -104,8 +104,8 @@ class StockPicking(models.Model):
     ], string="Refund Type", default="P")
     autoradio_obs = fields.Char(string="Info about the shipping")
     autoradio_obs_extra = fields.Char(string="Extra info about the shipping")
-    autoradio_send_today = fields.Boolean(string="Send today")
-    autoradio_close_shipping = fields.Boolean(string="Close shipping")
+    autoradio_send_today = fields.Boolean(string="Send today", default=True)
+    autoradio_close_shipping = fields.Boolean(string="Close shipping", default=True)
     autoradio_cash_on_delivery_payment = fields.Selection([
         (9, _('Cash')),
         (10, _('Check/Promissory Note')),
@@ -123,6 +123,11 @@ class StockPicking(models.Model):
     autoradio_payment = fields.Float(string="Payment", default=0.0)
     autoradio_declared_value = fields.Float(string="Declared Value", default=0.0)
     autoradio_hard_to_handle = fields.Boolean(string="Hard to handle", help="Hard to handle merchandise.", default=0)
+    autoradio_signed_picking = fields.Boolean(string="Return Signed", default=True)
+    autoradio_acknowledgement_receipt = fields.Boolean(string="Acknowledgement of receipt", default=True)
+    autoradio_return_goods = fields.Boolean(string="Return Goods", default=False)
+    autoradio_delivery_with_return = fields.Boolean(string="Delivery with Return", default=False)
+    autoradio_delivery_instructions = fields.Integer(readonly=True, compute="_compute_delivery_instructions")
     
     #WSGrabarEnvioTAR
     autoradio_ccbb = fields.Char(string='Barcode')
@@ -131,6 +136,20 @@ class StockPicking(models.Model):
         (2, 'Interleaved 2of5')
         ], string='Barcode Type')
     autoradio_channelling = fields.Char(string='Channelling')
+
+    @api.onchange('autoradio_signed_picking', 'autoradio_acknowledgement_receipt', 
+    'autoradio_return_goods', 'autoradio_delivery_with_return')
+    def _compute_delivery_instructions(self):
+        self.autoradio_delivery_instructions = 0
+        if self.autoradio_signed_picking:
+            self.autoradio_delivery_instructions += 2
+        #Opciones no están disponibles en la api
+        #if self.autoradio_acknowledgement_receipt:
+        #    self.autoradio_delivery_instructions += 3 # 4 en la documentación oficial
+        #if self.autoradio_return_goods:
+        #    self.autoradio_delivery_instructions += 4 # 8 en la documentación oficial
+        if self.autoradio_delivery_with_return:
+            self.autoradio_delivery_instructions += 4 # 16 en la documentación
 
     @api.onchange('picking_ids')
     def onchange_picking_ids(self):
@@ -225,7 +244,7 @@ class StockPicking(models.Model):
                     'Obser': self.autoradio_obs if self.autoradio_obs else '', # Comments
                     'AmpliaObser': self.autoradio_obs_extra if self.autoradio_obs_extra else '',
                     'RefCliente': self.partner_id.ref, # ref client
-                    'InstOp': self.carrier_id.autoradio_delivery_instructions,
+                    'InstOp': self.autoradio_delivery_instructions,
                     'PersonaOrdena': config.soap_persona_ordena,
                     'FlagEnviarHoy': 1 if self.autoradio_close_shipping or self.autoradio_send_today else 0, # send today = 1.
                     'Cierre': 1 if self.autoradio_close_shipping else 0, # 0 or 1. Cerrar envío.
@@ -310,7 +329,7 @@ class StockPicking(models.Model):
                     'Obser': self.autoradio_obs if self.autoradio_obs else '', # Comments
                     'AmpliaObser': self.autoradio_obs_extra if self.autoradio_obs_extra else '',
                     'RefCliente': self.partner_id.ref, # ref client
-                    'InstOp': self.carrier_id.autoradio_delivery_instructions,
+                    'InstOp': self.autoradio_delivery_instructions,
                     'PersonaOrdena': config.soap_persona_ordena,
                     'FlagEnviarHoy': 1 if self.autoradio_close_shipping or self.autoradio_send_today else 0, # send today = 1.
                     'Cierre': 1 if self.autoradio_close_shipping else 0, # 0 or 1. Cerrar envío.

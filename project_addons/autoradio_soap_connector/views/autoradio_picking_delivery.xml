@@ -54,6 +54,11 @@
                         <group>
                             <field name="autoradio_send_today"/>
                             <field name="autoradio_close_shipping"/>
+                            <field name="autoradio_signed_picking"/>
+                            <!-- Opciones no están disponibles en la api -->
+                            <!-- <field name="autoradio_acknowledgement_receipt"/> -->
+                            <!-- <field name="autoradio_return_goods"/> -->
+                            <field name="autoradio_delivery_with_return"/>
                             <field name="autoradio_payment"/>
                             <field name="autoradio_declared_value"/>
                             <field name="autoradio_cash_on_delivery_payment"/>
@@ -133,5 +138,8 @@
 
     <menuitem id="autoradio_picking_delivery_menu" parent="autoradio_soap_connector.autoradio_config_main_menu"
         action="autoradio_picking_delivery_action" sequence="1"/>
+    
+    <menuitem id="autoradio_picking_delivery_master_menu" parent="stock.menu_stock_inventory_control"
+        action="autoradio_picking_delivery_action" sequence="20"/>
 
 </odoo>
