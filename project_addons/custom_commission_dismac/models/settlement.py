@@ -281,7 +281,7 @@ class Settlement(models.Model):
             "unit_id": False,
             "name": _("Global settlement by sales"),
         }
-        ousl = self.env["sale.type..settlement.line"].create(vals)
+        ousl = self.env["sale.type.settlement.line"].create(vals)
 
         goal_line_vals = []
         month = self.date_to.month
