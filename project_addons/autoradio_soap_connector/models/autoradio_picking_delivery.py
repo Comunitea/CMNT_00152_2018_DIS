@@ -143,12 +143,13 @@ class StockPicking(models.Model):
         self.autoradio_delivery_instructions = 0
         if self.autoradio_signed_picking:
             self.autoradio_delivery_instructions += 2
-        if self.autoradio_acknowledgement_receipt:
-            self.autoradio_delivery_instructions += 3 # 4 en la documentación oficial
-        if self.autoradio_return_goods:
-            self.autoradio_delivery_instructions += 4 # 8 en la documentación oficial
+        #Opciones no están disponibles en la api
+        #if self.autoradio_acknowledgement_receipt:
+        #    self.autoradio_delivery_instructions += 3 # 4 en la documentación oficial
+        #if self.autoradio_return_goods:
+        #    self.autoradio_delivery_instructions += 4 # 8 en la documentación oficial
         if self.autoradio_delivery_with_return:
-            self.autoradio_delivery_instructions += 8 # 16 en la documentación
+            self.autoradio_delivery_instructions += 4 # 16 en la documentación
 
     @api.onchange('picking_ids')
     def onchange_picking_ids(self):
