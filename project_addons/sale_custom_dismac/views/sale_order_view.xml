@@ -56,9 +56,9 @@
             <field name="expected_date" position="before">
                 <label for="priority"></label>
                 <div>
-                    <field name="priority" class="oe_inline"/>
+                    <field name="priority" class="oe_inline" readonly="1"/>
                      <button class="oe_stat_button" name="action_propagate_priority"
-                        type="object" icon="fa-telegram"/>
+                        type="object" icon="fa-telegram" />
                 </div>
 
             </field>
@@ -82,6 +82,18 @@
             </field>
         </field>
     </record>
+
+    <record id="sale_order_form_custom_priority" model="ir.ui.view" >
+        <field name="name">sale.order.form.custom.priority</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_custom_dismac.sale_order_form_custom"/>
+        <field name="arch" type="xml">
+            <field name="priority" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </field>
+        </field>
+    </record>
+
     <record id="view_order_form_ip_custom" model="ir.ui.view">
         <field name="name">sale_order_hide_invoice_policy</field>
         <field name="model">sale.order</field>
