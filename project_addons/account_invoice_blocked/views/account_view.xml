@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- © 2020 Comunitea
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+     <record id="account_journal_block_payment_view" model="ir.ui.view">
+            <field name="name">account.journal.block.payment_.iew</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='group_invoice_lines']" position="after">
+                    <field name="block_payments" attrs="{'invisible': [('type', 'not in', ['sale', 'purchase'])]}"/>
+                </xpath>
+            </field>
+     </record>
+
+</odoo>
