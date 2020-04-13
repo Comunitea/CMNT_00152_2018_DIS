@@ -110,8 +110,8 @@
                 <field name="qty_enough" invisible="1"/>
                 <field name="qty_pending" invisible="0" string="Pendiente"/>
                 <field name="qty_delivered" string="Entregada"/>
-                <field name="virtual_stock_conservative" string="Disponible" invisible="1"/>
-                <field name="virtual_available" string="Disponible"/>
+                <field name="virtual_stock_conservative" string="Disponible" />
+                <field name="virtual_available" string="Previsto"/>
                 <field name="outgoing_qty" string="Salidas"/>
                 <field name="incoming_qty" string="Entradas"/>
 
