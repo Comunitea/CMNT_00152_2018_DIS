@@ -144,7 +144,7 @@ class SaleDelivery(models.Model):
         # domain_move_ids = [('sale_line_id', 'in', sale_line_ids.ids), ('state', 'not in', ('draft', 'cancel', 'done')), ('location_dest_id.usage', '=', 'customer')]
         # group_ids = self.env['stock_move'].read_group (domain_move_ids, ['sale_line_id', 'product_uom_qty'], ['sale_line_id'])
 
-        for line in lines:
+        for line in lines.filtered('product_id'):
             sale_line_id = line.sale_order_line_id
             #moves_domain = [('sale_line_id', '=', sale_line_id)]
             #sale_line_id_move_ids = self.env['stock.move'].search([('sale_line_id', '=', sale_line_id)])

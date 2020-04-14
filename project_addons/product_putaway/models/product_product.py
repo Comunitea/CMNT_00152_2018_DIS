@@ -7,6 +7,8 @@ from odoo import api, models, fields, _
 class FixedPutAwayStrategy(models.Model):
     _inherit = 'stock.fixed.putaway.strat'
 
+    from_script = fields.Boolean('From script auto')
+
     @api.multi
     def name_get(self):
         res = []
@@ -26,8 +28,6 @@ class ProductTemplate(models.Model):
     product_putaway_ids = fields.One2many(
         'stock.fixed.putaway.strat', string="Ubicaciones de traslado", compute="_compute_putaway_ids_ids", inverse="_set_putaway_ids",
         help="Gives the different ways to package the same product.")
-
-
 
     @api.depends('product_variant_ids', 'product_variant_ids.product_putaway_ids')
     def _compute_putaway_ids_ids(self):
@@ -87,4 +87,38 @@ class ProductProduct(models.Model):
                        'fixed_location_id': location_id}
 
                 sfps.create(val)
+
+    @api.multi
+    def _compute_putaway_from_stock(self, warehouse_id = False):
+
+        if not warehouse_id:
+            warehouse_id = self.env['stock.warehouse'].search([('company_id', '=', self.env.user.company_id.id)], limit=1)
+        if len(warehouse_id)!=1:
+            raise ("Error de almacén")
+        location_id = warehouse_id.lot_stock_id
+        putaway_id = location_id.putaway_strategy_id
+
+        Quant = self.env['stock.quant']
+        putaway_ids = self.env['stock.fixed.putaway.strat']
+        print ('Calculando nuevas ubicaciones para {}'.format(len(self)))
+        for product_id in self:
+            quant = Quant._gather(product_id, location_id)
+            if quant:
+                location_putaway_id = quant[0].location_id
+                if location_putaway_id.usage == 'internal':
+                    vals = {'sequence': 0, 'product_id': product_id.id, 'putaway_id': putaway_id.id, 'from_script': True,
+                            'fixed_location_id': location_putaway_id.id}
+                    domain = [('product_id', '=', product_id.id), ('putaway_id', '=', putaway_id.id), ('fixed_location_id', '!=', location_putaway_id.id)]
+                    for line in self.env['stock.fixed.putaway.strat'].search(domain):
+                        line.sequence += 1
+                    domain = [('product_id', '=', product_id.id), ('putaway_id', '=', putaway_id.id), ('fixed_location_id', '=', location_putaway_id.id)]
+                    line = self.env['stock.fixed.putaway.strat'].search(domain)
+                    if not line:
+                        putaway_ids |= self.env['stock.fixed.putaway.strat'].create(vals)
+        for p_id in putaway_ids:
+            print ("-- {} --> {}".format(p_id.product_id.display_name, p_id.fixed_location_id.name))
+        xml_id = 'product_putaway.action_stock_fixed_putaway_strat_tree_pp'
+        action = self.env.ref(xml_id).read()[0]
+        action['domain'] = [('id', 'in', putaway_ids.ids)]
+        return action
 
