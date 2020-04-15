@@ -34,16 +34,7 @@ class DeliveryCarrier(models.Model):
         ('71', 'SABADOS')
     ]
 
-    DELIVERY_INSTRUCTIONS = [
-        ('0', 'Ninguna'),
-        ('2', 'Devolver albarán firmado'),
-        ('3', 'Acuse de recibo'),
-        ('4', 'Retornar mercancía'),
-        ('16', 'Envío con retorno')
-    ]
-
     delivery_type = fields.Selection(selection_add=[('autoradio', 'AUTORADIO')])
     integration_level = fields.Selection(selection_add=[('none', 'None')])
     autoradio_service_code = fields.Selection(AUTORADIO_SERVICES)
-    autoradio_delivery_instructions = fields.Selection(DELIVERY_INSTRUCTIONS)
     autoradio_config_id = fields.Many2one('autoradio.config', string='AUTORADIO Config')

@@ -44,6 +44,6 @@ class ResPartnerAccess(models.Model):
         if self.website_access_rights == 'own':
             return self.env['res.partner'].browse(self.id)
         elif self.website_access_rights == 'delegation':
-            return self.env['res.partner'].browse(self.parent_id.id)
+            return self.env['res.partner'].browse(self.parent_id.id or self.id)
         elif self.website_access_rights == 'all':
-            return self.env['res.partner'].browse(self.commercial_partner_id.id)
+            return self.env['res.partner'].browse(self.commercial_partner_id.id or self.id)
