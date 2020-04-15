@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-19 16:52+0000\n"
-"PO-Revision-Date: 2020-02-19 16:52+0000\n"
+"POT-Creation-Date: 2020-03-17 16:24+0000\n"
+"PO-Revision-Date: 2020-03-17 16:24+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,24 +40,24 @@ msgstr ""
 #: code:addons/autoradio_soap_connector/models/autoradio_config.py:411
 #: code:addons/autoradio_soap_connector/models/autoradio_config.py:435
 #: code:addons/autoradio_soap_connector/models/autoradio_config.py:511
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:259
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:343
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:379
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:417
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:444
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:277
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:361
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:397
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:435
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:462
 #, python-format
 msgid "Access error message: {}"
 msgstr "Error de acceso: {}"
 
 #. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_acknowledgement_receipt
+msgid "Acknowledgement of receipt"
+msgstr "Acuse de recibo"
+
+#. module: autoradio_soap_connector
 #: model:ir.model.fields,help:autoradio_soap_connector.field_delivery_carrier__integration_level
 msgid "Action while validating Delivery Orders"
 msgstr "Acción al validar órdenes de entrega"
-
-#. module: autoradio_soap_connector
-#: selection:delivery.carrier,autoradio_delivery_instructions:0
-msgid "Acuse de recibo"
-msgstr ""
 
 #. module: autoradio_soap_connector
 #: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_check_1_amount
@@ -80,7 +80,7 @@ msgid "Amount of the 4th payment"
 msgstr "Cantidad del cuarto pago"
 
 #. module: autoradio_soap_connector
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:114
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:113
 #: selection:autoradio.picking.delivery,autoradio_cash_on_delivery_payment:0
 #, python-format
 msgid "Any"
@@ -93,7 +93,7 @@ msgid "Autoradio"
 msgstr ""
 
 #. module: autoradio_soap_connector
-#: model:ir.model.fields,field_description:autoradio_soap_connector.field_delivery_carrier__autoradio_delivery_instructions
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_delivery_instructions
 msgid "Autoradio Delivery Instructions"
 msgstr "Instrucciones de entrega"
 
@@ -104,6 +104,7 @@ msgstr "Etiqueta Autoradio"
 
 #. module: autoradio_soap_connector
 #: model:ir.actions.act_window,name:autoradio_soap_connector.autoradio_picking_delivery_action
+#: model:ir.ui.menu,name:autoradio_soap_connector.autoradio_picking_delivery_master_menu
 #: model:ir.ui.menu,name:autoradio_soap_connector.autoradio_picking_delivery_menu
 #: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_tree
 msgid "Autoradio Picking Deliveries"
@@ -163,7 +164,7 @@ msgid "Based on Rules"
 msgstr "En base a reglas"
 
 #. module: autoradio_soap_connector
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:113
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:112
 #: selection:autoradio.picking.delivery,autoradio_cash_on_delivery_payment:0
 #, python-format
 msgid "Bearer Check"
@@ -178,7 +179,7 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: autoradio_soap_connector
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:49
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:48
 #: selection:autoradio.picking.delivery,state:0
 #: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
 #, python-format
@@ -196,7 +197,7 @@ msgid "Carrier Tracking Ref"
 msgstr "Código Tracking"
 
 #. module: autoradio_soap_connector
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:111
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:110
 #: selection:autoradio.picking.delivery,autoradio_cash_on_delivery_payment:0
 #, python-format
 msgid "Cash"
@@ -220,7 +221,7 @@ msgid "Channelling"
 msgstr "Canalización"
 
 #. module: autoradio_soap_connector
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:112
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:111
 #: selection:autoradio.picking.delivery,autoradio_cash_on_delivery_payment:0
 #, python-format
 msgid "Check/Promissory Note"
@@ -275,7 +276,7 @@ msgstr ""
 #. module: autoradio_soap_connector
 #: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_label_individual_template
 msgid "DESTINATARIO"
-msgstr "DESTINATARIO"
+msgstr ""
 
 #. module: autoradio_soap_connector
 #: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_sheet_data_search_wzd__date
@@ -316,8 +317,8 @@ msgid "Date to"
 msgstr "Hasta"
 
 #. module: autoradio_soap_connector
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:99
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:104
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:98
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:103
 #: selection:autoradio.picking.delivery,autoradio_refund_type:0
 #: selection:autoradio.picking.delivery,autoradio_type:0
 #, python-format
@@ -335,7 +336,7 @@ msgid "Delete from Autoradio"
 msgstr "Borrar Envío Autoradio"
 
 #. module: autoradio_soap_connector
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:48
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:47
 #: selection:autoradio.picking.delivery,state:0
 #: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
 #, python-format
@@ -358,9 +359,9 @@ msgid "Delivery Status"
 msgstr "Estado de entrega"
 
 #. module: autoradio_soap_connector
-#: selection:delivery.carrier,autoradio_delivery_instructions:0
-msgid "Devolver albarán firmado"
-msgstr "Devolver albarán firmado"
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_delivery_with_return
+msgid "Delivery with Return"
+msgstr "Entrega con Retorno"
 
 #. module: autoradio_soap_connector
 #: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_config__display_name
@@ -371,12 +372,7 @@ msgstr "Devolver albarán firmado"
 #: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd__display_name
 #: model:ir.model.fields,field_description:autoradio_soap_connector.field_report_autoradio_soap_connector_autoradio_label_template__display_name
 msgid "Display Name"
-msgstr "Nombre"
-
-#. module: autoradio_soap_connector
-#: selection:delivery.carrier,autoradio_delivery_instructions:0
-msgid "Envío con retorno"
-msgstr "Envío con retorno"
+msgstr "Nombre mostrado"
 
 #. module: autoradio_soap_connector
 #: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_label_individual_template
@@ -432,7 +428,7 @@ msgstr "Mercancía difícil de manejar"
 #: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_tracking_search_wzd__id
 #: model:ir.model.fields,field_description:autoradio_soap_connector.field_report_autoradio_soap_connector_autoradio_label_template__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: autoradio_soap_connector
 #: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
@@ -440,7 +436,7 @@ msgid "In Transition"
 msgstr "En reparto"
 
 #. module: autoradio_soap_connector
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:47
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:46
 #: selection:autoradio.picking.delivery,state:0
 #, python-format
 msgid "In transition"
@@ -509,13 +505,8 @@ msgid "Name"
 msgstr "Nombre"
 
 #. module: autoradio_soap_connector
-#: selection:delivery.carrier,autoradio_delivery_instructions:0
-msgid "Ninguna"
-msgstr ""
-
-#. module: autoradio_soap_connector
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:406
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:412
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:424
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:430
 #, python-format
 msgid "No existen datos para este envío."
 msgstr ""
@@ -543,17 +534,17 @@ msgstr "Sin enviar"
 #: code:addons/autoradio_soap_connector/models/autoradio_config.py:413
 #: code:addons/autoradio_soap_connector/models/autoradio_config.py:437
 #: code:addons/autoradio_soap_connector/models/autoradio_config.py:513
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:261
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:345
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:381
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:419
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:446
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:279
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:363
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:399
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:437
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:464
 #, python-format
 msgid "Not possible to establish a client."
 msgstr "No es posible establecer el cliente para la conexión."
 
 #. module: autoradio_soap_connector
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:44
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:43
 #: selection:autoradio.picking.delivery,state:0
 #, python-format
 msgid "Not sent"
@@ -577,8 +568,8 @@ msgid "Own Ref."
 msgstr "Referencia propia"
 
 #. module: autoradio_soap_connector
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:98
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:103
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:97
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:102
 #: selection:autoradio.picking.delivery,autoradio_refund_type:0
 #: selection:autoradio.picking.delivery,autoradio_type:0
 #, python-format
@@ -597,7 +588,7 @@ msgid "Payment"
 msgstr "Pago"
 
 #. module: autoradio_soap_connector
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:46
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:45
 #: selection:autoradio.picking.delivery,state:0
 #: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
 #, python-format
@@ -646,7 +637,7 @@ msgstr "Proveedor"
 #. module: autoradio_soap_connector
 #: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_label_individual_template
 msgid "REMITENTE"
-msgstr "REMITENTE"
+msgstr ""
 
 #. module: autoradio_soap_connector
 #: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_label_individual_template
@@ -685,7 +676,7 @@ msgid "Refund amount allows to calculate the commission"
 msgstr "La cantidad de reembolso sirve para calcular la comisión"
 
 #. module: autoradio_soap_connector
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:45
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:44
 #: selection:autoradio.picking.delivery,state:0
 #: model_terms:ir.ui.view,arch_db:autoradio_soap_connector.autoradio_picking_delivery_search
 #, python-format
@@ -693,9 +684,14 @@ msgid "Requested"
 msgstr "Solicitado"
 
 #. module: autoradio_soap_connector
-#: selection:delivery.carrier,autoradio_delivery_instructions:0
-msgid "Retornar mercancía"
-msgstr ""
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_return_goods
+msgid "Return Goods"
+msgstr "Retornar mercancía"
+
+#. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_signed_picking
+msgid "Return Signed"
+msgstr "Devolver albarán firmado"
 
 #. module: autoradio_soap_connector
 #: selection:delivery.carrier,autoradio_service_code:0
@@ -817,7 +813,7 @@ msgid "Webservice URL"
 msgstr ""
 
 #. module: autoradio_soap_connector
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:67
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:66
 #, python-format
 msgid "You can not add pickings from more than one partner."
 msgstr "No puedes añadir albaranes para más de un destinatario."
@@ -826,11 +822,11 @@ msgstr "No puedes añadir albaranes para más de un destinatario."
 #: code:addons/autoradio_soap_connector/models/autoradio_config.py:272
 #: code:addons/autoradio_soap_connector/models/autoradio_config.py:312
 #: code:addons/autoradio_soap_connector/models/autoradio_config.py:441
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:181
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:265
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:349
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:385
-#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:423
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:199
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:283
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:367
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:403
+#: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:441
 #, python-format
 msgid "You need to select a picking to calculate the estimated shipping cost."
 msgstr "Necesitas seleccionar un albarán para estimar el coste del envío."
@@ -978,4 +974,3 @@ msgstr ""
 #: model:ir.ui.view,name:autoradio_soap_connector.vpicktree_autoradio_connector
 msgid "vpicktree_autoradio_connector"
 msgstr ""
-

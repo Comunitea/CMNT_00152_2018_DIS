@@ -48,6 +48,20 @@ class Pricelist(models.Model):
         )
 
     @api.multi
+    def show_items_list(self, context=None):
+        domain = [("pricelist_id", "=", self.id)]
+
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "product.pricelist.item",
+            "view_type": "form",
+            "view_mode": "tree,form",
+            'view_id ref="product.product_pricelist_item_tree_view"': "",
+            "target": "current",
+            "domain": domain,
+        }
+
+    @api.multi
     def show_error_list(self, context=None):
         domain = [("import_id", "=", self.id)]
 

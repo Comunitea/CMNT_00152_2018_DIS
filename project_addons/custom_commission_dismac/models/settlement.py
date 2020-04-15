@@ -63,7 +63,7 @@ class Settlement(models.Model):
             # if not inv.sale_type_id:
             #     continue
             # Obtengo importe total y coeficiente sobre margen
-            if inv.sale_type_id_id not in invoices_by_sale_type:
+            if inv.sale_type_id not in invoices_by_sale_type:
                 invoices_by_sale_type[inv.sale_type_id] = {
                     "amount": 0.0,
                     "coef": 0.0,
@@ -87,7 +87,7 @@ class Settlement(models.Model):
             ] += reduced_amount
             invoices_by_global["reduced_amount"] += reduced_amount
 
-        month = datetime.strptime(self.date_to, "%Y-%m-%d").month
+        month = self.date_to.month
 
         global_goal_types = self.env["goal.type"]
         min_goal_types = self.env["goal.type"]  # special case
@@ -198,7 +198,7 @@ class Settlement(models.Model):
         # Actualizo info si el tipo de objetivo es basado en mínimo de clientes
         if gt.type == "min_customers":
             month_goal_obj = self.env["agent.month.goal"]
-            month = datetime.strptime(self.date_to, "%Y-%m-%d").month
+            month = self.date_to.month
             domain = [("month", "=", month), ("agent_id", "=", self.agent.id)]
             month_goals = month_goal_obj.search(domain)
             if not month_goals:
@@ -281,10 +281,10 @@ class Settlement(models.Model):
             "unit_id": False,
             "name": _("Global settlement by sales"),
         }
-        ousl = self.env["sale.type..settlement.line"].create(vals)
+        ousl = self.env["sale.type.settlement.line"].create(vals)
 
         goal_line_vals = []
-        month = datetime.strptime(self.date_to, "%Y-%m-%d").month
+        month = self.date_to.month
         for gt in global_goal_types:
             # Calculo el objetivo total del mes
             domain = [

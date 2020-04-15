@@ -12,6 +12,7 @@
         'Rubén Seijas <ruben@comunitea.com>',
     ],
     'depends': [
+        'base',
         'ecommerce_base',
         'website_seo_settings',
         'breadcrumbs_base_tmp',
@@ -34,7 +35,9 @@
         'security/ir.model.access.csv',
         'security/sale_security.xml',
         'templates/payment.xml',
-        'views/res_partner.xml'
+        'views/res_partner.xml',
+        'wizard/res_partner_wzd.xml',
+        'wizard/portal_wizard_views.xml'
     ],
     'images': [
         '/static/description/icon.png',

@@ -34,6 +34,12 @@
                                         <field name="goal_per"/>
                                         <field name="commission"/>
                                     </tree>
+                                    <form>
+                                        <group col="2">
+                                            <field name="goal_per"/>
+                                            <field name="commission"/>
+                                        </group>
+                                    </form>
                                 </field>
                             </group>
                         </page>
@@ -44,6 +50,12 @@
                                         <field name="coef"/>
                                         <field name="commission"/>
                                     </tree>
+                                    <form>
+                                        <group col="2">
+                                            <field name="coef"/>
+                                            <field name="commission"/>
+                                        </group>
+                                    </form>
                                 </field>
                             </group>
                         </page>

@@ -1,0 +1,39 @@
+diff --git a/stock_picking_invoice_link/models/sale_order.py b/stock_picking_invoice_link/models/sale_order.py
+index 8496b5c..be90aa4 100644
+--- a/stock_picking_invoice_link/models/sale_order.py
++++ b/stock_picking_invoice_link/models/sale_order.py
+@@ -8,20 +8,20 @@ from odoo import api, models
+ class SaleOrderLine(models.Model):
+     _inherit = "sale.order.line"
+ 
+-    @api.multi
+-    def invoice_line_create_vals(self, invoice_id, qty):
+-        self.mapped(
+-            'move_ids'
+-        ).filtered(
+-            lambda x: x.state == 'done' and
+-            not x.invoice_line_id and
+-            not x.location_dest_id.scrap_location and
+-            x.location_dest_id.usage == 'customer'
+-        ).mapped(
+-            'picking_id'
+-        ).write({'invoice_ids': [(4, invoice_id)]})
+-        return super(SaleOrderLine, self).invoice_line_create_vals(invoice_id,
+-                                                                   qty)
++    # @api.multi
++    # def invoice_line_create_vals(self, invoice_id, qty):
++    #     self.mapped(
++    #         'move_ids'
++    #     ).filtered(
++    #         lambda x: x.state == 'done' and
++    #         not x.invoice_line_id and
++    #         not x.location_dest_id.scrap_location and
++    #         x.location_dest_id.usage == 'customer'
++    #     ).mapped(
++    #         'picking_id'
++    #     ).write({'invoice_ids': [(4, invoice_id)]})
++    #     return super(SaleOrderLine, self).invoice_line_create_vals(invoice_id,
++    #                                                                qty)
+ 
+     @api.multi
+     def _prepare_invoice_line(self, qty):
