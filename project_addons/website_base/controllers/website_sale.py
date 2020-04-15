@@ -6,13 +6,14 @@ import time
 
 from odoo import http, _
 from odoo.http import request
-from odoo.osv.expression import OR
+
 from odoo.addons.website_sale.controllers.main import WebsiteSale, TableCompute
-from odoo.addons.portal.controllers.portal import CustomerPortal, pager
+
 from werkzeug.exceptions import Unauthorized, NotFound
 
 PPG = 20  # Products Per Page
 PPR = 4   # Products Per Row
+
 
 class WebsiteSale(WebsiteSale):
     
@@ -20,6 +21,7 @@ class WebsiteSale(WebsiteSale):
     def payment(self, **post):
         order = request.website.sale_get_order()
         reason_list = []
+        # Prevent 500 error page. No buy is possible
         res_check = False
 
         products_tmpl_on_cart = order.order_line.mapped('product_id').mapped('product_tmpl_id').ids
@@ -37,7 +39,8 @@ class WebsiteSale(WebsiteSale):
                 
                 if res_check:
                     reason_list.append(
-                        _(("The product {} needs a minimum amount of {} to be shipped.").format(restriction['product_tmpl_id'][1], restriction['min_product_qty']))
+                        _(("The product {} needs a minimum amount of {} to be shipped.").format(
+                            restriction['product_tmpl_id'][1], restriction['min_product_qty']))
                     )
 
         if order.locked or res_check:
@@ -69,22 +72,23 @@ class WebsiteSale(WebsiteSale):
     def _get_customer_products_template_from_customer_prices(self):
         user = request.env.user
         today = time.strftime('%Y-%m-%d')
-        
+
         customer_domain = [('partner_id', '=', user.partner_id.id),
-                            '|', ('date_start', '=', False), ('date_start', '<=', today),
-                            '|', ('date_end', '=', False), ('date_end', '>=', today),
-                            '|', ('product_tmpl_id', '!=', False), ('product_id', '!=', False)]
+                           '|', ('date_start', '=', False), ('date_start', '<=', today),
+                           '|', ('date_end', '=', False), ('date_end', '>=', today),
+                           '|', ('product_tmpl_id', '!=', False), ('product_id', '!=', False)]
 
         customer_products = []
-        customer_products += request.env['customer.price'].sudo().search(customer_domain).filtered(lambda x: x.product_tmpl_id != False and \
-            x.product_id.website_published).mapped('product_tmpl_id').ids
-        customer_products += request.env['customer.price'].sudo().search(customer_domain).filtered(lambda x: x.product_id != False and \
-            x.product_id.website_published).mapped('product_id').mapped('product_tmpl_id').ids
+        customer_products += request.env['customer.price'].sudo().search(customer_domain).filtered(
+            lambda x: x.product_tmpl_id is not False and x.product_id.website_published).mapped('product_tmpl_id').ids
+        customer_products += request.env['customer.price'].sudo().search(customer_domain).filtered(
+            lambda x: x.product_id is not False and x.product_id.website_published).mapped(
+            'product_id').mapped('product_tmpl_id').ids
         return customer_products
 
-
     def _get_search_domain(self, search, category, attrib_values):
-        domain = super(WebsiteSale, self)._get_search_domain(search=search, category=category, attrib_values=attrib_values)
+        domain = super(WebsiteSale, self)._get_search_domain(
+            search=search, category=category, attrib_values=attrib_values)
         customer_products = False
         if request.env.context.get('customer_prices', False) or not request.env.user.partner_id.show_all_catalogue:
 
@@ -95,7 +99,8 @@ class WebsiteSale(WebsiteSale):
             else:
                 domain += [('id', '=', None)]
 
-        if not request.env.context.get('customer_prices', False) and not request.env.user.partner_id.show_customer_price:
+        if not request.env.context.get('customer_prices', False) \
+                and not request.env.user.partner_id.show_customer_price:
             
             if not customer_products:
                 customer_products = self._get_customer_products_template_from_customer_prices()                
@@ -178,10 +183,10 @@ class WebsiteSale(WebsiteSale):
     def slug_product(self, path, category='', search='', **kwargs):
         res = super(WebsiteSale, self).slug_product(path=path, category=category, search=search, **kwargs)
         context = dict(request.env.context)
-        if not 'product' in res.qcontext and not 'product_redirect' in context:
+        if 'product' not in res.qcontext and 'product_redirect' not in context:
             raise NotFound() 
         if not request.env.user.partner_id.show_all_catalogue and 'product' in res.qcontext:
             customer_products = self._get_customer_products_template_from_customer_prices()
             if res.qcontext['product'].id not in customer_products:
-               raise Unauthorized(_("You are not authorized to see this product.")) 
+                raise Unauthorized(_("You are not authorized to see this product."))
         return res
