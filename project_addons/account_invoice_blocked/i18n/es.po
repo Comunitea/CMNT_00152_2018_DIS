@@ -1,0 +1,37 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* account_invoice_blocked
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-06 17:18+0000\n"
+"PO-Revision-Date: 2020-04-06 17:18+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_invoice_blocked
+#: model:ir.model.fields,field_description:account_invoice_blocked.field_account_journal__block_payments
+msgid "Block Payments"
+msgstr "Bloquear pagos/cobros"
+
+#. module: account_invoice_blocked
+#: model:ir.model,name:account_invoice_blocked.model_account_invoice
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: account_invoice_blocked
+#: model:ir.model,name:account_invoice_blocked.model_account_journal
+msgid "Journal"
+msgstr "Diario"
+
+#. module: account_invoice_blocked
+#: model:ir.ui.view,name:account_invoice_blocked.account_journal_block_payment_view
+msgid "account.journal.block.payment.view"
+msgstr ""
+

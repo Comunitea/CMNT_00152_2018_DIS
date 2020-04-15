@@ -97,32 +97,29 @@
         <field name="type">tree</field>
         <field name="arch" type="xml">
             <tree string="Lineas de venta"  edit="false" create="false"
-                  decoration-success="moves_state == 'done'"
-                  decoration-danger="qty_enough == False">
-                  <!--decoration-danger="not purchase_order_id and qty_available_after_delivered &lt; 0"
-                  decoration-bf="not purchase_order_id and sale_order_line_id==sl_from"
-                  decoration-muted="purchase_order_id"-->
-                <field name="partner_id" />
+                  decoration-success="qty_pending == 0 "
+                  decoration-danger="qty_enough == False and qty_pending > 0">
+                <field name="partner_id"/>
                 <field name="order_id"/>
                 <field name="state" invisible="1"/>
                 <field name="product_id"/>
-                <field name="review_order" invisible="True"/>
-                <button name="%(sale_custom_dismac.sale_line_change_product_action)d"
-                        string="change product"
-                        icon="fa-arrow-right"
-                        type="action" attrs="{'invisible': [('review_order', '!=', True)]}"/>
+<!--                <field name="review_order" invisible="True"/>-->
+<!--                <button name="930" string="change product" icon="fa-arrow-right" type="action" attrs="{'invisible': [('review_order', '!=', True)]}"/>-->
                 <!--field name="qty_pending" string="Pendiente"/-->
                 <field name="product_uom_qty" string="Pedida"/>
                 <field name="qty_enough" invisible="1"/>
+                <field name="qty_pending" invisible="0" string="Pendiente"/>
                 <field name="qty_delivered" string="Entregada"/>
-                <field name="virtual_stock_conservative" string="Disponible"/>
+                <field name="virtual_stock_conservative" string="Disponible" />
+                <field name="virtual_available" string="Previsto"/>
                 <field name="outgoing_qty" string="Salidas"/>
                 <field name="incoming_qty" string="Entradas"/>
 
+                <field name="outgoing_pending" invisible="1"/>
                 <field name="expected_date"/>
                 <field name="estimated_delivery_date"/>
 
-                <field name="purchase_order_needed" />
+                <field name="purchase_order_needed"/>
                 <field name="moves_state" invisible="1"/>
                 <field name="state" invisible="1"/>
                 <!--field name="invoice_status" invisible="1"/-->
@@ -160,7 +157,7 @@
         <field name="target">current</field>
         <field name="view_id" ref="view_delivery_order_line_tree"/>
         <field name="search_view_id" ref="sale.view_sales_order_line_filter"/>
-        <field name="domain">[('state', 'not in', ('cancel', 'draft'))]</field>
+        <field name="domain">[('state', 'in', ('sale', 'done'))]</field>
         <field name="context">{'search_default_process':1}</field>
         <field name="help"></field>
     </record>

@@ -18,16 +18,27 @@
         <field name="model">sale.commission.settlement</field>
         <field name="inherit_id" ref="sale_commission.view_settlement_form" />
         <field name="arch" type="xml">
-            <header position="inside">
-                <button string="Settlement by goal"
+           
+            <!-- COMENTADO SOLO ÚTIL PARA DESARROLLO -->
+            <!-- <header position="inside"> -->
+
+                    <!-- <button string="Settlement by goal"
                         attrs="{'invisible': [('by_goals', '!=', True)]}"
                         class="oe_highlight"
                         type="object"
-                        name="settlement_by_goal" />
-                <button string="Delete Settlement by goal"
+                        name="settlement_by_goal" />-->
+                    <!-- <button string="Delete Settlement by goal"
                         attrs="{'invisible': [('by_goals', '!=', True)]}"
                         type="object"
-                        name="delete_settlement_by_goal" />
+                        name="delete_settlement_by_goal" /> -->
+            <!-- </header> -->
+            <!-- SOBREESCRITO PARA ELIMINAR LA CONDICION DE AGENT TYPE DEL ATTRS -->
+            <header position="replace">
+                <header>
+                        <button string="Make invoice" attrs="{'invisible': [('state', '!=', 'settled')]}" class="oe_highlight" type="object" name="action_invoice"/>
+                        <button string="Cancel" states="settled" type="object" name="action_cancel"/>
+                        <field name="state" widget="statusbar"/>
+                </header>
             </header>
 
             <field name="date_to" position="after">
