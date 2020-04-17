@@ -30,6 +30,7 @@
         'templates/quote.xml',
         'templates/portal_history.xml',
         'templates/portal_reviews.xml',
+        'templates/pending_validation.xml',
         'views/product_views.xml',
         'views/quote_views.xml',
         'security/ir.model.access.csv',
@@ -37,7 +38,7 @@
         'templates/payment.xml',
         'views/res_partner.xml',
         'wizard/res_partner_wzd.xml',
-        'wizard/portal_wizard_views.xml'
+        'wizard/portal_wizard_views.xml',
     ],
     'images': [
         '/static/description/icon.png',

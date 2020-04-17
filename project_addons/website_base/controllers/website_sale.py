@@ -190,3 +190,19 @@ class WebsiteSale(WebsiteSale):
             if res.qcontext['product'].id not in customer_products:
                 raise Unauthorized(_("You are not authorized to see this product."))
         return res
+
+    @http.route()
+    def payment_confirmation(self, **post):
+        order = request.env['sale.order'].sudo().browse(
+            request.session.get('sale_last_order_id'))
+        if order.need_validation:
+            # try to validate operation
+            reviews = order.request_validation()
+            order._validate_tier(reviews)
+            if  order._calc_reviews_validated(reviews):
+                return super().payment_confirmation(**post)
+            else:
+                request.website.sale_reset()
+                return request.render("website_base.pending_validation", {'order': order})
+        else:
+            return super().payment_confirmation(**post)
