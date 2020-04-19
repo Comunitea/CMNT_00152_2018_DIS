@@ -73,6 +73,7 @@ class ReportPrintBatchPicking(models.AbstractModel):
     @api.model
     def update_level_1(self, group_dict, operation):
         def get_state(val, val1):
+
             if val1 == 'partially_available':
                 return val1
             if val1 == 'assigned':
@@ -82,6 +83,10 @@ class ReportPrintBatchPicking(models.AbstractModel):
                     return val
                 else:
                     return val1
+            if val1=='state':
+                if val != 'cancel' and val != 'draft':
+                    return val
+            return val1
             raise ValueError('No encontrado para {} y {}'.format(val, val1))
 
 
