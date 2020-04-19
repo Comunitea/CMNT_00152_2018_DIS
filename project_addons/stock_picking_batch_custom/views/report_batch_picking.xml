@@ -3,28 +3,68 @@
     <report string="Agrupación de picking"
             id="action_report_batch_picking_custom"
             model="stock.picking.batch"
-            report_type="qweb-pdf"
+            report_type="qweb-html"
             name="stock_picking_batch_custom.report_batch_picking_custom"
             file="stock_picking_batch_custom.report_batch_picking_custom"/>
 
+    <template id="layoutminimal">
+        <t t-if="not o" t-set="o" t-value="doc"/>
 
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <div class="header">
+            <div class="row">
+                <div class="col-6 text-left">
+                    <span t-esc="company.name"/>
+
+                </div>
+
+                <div class="col-6 text-right">
+                    <ul class="list-inline"  >
+                        <li class="list-inline-item"><span class="page"/></li>
+                        <li class="list-inline-item">/</li>
+                        <li class="list-inline-item"><span class="topage"/></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 text-left" >
+                 <strong>Date:</strong> <span t-esc="now()" t-options="{'widget': 'datetime'}"/>
+                </div>
+            </div>
+        </div>
+        <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+          <t t-raw="0"/>
+        </div>
+    </template>
     <template id="report_batch_picking_custom">
+        <style media="print">
+        .no-print {
+            display:none;
+        }
+        </style>
         <t t-call="web.html_container">
-            <t t-call="web.internal_layout">
+            <t t-call="stock_picking_batch_custom.layoutminimal">
                     <t t-foreach="docs" t-as="doc">
                         <div class="page">
-
-                            <div class="row" style="margin: 5px">
-                                <div class="col-3">
-                                    <strong>Date:</strong>
-                                    <span t-esc="now()" t-options="{'widget': 'datetime'}"/>
-                                </div>
-                                <div class="col-3">
-                                    <strong>Order:</strong>
+                            <div class="row" style="margin: 0px">
+                                <div class="col-6">
+                                    <strong>Orden:</strong>
                                     <span t-field="doc.name"/>
                                 </div>
                                 <div class="col-6">
-                                    <strong>Picked By:</strong>
+                                    <strong>Operario:</strong>
                                     <span t-field="doc.user_id.name"/>
                                 </div>
                             </div>
@@ -32,92 +72,118 @@
                         <t t-if="doc.notes">
                             <p t-esc="doc.notes"/>
                         </t>
-                        <br/>
+
                             <t t-if="moves">
-                            <table class="table table-condensed" string="ARTICULOS SIN STOCK">
+                            <table class="table table-condensed" string="ARTICULOS SIN STOCK" border="1">
                                     <thead string="ARTICULOS SIN STOCK">
-                                        <th width="60%" style="padding: 3px">
+                                        <th width="68%" style="padding: 3px">
                                             <b><u>
                                                 <span>Artículos sin stock</span>
                                             </u></b>
                                         </th>
-                                        <th width="20%" style="padding: 3px"></th>
-                                        <th width="12%" style="padding: 3px" ><span>Pedido</span>
+                                        <th width="12%" style="padding: 3px" class="text-left">Estantería</th>
+                                        <th width="8%" style="padding: 3px" class="text-center"><span>Pedido</span>
                                         </th>
-                                        <th width="8%" class="text-right" style="padding: 3px"><span>Disponible</span>
+                                        <th width="12%" class="text-right" style="padding: 3px"><span>Faltan</span>
                                         </th>
                                     </thead>
                                 <tbody>
                                     <t t-foreach="moves" t-as="move">
                                         <tr style="font-size: small;">
-                                    <td style="padding: 3px">
-                                        <span t-field="move.product_id.display_name"/>
-                                    </td>
-                                    <td style="padding: 3px">
-                                        <span t-field="move.product_id.import_location_str"/>
-                                    </td>
-                                    <td style="padding: 3px">
-                                        <span t-field="move.product_uom_qty"/>
-                                    </td>
-                                    <td style="padding: 3px">
-                                        <span t-field="move.product_id.qty_available"/>
-                                    </td>
+                                            <td style="padding: 3px">
+                                                <span t-esc="move.product_id.display_name[0:70] + ' \u21E8 '"/> <span t-field="move.picking_id.name"/>
+                                            </td>
+                                            <td style="padding: 3px" class="text-left">
+                                                <span t-field="move.product_id.putaways_str"/>
+                                            </td>
+                                            <td style="padding: 3px" class="text-right">
+                                               <span t-field="move.product_uom_qty"/>
+                                            </td>
+                                            <td style="padding: 3px" class="text-right">
+                                            <span t-esc="move.product_uom_qty - move.quantity_done"/>
+
+                                            </td>
                                         </tr>
                                     </t>
                                 </tbody>
 
 
                         </table>
-                        <hr/></t>
-                            <t t-foreach="get_grouped_data(doc)" t-as="l0_data">
-                                <table class="table table-condensed">
-                                    <thead>
-                                        <th width="60%" style="padding: 3px">
+                        </t>
+                            <br/>
+                             <table class="table table-condensed">
+                                <thead>
+                                    <th width="68%" style="padding: 3px">
                                             <b><u>
-                                                <span t-esc="l0_data['name']"/>
+                                                <span>Pasillo  /  Artículo</span>
                                             </u></b>
                                         </th>
-                                        <th width="20%" style="padding: 3px"></th>
-                                        <th width="12%" style="padding: 3px" ><span></span>
+                                        <th width="12%" style="padding: 3px" class="text-left">Estantería</th>
+                                        <th width="8%" style="padding: 3px" class="text-center"><span>Pedido</span>
                                         </th>
-                                        <th width="8%" class="text-right" style="padding: 3px"><span></span>
+                                        <th width="12%" class="text-right" style="padding: 3px"><span>Disponible</span>
                                         </th>
                                     </thead>
-                                    <tbody>
-                                        <t t-set="total_qty" t-value="0.0"/>
-                                        <t t-foreach="l0_data['l1_items']" t-as="l1_item">
-                                            <t t-set="product" t-value="l1_item['product']"/>
-                                            <t t-set="location" t-value="l1_item['operations'][:1].location_id"/>
-                                            <t t-set="qty" t-value="l1_item['product_qty']"/>
-                                            <t t-set="ordered_qty" t-value="l1_item['product_uom_qty']"/>
-                                            <t t-set="total_qty" t-value="total_qty + qty"/>
-                                            <t t-set="carrier" t-value="l1_item['operations'][:1].picking_id.carrier_id"/>
+                            </table>
 
-                                            <tr style="font-size: small;">
-                                                <td style="padding: 3px">
-                                                    <span t-field="product.display_name"/>
-                                                </td>
 
-                                                <td class="text-right" style="padding: 3px; color: grey">
-                                                    <span t-esc="location.name"/>
-                                                    <t t-if="product.import_location_str != location.name">
-                                                        <span t-field="product.import_location_str"/>
-                                                    </t>
-                                                </td>
-                                                <td class="text-left" style="padding: 3px">
-                                                    <span t-esc="ordered_qty"/>
-                                                </td>
-                                                <td class="text-right" style="padding: 3px">
-                                                    <span t-esc="qty"/>(<span t-esc="ordered_qty"/>)
-                                                </td>
-                                                <tr align="left" t-if="product.description_warehouse">
-                                                    <td colspan="4" style="padding: 3px">
-                                                        <pre class="description ">
-                                                            <span t-esc="product.description_warehouse"></span>
-                                                        </pre>
+                                <table class="table table-condensed">
+                                    <tbody><t t-foreach="get_grouped_data(doc)" t-as="l0_data">
+                                        <tr>
+                                            <td width="68%" style="padding: 3px">
+                                                <b><span t-esc="l0_data['name']"/></b>
+                                            </td>
+                                            <td width="12%" style="padding: 3px"></td>
+                                            <td width="8%" style="padding: 3px" ></td>
+                                            <td width="12%" class="text-right" style="padding: 3px"></td>
+                                        </tr>
+
+
+                                            <t t-set="total_qty" t-value="0.0"/>
+                                            <t t-foreach="l0_data['l1_items']" t-as="l1_item">
+                                                <t t-set="product" t-value="l1_item['product']"/>
+                                                <t t-set="location" t-value="l1_item['operations'][:1].location_id"/>
+                                                <t t-set="qty" t-value="l1_item['product_qty']"/>
+                                                <t t-set="ordered_qty" t-value="l1_item['product_uom_qty']"/>
+                                                <t t-set="state" t-value="l1_item['state']"/>
+                                                <t t-set="total_qty" t-value="total_qty + qty"/>
+                                                <t t-set="carrier" t-value="l1_item['operations'][:1].picking_id.carrier_id"/>
+                                                <t t-set="other_moves" t-value="product_moves[str(product.id)].filtered(lambda x:x.product_uom_qty > 0 and x.product_id == product and x.location_id.id != location.id)"/>
+                                                <tr style="font-size: small;">
+                                                    <td style="padding: 3px" >
+                                                        <span t-field="product.display_name"/>
                                                     </td>
+                                                    <td class="text-left" style="padding: 3px;">
+                                                        <span t-esc="location.name"/>
+                                                        <t t-if="product.putaways_str != location.name">
+                                                        (<span style="color:grey" t-field="product.putaways_str"/>)
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-center" style="padding: 3px">
+                                                        <span t-esc="ordered_qties[str(product.id)]"/>
+                                                    </td>
+                                                    <td class="text-right" style="padding: 3px">
+                                                        <t t-if="state!='assigned'">
+                                                            <i class="fa fa-exclamation-triangle" role="img"/>
+                                                        </t>
+                                                        <t t-if="other_moves">
+                                                            <i class="fa fa-plus-square" role="img"/>
+                                                        </t>
+                                                        <span t-esc="qty"/>
+                                                    </td>
+                                                    <tr style="font-size: small;" t-if="product.description_warehouse or other_moves">
+                                                        <td  style="padding: 3px">
+                                                                <span t-esc="product.description_warehouse"></span>
+                                                        </td>
+                                                        <td  colspan="3" style="padding: 3px">
+                                                             <t t-if="other_moves" t-foreach="other_moves" t-as="osml">
+                                                                  <span style="color: grey" t-esc="'{} {} {}'.format(osml.location_id.name,'\u21E8',osml.qty_done)"/>
+
+                                                             </t>
+                                                        </td>
+                                                    </tr>
                                                 </tr>
-                                            </tr>
+                                            </t>
                                         </t>
                                     </tbody>
                                     <!--tfoot>
@@ -132,7 +198,7 @@
                                         </tr>
                                     </tfoot-->
                                 </table>
-                            </t>
+
                         </div>
                     </t>
 

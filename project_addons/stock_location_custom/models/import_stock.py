@@ -18,6 +18,7 @@ PASILLO = {'A': 1 ,'B': 2 ,'C': 3 ,'D': 4 ,'E': 5 ,'F': 6 ,'G': 7, 'H': 8 ,
            'Q': 17, 'R': 18, 'S': 19, 'T': 20, 'U': 21, 'V': 22, 'W': 23, 'X': 24, 'Y': 25, 'Z': 26,
            'CIT': 40 ,'ZA': 50 ,'ZB': 51 ,'BE': 60 ,'EM': 70,'EXPOS': 80}
 LOCATION_IDS = []
+LOCATION_TYPES = [('floor', 'Planta'), ('row', 'Pasillo'), ('location', 'Estantería')]
 
 class StockQuantPackage(models.Model):
     _inherit = 'stock.quant.package'
@@ -29,74 +30,8 @@ class StockQuantPackage(models.Model):
             quant_ids = self.env['stock.quant'].search(domain)
             pack.product_ids = quant_ids.mapped('product_id')
 
-
-
     import_name = fields.Char('Import name')
     product_ids = fields.One2many('product.product', string='Producto orig.', compute=get_product_ids)
-
-
-class StockLocation (models.Model):
-
-    _inherit ='stock.location'
-
-    import_name = fields.Char(string="Ubicación importada")
-    floor = fields.Integer(string="Piso", default=-1)
-    building = fields.Integer(string="Nave", default=-1)
-    inverse_order = fields.Boolean('Prioridad inversa', help='Si está marcado el orden de la prioridad es inverso', default=False)
-    is_pos_x = fields.Boolean('Pasillo', default=False)
-
-    _sql_constraints = [
-        ('import_name_uniq', 'unique (import_name)', 'The import_name name must be unique !')
-    ]
-
-    @api.multi
-    def set_removal_priority(self):
-
-        for location in self.filtered(lambda x:x.usage == 'internal'):
-            if location.location_id.is_pos_x:
-                location.posx = location.location_id.posx
-            try:
-                pasillo = False
-                parent = location
-                while parent and not pasillo:
-                    if parent.is_pos_x:
-                        pasillo = parent
-                    parent = parent.location_id
-                if parent:
-                    posx = min(99, pasillo.posx)
-                    posy = location.posy if not pasillo.inverse_order else 99-location.posy
-                    posz = location.posz
-                    location.removal_priority = int('%02d%02d%02d' %(posx, posy, posz))
-                    _logger.info('Actualizando RP {}: {}'.format(location.display_name, location.removal_priority))
-                else:
-                    _logger.info('NO se ha encontrado un pasillo para  {}'.format(location.display_name))
-            except:
-                _logger.info('ERROR Actualizando RP {}'.format(location.display_name))
-
-
-    @api.multi
-    def set_barcode(self):
-        for location in self.filtered(lambda x:x.usage == 'internal'):
-            try:
-                if location.floor != -1 and location.building != -1 and not location.is_pos_x:
-                    location.barcode = '%01d%01d%02d%02d%02d'%(location.building, location.floor, location.posx, location.posy, location.posz)
-                    _logger.info('Actualizando CDB {}: {}'.format(location.display_name, location.barcode))
-            except:
-                _logger.info('ERROR Actualizando CDB {}'.format(location.display_name))
-
-    @api.multi
-    def set_parent_vals(self):
-        for loc in self:
-            view = False
-            location = loc
-            while location and not view:
-                print('Ubicación {} y padre {}'.format(location.name, location.location_id.name))
-                if location.usage == 'view' and location.posx == 0:
-                    view = location
-                location = location.location_id
-            loc.building = view.building
-            loc.floor = view.floor
-
 
 class ProductTemplate (models.Model):
 
