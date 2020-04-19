@@ -10,7 +10,8 @@
     "depends": ["stock", "stock_picking_batch"],
     "data": [
         "views/product_views.xml",
-        "views/models.xml"
+        "views/models.xml",
+
     ],
     "installable": True,
     "license": "AGPL-3",
