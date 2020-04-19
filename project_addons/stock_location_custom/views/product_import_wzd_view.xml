@@ -12,29 +12,6 @@
                 </field>
             </field>
     </record>
-
-    <record id="view_location_form_pi" model="ir.ui.view">
-            <field name="name"> stock.location.form.pi</field>
-            <field name="model">stock.location</field>
-            <field name="inherit_id" ref="stock.view_location_form"/>
-            <field name="arch" type="xml">
-                <field name="scrap_location" position="before">
-                    <field name="is_pos_x"/>
-                </field>
-                <field name="usage" position="before">
-                    <field name="import_name" attrs="{'invisible': [('usage','!=','internal')]}"/>
-                </field>
-                <field name="removal_priority" position="after">
-                    <field name="inverse_order" attrs="{'invisible': [('is_pos_x','!=',True)]}"/>
-                </field>
-                <field name="posx" position="before">
-                    <field name="building"/>
-                    <field name="floor"/>
-                </field>
-            </field>
-    </record>
-
-
     <record id="view_template_property_form_pi" model="ir.ui.view">
             <field name="name">product.template.stock.property.form.pi</field>
             <field name="model">product.template</field>

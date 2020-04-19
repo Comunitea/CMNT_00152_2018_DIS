@@ -2,3 +2,4 @@
 
 from . import import_stock
 from . import batch_report
+from . import stock_location

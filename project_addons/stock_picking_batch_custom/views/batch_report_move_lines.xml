@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="view_stock_group_move_tree_operations" model="ir.ui.view">
+            <field name="name">stock.move.group.operations.tree</field>
+            <field name="model">batch.group.move.line</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree edit="0" create="0" delete="0"
+                      decoration-warning="product_qty_reserved != product_qty_ordered"
+                      decoration-success="qty_done==qty_reserved and qty_done != 0"
+                      decoration-danger="qty_done != qty_reserved and qty_done > 0"
+                      decoration-muted="qty_reserved == 0">
+                    <field name="product_id"/>
+                    <field name="ref"/>
+                    <field name="tracking" invisible="1"/>
+                    <field name="edit_tree" invisible="1"/>
+                    <button name="action_apply_qties"
+                            attrs="{'invisible': [('show_apply_qties', '=', False)]}" context="{'fill_qty_done': True}"
+                            type="object" icon="fa-cart-arrow-down" aria-label="Show details" title="Marcar realizado"/>
+                    <!--button name="action_apply_qties"
+                            attrs="{'invisible': ['|', ('qty_done', '=', 0), ('qty_done', '=', 'product_uom_qty') ]}"
+                            type="object" icon="fa-edit" aria-label="Show details" title="Repartir cantidad realizada realizado"/-->
+                    <field name="location_id" />
+                    <field name="n_lines" />
+                    <field name="qty_ordered" invisible="1"/>
+                    <field name="product_qty_ordered" invisible="1"/>
+                    <field name="product_qty_reserved" invisible="0"/>
+                    <field name="qty_reserved_str" options='{"fg_color": "red:qty_reserved != qty_ordered"}'/>
+                    <field name="qty_reserved" invisible="0"/>
+                    <field name="show_apply_qties" invisible="1"/>
+                    <field name="qty_done"/>
+                    <field name="qty_no_stock"/>
+                    <button name="action_show_details"
+                             type="object" icon="fa-list" aria-label="Show details" title="Show details"/>
+                </tree>
+                </field>
+            </record>
+
+         <record id="action_stock_group_move_tree_operations" model="ir.actions.act_window">
+            <field name="name">Listado de picking</field>
+            <field name="res_model">batch.group.move.line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">new</field>
+
+        </record>
+
+        <record id="view_stock_group_move_operations" model="ir.ui.view">
+            <field name="name">batch.group.move.line.form</field>
+            <field name="model">batch.group.move.line.wzd</field>
+            <field name="arch" type="xml">
+                <form string="Detalle">
+                    <group>
+
+                    <field name="batch_id" invisible="0" readonly="1"/>
+                    </group>
+                    <group>
+                        <div name="product_qties">
+                            <h3>Producto</h3>
+                            <div class="o_row">
+                                <field name="product_id" readonly="1"/>
+                            </div>
+                            <div class="o_row">
+                                <span>Pedido: <field name="qty_ordered" readonly="1" nolabel="1"/> </span>
+                                <span>Disponible: <field name="qty_reserved" readonly="1" nolabel="1"/></span>
+                                <span><field name="product_uom_id" readonly="1" nolabel="1"/></span>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>Ventas asociadas</h3>
+                            <div class="o_row">
+                                <field name="move_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </div>
+                        <div name="location_ids">
+                            <h3>Ubicaciones</h3>
+                            <div class="o_row">
+                                <span>Desde <field name="location_id" readonly="1" nolabel="1"/> </span>
+                                <span>A <field name="location_dest_id" readonly="1" nolabel="1"/></span>
+                            </div>
+                        </div>
+
+                    </group>
+                    <group>
+                        <field name="move_lines" nolabel="1" cols="2">
+                            <tree editable="top" create="0" delete="1" decoration-warning="not_stock != 0">
+                                <field name="sale_order" readonly="1"/>
+                                <field name="picking_id" readonly="1" />
+                                <field name="location_id"></field>
+                                <field name="product_uom_qty" readonly="1"></field>
+                                <field name="qty_done" ></field>
+                                <field name="not_stock" readonly="1"/>
+                            </tree>
+                        </field>
+
+                    </group>
+                    <footer class="oe_edit_only">
+                        <button string="Confirm" special="save" class="oe_highlight"/>
+                        <button string="Discard" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    <record id="view_stock_group_move_operations_no_wzd" model="ir.ui.view">
+            <field name="name">batch.group.move.line.form.no.wzd</field>
+            <field name="model">batch.group.move.line</field>
+            <field name="arch" type="xml">
+                <form string="Detalle">
+                    <group>
+                     <field name="batch_id" invisible="0" readonly="1"/>
+                    </group>
+                    <group>
+                        <div name="product_qties">
+                            <h3>Producto</h3>
+                            <div class="o_row">
+                                <field name="product_id" readonly="1"/>
+                            </div>
+                            <div class="o_row">
+                                <span>LINEA Pedido: <field name="qty_ordered" readonly="1" nolabel="1"/> </span>
+                                <span>Disponible: <field name="qty_reserved" readonly="1" nolabel="1"/></span>
+                                <span><field name="product_uom_id" readonly="1" nolabel="1"/></span>
+                            </div>
+                            <div class="o_row" style="{color:#198c75}">
+                                <span>TOTAL Pedido: <field name="product_qty_ordered" readonly="1" nolabel="1"/> </span>
+                                <span>Disponible: <field name="product_qty_reserved" readonly="1" nolabel="1"/></span>
+                                <span><field name="product_uom_id" readonly="1" nolabel="1"/></span>
+                            </div>
+                        </div>
+                        <div name="location_ids">
+                            <h3>Ubicaciones</h3>
+                            <div class="o_row">
+                                <span>Desde <field name="location_id" readonly="1" nolabel="1"/> </span>
+                                <span>A <field name="location_dest_id" readonly="1" nolabel="1"/></span>
+                            </div>
+                            <div class="o_row">
+                                <field name="product_location_ids" widget="many2many_tags" context="{'show_product_id_qty': product_id}"/>
+                                <field name="domain_location_ids" invisible="1"/>
+                            </div>
+
+                        </div>
+
+                    </group>
+
+                    <group string="Ventas asociadas">
+                        <field name="move_ids" nolabel="1" cols="2">
+                            <tree delete="0" create="0" >
+                                <field name="state" invisible="1"/>
+                                <field name="picking_id"/>
+                                <field name="product_uom_qty"/>
+                                <field name="reserved_availability"/>
+                                <button name="action_new_move_line"
+                                        context="{'from_group_line_id': parent.id}"
+                                        type="object" icon="fa-plus"
+                                        title="Nuevo movimiento"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="move_lines" readonly="0" nolabel="1" cols="2">
+                            <tree editable="top" delete="0" create="0" decoration-warning="not_stock != 0" decoration-bf="parent.location_id == location_id">
+                                <field name="sale_order" readonly="1"/>
+                                <field name="picking_id" readonly="1" />
+                                <field name="location_id" domain="['|', ('id', 'child_of', parent.location_id), ('id', 'child_of', parent.product_location_ids)]"></field>
+                                <field name="product_qty_by_location"/>
+                                <field name="product_uom_qty" readonly="1"></field>
+                                <field name="qty_done" ></field>
+                                <field name="not_stock" readonly="1"/>
+                                <button name="action_delete_move_line"
+                                        context="{'from_group_line_id': parent.id}"
+                                        type="object" icon="fa-trash"
+                                        title="Borrar movimiento"/>
+
+                            </tree>
+                        </field>
+                    </group>
+                    <footer class="oe_edit_only">
+                        <!--button string="Guardar" name="apply_change" class="oe_highlight"/-->
+                        <button string="Guardar" special="save" class="oe_highlight"/>
+                        <button string="Cancelar" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+     <record id="stock_group_move_search" model="ir.ui.view">
+        <field name="name">batch.group.move.line.search</field>
+        <field name="model">batch.group.move.line</field>
+        <field name="arch" type="xml">
+            <search>
+
+                <field name="product_id"/>
+
+                <field name="location_id"/>
+                <group expand="0" string="Group By...">
+                    <filter name="location_id" string="Ubicación" context="{'group_by':'location_id'}"/>
+                    <filter name="product_id" string="Producto" context="{'group_by':'product_id'}"/>
+
+                </group>
+                <filter name="qty_reserved" string="Con reserva" domain = "[('qty_reserved', '!=', 0)]"/>
+                <filter name="qty_no_stock" string="Forzado" domain = "[('qty_no_stock', '!=', 0)]"/>
+                <filter name="no_qty_reserved" string="Sin reserva" domain = "[('qty_reserved', '=', 0)]"/>
+            </search>
+        </field>
+    </record>
+
+
+</odoo>
