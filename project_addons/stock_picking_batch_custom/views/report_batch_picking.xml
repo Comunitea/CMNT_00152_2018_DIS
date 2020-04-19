@@ -3,7 +3,7 @@
     <report string="Agrupación de picking"
             id="action_report_batch_picking_custom"
             model="stock.picking.batch"
-            report_type="qweb-html"
+            report_type="qweb-pdf"
             name="stock_picking_batch_custom.report_batch_picking_custom"
             file="stock_picking_batch_custom.report_batch_picking_custom"/>
 
