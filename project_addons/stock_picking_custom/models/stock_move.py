@@ -158,7 +158,7 @@ class StockMoveLine(models.Model):
         available_quantity = self.env['stock.quant']._get_available_quantity(
             product_id, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=True
         )
-        outdated_candidates = self.env['stock.move.line']
+        outdated_candidates = 0
         if quantity > available_quantity:
             # We now have to find the move lines that reserved our now unavailable quantity. We
             # take care to exclude ourselves and the move lines were work had already been done.
