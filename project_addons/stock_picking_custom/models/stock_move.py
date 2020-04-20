@@ -158,6 +158,7 @@ class StockMoveLine(models.Model):
         available_quantity = self.env['stock.quant']._get_available_quantity(
             product_id, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=True
         )
+        outdated_candidates = self.env['stock.move.line']
         if quantity > available_quantity:
             # We now have to find the move lines that reserved our now unavailable quantity. We
             # take care to exclude ourselves and the move lines were work had already been done.
@@ -173,8 +174,8 @@ class StockMoveLine(models.Model):
                 ('id', 'not in', ml_to_ignore.ids),
             ]
             outdated_candidates = self.env['stock.move.line'].search_count(outdated_move_lines_domain)
-            if outdated_candidates > 0 and self._context.get('from_stock_inventory', False):
-                raise ValidationError (_('No pedes realizar un ajuste para el artículo:\n {}\n ya que tienes movimientos asociados que se quedarían sin reserva'.format(product_id.display_name)))
+        if outdated_candidates > 0 and self._context.get('from_stock_inventory', False):
+            raise ValidationError (_('No pedes realizar un ajuste para el artículo:\n {}\n ya que tienes movimientos asociados que se quedarían sin reserva'.format(product_id.display_name)))
 
         ctx = self._context.copy()
         ctx.update(update_qty_done=True)
