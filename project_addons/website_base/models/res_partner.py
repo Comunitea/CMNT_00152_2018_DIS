@@ -40,6 +40,8 @@ class ResPartnerAccess(models.Model):
         default=True
     )
 
+    order_validator = fields.Many2one('res.users', string='Orders Validator')
+
     def _get_domain_partner(self):
         if self.website_access_rights == 'own':
             return self.env['res.partner'].browse(self.id)
@@ -47,3 +49,34 @@ class ResPartnerAccess(models.Model):
             return self.env['res.partner'].browse(self.parent_id.id or self.id)
         elif self.website_access_rights == 'all':
             return self.env['res.partner'].browse(self.commercial_partner_id.id or self.id)
+
+
+    @api.onchange('order_validator')
+    def _onchange_order_validator(self):
+        if self.order_validator:
+            sale_model = self.env['ir.model'].search([('model', '=', 'sale.order')])
+            partner = self.env.context.get('params').get('id') or False
+            partner_id = self.env['res.partner'].browse(partner)
+
+            if partner_id:
+                definition_domain = '["&", ["team_id.team_type", "=", "website"], ["partner_id", "child_of", {}]]'.format(partner_id.id)
+                values = {
+                    'name': _("Validator for partner: {}".format(partner_id.name)),
+                    'model_id': sale_model.id,
+                    'model': 'sale.order',
+                    'review_type': 'individual',
+                    'definition_type': 'domain',
+                    'active': True,
+                    'sequence': 30,
+                    'company_id': self.env.user.partner_id.company_id.id,
+                    'reviewer_id': self.order_validator.id,
+                    'notify_on_create': True,
+                    'definition_domain': definition_domain
+                }
+
+                prev_definitions = self.env['tier.definition'].search([('definition_domain', '=', definition_domain)])
+                for definition in prev_definitions:
+                    definition.write({
+                        'active': False
+                    })
+                tier_definition = self.env['tier.definition'].create(values)

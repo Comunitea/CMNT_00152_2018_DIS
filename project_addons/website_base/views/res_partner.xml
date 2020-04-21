@@ -23,6 +23,7 @@
                         <separator string="Website Options" colspan="4"/>
                         <group>
                             <field name="skip_website_checkout_payment"/>
+                            <field name="order_validator"/>
                         </group>
                     </group>
                 </page>

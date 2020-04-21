@@ -39,6 +39,17 @@ class Website(models.Model):
             partner.write({'last_website_so_id': None})
             return self.env['sale.order']
 
+    @api.multi
+    def _compute_checkout_skip_payment(self):
+        for rec in self:
+            sale_order = self.env['sale.order'].sudo().browse(request.session['sale_order_id'])
+            if sale_order and sale_order.need_validation:
+                if request.session.uid:
+                    rec.checkout_skip_payment =\
+                        request.env.user.partner_id.skip_website_checkout_payment or sale_order.need_validation
+            else:
+                super()._compute_checkout_skip_payment()
+
 class WebsiteMenu(models.Model):
     _inherit = 'website.menu'
 
