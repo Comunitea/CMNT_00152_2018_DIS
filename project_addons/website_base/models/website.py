@@ -32,9 +32,11 @@ class Website(models.Model):
 
         if sale_order:
             request.session['sale_order_id'] = sale_order.id
+            partner.write({'last_website_so_id': sale_order.id})
             return sale_order
         else:
             request.session['sale_order_id'] = None
+            partner.write({'last_website_so_id': None})
             return self.env['sale.order']
 
 class WebsiteMenu(models.Model):

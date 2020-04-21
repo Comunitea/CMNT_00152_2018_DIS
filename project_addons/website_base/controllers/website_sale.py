@@ -196,7 +196,7 @@ class WebsiteSale(WebsiteSale):
         order = request.env['sale.order'].sudo().browse(
             request.session.get('sale_last_order_id'))
         if order.need_validation:
-            #order.pending_review = True
+            order.update({'state':'sent'})
             # try to validate operation
             reviews = order.request_validation()
             order._validate_tier(reviews)
