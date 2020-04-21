@@ -288,7 +288,7 @@ class CustomerPortal(CustomerPortal):
     def portal_review_validation(self, order_id, validation, **kw):
         partner = request.env.user.partner_id._get_domain_partner()
         reviews = request.env.user.review_ids
-        review = request.env['tier.review'].search([('model', '=', 'sale.order'), ('id', 'in', reviews.ids), ('res_id', '=', order_id)])
+        review = request.env['tier.review'].search([('model', '=', 'sale.order'), ('id', 'in', reviews.ids), ('res_id', '=', order_id)], limit=1)
         order_id = request.env['sale.order'].browse(int(order_id))
         
         if not review:

@@ -55,8 +55,7 @@ class ResPartnerAccess(models.Model):
     def _onchange_order_validator(self):
         if self.order_validator:
             sale_model = self.env['ir.model'].search([('model', '=', 'sale.order')])
-            partner = self.env.context.get('params').get('id') or False
-            partner_id = self.env['res.partner'].browse(partner)
+            partner_id = self.env['res.partner'].browse(self._origin.id)
 
             if partner_id:
                 definition_domain = '["&", ["team_id.team_type", "=", "website"], ["partner_id", "child_of", {}]]'.format(partner_id.id)

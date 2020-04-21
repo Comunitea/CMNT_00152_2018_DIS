@@ -64,7 +64,15 @@
             <attribute name="t-if">not sale_order.find_pending_tier()</attribute>
         </xpath>
         <xpath expr='//t[@t-set="entries"]/ul/li[1]' position="after">
-            <li t-elif="pending_review" class="list-group-item flex-grow-1">
+            <li t-elif="sale_order.locked" class="list-group-item flex-grow-1">
+                <div class="alert alert-warning alert-dismissable" role="status">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+                    <span>
+                        <span><i>Blocked</i>... This order is blocked and needs further review.</span>
+                    </span>            
+                </div>
+            </li>
+            <li t-elif="not sale_order.locked and pending_review" class="list-group-item flex-grow-1">
                 <div class="o_download_pdf btn-toolbar flex-sm-nowrap">
                     <div class="btn-group flex-grow-1 mr-1 mb-1">
                         <form target="_self" action="/my/reviews/validation" method="post">
