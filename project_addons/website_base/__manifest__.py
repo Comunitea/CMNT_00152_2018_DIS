@@ -17,7 +17,9 @@
         'website_seo_settings',
         'breadcrumbs_base_tmp',
         'sale_order_lock',
-        'product_supplierinfo_for_customer'
+        'product_supplierinfo_for_customer',
+        'website_sale_checkout_skip_payment',
+        'base_tier_validation'
     ],
     'data': [
         'templates/head.xml',

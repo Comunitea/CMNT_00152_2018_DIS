@@ -2,21 +2,46 @@
 <odoo>
     <template id="pending_validation">
         <t t-call="website.layout">
-            <t t-set="additional_title">Validation Pending</t>
+            <t t-set="additional_title">Shop - Pending Validation</t>
             <div id="wrap">
                 <div class="container oe_website_sale py-2">
-                    <h1><span>Order</span> <em t-field="order.name" /> <span>Validation Pending</span></h1>
+                    <h1><span>Order</span> <em t-field="order.name" /> <span>Pending Validation</span></h1>
 
                     <div class="row">
-                        
-                        <div class="thanks_msg">
-                            <h2>Thank you for your order.
-                                <a role="button" class="btn btn-primary d-none d-md-inline-block" href="/shop/print" target="_blank" aria-label="Print" title="Print"><i class="fa fa-print"></i> Print</a>
-                            </h2>
-                        </div>
-                    </div>            
+                        <div class="col-12 col-xl">
+                            <div class="oe_cart">
+
+                                <div class="card-header bg-info">
+                                    <span>
+                                        <i class="fa fa-warning" style="margin-right:10px;" title="This order needs to be validated by a reviewer."></i>
+                                        <i>Pending</i>... This order needs to be validated.
+                                    </span>
+                                </div>
+                            
+                                <div class="thanks_msg">
+                                    <h2>Thank you for your order.</h2>
+                                    <p><a role="button" class="btn btn-primary d-none d-md-inline-block" href="/shop/print" target="_blank" aria-label="Print" title="Print"><i class="fa fa-print"></i> Print</a></p>
+                                </div>
                                 
+                                <div class="card mt-3">
+                                  <div class="card-body">
+                                    <t t-set="same_shipping" t-value="bool(order.partner_shipping_id==order.partner_id or only_services)" />
+                                    <div><b>Billing <t t-if="same_shipping and not only_services"> &amp; Shipping</t>: </b><span t-esc='order.partner_id' t-options="dict(widget='contact', fields=['address'], no_marker=True, separator=', ')" class="address-inline"/></div>
+                                    <div t-if="not same_shipping and not only_services" groups="sale.group_delivery_invoice_address"><b>Shipping: </b><span t-esc='order.partner_shipping_id' t-options="dict(widget='contact', fields=['address'], no_marker=True, separator=', ')"  class="address-inline"/></div>
+                                  </div>
+                                </div>
+                                <div class="oe_structure mt-3" id="oe_structure_website_sale_confirmation_2"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-xl-auto">
+                            <t t-set="website_sale_order" t-value="order"/>
+                            <t t-call="website_sale.cart_summary">
+                                <t t-set="hide_coupon">1</t>
+                            </t>
+                        </div>
+                    </div>
                 </div>
+                <div class="oe_structure" id="oe_structure_website_sale_confirmation_3"/>
             </div>
         </t>
     </template>

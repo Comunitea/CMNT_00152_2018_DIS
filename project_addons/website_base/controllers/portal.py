@@ -286,19 +286,24 @@ class CustomerPortal(CustomerPortal):
 
     @http.route(['/my/reviews/validation'], type='http', auth="user", website=True)
     def portal_review_validation(self, order_id, validation, **kw):
-
         partner = request.env.user.partner_id._get_domain_partner()
         reviews = request.env.user.review_ids
         review = request.env['tier.review'].search([('model', '=', 'sale.order'), ('id', 'in', reviews.ids), ('res_id', '=', order_id)])
+        order_id = request.env['sale.order'].browse(int(order_id))
         
         if not review:
             return request.redirect('/my')
         else:
-            if validation:
-                request.env['sale.order'].sudo().browse(review.res_id).validate_tier()
-            else:
-                request.env['sale.order'].sudo().browse(review.res_id).reject_tier()
+            if validation == 'True':
+                review.comment = 'Validated on {}'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+                order_id._validate_tier()
+            elif validation == 'False':
+                review.comment = 'Rejected on {}'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+                order_id._rejected_tier()
+            order_id._update_counter()
+            order_id._calc_reviews_validated(review)
             return request.redirect('/my')     
+
 
     @http.route(['/my/reviews/<int:order_id>'], type='http', auth="public", website=True)
     def portal_review_page(self, order_id, report_type=None, access_token=None, message=False, download=False, **kw):

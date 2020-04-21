@@ -196,13 +196,14 @@ class WebsiteSale(WebsiteSale):
         order = request.env['sale.order'].sudo().browse(
             request.session.get('sale_last_order_id'))
         if order.need_validation:
+            #order.pending_review = True
             # try to validate operation
             reviews = order.request_validation()
             order._validate_tier(reviews)
             if  order._calc_reviews_validated(reviews):
                 return super().payment_confirmation(**post)
             else:
-                request.website.sale_reset()
+                request.website.get_new_cart()
                 return request.render("website_base.pending_validation", {'order': order})
         else:
             return super().payment_confirmation(**post)

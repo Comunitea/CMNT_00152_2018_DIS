@@ -14,6 +14,11 @@ class SaleOrder(models.Model):
     needed_for_free_shipping = fields.Float('For free Shipping', compute='_compute_needed_for_free_shipping', \
         help='Amount needed for free shipping')
 
+    
+    @api.multi
+    def find_pending_tier(self):
+        tier = self.env['tier.review'].sudo().search([('model', '=', 'sale.order'), ('res_id', '=', self.id), ('status', '=', 'pending')])
+        return tier
 
     @api.multi
     def _compute_needed_for_min_amount_order(self):
