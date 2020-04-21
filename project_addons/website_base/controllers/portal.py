@@ -297,7 +297,8 @@ class CustomerPortal(CustomerPortal):
             if validation == 'True':
                 review.comment = 'Validated on {}'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
                 order_id._validate_tier()
-            elif validation == 'False':
+                order_id.sudo().action_confirm()
+            else:
                 review.comment = 'Rejected on {}'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
                 order_id._rejected_tier()
             order_id._update_counter()
