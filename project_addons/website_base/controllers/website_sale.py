@@ -19,6 +19,9 @@ class WebsiteSale(WebsiteSale):
     
     @http.route(['/shop/payment'], type='http', auth="public", website=True)
     def payment(self, **post):
+
+        res = super(WebsiteSale, self).payment(**post)
+
         order = request.website.sale_get_order()
         reason_list = []
         # Prevent 500 error page. No buy is possible
@@ -44,8 +47,6 @@ class WebsiteSale(WebsiteSale):
                     )
 
         if order.locked or res_check:
-            render_values = self._get_shop_payment_values(order, **post)
-
             if order.risk_lock:
                 reason_list.append(_("Risk"))
             if order.unpaid_lock:
@@ -64,10 +65,8 @@ class WebsiteSale(WebsiteSale):
                 reasons
             ]
 
-            render_values['errors'].append(errors)
-            return request.render("website_sale.payment", render_values)
-
-        return super(WebsiteSale, self).payment(**post)
+            res.qcontext['errors'].append(errors)
+        return res
 
     def _get_customer_products_template_from_customer_prices(self):
         user = request.env.user

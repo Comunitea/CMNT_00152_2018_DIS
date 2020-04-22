@@ -13,6 +13,7 @@
     ],
     'depends': [
         'base',
+        'website_sale',
         'ecommerce_base',
         'website_seo_settings',
         'breadcrumbs_base_tmp',
