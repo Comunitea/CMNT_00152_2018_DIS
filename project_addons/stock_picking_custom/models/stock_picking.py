@@ -9,6 +9,11 @@ class StockPicking(models.Model):
     to_split_process = fields.Boolean('Para dividir', copy=False, default=False)
     number_of_packages = fields.Integer("Nº de paquetes")
     a_atencion = fields.Char('A la atención de:')
+    # auto_fill_operation = fields.Boolean(
+    #     related='picking_type_id.auto_fill_operation',
+    #     string='Auto fill operations',
+    #     readonly=True,
+    # )
 
     def do_print_picking(self):
         if self and self[0].picking_type_id.code == 'outgoing':

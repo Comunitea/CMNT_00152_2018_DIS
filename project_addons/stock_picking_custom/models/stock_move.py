@@ -2,9 +2,9 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo import api, fields, models, registry, _
-from odoo.osv import expression
+from odoo.exceptions import ValidationError
 from dateutil.relativedelta import relativedelta
-
+from odoo.tools import float_is_zero
 class ProcurementGroup(models.Model):
 
     _inherit = 'procurement.group'
@@ -126,9 +126,68 @@ class StockMove(models.Model):
                 ml._push_apply(move)
         return res
 
-class StockLine(models.Model):
+    def _action_assign(self):
+        res = super()._action_assign()
+        # moves = self.filtered(lambda x: x.picking_type_id.auto_fill_operation)
+        # if moves:
+        #     moves.force_set_qty_done(reset=False)
+        return res
+
+
+    def _recompute_state(self):
+        # if self._context.get('update_qty_done'):
+        #     self._action_assign()
+        return super()._recompute_state()
+
+class StockMoveLine(models.Model):
     _inherit = 'stock.move.line'
 
+    def _free_reservation(self, product_id, location_id, quantity, lot_id=None, package_id=None, owner_id=None, ml_to_ignore=None):
+        """ Esto es una copia del inicio del _free_reservation para poder lanzar un raise si procede
+            - Lanzo un raise si hay cantidad reservada y viene de un ajsute de inventario
+            - Además pongo la qty_done = product_uom_qty si procede """
+
+        self.ensure_one()
+
+        if ml_to_ignore is None:
+            ml_to_ignore = self.env['stock.move.line']
+        ml_to_ignore |= self
+
+        # Check the available quantity, with the `strict` kw set to `True`. If the available
+        # quantity is greather than the quantity now unavailable, there is nothing to do.
+        available_quantity = self.env['stock.quant']._get_available_quantity(
+            product_id, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=True
+        )
+        outdated_candidates = 0
+        if quantity > available_quantity:
+            # We now have to find the move lines that reserved our now unavailable quantity. We
+            # take care to exclude ourselves and the move lines were work had already been done.
+            outdated_move_lines_domain = [
+                ('state', 'in', ['assigned', 'partially_available']),
+                ('qty_done', '>', 0),
+                ('product_id', '=', product_id.id),
+                ('lot_id', '=', lot_id.id if lot_id else False),
+                ('location_id', '=', location_id.id),
+                ('owner_id', '=', owner_id.id if owner_id else False),
+                ('package_id', '=', package_id.id if package_id else False),
+                ('product_qty', '>', 0.0),
+                ('id', 'not in', ml_to_ignore.ids),
+            ]
+            outdated_candidates = self.env['stock.move.line'].search_count(outdated_move_lines_domain)
+        if outdated_candidates > 0 and self._context.get('from_stock_inventory', False):
+            raise ValidationError (_('No pedes realizar un ajuste para el artículo:\n {}\n ya que tienes movimientos asociados que se quedarían sin reserva'.format(product_id.display_name)))
+
+        ctx = self._context.copy()
+        ctx.update(update_qty_done=True)
+        res = super(StockMoveLine, self.with_context(ctx))._free_reservation(product_id=product_id, location_id=location_id, quantity=quantity, lot_id=lot_id, package_id=package_id, owner_id=owner_id,
+                          ml_to_ignore=ml_to_ignore)
+
+        if outdated_candidates > 0:
+            rounding = self.product_uom_id.rounding
+            outdated_candidates = self.env['stock.move.line'].search(outdated_move_lines_domain)
+            outdated_candidates.filtered(lambda x: float_is_zero(x.product_uom_qty, precision_rounding=rounding)).unlink()
+            outdated_candidates.filtered(lambda x: not float_is_zero(x.qty_done, precision_rounding=rounding)).with_context(ctx).force_assigned_qty_done(reset=False)
+        return res
 
     def _push_apply(self, move):
         ##Esto es una copia de _push_apply pero para move line

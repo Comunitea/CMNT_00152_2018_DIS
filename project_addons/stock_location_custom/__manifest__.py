@@ -9,7 +9,8 @@
     "category": "Inventory",
     "depends": ["stock", "stock_picking_batch_extended", "stock_removal_location_by_priority"],
     "data": [
-        "views/product_import_wzd_view.xml"
+        "views/product_import_wzd_view.xml",
+        "views/stock_location.xml",
     ],
     "installable": True,
     "license": "AGPL-3",
