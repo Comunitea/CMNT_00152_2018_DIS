@@ -32,8 +32,13 @@ a {
 /* Sign up login */
 .btn.btn-link.btn-sm {
     color: @color-secondary;
-    border-color: @color-white;
-    background-color: @color-white;
+    border-color: transparent;
+    background-color: transparent;
+    &:hover, &:focus, &.active {
+        border-color: transparent;
+        background-color: transparent;
+        box-shadow: none;
+    }
 }
 
 /* Ribbon Buttons */
