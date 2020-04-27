@@ -26,6 +26,7 @@ class WebsiteSale(WebsiteSale):
         reason_list = []
         # Prevent 500 error page. No buy is possible
         res_check = False
+        errors = False
 
         products_tmpl_on_cart = order.order_line.mapped('product_id').mapped('product_tmpl_id').ids
         order_line_restrictions = request.env['product.customerinfo'].search_read([
@@ -66,6 +67,9 @@ class WebsiteSale(WebsiteSale):
             ]
 
             res.qcontext['errors'].append(errors)
+
+        if errors:
+            order.send_lock_alerts(errors)
         return res
 
     def _get_customer_products_template_from_customer_prices(self):

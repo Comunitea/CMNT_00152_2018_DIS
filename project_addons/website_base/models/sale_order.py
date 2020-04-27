@@ -51,3 +51,27 @@ class SaleOrder(models.Model):
                             order.needed_for_free_shipping = order.carrier_id.amount - amount_total_without_delivery
                         else:
                             order.needed_for_free_shipping = 0.0
+
+    def send_lock_alerts(self, errors):        
+        ctx = self._context.copy()
+        odoo_bot = self.sudo().env.ref("base.partner_root")
+        email_from = odoo_bot.email
+        user = self.env['res.users'].browse([ctx.get('uid')])
+        user_validator = user.order_validator or user.partner_id.order_validator
+        if user_validator:
+            self.env['mail.mail'].create({
+                'email_from': email_from,
+                'reply_to': email_from,
+                'email_to': user_validator.email,
+                'subject': _("Order Locked: {}".format(self.name)),
+                'body_html': _("""
+                    <p>The order {} is locked.</p>
+                    <p>{}</p>
+                    <p></p>
+                    <p>&nbsp;</p>
+                    <p><span style="color: #808080;">
+                    This is an automated message please do not reply.
+                    </span></p>
+                    """).format(self.name, errors),
+                'auto_delete': True,
+            })
