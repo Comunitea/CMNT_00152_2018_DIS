@@ -3,7 +3,7 @@
 
     <!-- Legal acceptance on register -->
     <template id="auth_signup_fields" name="Auth Signup/ResetPassword form fields Dismac" inherit_id="auth_signup.fields">
-       <xpath expr="//div[last()]" position="replace">
+       <xpath expr="//div[last()]" position="after">
             <t t-call="website_dismac.acceptance_full_legal_terms_with_check"/>
         </xpath>
     </template>
