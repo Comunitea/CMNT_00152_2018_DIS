@@ -37,6 +37,14 @@ msgstr "<span>Orden</span>"
 msgid "<span>- Pending Validation</span>"
 msgstr "<span>- Pendiente Validación</span>"
 
+#. module: website_sale
+#: model_terms:ir.ui.view,arch_db:website_sale.confirmation
+#: model:ir.ui.view,name:website_sale.confirmation
+#: model:ir.ui.view,arch_db:website_sale.confirmation
+#: model_terms:ir.ui.view,arch_db:website_sale.confirmation
+msgid "confirmation"
+msgstr "Confirmación Pedido"
+
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.pending_validation
 msgid "<span>\n"
