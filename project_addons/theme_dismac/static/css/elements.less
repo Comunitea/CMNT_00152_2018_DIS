@@ -17,7 +17,11 @@ a {
 }
 
 /********** Buttons ***********/
-.btn, .btn-primary, .btn-secondary, .btn-link, .btn .btn-secondary, bg-light {
+.btn, .btn-primary, .btn-secondary, .btn-link, .btn .btn-secondary, .bg-light,
+.btn:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-secondary:not(:disabled):not(.disabled):active ,
+.btn-link:not(:disabled):not(.disabled):active {
     color: @color-white;
     border-color: @color-secondary;
     background-color: @color-secondary;
