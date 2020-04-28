@@ -1,3 +1,4 @@
+===================
 Base Module Website
 ===================
 
@@ -31,12 +32,18 @@ Customization for All Websites
 This module contains all common base configuration for all companies and their websites, including their Themes.
 
 Credits
-=======
+-------
 
 Author
-------
+~~~~~~
 
-Developer: Comunitea, info@comunitea.com
+.. image:: https://comunitea.com/wp-content/uploads/2016/01/logocomunitea3.png
+   :alt: Comunitea
+   :target: https://comunitea.com
+
+Comunitea Servicios Tecnológicos S.L.
+
+For support and more information, please visit `<https://comunitea.com>`_.
 
 Contributors
 ~~~~~~~~~~~~
@@ -53,6 +60,15 @@ For support and more information, please visit https://comunitea.com.
 .. image:: https://comunitea.com/wp-content/uploads/2016/01/logocomunitea3.png
    :alt: Comunitea
    :target: https://comunitea.com
+
+Bug Tracker
+-----------
+Bugs are tracked on `Comunitea Issues <https://github.com/Comunitea/external_ecommerce_modules/issues>`_.
+In case of trouble, please check there if your issue has already been reported.
+If you spotted it first, help us smashing it by providing a detailed and welcomed
+`Feedback <https://github.com/Comunitea/external_ecommerce_modules/issues/new>`_.
+
+Please, do not contact contributors directly about support or help with technical issues.
 
 Disclaimer of Warranties
 ~~~~~~~~~~~~~~~~~~~~~~~~

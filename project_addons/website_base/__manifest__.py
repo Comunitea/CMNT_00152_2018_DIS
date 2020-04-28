@@ -1,16 +1,36 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'MultiWebsite Base Module',
-    'version': '1.0',
+    'version': '12.0.0.2.0',
     'summary': 'Backend customization for all companies and their websites.',
     'description': '',
     'category': 'Website',
     'author': 'Comunitea',
-    'website': 'http://www.comunitea.com',
-    'license': 'AGPL-3',
     'contributors': [
         'Rubén Seijas <ruben@comunitea.com>',
     ],
+    'website': 'http://www.comunitea.com',
+    'license': 'AGPL-3',
+    "price": 0,
+    "currency": "EUR",
+    "post_load": None,
+    "pre_init_hook": None,
+    "post_init_hook": None,
+    "uninstall_hook": None,
+    "auto_install": False,
+    'installable': True,
+    'application': False,
+    "live_test_url": "",
+    "demo": [],
+    "demo_title": "",
+    "demo_addons": [],
+    "demo_addons_hidden": [],
+    "demo_url": "",
+    "demo_summary": "",
+    "demo_images": [],
+    "external_dependencies": {
+        "python": [], "bin": []
+    },
     'depends': [
         'base',
         'website_sale',
@@ -24,7 +44,7 @@
     ],
     'data': [
         'templates/head.xml',
-        'templates/account.xml',
+        # 'templates/account.xml',
         'templates/forms.xml',
         'templates/header.xml',
         'templates/simulated_products.xml',
@@ -48,6 +68,4 @@
     ],
     'qweb': [
     ],
-    'installable': True,
-    'application': False,
 }
