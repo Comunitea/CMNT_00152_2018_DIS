@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Website Dismac',
-    'version': '12.0.0.0.0',
+    'version': '12.0.0.1.0',
     'summary': 'Customization for Dismac website.',
     'description': '',
     'category': 'Website',
@@ -52,7 +52,6 @@
         'templates/forms.xml',
         'templates/cookies.xml',
         'templates/footer.xml',
-        'templates/header.xml',
         'templates/product.xml',
         'templates/simulated_product.xml',
         'views/customize_views.xml',
