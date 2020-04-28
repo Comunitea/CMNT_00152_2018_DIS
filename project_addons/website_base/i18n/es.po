@@ -37,6 +37,44 @@ msgstr "<span>Orden</span>"
 msgid "<span>- Pending Validation</span>"
 msgstr "<span>- Pendiente Validación</span>"
 
+#. module: website_sale_checkout_skip_payment
+#: model_terms:ir.ui.view,arch_db:website_sale_checkout_skip_payment.confirmation
+msgid "Our team will check your order and send you payment\n"
+"                information soon."
+msgstr "Nuestro equipo revisará su pedido y le enviará pronto información sobre el pago."
+
+#. module: website_sale_checkout_skip_payment
+#: model_terms:ir.ui.view,arch_db:website_sale_checkout_skip_payment.confirmation_order_error
+msgid "<strong>Error!</strong> An error occurred trying to\n"
+"                        confirm the sale order."
+msgstr "<strong>Error!</strong> Ha ocurrido un error al\n"
+"                        intentar confirmar el pedido."
+
+#. module: website_sale_checkout_skip_payment
+#: model_terms:ir.ui.view,arch_db:website_sale_checkout_skip_payment.confirmation_order_error
+msgid "Shop - Confirmation - Error"
+msgstr "Tienda - Error Confirmación"
+
+#. module: website_sale_checkout_skip_payment
+#: model_terms:ir.ui.view,arch_db:website_sale_checkout_skip_payment.order_state_message
+msgid "Your order is waiting manual confirmation."
+msgstr "Su pedido está pendiente de ser confirmado manualmente."
+
+#. module: website_sale_checkout_skip_payment
+#: model:ir.ui.view,name:website_sale_checkout_skip_payment.confirmation_order_error
+msgid "confirmation_order_error"
+msgstr "Error Confirmación"
+
+#. module: website_sale_checkout_skip_payment
+#: model:ir.ui.view,name:website_sale_checkout_skip_payment.order_state_message
+msgid "order_state_message"
+msgstr "Mensaje Confirmación Pedido"
+
+#. module: website_sale_checkout_skip_payment
+#: model:ir.ui.view,name:website_sale_checkout_skip_payment.payment
+msgid "payment"
+msgstr "Pago"
+
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.confirmation
 #: model:ir.ui.view,name:website_sale.confirmation
