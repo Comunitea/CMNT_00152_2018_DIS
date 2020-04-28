@@ -30,7 +30,7 @@ msgstr "Gracias por su pedido."
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.pending_validation
 msgid "<span>Order</span>"
-msgstr "<span>Orden</span>"
+msgstr "<span>Pedido</span>"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.pending_validation
@@ -114,6 +114,12 @@ msgstr "<span>\n"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.pending_validation
+msgid "&amp; Shipping"
+msgstr "y Envío"
+
+#. module: website_sale
+#: model_terms:ir.ui.view,arch_db:website_sale.confirmation
+#: model_terms:ir.ui.view,arch_db:website_sale.payment
 msgid "&amp; Shipping"
 msgstr "y Envío"
 
