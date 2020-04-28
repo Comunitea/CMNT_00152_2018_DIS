@@ -44,7 +44,6 @@
     ],
     'data': [
         'templates/head.xml',
-        # 'templates/account.xml',
         'templates/forms.xml',
         'templates/header.xml',
         'templates/simulated_products.xml',
