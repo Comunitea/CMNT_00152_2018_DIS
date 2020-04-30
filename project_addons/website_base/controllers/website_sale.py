@@ -55,14 +55,16 @@ class WebsiteSale(WebsiteSale):
             if order.margin_lock:
                 reason_list.append(_("Margin"))
             if order.shipping_lock:
-                reason_list.append(_("No reach shipping min"))
+                reason_list.append(_("No matched shipping min of %s €" % order.partner_id.min_no_shipping))
             if order.amount_lock:
-                reason_list.append(_("No reach min amount order"))
+                reason_list.append(_("No matched min amount order of %s €" % order.partner_id.min_amount_order))
 
             reasons = ", ".join(reason_list)
+            if not reason_list:
+                reasons = _("Unknow")
 
             errors = [
-                _("This order can not be finished becaused is locked"),
+                _("This order can not be finished because is locked"),
                 reasons
             ]
 
@@ -196,17 +198,28 @@ class WebsiteSale(WebsiteSale):
 
     @http.route()
     def payment_confirmation(self, **post):
-        order = request.env['sale.order'].sudo().browse(
-            request.session.get('sale_last_order_id'))
+        print('------------------------ CHECK WEBSITE SALE PAYMENT CONFIRMATION -----------------------------------')
+        order = request.env['sale.order'].sudo().browse(request.session.get('sale_last_order_id'))
+        # if order.need_validation or (order.locked and not order.force_unlock):
         if order.need_validation:
-            order.update({'state':'sent'})
+            # order.update({'state':'sent'})
             # try to validate operation
             reviews = order.request_validation()
             order._validate_tier(reviews)
-            if  order._calc_reviews_validated(reviews):
+            if order._calc_reviews_validated(reviews):
                 return super().payment_confirmation(**post)
             else:
-                request.website.get_new_cart()
+                print('SESSION BEFORE', request.session)
+                print('LAST PARTNER ORDER BEFORE', order.partner_id.last_website_so_id)
+                # request.website.get_new_cart()
+                request.session['sale_order_id'] = None
+                request.session['sale_last_order_id'] = None
+                request.session['website_sale_current_pl'] = None
+                partner = request.env['res.partner'].sudo().browse(order.partner_id.id)
+                partner.write({'last_website_so_id': None})
+                order.partner_id.write({'last_website_so_id': None})
+                print('SESSION AFTER', request.session)
+                print('LAST PARTNER ORDER AFTER', order.partner_id.last_website_so_id)
                 return request.render("website_base.pending_validation", {'order': order})
         else:
             return super().payment_confirmation(**post)

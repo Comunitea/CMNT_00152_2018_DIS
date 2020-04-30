@@ -5,7 +5,7 @@
             <t t-set="additional_title">Shop - Pending Validation</t>
             <div id="wrap">
                 <div class="container oe_website_sale py-2 mb48">
-                    <h1 class="mb32"><span>Order</span> <b t-field="order.name" /> <span>- Pending Validation</span></h1>
+                    <h1 class="mb32"><span>Order</span> <em t-field="order.name" /> <span>Pending Validation</span></h1>
                     <div class="row">
                         <div class="col-12 col-xl">
                             <div class="oe_cart">

@@ -32,10 +32,13 @@ class Website(models.Model):
 
         if sale_order:
             request.session['sale_order_id'] = sale_order.id
-            partner.write({'last_website_so_id': sale_order.id})
+            request.session['sale_last_order_id'] = sale_order.id
+            sale_order.partner_id.write({'last_website_so_id': sale_order.id})
             return sale_order
         else:
             request.session['sale_order_id'] = None
+            request.session['sale_last_order_id'] = None
+            request.session['website_sale_current_pl'] = None
             partner.write({'last_website_so_id': None})
             return self.env['sale.order']
 
@@ -49,6 +52,7 @@ class Website(models.Model):
                         request.env.user.partner_id.skip_website_checkout_payment or sale_order.need_validation
             else:
                 super()._compute_checkout_skip_payment()
+
 
 class WebsiteMenu(models.Model):
     _inherit = 'website.menu'

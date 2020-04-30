@@ -34,8 +34,8 @@ msgstr "<span>Pedido</span>"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.pending_validation
-msgid "<span>- Pending Validation</span>"
-msgstr "<span>- Pendiente Validación</span>"
+msgid "<span>Pending Validation</span>"
+msgstr "<span>Pendiente Validación</span>"
 
 #. module: website_sale_checkout_skip_payment
 #: model_terms:ir.ui.view,arch_db:website_sale_checkout_skip_payment.confirmation
@@ -290,6 +290,11 @@ msgstr "<strong>Para ped. mín.:</strong>"
 #: model_terms:ir.ui.view,arch_db:website_base.cart_delivery_counters
 msgid "<strong>For free delivery:</strong>"
 msgstr "<strong>Para env. gratuito:</strong>"
+
+#. module: website_base
+#: model_terms:ir.ui.view,arch_db:website_base.cart_delivery_counters
+msgid "<strong>Not payment transaction was found for this order!</strong>"
+msgstr "<strong>No se ha encontrado ninguna transacción de pago para este pedido!</strong>"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.quote_historical
@@ -930,10 +935,10 @@ msgid "Main Attachment"
 msgstr "Adjuntos principales"
 
 #. module: website_base
-#: code:addons/website_base/controllers/website_sale.py:50
+#: code:addons/website_base/controllers/website_sale.py:56
 #, python-format
 msgid "Margin"
-msgstr ""
+msgstr "Margen"
 
 #. module: website_base
 #: code:addons/website_base/models/product.py:55
@@ -1079,16 +1084,22 @@ msgid "No publicado"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/controllers/website_sale.py:54
+#: code:addons/website_base/controllers/website_sale.py:60
 #, python-format
-msgid "No reach min amount order"
-msgstr ""
+msgid "No matched min amount order of %s €"
+msgstr "No se alcanza el importe mínimo del pedido de %s €"
 
 #. module: website_base
-#: code:addons/website_base/controllers/website_sale.py:52
+#: code:addons/website_base/controllers/website_sale.py:58
 #, python-format
-msgid "No reach shipping min"
-msgstr "No se ha encontrado entrega mínima"
+msgid "No matched shipping min of %s €"
+msgstr "No se alcanzó el importe mínimo sin portes de %s €"
+
+#. module: website_base
+#: code:addons/website_base/controllers/website_sale.py:64
+#, python-format
+msgid "Unknow"
+msgstr "Desconocido"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.simulate_products_table_view
@@ -1579,7 +1590,7 @@ msgstr "Volver Tienda\n"
 "                <i class=\"fa fa-chevron-right\"/>"
 
 #. module: website_base
-#: code:addons/website_base/controllers/website_sale.py:46
+#: code:addons/website_base/controllers/website_sale.py:52
 #, python-format
 msgid "Risk"
 msgstr "Riesgo"
@@ -1842,9 +1853,9 @@ msgid "This field holds the image used as image for the offer, limited to 1024x1
 msgstr "Este campo contiene la imagen usada como imagen de la Oferta, limitada a 1024x1024px"
 
 #. module: website_base
-#: code:addons/website_base/controllers/website_sale.py:59
+#: code:addons/website_base/controllers/website_sale.py:67
 #, python-format
-msgid "This order can not be finished becaused is locked"
+msgid "This order can not be finished because is locked"
 msgstr "Este pedido no se puede finalizar porque está bloqueado"
 
 #. module: website_base
@@ -1887,7 +1898,7 @@ msgid "Total"
 msgstr ""
 
 #. module: website_base
-#: code:addons/website_base/controllers/website_sale.py:48
+#: code:addons/website_base/controllers/website_sale.py:54
 #, python-format
 msgid "Unpaid"
 msgstr "No Pagado"

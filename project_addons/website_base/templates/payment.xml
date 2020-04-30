@@ -46,17 +46,23 @@
 
     <template id="payment_page_fix" inherit_id="payment.payment_process_page">
         <xpath expr="//script" position="replace">
-
-        <script>
-                    document.addEventListener("DOMContentLoaded", function(event) {
-                        odoo.define('payment.processing_bootstrap', function(require) {
-                            var PaymentProcessing = require('payment.processing');
-                            var processingWidget = new PaymentProcessing(null, <t t-esc="payment_tx_ids"/>);
-                            processingWidget.attachTo($('.o_payment_processing'));
-                        });
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) {
+                    odoo.define('payment.processing_bootstrap', function(require) {
+                        var PaymentProcessing = require('payment.processing');
+                        var processingWidget = new PaymentProcessing(null, <t t-esc="payment_tx_ids"/>);
+                        processingWidget.attachTo($('.o_payment_processing'));
                     });
-        </script>
+                });
+            </script>
+        </xpath>
+    </template>
 
+    <template id="website_sale_payment_confirmation_status" inherit_id="website_sale.payment_confirmation_status">
+        <xpath expr="//div[hasclass('card')]/div" position="inside">
+            <t t-if="not payment_tx_id">
+                <span>Not payment transaction was found for this order!</span>
+            </t>
         </xpath>
     </template>
 </odoo>
