@@ -2199,3 +2199,31 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_base.portal_my_history
 msgid "| History"
 msgstr "| Histórico"
+
+#. module: website_base
+#: code:addons/website_base/models/sale_order.py:66
+#, python-format
+msgid "Order Locked: {}"
+msgstr "Pedido bloqueado: {}"
+
+#. module: website_base
+#: code:addons/website_base/models/sale_order.py:67
+#, python-format
+msgid "\n"
+"                    <p>The order {} is locked.</p>\n"
+"                    <p>{}</p>\n"
+"                    <p></p>\n"
+"                    <p>&nbsp;</p>\n"
+"                    <p><span style=\"color: #808080;\">\n"
+"                    This is an automated message please do not reply.\n"
+"                    </span></p>\n"
+"                    "
+msgstr "\n"
+"                    <p>El pedido {} está bloqueado.</p>\n"
+"                    <p>{}</p>\n"
+"                    <p></p>\n"
+"                    <p>&nbsp;</p>\n"
+"                    <p><span style=\"color: #808080;\">\n"
+"                    Este es un mensaje automático, por favor, no conteste.\n"
+"                    </span></p>\n"
+"                    "
