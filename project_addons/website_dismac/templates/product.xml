@@ -76,10 +76,10 @@
         </xpath>
 
         <xpath expr="//ul" position="replace">
-            <ul t-if="categ.child_id" class="nav nav-pills col-md-12 nav-hierarchy" t-att-style="'display:block;' if categ.id in parent_category_ids else 'display:none;'">
+            <ul t-if="categ.child_id" class="nav nav-pills nav-hierarchy flex-row" t-att-style="'display:block;' if categ.id in parent_category_ids else 'display:none;'">
                 <t t-foreach="categ.child_id" t-as="categ">
                     <t t-if="not search or categ.id in search_categories_ids">
-                        <div class="nav-item col-md-4 float-left">
+                        <div class="nav-item float-left col-sm-8 col-md-6 col-lg-4">
                             <strong><a t-att-href="keep('/shop/category/' + slug(categ), category=0)" t-attf-class="text-uppercase nav-link#{' active' if categ.id == int(category or 0) else ''}" t-field="categ.name"/></strong>
                             <span class="nav-item">
                                 <t t-call="website_dismac.option_collapse_categories_recursive_columns" />
