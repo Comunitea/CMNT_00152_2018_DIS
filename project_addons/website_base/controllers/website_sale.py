@@ -198,28 +198,16 @@ class WebsiteSale(WebsiteSale):
 
     @http.route()
     def payment_confirmation(self, **post):
-        print('------------------------ CHECK WEBSITE SALE PAYMENT CONFIRMATION -----------------------------------')
         order = request.env['sale.order'].sudo().browse(request.session.get('sale_last_order_id'))
-        # if order.need_validation or (order.locked and not order.force_unlock):
+        import ipdb;ipdb.set_trace()
         if order.need_validation:
-            # order.update({'state':'sent'})
             # try to validate operation
             reviews = order.request_validation()
             order._validate_tier(reviews)
             if order._calc_reviews_validated(reviews):
                 return super().payment_confirmation(**post)
             else:
-                print('SESSION BEFORE', request.session)
-                print('LAST PARTNER ORDER BEFORE', order.partner_id.last_website_so_id)
-                # request.website.get_new_cart()
-                request.session['sale_order_id'] = None
-                request.session['sale_last_order_id'] = None
-                request.session['website_sale_current_pl'] = None
-                partner = request.env['res.partner'].sudo().browse(order.partner_id.id)
-                partner.write({'last_website_so_id': None})
-                order.partner_id.write({'last_website_so_id': None})
-                print('SESSION AFTER', request.session)
-                print('LAST PARTNER ORDER AFTER', order.partner_id.last_website_so_id)
+                request.website.get_new_cart()
                 return request.render("website_base.pending_validation", {'order': order})
         else:
             return super().payment_confirmation(**post)
