@@ -199,7 +199,6 @@ class WebsiteSale(WebsiteSale):
     @http.route()
     def payment_confirmation(self, **post):
         order = request.env['sale.order'].sudo().browse(request.session.get('sale_last_order_id'))
-        import ipdb;ipdb.set_trace()
         if order.need_validation:
             # try to validate operation
             reviews = order.request_validation()
