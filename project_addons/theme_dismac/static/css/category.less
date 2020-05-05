@@ -24,9 +24,15 @@ div#products_grid_before {
     }
     // Content
     ul#o_shop_collapse_category_custom {
+        // All categories
         & .nav-link {
             font-weight: bolder;
         }
+        // Just all products best space adjustment
+        & .nav-link.o_not_editable {
+            margin: 4px auto;
+        }
+        // Rest of categories adjustment
         & .nav-link.active:not(.o_not_editable) {
             text-align: center;
             margin: 6px;
@@ -79,11 +85,6 @@ div#products_grid_before {
     #products_grid_before, #products_grid_before_toggle {
         display: none !important;
     }
-    #o_shop_collapse_category_custom {
-        & .nav-link.o_not_editable {
-            margin: 4px 25%;
-        }
-    }
     .oe_search_box {
         padding-right: 0px;
     }
@@ -93,34 +94,7 @@ div#products_grid_before {
 }
 
 /* Lateral menu medias */
-@media screen and (min-width: 320px) {
-    // Just all products best space adjustment
-    #o_shop_collapse_category_custom {
-        & .nav-link.o_not_editable {
-            margin: 4px 29%;
-        }
-    }
-}
-
-@media screen and (min-width: 425px) {
-//     #products_grid_before_toggle {
-//         display: block;
-//     }
-    // Just all products best space adjustment
-    #o_shop_collapse_category_custom {
-        & .nav-link.o_not_editable {
-            margin: 4px 35%;
-        }
-    }
-}
-
 @media screen and (min-width: 768px) {
-    // Just all products best space adjustment
-    #o_shop_collapse_category_custom {
-        & .nav-link.o_not_editable {
-            margin: 4px 40%;
-        }
-    }
     // expanded folder for child categories
     div#products_grid_before {
         ul#o_shop_collapse_category_custom {
@@ -147,12 +121,6 @@ div#products_grid_before {
 //     #products_grid_before {
 //         display: block;
 //     }
-    // Just all products best space adjustment
-    #o_shop_collapse_category_custom {
-        & .nav-link.o_not_editable {
-            margin: 4px 21%;
-        }
-    }
     // expanded folder for child categories
     div#products_grid_before {
         ul#o_shop_collapse_category_custom {
@@ -169,12 +137,6 @@ div#products_grid_before {
 }
 
 @media screen and (min-width: 1200px) {
-    // Just all products best space adjustment
-    #o_shop_collapse_category_custom {
-        & .nav-link.o_not_editable {
-            margin: 4px 26%;
-        }
-    }
     // expanded folder for child categories
     div#products_grid_before {
         ul#o_shop_collapse_category_custom {
