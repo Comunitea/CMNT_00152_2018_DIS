@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <record id="view_location_tree2_slc" model="ir.ui.view">
+            <field name="name">stock.location.tree.slc</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_tree2"/>
+            <field name="arch" type="xml">
+                <field name="usage" position="after">
+                    <field name="removal_priority"/>
+                    <field name="location_type"/>
+                </field>
+            </field>
+     </record>
+     <record id="view_location_searchslc" model="ir.ui.view">
+        <field name="name">view.location.search.slc</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_search"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//filter[@name='supplier']" position="after">
+                <separator/>
+
+                <filter name="floor" string="Planta" domain="[('location_type','=', 'floor')]"/>
+                <filter name="row" string="Pasillo" domain="[('location_type','=', 'row')]"/>
+                <filter name="location_" string="Estantería" domain="[('location_type','=', 'location')]"/>
+            </xpath>
+
+        </field>
+    </record>
+    <record id="view_location_form_pi" model="ir.ui.view">
+            <field name="name"> stock.location.form.pi</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <field name="scrap_location" position="before">
+                    <field name="is_pos_x"/>
+                    <field name="location_type" readonly="1"/>
+                </field>
+                <field name="usage" position="before">
+                    <field name="import_name" attrs="{'invisible': [('usage','!=','internal')]}"/>
+                </field>
+                <field name="removal_priority" position="after">
+                    <field name="inverse_order" attrs="{'invisible': [('is_pos_x','!=',True)]}"/>
+                </field>
+                <field name="posx" position="before">
+                    <field name="building"/>
+                    <field name="floor"/>
+                </field>
+            </field>
+    </record>
+
+
+</odoo>

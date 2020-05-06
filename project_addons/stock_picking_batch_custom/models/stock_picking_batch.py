@@ -113,7 +113,7 @@ class StockBatchPicking(models.Model):
         for batch in self:
             batch.moves_all_count = len(batch.move_lines)
 
-
+    auto_fill_done = fields.Boolean('Cantidad hecha auto', default=True, help ="Si está marcado, pone las cantidades hechas al reservar")
     moves_all_count = fields.Integer("Moves count", compute=get_moves_count)
     qty_applied = fields.Boolean(default=False)
     grouped_move_line = fields.One2many('batch.group.move.line', 'batch_id', string="Lineas agrupadas de picking")
@@ -127,7 +127,8 @@ class StockBatchPicking(models.Model):
     def action_view_grouped_line(self):
         self.ensure_one()
         action = self.env.ref('stock_picking_batch_custom.action_stock_group_move_tree_operations').read([])[0]
-        action['domain'] = [('id', 'in', self.grouped_move_line.ids)]
+        action['domain'] = [('batch_id', '=', self.id)]
+        action['target'] = 'current'
         return action
 
     def action_show_moves_kanban(self):
@@ -154,7 +155,6 @@ class StockBatchPicking(models.Model):
 
     @api.multi
     def action_group(self):
-        self.move_lines.create_empty_move_lines()
         self.write({'state':'in_progress'})
 
     @api.multi
@@ -169,7 +169,7 @@ class StockBatchPicking(models.Model):
     @api.multi
     def action_back_to_draft(self):
         self.picking_ids.do_unreserve()
-        self.action_assign()
+        #self.action_assign()
         for batch in self:
             batch.write({'state': 'draft'})
 
@@ -185,9 +185,11 @@ class StockBatchPicking(models.Model):
         for batch in self:
             for pick in batch.picking_ids:
                 pick.action_assign()
-        ## Creo líneas vacías para los movvimientos que no existen
-        self.mapped('picking_ids').mapped('move_lines').create_empty_move_lines()
+            if batch.auto_fill_done:
+                batch.mapped('picking_ids').mapped('move_lines').force_set_qty_done(reset=False)
+
         self.write({'state': 'in_progress'})
+
         return True
 
     @api.multi
