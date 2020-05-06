@@ -3,9 +3,14 @@
 }
 
 header {
-    & .container {
-        margin-top: 20px;
-        margin-bottom: 20px;
+    & .navbar-brand.logo img {
+        height: 5.5rem;
+    }
+    & .wp_breadcrumbs_base, .wp_breadcrumbs_base_portal {
+        & .container {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
     }
     & .navbar-light {
         background: @color-bg-header !important;

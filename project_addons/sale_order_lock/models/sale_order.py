@@ -174,9 +174,9 @@ class SaleOrder(models.Model):
                 if margin_lock:
                     reason_list.append(_("Margin"))
                 if shipping_lock:
-                    reason_list.append(_("No reach shipping min"))
-                if shipping_lock:
-                    reason_list.append(_("No reach min amount order"))
+                    reason_list.append(_("No reach shipping min of %s €" % order.partner_id.min_no_shipping))
+                if amount_lock:
+                    reason_list.append(_("No reach min amount order of %s €" % order.partner_id.min_amount_order))
 
                 reasons = ", ".join(reason_list)
                 if not reason_list:

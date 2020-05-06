@@ -17,7 +17,11 @@ a {
 }
 
 /********** Buttons ***********/
-.btn, .btn-primary, .btn-secondary, .btn-link, .btn .btn-secondary, bg-light {
+.btn, .btn-primary, .btn-secondary, .btn-link, .btn .btn-secondary, .bg-light,
+.btn:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-secondary:not(:disabled):not(.disabled):active ,
+.btn-link:not(:disabled):not(.disabled):active {
     color: @color-white;
     border-color: @color-secondary;
     background-color: @color-secondary;
@@ -26,6 +30,18 @@ a {
         background-color: @color-white;
         border-color: @color-secondary;
         box-shadow: 0 0 0 0.5px @color-secondary;
+    }
+}
+
+/* Sign up login */
+.btn.btn-link.btn-sm {
+    color: @color-secondary;
+    border-color: transparent;
+    background-color: transparent;
+    &:hover, &:focus, &.active {
+        border-color: transparent;
+        background-color: transparent;
+        box-shadow: none;
     }
 }
 
@@ -109,24 +125,12 @@ a {
 .pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
     color: @color-secondary;
 }
-
-/* ECommerce categories and Collapse category */
-#o_shop_collapse_category_custom li {
-    width: 100%;
-
-    a {
-        display: inline-block;
-        width: 80%;
-        padding-left: 3px;
-    }
-
-    i.fa {
-        cursor: pointer;
-    }
+.pagination.m-0.ml-2 {
+    margin-bottom: 8px !important;
 }
 
-#o_shop_collapse_category li i.fa, #o_shop_collapse_category_custom li i.fa {
-    color: @color-secondary;
+img.float-left {
+    margin-right: 10px;
 }
 
 /*Labels */

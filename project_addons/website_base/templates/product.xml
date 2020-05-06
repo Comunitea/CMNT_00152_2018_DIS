@@ -32,4 +32,23 @@
         <!--        </xpath>-->
 <!--    </template>-->
 
+    <template id="website_sale_search_pricelist" name="Search Box Pricelist Base">
+        <form t-att-action="keep('/tarifas', search=0)" method="get" t-att-class="_classes">
+            <t t-if="attrib_values">
+                <t t-foreach="attrib_values" t-as="a">
+                    <input type="hidden" name="attrib" t-att-value="'%s-%s' % (a[0], a[1])" />
+                </t>
+            </t>
+            <t t-call="website.website_search_box" />
+        </form>
+    </template>
+
+    <template id="website_sale_products_pricelist" name="Product Dismac Pricelist" inherit_id="website_sale.products">
+        <xpath expr="//t[@t-call='website_sale.search']" position="after">
+            <t t-if="list_type and list_type == 'pricelist'" t-call="website_base.website_sale_search_pricelist">
+                <t t-set="_classes">o_website_sale_search</t>
+            </t>
+        </xpath>
+    </template>
+
 </odoo>

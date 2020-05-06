@@ -30,6 +30,7 @@ from datetime import datetime, timedelta
 import hashlib
 import logging
 import re
+import pytz
 
 _logger = logging.getLogger(__name__)
 
@@ -82,10 +83,11 @@ class BaseRestUVigoApiController(main.RestController):
             })
 
             raise BadRequest(_("REST API called with an incorrect timestamp format."))
-
-
-        now = datetime.now() + timedelta(minutes=60)
-
+        
+        #now = datetime.now() + timedelta(minutes=60)
+        tz = pytz.timezone(request.env.user.tz if request.env.user.tz else 'Europe/Madrid')
+        now = datetime.now().astimezone(tz).strftime('%Y%m%d%H%M%S')
+        now = datetime.strptime(now, '%Y%m%d%H%M%S')
         if timedelta(minutes=5) < now - datetime.strptime(timestamp, '%Y%m%d%H%M%S') or \
             timedelta(minutes=5) < datetime.strptime(timestamp, '%Y%m%d%H%M%S') - now:
             _logger.error(

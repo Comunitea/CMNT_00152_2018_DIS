@@ -19,18 +19,26 @@
 *    along with this program. If not, see <http://www.gnu.org/licenses/>.
 *
 **********************************************************************************/
-@bg-color: @scroll-bg-color;
+
+/* Define this variables in your archive css to override them */
+// :root {
+//     --scroll-bg-color: you_color or #fff;
+//     --scroll-font-size: you_size or 2.5em;
+//     --scroll-bottom: you_bottom or 20px;
+//     --scroll-right: you_right 20px;
+//     --scroll-padding: you_padding or 10px 20px;
+// }
 
 #scrollUp {
-    bottom: 20px;
-    right: 20px;
-    padding: 10px 20px;
+    bottom: var(--scroll-bottom, 20px);
+    right: var(--scroll-right, 20px);
+    padding: var(--scroll-padding, 10px 20px);
 //     mix-blend-mode: difference; // Make change circle background color over others colors
     .fa {
-    	font-size: 2.5em;
+    	font-size: var(--scroll-font-size, 2.5em);
     }
 }
 
 #scrollUp > i {
-    color: @scroll-bg-color;
+    color: var(--scroll-bg-color, #fff);
 }

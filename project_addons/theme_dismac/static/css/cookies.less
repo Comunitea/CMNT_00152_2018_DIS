@@ -1,5 +1,5 @@
 #website_cookie_notice {
-    padding: 15px 20px 15px;
+    padding: 10px 0px 10px;
     overflow: hidden;
     color: #ffffff;
     position: fixed;
@@ -8,8 +8,36 @@
     background: #000000;
     border-color: #000000;
     z-index: 20;
+    & .cookie-message {
+        margin-top: 8px;
+        width: 80%;
+        & p {
+            float: right;
+        }
+    }
+    & .cookie-buttons {
+        width: 20%;
+        & button {
+            float: right;
+        }
+    }
 }
 
-.alert-warning .alert-link {
-    color: @color-secondary;
+@media (max-width: 992px) {
+    #website_cookie_notice {
+        & .cookie-message {
+            margin-top: 4px;
+            margin-bottom: 0px;
+            width: 100%;
+            & p {
+                float: none;
+                margin-bottom: 0px;
+                text-align: center;
+            }
+        }
+        & .cookie-buttons {
+            margin-bottom: 8px;
+            width: 60%;
+        }
+    }
 }

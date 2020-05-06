@@ -60,4 +60,9 @@ class TierValidation(models.AbstractModel):
     def _notify_review_requested(self, tier_reviews):
         return
 
-    
+    @api.model
+    def _get_under_validation_exceptions(self):
+        """Extend for more field exceptions."""
+        vals = super()._get_under_validation_exceptions()
+        vals.append('pending_review')
+        return vals

@@ -30,7 +30,7 @@
         <field name="name">sale.quote.form</field>
         <field name="model">sale.quote</field>
         <field name="arch" type="xml">
-            <form string="Request quote">
+            <form string="Request quote" edit="0" create="0" delete="0">
                 <sheet>
                     <div class="oe_title"  name="title">
                         <label class="oe_edit_only" for="name" string="Quote Name"/>
@@ -52,13 +52,13 @@
                         </page>
                         <page string="Products" name="products">
                             <group string="Products added from shop" name="website_products">
-                                <field name="product_ids" widget="many2many_tags"/>
+                                <field name="product_ids" nolabel="1"/>
                             </group>
                             <group string="Products find on website" name="website_products">
-                                <field name="products_found"/>
+                                <field name="products_found" nolabel="1"/>
                             </group>
                             <group string="Products not find on website"  name="not_website_products">
-                                <field name="products_not_found" />
+                                <field name="products_not_found" nolabel="1"/>
                             </group>
                         </page>
                         <page string="Metadata Info" name="metadata_info">
@@ -75,7 +75,7 @@
         <field name="model">sale.quote</field>
         <field name="field_parent" eval="False"/>
         <field name="arch" type="xml">
-            <tree string="Request quote" name="quotes">
+            <tree string="Request quote" name="quotes" edit="0" create="0" delete="0">
                 <field name="id"/>
                 <field name="date"/>
                 <field name="name"/>
@@ -94,14 +94,14 @@
             <notebook position="inside">
                 <page string="Request quote" name="quote_request">
                     <field name="quotes_ids" nolabel="1">
-                        <tree string="Request quote" name="quotes">
+                        <tree string="Request quote" name="quotes" delete="0">
                             <field name="id"/>
                             <field name="date"/>
                             <field name="name"/>
                             <field name="website_id" widget="many2one" groups="website.group_multi_website"/>
                             <field name="user_id" widget="many2one"/>
                         </tree>
-                        <form string="Request quote">
+                        <form string="Request quote" edit="0" create="0" delete="0">
                             <sheet>
                                 <div class="oe_title"  name="title">
                                     <label class="oe_edit_only" for="name" string="Quote Name"/>
@@ -117,19 +117,19 @@
                                             <field name="contact_phone"/>
                                             <field name="contact_email"/>
                                         </group>
-                                        <group string="Observations"  name="observatios">
+                                        <group string="Observations"  name="observations">
                                             <field name="observations"/>
                                         </group>
                                     </page>
                                     <page string="Products" name="products">
                                         <group string="Products added from shop" name="website_products">
-                                            <field name="product_ids" widget="many2many_tags"/>
+                                            <field name="product_ids" nolabel="1"/>
                                         </group>
                                         <group string="Products find on website" name="website_products">
-                                            <field name="products_found"/>
+                                            <field name="products_found" nolabel="1"/>
                                         </group>
                                         <group string="Products not find on website"  name="not_website_products">
-                                            <field name="products_not_found" />
+                                            <field name="products_not_found" nolabel="1"/>
                                         </group>
                                     </page>
                                     <page string="Metadata Info" name="metadata_info">

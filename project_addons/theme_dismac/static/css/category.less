@@ -1,51 +1,152 @@
-#products_grid_before {
-    padding-right: 0px;
-    & li.nav-item:nth-child(1n+1) {
-        height: 50px;
-        margin: 8px 0px;
-        border-bottom: @border-cat;
-    }
-    & li.nav-item:last-child {
-        border-bottom: none;
-        margin: 0px;
-    }
+/* lateral menu as stacked to the right */
+#o_shop_collapse_category li i.fa, #o_shop_collapse_category_custom li i.fa {
+    color: @color-secondary;
 }
-
-.menu-category {
-    padding: 8px;
-    border: @border-cat;
-    background: @color-bg-cat;
-}
-
+// On down open main category space
 .oe_website_sale ul ul {
-    margin-left: 0px;
+    margin-left: 0.5rem;
 }
 
-.parent-category {
-    position: absolute;
-    width: inherit;
-    top: 8px;
-    left: 100%;
-    z-index: 30;
-    background: @color-bg-cat;
-    margin-top: 8px;
-    border: @border-cat;
-    padding:10px 10px;
-    margin-left: 0px;
+/* Lateral menu edit */
+div#products_grid_before {
+    // Head titles
+    h5 {
+        color: #006bb6 !important;
+        margin-top: 16px !important;
+        text-decoration: underline;
+    }
+    .menu-category {
+        margin-top: 0 !important;
+    }
+    // All main categories best space adjustment
+    .nav-link {
+        padding: 0.5rem 0.3rem;
+    }
+    // Content
+    ul#o_shop_collapse_category_custom {
+        // All categories
+        & .nav-link {
+            font-weight: bolder;
+        }
+        // Just all products best space adjustment
+        & .nav-link.o_not_editable {
+            margin: 4px auto;
+        }
+        // Rest of categories adjustment
+        & .nav-link.active:not(.o_not_editable) {
+            text-align: center;
+            margin: 6px;
+        }
+        li.nav-item {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            align-items: center;
+            min-height: 60px;
+            width: 100%;
+            border: 1px solid rgba(100, 100, 100, 0.2);
+            border-radius: none !important;
+            > img.img.img-responsive {
+                float: left;
+                margin-left: 4px;
+                margin-top: 4px;
+            }
+            > ul {
+//                 position: sticky;
+                z-index: 30;
+                background: #ffffff;
+                border-left: 1px solid rgba(100, 100, 100, 0.2);
+                padding: 10px 10px;
+                > div {
+                    > strong > a {
+                        border-bottom: solid black 1px;
+                        border-radius: unset;
+                        margin: 8px 0px;
+                    }
+                    > span {
+                        > a {
+                            text-decoration:underline;
+                        }
+                        > a:hover {
+                            font-size: 1.0rem;
+                            font-weight: bolder;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
-.nav-pills .nav-link.active {
-    padding-right: 2rem;
+// Products pager row with search order by and categories menu in on line
+@media screen and (max-width: 424px) {
+    // Hide menu
+    // TODO: Call default lateral menu under this resolution. Have to collapse in vertical to fit in devices
+    #products_grid_before, #products_grid_before_toggle {
+        display: none !important;
+    }
+    .oe_search_box {
+        padding-right: 0px;
+    }
+    .input-group > .form-control {
+        width: 7rem;
+    }
 }
 
-.category-menu-img {
-    height: 45px;
-    width: 20%;
+/* Lateral menu medias */
+@media screen and (min-width: 768px) {
+    // expanded folder for child categories
+    div#products_grid_before {
+        ul#o_shop_collapse_category_custom {
+            li.nav-item {
+                > ul {
+                    // space between subcategories
+                    & a {
+                        padding: 0.1rem 0.3rem;
+                    }
+                    // space between child categories
+                    & div {
+                        min-height: 80px;
+                    }
+                }
+            }
+        }
+    }
 }
 
-.category-menu-name {
-    display:flex;
-    align-items:center;
-    height: 45px;
-    width: 75%;
+@media screen and (min-width: 992px) {
+//     #products_grid_before_toggle {
+//         display: none;
+//     }
+//     #products_grid_before {
+//         display: block;
+//     }
+    // expanded folder for child categories
+    div#products_grid_before {
+        ul#o_shop_collapse_category_custom {
+            li.nav-item {
+                > ul {
+                    border: 1px solid rgba(100, 100, 100, 0.2);
+                    position: absolute;
+                    left: 216px;
+                    min-width: 730px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    // expanded folder for child categories
+    div#products_grid_before {
+        ul#o_shop_collapse_category_custom {
+            li.nav-item {
+                > ul {
+                    position: absolute;
+                    left: 261px;
+                    min-width: 860px;
+                }
+            }
+        }
+    }
 }

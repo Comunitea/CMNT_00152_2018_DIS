@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-04 09:06+0000\n"
-"PO-Revision-Date: 2019-12-04 09:06+0000\n"
+"POT-Creation-Date: 2020-02-28 10:02+0000\n"
+"PO-Revision-Date: 2020-02-28 10:02+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,8 +26,23 @@ msgid ", y la"
 msgstr ""
 
 #. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "<span class=\"fa fa-chevron-left\" role=\"img\" aria-label=\"Previous\" title=\"Previous\"/>"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "<span class=\"fa fa-chevron-right\" role=\"img\" aria-label=\"Next\" title=\"Next\"/>"
+msgstr ""
+
+#. module: website_dismac
 #: model_terms:ir.ui.view,arch_db:website_dismac.website_layout_footer_copyright
 msgid "<span class=\"text-uppercase\"> Dismac. Todos los derechos reservados.</span>"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_products
+msgid "<span class=\"text-uppercase\">Etiqueta</span>"
 msgstr ""
 
 #. module: website_dismac
@@ -36,9 +51,24 @@ msgid "<span>&amp;copy; </span>"
 msgstr ""
 
 #. module: website_dismac
-#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_products_item_website_dismac_history
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "<strong>Categories</strong>"
+msgstr "<strong>Categorías</strong>"
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_products_item
 msgid "<strong>Historical ordered quantity:</strong>"
 msgstr "<strong>Cantidad total pedida:</strong>"
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "<strong>Product Tags</strong>"
+msgstr "<strong>Etiquetas</strong>"
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "<strong>SKU: </strong>"
+msgstr ""
 
 #. module: website_dismac
 #: model:ir.ui.view,name:website_dismac.acceptance_full_legal_terms_with_check
@@ -56,9 +86,20 @@ msgid "Acepto los"
 msgstr ""
 
 #. module: website_dismac
-#: model:ir.ui.view,name:website_dismac.auth_signup_fields
-msgid "Auth Signup/ResetPassword form fields Dismac"
-msgstr ""
+#: model:ir.ui.view,name:website_dismac.products_add_to_request_quote
+msgid "Add to Request Quote"
+msgstr "Añadir a Solicitud de Presupuesto"
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "Add to current quote"
+msgstr "Añadir a Presupuesto Actual"
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.products_add_to_request_quote
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "Add to request quote"
+msgstr "Añadir a Solicitud Presupuesto"
 
 #. module: website_dismac
 #: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
@@ -67,21 +108,34 @@ msgid "Avisos Legales"
 msgstr ""
 
 #. module: website_dismac
-#: model_terms:ir.ui.view,arch_db:website_dismac.catalog
-#: model_terms:website.page,arch_db:website_dismac.catalog_page
-msgid "Catalog"
-msgstr ""
-
-#. module: website_dismac
-#: model:ir.ui.view,name:website_dismac.catalog
-msgid "Catalog Page Dismac"
+#: model:ir.ui.view,name:website_dismac.website_sale_categories_recursive
+msgid "Category list Dismac"
 msgstr ""
 
 #. module: website_dismac
 #: model:website.menu,name:website_dismac.menu_catalog
-#: model:website.page,name:website_dismac.catalog_page
 msgid "Catálogos"
 msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.option_collapse_categories_recursive_columns
+msgid "Collapse Category Recursive Columns"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.website_sale_option_collapse_categories_recursive
+msgid "Collapse Category Recursive Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.website_sale_option_collapse_products_categories
+msgid "Collapsible Category List Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "Compare"
+msgstr "Comparar"
 
 #. module: website_dismac
 #: model:website.menu,name:website_dismac.menu_contactus
@@ -91,7 +145,7 @@ msgstr ""
 #. module: website_dismac
 #: model:ir.ui.view,name:website_dismac.website_cookie_notice_message
 msgid "Cookies notice"
-msgstr ""
+msgstr "Aviso de Cookies"
 
 #. module: website_dismac
 #: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
@@ -123,6 +177,11 @@ msgid "Enlace política de privacidad"
 msgstr ""
 
 #. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_products
+msgid "Esta es la Tarifa bienvenida, donde ver los artículos con el precio de cliente Dismac. Si lo desea puede ordenar también el listado en función de los códigos de producto"
+msgstr ""
+
+#. module: website_dismac
 #: model_terms:ir.ui.view,arch_db:website_dismac.website_cookie_notice_message
 msgid "Esta página utiliza cookies y otras tecnologías para que podamos mejorar tu experiencia en nuestro sitio:"
 msgstr ""
@@ -143,23 +202,6 @@ msgid "Footer Dismac"
 msgstr ""
 
 #. module: website_dismac
-#: model:website.menu,name:website_dismac.menu_history
-#: model:website.page,name:website_dismac.history_page
-msgid "Historial"
-msgstr ""
-
-#. module: website_dismac
-#: model_terms:ir.ui.view,arch_db:website_dismac.history
-#: model_terms:website.page,arch_db:website_dismac.history_page
-msgid "History"
-msgstr "Historial"
-
-#. module: website_dismac
-#: model:ir.ui.view,name:website_dismac.history
-msgid "History Page Dismac"
-msgstr ""
-
-#. module: website_dismac
 #: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
 msgid "Instagram"
 msgstr ""
@@ -167,6 +209,11 @@ msgstr ""
 #. module: website_dismac
 #: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
 msgid "Linkedin"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.website_sale_products_list_view
+msgid "List View Dismac"
 msgstr ""
 
 #. module: website_dismac
@@ -186,19 +233,7 @@ msgstr ""
 
 #. module: website_dismac
 #: model:website.menu,name:website_dismac.menu_offers
-#: model:website.page,name:website_dismac.offer_page
 msgid "Ofertas"
-msgstr ""
-
-#. module: website_dismac
-#: model:ir.ui.view,name:website_dismac.offer
-msgid "Offer Page Dismac"
-msgstr ""
-
-#. module: website_dismac
-#: model_terms:ir.ui.view,arch_db:website_dismac.offer
-#: model_terms:website.page,arch_db:website_dismac.offer_page
-msgid "Offers"
 msgstr ""
 
 #. module: website_dismac
@@ -221,20 +256,18 @@ msgstr ""
 
 #. module: website_dismac
 #: model:website.menu,name:website_dismac.menu_quote
-#: model:website.page,name:website_dismac.quote_page
 msgid "Presupuestos"
 msgstr ""
 
 #. module: website_dismac
-#: model_terms:ir.ui.view,arch_db:website_dismac.pricelist
-#: model_terms:website.page,arch_db:website_dismac.pricelist_page
-msgid "Pricelist"
-msgstr "Tarifa"
+#: model:ir.ui.view,name:website_dismac.website_sale_product
+msgid "Product Dismac"
+msgstr ""
 
 #. module: website_dismac
-#: model:ir.ui.view,name:website_dismac.pricelist
-msgid "Pricelist Page Dismac"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "Product Name"
+msgstr "Nombre del producto"
 
 #. module: website_dismac
 #: model:ir.model,name:website_dismac.model_product_template
@@ -242,14 +275,13 @@ msgid "Product Template"
 msgstr "Plantilla de producto"
 
 #. module: website_dismac
-#: model:ir.ui.view,name:website_dismac.quote
-msgid "Quote Page Dismac"
+#: model:ir.ui.view,name:website_dismac.website_sale_products
+msgid "Products Dismac"
 msgstr ""
 
 #. module: website_dismac
-#: model_terms:ir.ui.view,arch_db:website_dismac.quote
-#: model_terms:website.page,arch_db:website_dismac.quote_page
-msgid "Quotes"
+#: model:ir.ui.view,name:website_dismac.website_sale_products_item
+msgid "Products Item Dismac"
 msgstr ""
 
 #. module: website_dismac
@@ -268,19 +300,49 @@ msgid "Show website Logo Base"
 msgstr ""
 
 #. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "Si desea añadir este producto a una petición de presupuesto especial, pulse"
+msgstr ""
+
+#. module: website_dismac
 #: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
 msgid "Síganos"
 msgstr ""
 
 #. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_products
+msgid "Tarifa Bienvenida"
+msgstr ""
+
+#. module: website_dismac
 #: model:website.menu,name:website_dismac.menu_pricelist
-#: model:website.page,name:website_dismac.pricelist_page
 msgid "Tarifas"
 msgstr ""
 
 #. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "This combination does not exist."
+msgstr "Esta combinación no existe."
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "This product has no valid combination."
+msgstr "Este producto no tiene combinaciones válidas."
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "This product is no longer available."
+msgstr "Este producto ya no está disponible."
+
+#. module: website_dismac
 #: model:website.menu,name:website_dismac.menu_shop
 msgid "Tienda"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.simulate_products_categories_lateral_menu_edit
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "Todos los productos"
 msgstr ""
 
 #. module: website_dismac
@@ -294,13 +356,13 @@ msgid "Website"
 msgstr "Sitio web"
 
 #. module: website_dismac
-#: model:ir.ui.view,name:website_dismac.website_sale_products_item_website_dismac_history
-msgid "Website Sale Products Item Website Dismac History"
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
+msgid "Youtube"
 msgstr ""
 
 #. module: website_dismac
-#: model_terms:ir.ui.view,arch_db:website_dismac.website_footer_custom
-msgid "Youtube"
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "aquí"
 msgstr ""
 
 #. module: website_dismac
@@ -311,6 +373,26 @@ msgstr ""
 #. module: website_dismac
 #: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
 msgid "de este sitio web."
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.website_sale_products_categories
+msgid "eCommerce Categories Dismac"
+msgstr ""
+
+#. module: website_dismac
+#: model:ir.ui.view,name:website_dismac.simulate_products_categories_lateral_menu_edit
+msgid "eCommerce Categories Lateral Menu Edit"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "ml-2"
+msgstr ""
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
+msgid "o_website_sale_search"
 msgstr ""
 
 #. module: website_dismac
@@ -329,7 +411,6 @@ msgid "website.name"
 msgstr ""
 
 #. module: website_dismac
-#: model:ir.ui.view,name:website_dismac.website_dismac_website_assets_frontend
-msgid "website_dismac_website_assets_frontend"
+#: model:ir.ui.view,name:website_dismac.website_dismac_assets
+msgid "website_dismac_assets"
 msgstr ""
-

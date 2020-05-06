@@ -65,7 +65,7 @@ class SaleOrderService(Component):
             "precio_total": "{:.2f}".format(sale_order.amount_untaxed),
             "precio_total_iva": "{:.2f}".format(sale_order.amount_total),
             "iva_valor": "{:.2f}".format(sale_order.amount_tax),
-            "pdf": "%s" % base64.b64encode(pdf) if pdf else False,
+            "pdf": "%s" % base64.b64encode(pdf).decode('utf8') if pdf else False,
             "observaciones": "%s" % sale_order.observations if sale_order.observations else '',
             "lineas_pedido": []
         }

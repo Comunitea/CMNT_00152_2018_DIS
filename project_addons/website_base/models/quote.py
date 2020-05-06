@@ -3,7 +3,7 @@
 from odoo import api, fields, models, _
 
 
-class ProductPublicCategory(models.Model):
+class Users(models.Model):
     _inherit = "res.users"
 
     quotes_ids = fields.One2many('sale.quote', 'user_id', string='Request quotes',
@@ -12,6 +12,7 @@ class ProductPublicCategory(models.Model):
 
 class ProductOffer(models.Model):
     _name = "sale.quote"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = _("Request Quote")
     _order = "date desc, id desc"
     _rec_name = 'name'

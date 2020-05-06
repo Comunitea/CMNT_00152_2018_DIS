@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <template id="portal_layout_reviews" name="Portal layout: reviews entry" inherit_id="sale.portal_my_home_menu_sale" priority="40">
+
+        <xpath expr='//li[4]' position="attributes">
+            <attribute name="t-if">(page_name == 'order' or sale_order and sale_order.state not in ('sent', 'cancel')) and not pending_review</attribute>
+        </xpath>
+        
+        <xpath expr='//li[4]' position="after">
+            <li t-if="pending_review" t-attf-class="breadcrumb-item #{'active ' if not reviews else ''}">
+                <a t-if="sale_order" t-attf-href="/my/reviews?{{ keep_query() }}">Pending Reviews</a>
+                <t t-else="">Pending Reviews</t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_reviews" name="Portal My Home: Product purchase reviews" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="review_count" t-call="portal.portal_docs_entry">
+                <t t-set="title">Pending Reviews</t>
+                <t t-set="url" t-value="'/my/reviews'"/>
+                <t t-set="count" t-value="review_count"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_orders_pending_reviews" inherit_id="sale.portal_my_orders" name="My Sales Orders Pending Reviews">
+        <xpath expr='//t[@t-foreach="orders"]/tr/td/a' position="attributes">
+            <attribute name="t-if">not pending_review</attribute>
+        </xpath>
+        <xpath expr='//t[@t-foreach="orders"]/tr/td/a' position="after">
+            <a t-else="" t-att-href="order.get_portal_url().replace('orders', 'reviews')"><t t-esc="order.name"/></a>
+        </xpath>
+    </template>
+
+    <template id="record_pager_pending_reviews" inherit_id="portal.record_pager" name="Portal Record Pager">
+        <xpath expr='//div' position="attributes">
+            <attribute name="t-if">not pending_review</attribute>
+        </xpath>
+        <!-- <xpath expr='//div' position="before">
+            <t t-if="pending_review">
+                <t t-set="prev_record" t-if="prev_record" t-value="prev_record.replace('orders', 'reviews')"/>
+                <t t-set="next_record" t-if="next_record" t-value="next_record.replace('orders', 'reviews')"/>
+            </t>
+        </xpath> -->
+    </template>
+
+    <template id="sale_order_portal_template_pending_reviews" inherit_id="sale.sale_order_portal_template" name="Sales Order Portal Template Pending Reviews">
+        <xpath expr='//t[@t-call="payment.payment_confirmation_status"]' position="attributes">
+            <attribute name="t-if">not sale_order.find_pending_tier()</attribute>
+        </xpath>
+        <xpath expr='//t[@t-call="payment.payment_confirmation_status"]' position="after">
+            <t t-else="">
+                <div class="alert alert-warning alert-dismissable" role="status">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+                    <span>
+                        <span><i>Pending</i>... This order needs to be validated.</span>
+                    </span>            
+                </div>
+            </t>
+        </xpath>
+        <xpath expr='//t[@t-set="entries"]/ul/li[1]' position="attributes">
+            <attribute name="t-if">not sale_order.find_pending_tier()</attribute>
+        </xpath>
+        <xpath expr='//t[@t-set="entries"]/ul/li[1]' position="after">
+            <li t-elif="sale_order.locked" class="list-group-item flex-grow-1">
+                <div class="alert alert-warning alert-dismissable" role="status">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+                    <span>
+                        <span><i>Blocked</i>... This order is blocked and needs further review.</span>
+                    </span>            
+                </div>
+            </li>
+            <li t-elif="not sale_order.locked and pending_review" class="list-group-item flex-grow-1">
+                <div class="o_download_pdf btn-toolbar flex-sm-nowrap">
+                    <div class="btn-group flex-grow-1 mr-1 mb-1">
+                        <form target="_self" action="/my/reviews/validation" method="post">
+                            <input type="hidden" name="validation" t-att-value="True" />
+                            <input type="hidden" name="order_id" t-att-value="sale_order.id" />
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <button type="submit" class="btn btn-primary a-submit">
+                                <i class="fa fa-check"/> Validate
+                            </button>
+                        </form>
+                    </div>
+                    <div class="btn-group flex-grow-1 mb-1">
+                        <form target="_self" action="/my/reviews/validation" method="post">
+                            <input type="hidden" name="validation" t-att-value="False" />
+                            <input type="hidden" name="order_id" t-att-value="sale_order.id" />
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <button type="submit" class="btn btn-primary a-submit">
+                                <i class="fa fa-times"/> Reject
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="o_download_pdf btn-toolbar flex-sm-nowrap">
+                    <div class="btn-group flex-grow-1 mr-1 mb-1">
+                        <a class="btn btn-secondary btn-block o_download_btn" t-att-href="sale_order.get_portal_url(report_type='pdf', download=True)" title="Download"><i class="fa fa-download"/> Download</a>
+                    </div>
+                    <div class="btn-group flex-grow-1 mb-1">
+                        <a class="btn btn-secondary btn-block o_print_btn o_portal_invoice_print" t-att-href="sale_order.get_portal_url(report_type='pdf')" id="print_invoice_report" title="Print" target="_blank"><i class="fa fa-print"/> Print</a>
+                    </div>
+                </div>
+            </li>
+        </xpath>
+    </template>
+
+</odoo>

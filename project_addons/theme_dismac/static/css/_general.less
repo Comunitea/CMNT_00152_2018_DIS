@@ -1,8 +1,9 @@
-/* Import new fonts */
-@import url('https://fonts.googleapis.com/css?family=Lato:400,400i,700&subset=latin-ext');
+/* Fonts */
+@import url('https://fonts.googleapis.com/css?family=Lato:100italic,200italic,300italic,400italic,500italic,600italic,700italic,800italic,900italic,100,200,300,400,500,600,700,800,900');
 
 @main-font-family: 'Lato';
 
+/* Main colors */
 @color-main: #777777;
 @color-secondary: #006bb6;
 @color-white: #fff;
@@ -15,14 +16,20 @@
 @color-bg-header: rgba(53,61,71,0.6);
 @color-bg-footer: #3d4045;
 
-/* breadcrumbs */
-@color-bg: @color-white; // (background of breadcrumbs bar)
-@color-href: @color-secondary; // (color of links)
-@color-current: @color-text-main; // (color of current element)
-
-/* Scroll with muk_website_scroll_up */
-@scroll-bg-color: @color-secondary; // circle background color (Arrow circle is allways transparent)
-
 /* Categories menu */
 @border-cat: 1px solid rgba(100, 100, 100, 0.2);
 @color-bg-cat: @color-white;
+
+/* Override styles */
+:root {
+    // Breadcrumbs colors
+    --color-bg: @color-white;
+    --color-href: @color-secondary;
+    --color-current: @color-text-main;
+    // muk_website_scroll_up
+    --scroll-bg-color: @color-secondary;
+//     --scroll-font-size: you_size or 2.5em;
+//     --scroll-bottom: you_bottom or 20px;
+//     --scroll-right: you_right 20px;
+//     --scroll-padding: you_padding or 10px 20px;
+}
