@@ -9,3 +9,4 @@ class SaleOrderType(models.Model):
     need_approval = fields.Boolean(default=False)
     use_partner_agent = fields.Boolean("Use partner commercial")
     no_change_price = fields.Boolean("No change price")
+    web = fields.Boolean("Use in web (Only for online Payments)")

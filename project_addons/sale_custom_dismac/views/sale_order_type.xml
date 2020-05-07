@@ -10,6 +10,7 @@
                 <field name="use_partner_agent"/>
                 <field name="need_approval"/>
                 <field name="no_change_price"/>
+                <field name="web"/>
             </field>
         </field>
     </record>
