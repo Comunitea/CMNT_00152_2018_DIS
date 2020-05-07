@@ -31,7 +31,7 @@
         "stock",
         "base_delivery_carrier_label",
         'delivery_carrier_label_default',
-        "base_report_to_printer",
+        #"base_report_to_printer",
         'queue_job',
         'stock_picking_custom'
     ],
