@@ -16,6 +16,17 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_products_categories
+msgid "<strong>Categories</strong>"
+msgstr "<strong>Categorías</strong>"
+
+#. module: website_dismac
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_option_collapse_products_categories
+#: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_products_categories
+msgid "All Products"
+msgstr "Todos los productos"
+
+#. module: website_dismac
 #: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
 msgid ", la"
 msgstr ""
