@@ -14,7 +14,10 @@ class Website(models.Model):
     @api.multi
     def _prepare_sale_order_values(self, partner, pricelist):
         values = super()._prepare_sale_order_values(partner, pricelist)
-        sale_type = self.env['sale.order.type'].sudo().search([('telesale', '=', True)])
+        if self.env.user.partner_id.skip_website_checkout_payment:
+            sale_type = self.env['sale.order.type'].sudo().search([('telesale', '=', True)])
+        else:
+            sale_type = self.env['sale.order.type'].sudo().search([('web', '=', True)])
         if sale_type:
             values ['type_id'] = sale_type[0].id
         return values
