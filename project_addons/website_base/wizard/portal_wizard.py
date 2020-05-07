@@ -28,7 +28,7 @@ class PortalWizardUser(models.TransientModel):
             partners_error_user = self.env['res.partner']
 
             for wizard_user in self.with_context(active_test=False).filtered(lambda w: w.in_portal and not w.partner_id.user_ids):
-                email = self.email
+                email = wizard_user.email
                 if not email:
                     partners_error_empty |= wizard_user.partner_id
                 elif email in emails:
