@@ -31,6 +31,10 @@
         "stock",
         "base_delivery_carrier_label",
         'delivery_carrier_label_default',
+<<<<<<< HEAD
+=======
+        #"base_report_to_printer",
+>>>>>>> f38e057be3c38954be9b592b627452f61a760511
         'queue_job',
         'stock_picking_custom'
     ],
