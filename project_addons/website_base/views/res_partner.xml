@@ -24,6 +24,7 @@
                         <group>
                             <field name="skip_website_checkout_payment"/>
                             <field name="order_validator"/>
+                            <field name="global_order_validator"/>
                         </group>
                     </group>
                 </page>
