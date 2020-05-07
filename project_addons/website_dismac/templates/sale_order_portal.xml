@@ -7,10 +7,12 @@
     </xpath>
     <xpath expr="//table[@id='sales_order_table']/tbody//tr" position="inside">
         <td>
-            <input name="product_id" t-att-value="line.product_id.id" type="hidden"/>
-            <a t-attf-href="#" class="mb8 input-group-addon js_add_cart_json_sale_order_portal_content hidden-xs">
-                <i class="fa fa-shopping-cart"/>
-            </a>
+            <t t-if="not line.is_delivery">
+                <input name="product_id" t-att-value="line.product_id.id" type="hidden"/>
+                <a t-attf-href="#" class="mb8 input-group-addon js_add_cart_json_sale_order_portal_content hidden-xs">
+                    <i class="fa fa-shopping-cart"/>
+                </a>
+            </t>
         </td>
     </xpath>
 </template>

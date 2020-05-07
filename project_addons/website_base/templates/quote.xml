@@ -80,11 +80,11 @@
             <div class="quote-section">
                 <div class="form-group row form-field">
                     <div class="col-lg-3 col-md-4 text-md-right">
-                        <label class="col-form-label" for="products_found">Productos añadidos desde tienda:</label>
+                        <label class="col-form-label" for="products_add">Productos añadidos desde tienda:</label>
                     </div>
                     <div class="col-lg-9 col-md-8">
                         <t t-foreach="current_quote.product_ids" t-as="product" t-if="current_quote and current_quote.product_ids">
-                            <p class="mt8 mb0" t-if="product">
+                            <p class="mt8 mb0" t-if="product" name="products_add">
                                 <a t-att-href="'/product/%s' % product.slug if product.slug else keep('/shop/product/%s' % slug(product))" t-att-content="product.name" t-field="product.name" />
                                 <span> - </span>
                                 <a t-att-href="'/presupuestos?delete_product=%s' % product.id" class="o_remove" title="Eliminar" alt="Eliminar" rel="noindex, nofollow">
@@ -111,7 +111,7 @@
                 </div>
                 <div class="form-group row form-field o_website_form_custom">
                     <div class="col-lg-3 col-md-4 text-md-right">
-                        <label class="col-form-label" for="products_not_found">Productos No encontrados en la web:</label>
+                        <label class="col-form-label" for="products_not_found">Productos NO encontrados en la web:</label>
                     </div>
                     <div class="col-lg-9 col-md-8">
                         <textarea class="form-control o_website_form_input" rows="8" name="products_not_found"
@@ -168,17 +168,8 @@
             <!-- Policy -->
             <div class="form-group row form-field o_website_form_required_custom mt32">
                 <div class="col-12 col-12-offset-3 text-center">
-                    <div class="form-check">
-                        <input type="checkbox" value="accepted" id="privacy_policy" name="privacy_policy" class="o_website_form_input form-check-input" required="required"/>
-                        <label class="form-check-label" for="privacy_policy">
-                            <span class="acceptance_full">
-                                Acepto los <a href="http://www.dismacpruebas.es.mialias.net/avisos-legales" alt="Enlace avisos legales" title="Avisos Legales" rel="noindex, nofollow" target="_blank">avisos legales</a>
-                                , la <a href="http://www.dismacpruebas.es.mialias.net/politica-de-cookies" alt="Enlace política de cookies" title="Política de Cookies" rel="noindex, nofollow" target="_blank">política de cookies</a>
-                                , y la <a href="http://www.dismacpruebas.es.mialias.net/politica-de-privacidad" alt="Enlace política de privacidad" title="Política de Privacidad" rel="noindex, nofollow" target="_blank">política de privacidad</a>
-                                de este sitio web.
-                            </span>
-                        </label>
-                    </div>
+                    <t t-call="website_dismac.acceptance_full_legal_form_check" t-if="'dismac' in website.domain"/>
+                    <t t-call="website_base.acceptance_full_legal_form_check" t-else=""/>
                 </div>
             </div>
 
@@ -208,17 +199,17 @@
             <t t-set="additional_title" t-else="">Presupuesto <t t-esc="current_quote.id"/></t>
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
-                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">
+                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.layout_website').active else 'py-4'}">
                     <div class="products_pager form-inline justify-content-center">
                         <form t-attf-action="/presupuestos" role="search" method="get">
                             <t t-call="website.website_search_box" />
                         </form>
                     </div>
                     <div class="row mt-3">
-                        <div id="quotes_grid_before" class="col-lg-3 col-md-4 mt16">
+                        <div id="quotes_grid_before" class="col-lg-3 d-none d-md-block mt16">
                             <t t-call="website_base.quote_historical"/>
                         </div>
-                        <div id="quotes_grid" class="col-lg-9 col-md-8 mt8 mb16">
+                        <div id="quotes_grid" class="col-lg-9 mt8 mb16">
                             <t t-if="view_quote">
                                 <t t-call="website_base.quote"/>
                             </t>
@@ -255,7 +246,7 @@
             </t>
             <h6><strong>Productos encontrados en la web: </strong><span t-if="not current_quote.products_found" class="text-muted">No proporcionados</span></h6>
             <span t-field="current_quote.products_found"/>
-            <h6><strong>Productos no encontrados en la web: </strong><span t-if="not current_quote.products_not_found" class="text-muted">No proporcionados</span></h6>
+            <h6><strong>Productos NO encontrados en la web: </strong><span t-if="not current_quote.products_not_found" class="text-muted">No proporcionados</span></h6>
             <span t-field="current_quote.products_not_found"/>
         </div>
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <act_window id="change_password_partner_wizard_action"
+        name="Change Password"
+        src_model="res.partner"
+        res_model="change.password.wizard"
+        view_type="form" view_mode="form"
+        key2="client_action_multi" target="new"
+        groups="sales_team.group_sale_salesman"/>
+
+</odoo>

@@ -6,7 +6,28 @@
         <div class="form-group field-legal mb0 small terms-with-check">
             <label for="privacy_policy">
                 <input type="checkbox" value="accepted" id="privacy_policy" name="privacy_policy" required="required"/>
-                <t t-call="website_legal_page.acceptance_full"/>
+<!--                <t t-call="website_legal_page.acceptance_full"/>-->
+                <span class="acceptance_full">
+                    Acepto los <a href="/legal/advice" alt="Enlace avisos legales" title="Avisos Legales" rel="nofollow" target="_blank">avisos legales</a>
+                    , la <a href="/legal/privacy-policy" alt="Enlace política de privacidad" title="Política de privacidad" rel="nofollow" target="_blank">política de privacidad</a>
+                    , y la <a href="/legal/terms-of-use" alt="Enlace términos de uso" title="Términos de uso" rel="nofollow" target="_blank">términos de uso</a>
+                    de este sitio web.
+                </span>
+            </label>
+        </div>
+    </template>
+
+    <!-- Accept terms of use to be included on custom div -->
+    <template id="acceptance_full_legal_form_check" name="Acceptance Full Legal Form Check Base">
+        <div class="form-check">
+            <input type="checkbox" value="accepted" id="privacy_policy" name="privacy_policy" class="o_website_form_input form-check-input" required="required"/>
+            <label class="form-check-label" for="privacy_policy">
+                <span class="acceptance_full">
+                    Acepto los <a href="http://www.dismac.es/avisos-legales" alt="Enlace avisos legales" title="Avisos Legales" rel="noindex, nofollow" target="_blank">avisos legales</a>
+                    , la <a href="http://www.dismac.es/politica-de-cookies" alt="Enlace política de cookies" title="Política de Cookies" rel="noindex, nofollow" target="_blank">política de cookies</a>
+                    , y la <a href="http://www.dismac.es/politica-de-privacidad" alt="Enlace política de privacidad" title="Política de Privacidad" rel="noindex, nofollow" target="_blank">política de privacidad</a>
+                    de este sitio web.
+                </span>
             </label>
         </div>
     </template>
@@ -23,7 +44,10 @@
 
     <!-- Terms of use without checkbox -->
     <template id="acceptance_full_legal_terms_without_check" name="Acceptance Full Legal Terms Without Check Base">
-        I accept the <a href="/legal/advice">legal advice</a>, the <a href="/legal/privacy-policy">privacy policy and cookies</a>, and the <a href="/legal/terms-of-use">terms of use</a> of this website.
+        Acepto los <a href="/legal/advice" alt="Enlace avisos legales" title="Avisos Legales" rel="nofollow" target="_blank">avisos legales</a>
+        , la <a href="/legal/privacy-policy" alt="Enlace política de privacidad" title="Política de privacidad" rel="nofollow" target="_blank">política de privacidad</a>
+        , y la <a href="/legal/terms-of-use" alt="Enlace términos de uso" title="Términos de uso" rel="nofollow" target="_blank">términos de uso</a>
+        de este sitio web.
     </template>
 
     <template id="default_fields_forms" name="Default Form Fields Base">

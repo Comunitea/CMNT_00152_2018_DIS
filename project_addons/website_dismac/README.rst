@@ -1,3 +1,4 @@
+==============
 Dismac Website
 ==============
 
@@ -30,10 +31,19 @@ Customization for Dismac Website
 
 This module contains all configuration for website Dismac including to apply the Theme Dismac.
 
-Author
-------
+Credits
+-------
 
-Developer: Comunitea, info@comunitea.com
+Author
+~~~~~~
+
+.. image:: https://comunitea.com/wp-content/uploads/2016/01/logocomunitea3.png
+   :alt: Comunitea
+   :target: https://comunitea.com
+
+Comunitea Servicios Tecnológicos S.L.
+
+For support and more information, please visit `<https://comunitea.com>`_.
 
 Contributors
 ~~~~~~~~~~~~
@@ -42,12 +52,14 @@ Vicente Gutiérrez, vicente@comunitea.com
 
 Rubén Seijas, ruben@comunitea.com
 
-Maintainer
-~~~~~~~~~~
+Bug Tracker
+-----------
+Bugs are tracked on `Comunitea Issues <https://github.com/Comunitea/external_ecommerce_modules/issues>`_.
+In case of trouble, please check there if your issue has already been reported.
+If you spotted it first, help us smashing it by providing a detailed and welcomed
+`Feedback <https://github.com/Comunitea/external_ecommerce_modules/issues/new>`_.
 
-This module is maintained by Comunitea.
-
-For support and more information, please visit https://comunitea.com.
+Please, do not contact contributors directly about support or help with technical issues.
 
 Disclaimer of Warranties
 ------------------------

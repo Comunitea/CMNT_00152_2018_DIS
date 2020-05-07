@@ -12,7 +12,16 @@
 "access_product_offer_image_website_designer","product_offer_image_website_designer","model_product_offer_image","website.group_website_designer",1,1,1,1
 
 "access_sale_quote_public","sale_quote_public","model_sale_quote","base.group_public",1,0,0,0
-"access_sale_quote_portal","sale_quote_portal","model_sale_quote","base.group_portal",1,0,0,0
+"access_sale_quote_portal","sale_quote_portal","model_sale_quote","base.group_portal",1,0,1,0
 "access_sale_quote_user","sale_quote_user","model_sale_quote","base.group_user",1,0,0,0
 "access_sale_quote_website_publisher","sale_quote_website_publisher","model_sale_quote","website.group_website_publisher",1,1,1,1
 "access_sale_quote_website_designer","sale_quote_website_designer","model_sale_quote","website.group_website_designer",1,1,1,1
+
+"access_res_partner_public","res_partner_public","base.model_res_partner",,1,0,0,0
+"access_ir_model_public","rir_model_public","base.model_ir_model",,1,0,0,0
+"access_tier_validation_public","tier_validation_public","base_tier_validation.model_tier_validation",,1,0,0,0
+"access_sale_order_portal_dismac","sale_order_portal_dismac","sale.model_sale_order","base.group_portal",1,1,1,0
+
+"access_report_website_offer_public",report_website_offer_public","model_report_website_offer",,1,0,0,0
+
+"access_product_customerinfo_public",product_customerinfo_public","model_product_customerinfo","base.group_portal",1,0,0,0

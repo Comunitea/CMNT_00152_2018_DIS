@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_category_discount_public,category.discount.public,partner_category_discount.model_category_discount,,1,0,0,0
+access_customer_price_public,customer.price.public,customer_price.model_customer_price,,1,0,0,0

@@ -123,7 +123,7 @@ msgid "Manage Locks in Sales Orders"
 msgstr "Manejar bloqueos en pedidos de venta"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:173
+#: code:addons/sale_order_lock/models/sale_order.py:175
 #, python-format
 msgid "Margin"
 msgstr "Margen"
@@ -157,16 +157,16 @@ msgid "No force unlock applied by %s"
 msgstr "No forzar desbloqueo aplicado por %s"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:177
+#: code:addons/sale_order_lock/models/sale_order.py:179
 #, python-format
-msgid "No reach min amount order"
-msgstr "No se alcanza el importe mínimo del pedido"
+msgid "No reach min amount order of %s €"
+msgstr "No se alcanza el importe mínimo del pedido de %s €"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:175
+#: code:addons/sale_order_lock/models/sale_order.py:177
 #, python-format
-msgid "No reach shipping min"
-msgstr "No se alcanzó el mínimo sin portes"
+msgid "No reach shipping min of %s €"
+msgstr "No se alcanzó el importe mínimo sin portes de %s €"
 
 #. module: sale_order_lock
 #: model:ir.model,name:sale_order_lock.model_operating_unit
@@ -174,7 +174,7 @@ msgid "Operating Unit"
 msgstr "Unidad operacional"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:182
+#: code:addons/sale_order_lock/models/sale_order.py:184
 #, python-format
 msgid "Order %s has been locked because of: %s"
 msgstr "El pedido %s ha sido bloqueado a causa de: %s"
@@ -197,7 +197,7 @@ msgid "Recompute locks"
 msgstr "Recalcular bloqueos"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:169
+#: code:addons/sale_order_lock/models/sale_order.py:171
 #, python-format
 msgid "Risk"
 msgstr "Riesgo"
@@ -249,7 +249,7 @@ msgid "UNLOCKED FORCED"
 msgstr "DESBLOQUEO FORZADO"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:181
+#: code:addons/sale_order_lock/models/sale_order.py:183
 #, python-format
 msgid "Unknow"
 msgstr "Desconocido"
@@ -261,7 +261,7 @@ msgid "Unlock forced applied by %s"
 msgstr "Forzar desbloqueo aplicado por %s"
 
 #. module: sale_order_lock
-#: code:addons/sale_order_lock/models/sale_order.py:171
+#: code:addons/sale_order_lock/models/sale_order.py:173
 #, python-format
 msgid "Unpaid"
 msgstr "No pagado"

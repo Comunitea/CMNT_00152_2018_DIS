@@ -9,6 +9,11 @@
     </template>
 
     <template id="website_sale_products_item" name="Products Item Dismac" inherit_id="website_sale.products_item">
+        <!-- Set price not by product template -->
+        <xpath expr="//t[@t-set='combination_info']" position="attributes">
+            <attribute name="t-value">product._get_combination_info(only_template=False, add_qty=add_qty or 1, pricelist=pricelist)</attribute>
+        </xpath>
+
         <!-- Enable ribbon on list view -->
         <xpath expr="//div[hasclass('ribbon-wrapper')]" position="replace">
             <div t-attf-class="ribbon-wrapper #{'ribbon-wrapper-list' if show_list else ''} #{product.website_style_ids[0].html_class if product.website_style_ids else ''}">
@@ -26,9 +31,8 @@
                 </div>
             </t>
         </xpath>
-    </template>
 
-    <template id="products_add_to_request_quote" inherit_id="website_sale.products_item" name="Add to Request Quote">
+        <!-- Add to Request Quote -->
         <xpath expr="//div[hasclass('product_price')]" position="inside">
             <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
             <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
@@ -40,6 +44,9 @@
     </template>
 
     <template id="website_sale_categories_recursive" name="Category list Dismac" inherit_id="website_sale.categories_recursive">
+        <xpath expr="//t[@t-foreach='c.child_id']" position="attributes">
+            <attribute name="t-if">c.website_published</attribute>
+        </xpath>
         <xpath expr="//li//a" position="attributes">
             <attribute name="t-attf-class" add="text-uppercase" separator=" "/>
         </xpath>
@@ -50,40 +57,46 @@
             <attribute name="class" add="menu-category" separator=" "/>
         </xpath>
         <xpath expr="//ul//li//a" position="attributes">
-            <attribute name="t-attf-class" add="text-uppercase mt8" separator=" "/>
+            <attribute name="t-attf-class" add="pt8 text-uppercase nav-link#{'' if category or product_category and product_category.category_id else ' active mb4 pl-2 pr-2'} o_not_editable" separator=" "/>
         </xpath>
     </template>
 
+    <template id="option_collapse_categories_recursive_columns" name="Collapse Category Recursive Columns">
+        <t t-foreach="categ.child_id" t-as="categ" t-if="categ.website_published">
+            <a t-att-href="keep('/shop/category/' + slug(categ), category=0)" t-attf-class="nav-link#{' active' if categ.id == int(category or 0) else ''}" t-field="categ.name"/>
+            <t t-if="not search or categ.id in search_categories_ids">
+                <t t-call="website_dismac.option_collapse_categories_recursive_columns" />
+            </t>
+        </t>
+    </template>
+
     <template id="website_sale_option_collapse_categories_recursive" name="Collapse Category Recursive Dismac" inherit_id="website_sale.option_collapse_categories_recursive">
-        <xpath expr="//li//i" position="replace"/>
-        <xpath expr="//li//a" position="replace">
-            <div class="category-menu-img float-left">
-                <img class="img img-responsive" t-attf-src="/website/image/product.public.category/{{categ.id}}/image/45x45" t-att-alt="categ.name"/>
-            </div>
-            <div t-attf-class="category-menu-name float-left ml-2">
-                <i t-if="categ.child_id" t-attf-class="text-primary fa #{'fa-chevron-down' if categ.id in parent_category_ids else 'fa-chevron-right'}"
-               t-attf-title="#{'Unfold' if categ.id in parent_category_ids else 'Fold'}"
-               t-attf-aria-label="#{'Unfold' if categ.id in parent_category_ids else 'Fold'}" role="img"/>
-                <a t-att-href="keep('/category/%s' % categ.slug if categ.slug else '/shop/category/%s' % slug(categ), category=0)" t-if="categ.child_id and (categ.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))"
-                   t-attf-class="pt4 pb0 text-uppercase nav-link#{' active mb4 pl-2 pr2' if categ.id == int(category or 0) or (product and product.public_categ_ids and categ.id in product.public_categ_ids.mapped('id')) else ''}">
-                    <strong t-esc="categ.name"/>
-                </a>
-                <a t-att-href="keep('/category/%s' % categ.slug if categ.slug else '/shop/category/%s' % slug(categ), category=0)" t-else=""
-                   t-attf-class=" pt4 pb0 text-uppercase nav-link#{' active mb4 pl-2' if categ.id == int(category or 0) or (product and product.public_categ_ids and categ.id in product.public_categ_ids.mapped('id')) else ''}"
-                   t-field="categ.name"/>
-            </div>
+        <xpath expr="//li//i" position="before">
+            <img class="img img-responsive float-left" t-attf-src="/website/image/product.public.category/{{categ.id}}/image/45x45" t-att-alt="categ.name"/>
         </xpath>
-        <xpath expr="//ul" position="attributes">
-            <attribute name="class" add="parent-category" separator=" "/>
+        <xpath expr="//li//a" position="attributes">
+            <attribute name="t-attf-class" add="pt4 pb0 text-uppercase" separator=" "/>
+        </xpath>
+
+        <xpath expr="//ul" position="replace">
+            <ul t-if="categ.child_id" class="nav nav-pills nav-hierarchy flex-row" t-att-style="'display:block;' if categ.id in parent_category_ids else 'display:none;'">
+                <t t-foreach="categ.child_id" t-as="categ" t-if="categ.website_published">
+                    <t t-if="not search or categ.id in search_categories_ids">
+                        <div class="nav-item float-left col-sm-8 col-md-6 col-lg-4">
+                            <strong><a t-att-href="keep('/shop/category/' + slug(categ), category=0)" t-attf-class="text-uppercase nav-link#{' active' if categ.id == int(category or 0) else ''}" t-field="categ.name"/></strong>
+                            <span class="nav-item">
+                                <t t-call="website_dismac.option_collapse_categories_recursive_columns" />
+                            </span>
+                        </div>
+                    </t>
+                </t>
+            </ul>
         </xpath>
     </template>
 
     <template id="website_sale_option_collapse_products_categories" name="Collapsible Category List Dismac" inherit_id="website_sale.option_collapse_products_categories">
         <xpath expr="//ul" position="attributes">
             <attribute name="id">o_shop_collapse_category_custom</attribute>
-        </xpath>
-        <xpath expr="//ul//li//a" position="attributes">
-            <attribute name="t-attf-class">pb0 text-uppercase nav-link#{'' if category else ' active mb4 pl-2 pr-2'} o_not_editable</attribute>
         </xpath>
         <xpath expr="//t[@t-call='website_sale.option_collapse_categories_recursive']" position="attributes">
             <attribute name="t-if">categ.website_published</attribute>
@@ -95,7 +108,7 @@
         <xpath expr="//div[@id='wrap']" position="replace">
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
-                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}">
+                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.layout_website').active else 'py-4'}">
                     <div class="products_pager form-inline justify-content-center">
                         <t t-call="website_sale.search">
                             <t t-set="_classes">o_website_sale_search</t>
@@ -106,22 +119,29 @@
                         <t t-call="website.pager">
                             <t t-set="_classes">ml-2</t>
                         </t>
+                        <div type="button" id="products_grid_before_toggle" data-toggle="collapse" data-target="#products_grid_before" class="dropdown ml-2 d-block d-md-none ml8 full collapsed">
+                            <button class="btn btn-secondary">
+                                <i class="fa fa-bars"/>
+                            </button>
+                        </div>
                     </div>
                     <div class="row mt-3">
-                        <div t-att-class="'col-lg-3 col-md-4 col-12' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'd-none'"
+                        <div t-att-class="'col-lg-3 d-md-block collapse' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'd-none'"
                              id="products_grid_before">
                             <t t-set="parent_category_ids" t-value="request.env['product.public.category'].get_parent_categories(category or product.public_categ_ids[0] if product.public_categ_ids else 0)"/>
-                            <ul class="nav nav-pills flex-column menu-category mt16 pt8" id="o_shop_collapse_category_custom">
+                            <h5 class="text-uppercase grid-before-categ"><strong>Categories</strong></h5>
+                            <ul class="nav nav-pills flex-column menu-category" id="o_shop_collapse_category_custom">
                                 <li class="nav-item">
-                                    <a t-att-href="keep('/shop', category=0)" t-attf-class="pt8 pb0 text-uppercase nav-link#{'' if category or (product.public_categ_ids and len(product.public_categ_ids[0]) &gt; 0) else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
+                                    <a t-att-href="keep('/shop', category=0)"
+                                    t-attf-class="pt8 text-uppercase nav-link#{'' if category or product_category and product_category.category_id else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
                                 </li>
-                                <t t-foreach="categories" t-as="c">
+                                <t t-foreach="categories" t-as="categ">
                                     <!-- Catch not published categories if their child are published -->
-                                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
+                                    <t t-call="website_dismac.website_sale_option_collapse_categories_recursive" t-if="categ.website_published"/>
                                 </t>
                             </ul>
                         </div>
-                        <div t-att-class="'col-lg-9 col-md-8 mt16 mb32' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'col-lg-12 mb32'"
+                        <div t-att-class="'col-lg-9 mt16 mb32' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'col-lg-12 mb32'"
                              id="products_grid">
 
                             <t t-set="first_possible_combination" t-value="product._get_first_possible_combination()"/>
@@ -139,7 +159,7 @@
 
                             <!-- Product content -->
                             <div itemscope="itemscope" itemtype="http://schema.org/Product" class="js_sale">
-                                <section t-attf-class="container oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''} #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}" id="product_detail">
+                                <section id="product_detail" t-attf-class="container oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''} #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.layout_website').active else 'py-4'}">
                                     <div class="row">
                                         <!-- Product Carousel Image -->
                                         <div class="col-md-6">
@@ -212,18 +232,18 @@
                                                     </t>
                                                     <t t-call="website_sale.product_price" />
                                                     <p t-if="True" class="css_not_available_msg alert alert-warning">This combination does not exist.</p>
+                                                    <!-- Miniature buttons -->
                                                     <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#" rel="noindex, nofollow"><span class="fa fa-shopping-cart" /></a>
+                                                    <t t-if="request.env['ir.ui.view'].search([('key', '=', 'website_sale_comparison.add_to_compare'), ('website_id', '=', request.website.id)]).active">
+                                                        <t t-set="product_variant" t-value="product_variant or product._create_first_product_variant()"/>
+                                                        <button t-if="product_variant" type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-lg mt8 o_add_compare_dyn" title="Compare" aria-label="Compare" t-att-data-product-product-id="product_variant.id" data-action="o_comparelist"><span class="fa fa-exchange"/></button>
+                                                    </t>
                                                     <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
                                                     <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
                                                        t-attf-class="btn btn-secondary mt8 btn-lg o_website_form_send #{'disabled' if current_quote and product in current_quote.product_ids else 'a'}"
                                                        title="Add to request quote" aria-label="Add to request quote" rel="noindex, nofollow">
                                                         <span class="fa fa-file-text-o"/>
                                                     </a>
-                                                    <t t-if="request.website.viewref('website_sale_comparison.add_to_compare').active">
-                                                        <t t-set="product_variant" t-value="product_variant or product._create_first_product_variant()"/>
-                                                        <button t-if="product_variant" type="button" role="button" class="d-none d-md-inline-block btn btn-secondary btn-lg mt8 o_add_compare_dyn" title="Compare" aria-label="Compare" t-att-data-product-product-id="product_variant.id" data-action="o_comparelist"><span class="fa fa-exchange"/></button>
-                                                    </t>
-
                                                 </div>
                                             </form>
                                             <p t-elif="not product.active" class="alert alert-warning">This product is no longer available.</p>
@@ -251,14 +271,56 @@
                 </div>
             </div>
         </xpath>
+
+        <!-- Add Product Tags side menu -->
+        <xpath expr="//div[@id='products_grid_before']" position="inside">
+            <t t-set="tags" t-value="request.env['product.template.tag'].search([], limit=50)"/>
+            <t t-if="tags">
+                <h5 class="text-uppercase grid-before-tag mt16"><strong>Product Tags</strong></h5>
+                <div class="nav nav-pills flex-column menu-category pt8">
+                    <div class="oe_structure">
+                        <t t-foreach="tags" t-as="tag">
+                            <t t-call="website_seo_settings.website_tag_template">
+                                <t t-set="tag" t-value="tag"/>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+        <!-- Default search -->
+        <xpath expr="//t[@t-call='website_sale.search']" position="attributes">
+            <attribute name="t-if">not list_type</attribute>
+        </xpath>
+        <!-- Search products into tags context -->
+        <xpath expr="//t[@t-call='website_sale.search']" position="after">
+            <t t-if="list_type and list_type == 'tags'">
+                <t t-call="website_seo_settings.website_sale_search_for_tags">
+                    <t t-set="_classes">o_website_sale_search</t>
+                </t>
+            </t>
+        </xpath>
     </template>
 
     <template id="website_sale_products" name="Products Dismac" inherit_id="website_sale.products">
         <!-- Set padding by breadcrumbs bar -->
         <xpath expr="//div[hasclass('container', 'py-2', 'oe_website_sale')]" position="attributes">
-            <attribute name="t-attf-class">container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.portal_frontend_layout').active else 'py-4'}</attribute>
+            <attribute name="t-attf-class">container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.layout_website').active else 'py-4'}</attribute>
+        </xpath>
+
+        <!-- Toggler button -->
+        <xpath expr="//div[hasclass('container', 'py-2', 'oe_website_sale')]/div[1]" position="inside">
+            <div type="button" id="products_grid_before_toggle" data-toggle="collapse" data-target="#products_grid_before" class="dropdown ml-2 d-block d-md-none ml8 full collapsed">
+                <button class="btn btn-secondary">
+                    <i class="fa fa-bars"/>
+                </button>
+            </div>
         </xpath>
         
+        <xpath expr="//div[@id='products_grid_before']" position="attributes">
+            <attribute name="t-attf-class">#{'col-lg-3 d-md-block collapse' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'd-none'}</attribute>
+        </xpath>
+
         <!-- Set dynamic title by content -->
         <xpath expr="//div[@id='products_grid']/table" position="before">
             <!-- Product list head -->
@@ -266,6 +328,10 @@
                 <t t-if="list_type and list_type == 'pricelist'">
                     <h1>Tarifa Bienvenida</h1>
                     <p>Esta es la Tarifa bienvenida, donde ver los artículos con el precio de cliente Dismac. Si lo desea puede ordenar también el listado en función de los códigos de producto</p>
+                </t>
+                <t t-elif="list_type and list_type == 'tags'">
+                    <span class="text-uppercase">Etiqueta</span>
+                    <h1><span class="text-uppercase" t-esc="current_tag.name if current_tag else 'Tienda'"/></h1>
                 </t>
                 <t t-else="">
                     <span class="text-uppercase" t-esc="category.parent_id.name if category and category.parent_id else 'Bienvenido a Dismac, {}'.format(request.env.user.name)"/>

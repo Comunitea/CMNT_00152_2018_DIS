@@ -4,6 +4,13 @@
     box-shadow: 0 0 0 0.1875rem white, 0 0 0 0.25rem @color-secondary;
 }
 
+/* margin between search zone and products */
+.justify-content-center {
+    & .o_website_sale_search, .dropdown.ml-2 {
+        margin-bottom: 8px;
+    }
+}
+
 /* Ecommerce categories */
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     background-color: @color-secondary;
@@ -28,7 +35,7 @@
     .ribbon-wrapper.ribbon-wrapper-list {
         width: 70px;
         right: 0;
-        left: 45px;
+        left: 100px;
         &.oe_ribbon_promo {
              display: block;
         }

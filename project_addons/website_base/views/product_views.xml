@@ -66,7 +66,7 @@
                                 <field name="website_meta_description"/>
                             </group>
                         </page>
-                        <page string="Categories">
+                        <page string="Category">
                             <group>
                                 <field name="category_id" widget="one2many_tags"/>
                             </group>
@@ -156,7 +156,6 @@
                                 <field name="website_published"/>
                                 <field name="start_date" widget="date"/>
                                 <field name="end_date" widget="date"/>
-                                <field name="category_id" widget="one2many_tags"/>
                             </tree>
                             <form>
                                 <field name="image_medium" widget='image' class="oe_avatar"/>
@@ -346,11 +345,23 @@
               parent="website_sale.menu_catalog" sequence="5"/>
 
     <!-- Configuration sub-menus -->
-    <menuitem id="menu_product_offers"
+    <menuitem id="menu_product_offers" name="Offers"
               action="product_offer_action"
               parent="website_sale.menu_product_settings" sequence="4"/>
 
     <!-- Sales Menu -->
     <menuitem id="product_offer_menu_catalog" name="Offers" action="product_offer_action" parent="sale.product_menu_catalog" sequence="9" groups="sales_team.group_sale_salesman"/>
+
+    <!-- Product Customerinfo -->    
+    <record id="product_customerinfo_min_qty_form_view" model="ir.ui.view">
+        <field name="name">product.customerinfo.min_qty.form.view</field>
+        <field name="model">product.customerinfo</field>
+        <field name="inherit_id" ref="product_supplierinfo_for_customer.product_customerinfo_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_name']" position="after">
+                <field name="min_product_qty"/>                
+            </xpath>
+        </field>
+    </record>
 
 </odoo>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="payment_tokens_list_lock" name="Payment Tokens List Lock" inherit_id="payment.payment_tokens_list">
+        <xpath expr="//button[@id='o_payment_form_pay']" position="after">
+            <input id="o_payment_form_pay" type="hidden"/>
+            <a t-if="errors" type="submit" href="/shop" t-att-class="submit_class if submit_class else 'btn btn-primary btn-lg mb8 mt8'">
+                Return to Shop
+                <i class="fa fa-chevron-right"/>
+            </a>
+        </xpath>
+
+        <xpath expr="//button[@id='o_payment_form_pay']" position="attributes">
+            <attribute name="t-if">mode == 'payment' and not errors</attribute>
+        </xpath>
+    </template>
+
+    <template id="payment_skip_replace_button" inherit_id="website_sale_checkout_skip_payment.payment">
+        <xpath expr="//div[@id='skip_payment_method']" position="attributes">
+            <attribute name="t-if">website.checkout_skip_payment and not errors</attribute>
+        </xpath>
+    </template>
+
+    <template id="website_sale_total_counters" name="Website Cart Total Counters" inherit_id="website_sale.total">
+        <xpath expr="//tr[@id='order_total']" position="after">
+            <tr id="needed_for_min_amount_order" t-if="website_sale_order.needed_for_min_amount_order &gt; 0.0">
+                <td class="text-right"><strong>For Min. Amount:</strong></td>
+                <td class="text-xl-right">
+                    <strong t-field="website_sale_order.needed_for_min_amount_order"
+                        t-options='{"widget": "monetary", "display_currency": website_sale_order.pricelist_id.currency_id}'/>
+                </td>
+            </tr>
+        </xpath>
+    </template>
+
+    <template id="cart_delivery_counters" name="Delivery Costs Counters" inherit_id="website_sale_delivery.cart_delivery">
+        <xpath expr="//tr[@id='order_delivery']" position="after">
+            <tr id="needed_for_free_shipping" t-if="website_sale_order.needed_for_free_shipping &gt; 0.0">
+                <td class="text-right"><strong>For free delivery:</strong></td>
+                <td class="text-xl-right">
+                    <strong t-field="website_sale_order.needed_for_free_shipping"
+                        t-options='{"widget": "monetary", "display_currency": website_sale_order.pricelist_id.currency_id}'/>
+                </td>
+            </tr>
+        </xpath>
+    </template>
+
+    <template id="payment_page_fix" inherit_id="payment.payment_process_page">
+        <xpath expr="//script" position="replace">
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) {
+                    odoo.define('payment.processing_bootstrap', function(require) {
+                        var PaymentProcessing = require('payment.processing');
+                        var processingWidget = new PaymentProcessing(null, <t t-esc="payment_tx_ids"/>);
+                        processingWidget.attachTo($('.o_payment_processing'));
+                    });
+                });
+            </script>
+        </xpath>
+    </template>
+
+    <template id="website_sale_payment_confirmation_status" inherit_id="website_sale.payment_confirmation_status">
+        <xpath expr="//div[hasclass('card')]/div" position="inside">
+            <t t-if="not payment_tx_id">
+                <span>Not payment transaction was found for this order!</span>
+            </t>
+        </xpath>
+    </template>
+</odoo>

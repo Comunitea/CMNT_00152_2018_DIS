@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record model="ir.ui.view" id="view_partner_form">
+        <field name="name">res.partner.form.website.access.rights</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Website">
+                    <group>
+                        <separator string="Website Access Rights" colspan="4"/>
+                        <group>
+                            <field name="website_access_rights"/>
+                        </group>
+                        <separator string="Website Show Rights" colspan="4"/>
+                        <group>
+                            <field name="show_history"/>
+                            <field name="show_invoices"/>
+                            <field name="show_all_catalogue"/>
+                            <field name="show_customer_price"/>
+                        </group>
+                        <separator string="Website Options" colspan="4"/>
+                        <group>
+                            <field name="skip_website_checkout_payment"/>
+                            <field name="order_validator"/>
+                            <field name="global_order_validator"/>
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+            <xpath expr="//field[@name='skip_website_checkout_payment']" position="replace">
+                <field name="skip_website_checkout_payment" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

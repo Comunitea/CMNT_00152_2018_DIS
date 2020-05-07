@@ -31,24 +31,25 @@ class ResPartner(models.Model):
             sale_order_obj = self.env["sale.order"].search(
                 [("partner_id", "=", partner.id)], limit=1, order="id desc"
             )
-            claimable_on = (
-                sale_order_obj.date_order or partner.create_date
-            ) + relativedelta(
-                days=+partner.days_without_order_or_quotation
-                or sale_order_obj.type_id.days_without_order_or_quotation
-            )
-            unclaimed_for = partner.claimed_on + relativedelta(
-                days=+partner.unclaimable_for
-                or sale_order_obj.type_id.unclaimable_for
-            )
-            end_claimable_on = max(claimable_on, unclaimed_for)
-            today_date = datetime.now()
-            if end_claimable_on <= today_date:
-                is_claimable = True
-            else:
-                is_claimable = False
-            partner.claimable_on = end_claimable_on
-            partner.is_claimable = is_claimable
+            if sale_order_obj:
+                claimable_on = (
+                    sale_order_obj.date_order or partner.create_date
+                ) + relativedelta(
+                    days=+partner.days_without_order_or_quotation
+                    or sale_order_obj.type_id.days_without_order_or_quotation
+                )
+                unclaimed_for = partner.claimed_on + relativedelta(
+                    days=+partner.unclaimable_for
+                    or sale_order_obj.type_id.unclaimable_for
+                )
+                end_claimable_on = max(claimable_on, unclaimed_for)
+                today_date = datetime.now()
+                if end_claimable_on <= today_date:
+                    is_claimable = True
+                else:
+                    is_claimable = False
+                partner.claimable_on = end_claimable_on
+                partner.is_claimable = is_claimable
 
     @api.multi
     @api.onchange("user_id")
