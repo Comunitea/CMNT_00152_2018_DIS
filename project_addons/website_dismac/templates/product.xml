@@ -334,7 +334,8 @@
                     <h1><span class="text-uppercase" t-esc="current_tag.name if current_tag else 'Tienda'"/></h1>
                 </t>
                 <t t-else="">
-                    <span class="text-uppercase" t-esc="category.parent_id.name if category and category.parent_id else 'Bienvenido a Dismac, {}'.format(request.env.user.name)"/>
+                    <span class="text-uppercase" t-esc="category.parent_id.name if category and category.parent_id else 'Bienvenido a Dismac'"/>
+                    <span t-esc="', {}'.format(request.env.user.name)" groups="base.group_portal, base.group_user"/>
                     <h1><span class="text-uppercase" t-esc="category.name if category else 'Tienda'"/></h1>
                 </t>
             </div>
