@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="base.group_portal" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('base_report_to_printer.printing_group_user'))]"/>
+    </record>
+</odoo>

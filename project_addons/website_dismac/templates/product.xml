@@ -56,8 +56,17 @@
         <xpath expr="//ul" position="attributes">
             <attribute name="class" add="menu-category" separator=" "/>
         </xpath>
-        <xpath expr="//ul//li//a" position="attributes">
-            <attribute name="t-attf-class" add="pt8 text-uppercase nav-link#{'' if category or product_category and product_category.category_id else ' active mb4 pl-2 pr-2'} o_not_editable" separator=" "/>
+        <xpath expr="//ul//li//a" position="replace">
+            <a t-att-href="keep('/shop', category=0)"
+               t-attf-class="pt8 text-uppercase nav-link#{'' if category or product_category and product_category.category_id else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
+
+        </xpath>
+    </template>
+
+    <template id="website_seo_settings_website_sale_products_categories" inherit_id="website_seo_settings.website_sale_products_categories" name="eCommerce Categories Seo">
+        <!-- Add Categories Title -->
+        <xpath expr="//h5" position="replace">
+            <h5 class="text-uppercase grid-before-categ"><strong>Categorías</strong></h5>
         </xpath>
     </template>
 
@@ -334,7 +343,8 @@
                     <h1><span class="text-uppercase" t-esc="current_tag.name if current_tag else 'Tienda'"/></h1>
                 </t>
                 <t t-else="">
-                    <span class="text-uppercase" t-esc="category.parent_id.name if category and category.parent_id else 'Bienvenido a Dismac, {}'.format(request.env.user.name)"/>
+                    <span class="text-uppercase" t-esc="category.parent_id.name if category and category.parent_id else 'Bienvenido a Dismac'"/>
+                    <span t-esc="', {}'.format(request.env.user.name)" groups="base.group_portal, base.group_user"/>
                     <h1><span class="text-uppercase" t-esc="category.name if category else 'Tienda'"/></h1>
                 </t>
             </div>

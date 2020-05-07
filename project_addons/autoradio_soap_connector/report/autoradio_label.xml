@@ -8,10 +8,10 @@
         <field name="page_height">130</field>
         <field name="page_width">100</field>
         <field name="orientation">Portrait</field>
-        <field name="margin_top">2</field>
-        <field name="margin_right">2</field>
-        <field name="margin_bottom">2</field>
-        <field name="margin_left">2</field>
+        <field name="margin_top">2.0</field>
+        <field name="margin_right">2.0</field>
+        <field name="margin_bottom">2.0</field>
+        <field name="margin_left">2.0</field>
         <field name="header_line" eval="False"/>
         <field name="header_spacing">0</field>
         <field name="dpi">90</field>
@@ -45,133 +45,129 @@
     <template id="autoradio_soap_connector.autoradio_label_individual_template">
         <div class="page" style="font-weight: bold; font-family: Helvetica; page-break-after: always;">
             <div class="row">
+                <div class="col-12">
+                    <div class="col-1" style="float: left; font-size: 27px; margin-left: -2px;">
+                        <span><strong>A</strong></span>
+                        <span><strong>U</strong></span>
+                        <span><strong>T</strong></span>
+                        <span><strong>O</strong></span>
+                        <span><strong>R</strong></span>
+                        <span><strong>A</strong></span>
+                        <span><strong>D</strong></span>
+                        <span><strong>I</strong></span>
+                        <span><strong>O</strong></span>
+                    </div>
 
-                <div class="col-1" style="float: left; font-size: 40px;">
-                    <span><strong>A</strong></span>
+                    <div class="col-11" style="float: left;">
+                        <span style="border-bottom: solid 2px black;">
+                            <span>
+                                <strong><span style="font-size: 30px;" t-esc="tag_data['delgestora_pnumdel']"/></strong>
+                            </span>
+                            <span style="font-size: 20px; margin-left: 10px;">
+                                <strong>Exp: <span t-esc="tag_data['ref_envio']"/></strong>
+                            </span>
+                            <span style="font-size: 15px; font-weight: lighter; margin-left: 10px;" t-esc="tag_data['fecha']"/>
+                        </span>
+                    </div>
+
+                    <div class="col-11" style="float: left;">
+                        <div style="border-bottom: solid 2px black;">
+                            <span style="font-size: 15px;">
+                                DESTINATARIO
+                            </span><br/>
+                            <span style="font-size: 15px;">
+                                <strong><span t-esc="tag_data['destinatario'][:30]"/></strong>
+                                <span style="margin-left: 10px; font-weight: lighter;" t-esc="tag_data['rutaentrega']"/>
+                            </span><br/>
+                            <span style="font-size: 15px;">
+                                <strong><span t-esc="tag_data['direcciondes']"/></strong>
+                            </span><br/>
+
+                            <span style="font-size: 15px;">
+                                <strong>
+                                    <span t-esc="tag_data['cpdes']"/>
+                                    <span style="margin-left: 5px;" t-esc="tag_data['poblaciodes']"/>
+                                    <span t-if="tag_data['tlfdes']" style="margin-left: 5px;" t-esc="tag_data['tlfdes']"/>
+                                </strong>
+                            </span> 
+                        </div>
+                    </div>
+
+                    <div class="col-11" style="float: left;">
+                        <div style=" border-bottom: solid 2px black;">
+                            <span style="font-size: 15px;">
+                                REMITENTE
+                            </span><br/>
+
+                            <span style="font-size: 15px; font-weight: lighter;">
+                                <span t-esc="tag_data['remitente']"/>
+                            </span><br/>
+
+                            <span style="font-size: 15px; font-weight: lighter;">
+                                <span t-esc="tag_data['direccionremi']"/>
+                            </span><br/>
+
+                            <span style="font-size: 15px; font-weight: lighter;">
+                                <span t-esc="tag_data['poblacionremi']"/> - <span t-esc="tag_data['cpremi']"/>
+                                <span style="margin-left: 50px;" t-if="tag_data['tlfremi']" t-esc="tag_data['tlfremi']"/>
+                            </span><br/>
+
+                            <span style="font-size: 15px; font-weight: lighter;">
+                                Ref. Cliente: <span t-esc="tag_data['refcliente']"/>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-11" style="float: left;">
+                        <div style=" border-bottom: solid 2px black;">
+                            <span style="font-size: 15px; font-weight: lighter;">
+                                <span t-if="tag_data['obser']" t-esc="tag_data['obser']"/>
+                                <span t-if="tag_data['ampliaobserv']" t-esc="tag_data['ampliaobserv']"/>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-11" style="float: left; font-size: 24px;">
+                        <div style=" border-bottom: solid 2px black;">
+                            <span style="font-size: 15px; font-weight: lighter;" t-if="float(tag_data['reembolso']) != 0.0000">
+                                Reembolso: <span t-esc="tag_data['reembolso']"/>
+                            </span>
+                            
+                            <span style="font-size: 15px; margin-left: 50%; text-transform: uppercase;" t-esc="tag_data['tipoporte']"/>
+                        </div>
+
+                    </div>
+
+                    <div class="col-11" style="float: left;">
+                        <div>
+                            <span style="margin-left: 80%; font-size: 15px;" t-esc="tag_data['kilos']"/>
+                        </div>
+                    </div>
+
+                    <div class="col-11" style="float: left;">
+                        <div style="font-size: 25px; border-bottom: solid 2px black;">
+
+                            <span style="margin-left: 30%;" t-esc="tag_data['servicio']"/>
+
+                            <span style="margin-left: 30%;">
+                                <span t-esc="I"/>/<span t-esc="tag_data['bultos']"/>
+                            </span>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="col-11" style="float: left; border-bottom: solid 2px black;">
-                    <span>
-                        <strong><span style="font-size: 40px;" t-esc="tag_data['delgestora_pnumdel']"/></strong>
-                    </span>
-                    <span style="font-size: 35px; margin-left: 10px;">
-                        <strong>Exp: <span t-esc="tag_data['ref_envio']"/></strong>
-                    </span>
-                    <span style="margin-left: 10px;" t-esc="tag_data['fecha']"/>
-                </div>
-
-                <div class="col-1" style="float: left; font-size: 40px;">
-                    <span><strong>U</strong></span><br/>
-                    <span><strong>T</strong></span><br/>
-                </div>
-
-                <div class="col-11" style="float: left; border-bottom: solid 2px black;">
-                    <span>
-                        DESTINATARIO
-                    </span><br/>
-                    <span style="font-size: 25px;">
-                        <strong><span t-esc="tag_data['destinatario'][:35]"/></strong>
-                        <span style="margin-left: 10px; font-weight: lighter;" t-esc="tag_data['rutaentrega']"/>
-                    </span><br/>
-                    <span style="font-size: 25px;">
-                        <strong><span t-esc="tag_data['direcciondes']"/></strong>
-                    </span><br/>
-
-                    <span style="font-size: 25px;">
-                        <strong>
-                            <span t-esc="tag_data['cpdes']"/>
-                            <span style="margin-left: 5px;" t-esc="tag_data['poblaciodes']"/>
-                            <span t-if="tag_data['tlfdes']" style="margin-left: 5px;" t-esc="tag_data['tlfdes']"/>
-                        </strong>
-                    </span>
-                    
-                </div>
-
-                <div class="col-1" style="float: left; font-size: 40px;">
-                    <span><strong>O</strong></span><br/>
-                    <span><strong>R</strong></span><br/>
-                </div>
-
-                <div class="col-11" style="float: left; border-bottom: solid 2px black;">
-                    <span>
-                        REMITENTE
-                    </span><br/>
-
-                    <span style="font-size: 20px; font-weight: lighter;">
-                        <span t-esc="tag_data['remitente']"/>
-                    </span><br/>
-
-                    <span style="font-size: 20px; font-weight: lighter;">
-                        <span t-esc="tag_data['direccionremi']"/>
-                    </span><br/>
-
-                    <span style="font-size: 20px; font-weight: lighter;">
-                        <span t-esc="tag_data['poblacionremi']"/> - <span t-esc="tag_data['cpremi']"/>
-                        <span style="margin-left: 50px;" t-if="tag_data['tlfremi']" t-esc="tag_data['tlfremi']"/>
-                    </span><br/>
-
-                    <span style="font-size: 20px; font-weight: lighter;">
-                        Ref. Cliente: <span t-esc="tag_data['refcliente']"/>
-                    </span>
-
-                </div>
-
-                <div class="col-1" style="float: left; font-size: 40px;">
-                    <span><strong>A</strong></span><br/>
-                </div>
-
-                <div class="col-11" style="float: left; border-bottom: solid 2px black; min-height: 50px;">
-                    <span>
-                        <span t-if="tag_data['obser']" t-esc="tag_data['obser']"/>
-                        <span t-if="tag_data['ampliaobserv']" t-esc="tag_data['ampliaobserv']"/>
-                    </span>
-                </div>
-
-                <div class="col-1" style="float: left; font-size: 40px;">
-                    <span><strong>D</strong></span>
-                </div>
-
-                <div class="col-11" style="float: left; border-bottom: solid 2px black; font-size: 24px;">
-                    
-                    <span t-if="float(tag_data['reembolso']) != 0.0000">
-                        Reembolso: <span t-esc="tag_data['reembolso']"/>
-                    </span>
-                    
-                    <span style="margin-left: 50%; border-left: solid 2px black; text-transform: uppercase;" t-esc="tag_data['tipoporte']"/>
-
-                </div>
-
-                <div class="col-1" style="float: left; font-size: 40px;">
-                    <span><strong>I</strong></span>
-                </div>
-
-                <div class="col-11" style="float: left;">
-                    <span style="margin-left: 60%; font-size: 15px;" t-esc="tag_data['kilos']"/>
-                </div>
-
-                <div class="col-1" style="float: left; font-size: 40px;">
-                    <span><strong>O</strong></span>
-                </div>
-
-                <div class="col-11" style="float: left; border-bottom: solid 2px black; font-size: 40px;">
-                    <span style="margin-left: 30%;" t-esc="tag_data['servicio']"/>
-
-                    <span style="border-left: solid 2px black;">
-                        <span t-esc="I"/>/<span t-esc="tag_data['bultos']"/>
-                    </span>
-                </div>
-                
             </div>
+
+
             <div class="row" style="border-bottom: solid 2px black;">
                 <div class="col-12">
                     <span>
-                        <div style="font-size:50px;" t-esc="tag_data['canaliza_descrip']"/>
+                        <div style="font-size:30px;" t-esc="tag_data['canaliza_descrip']"/>
                     </span>
                 </div>
             </div>
 
             <div class="row">
-                <img alt="barcode" t-if="tag_data['ccbb']" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', tag_data['ccbb'], 1200, 240)" style="max-width:80%; margin-top: 10px;" align="center"/>
+                <img alt="barcode" t-if="tag_data['ccbb']" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', tag_data['ccbb'], 1200, 240)" style="max-width:100%; margin-top: 10px;" align="center"/>
             </div>
         </div>
     </template>
