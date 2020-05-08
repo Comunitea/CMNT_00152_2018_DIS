@@ -80,6 +80,29 @@ class ResPartnerAccess(models.Model):
         elif self.website_access_rights == 'all':
             return self.env['res.partner'].browse(self.commercial_partner_id.id or self.id)
 
+    @api.multi
+    def write(self, vals):
+        res = super(ResPartnerAccess, self).write(vals)
+        for user in self:
+            user_ids = self.env['res.users'].search([('partner_id', '=', user.id)])
+            if 'website_access_rights' in vals:
+                for user_id in user_ids:
+                    group_sale_access_parent_id = self.env.ref('website_base.group_sale_access_parent_id')
+                    group_sale_access_commercial_partner_id = self.env.ref('website_base.group_sale_access_commercial_partner_id')
+                    if vals['website_access_rights'] == 'delegation':
+                        if group_sale_access_parent_id.id not in user_id.groups_id.ids:
+                            user_id.update({'groups_id': [(4, group_sale_access_parent_id.id)]})
+                        if group_sale_access_commercial_partner_id.id in user_id.groups_id.ids:
+                            user_id.update({'groups_id': [(3, group_sale_access_commercial_partner_id.id)]})
+                    elif vals['website_access_rights'] == 'all':
+                        if group_sale_access_commercial_partner_id.id not in user_id.groups_id.ids:
+                            user_id.update({'groups_id': [(4, group_sale_access_commercial_partner_id.id)]})
+                    else:
+                        if group_sale_access_commercial_partner_id.id in user_id.groups_id.ids:
+                            user_id.update({'groups_id': [(3, group_sale_access_commercial_partner_id.id)]})
+                        if group_sale_access_parent_id.id in user_id.groups_id.ids:
+                            user_id.update({'groups_id': [(3, group_sale_access_parent_id.id)]})
+        return res
 
     @api.onchange('order_validator')
     def _onchange_order_validator(self):

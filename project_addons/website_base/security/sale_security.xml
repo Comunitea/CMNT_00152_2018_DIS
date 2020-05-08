@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-<data noupdate="1">
+<data>
+
+    <!-- Groups -->
+    <record model="res.groups" id="group_sale_access_parent_id">
+        <field name="name">Access to delegation sales</field>
+    </record>
+
+    <record model="res.groups" id="group_sale_access_commercial_partner_id">
+        <field name="name">Access to all comercial partner sales</field>
+    </record>
 
     <!-- Portal Access Rules -->
     <record id="sale_report_rule_portal" model="ir.rule">
@@ -22,11 +31,25 @@
         <field name="groups" eval="[(4, ref('base.group_portal')), (4, ref('base.group_user'))]"/>
     </record>
 
-    <record id="sale_order_rule" model="ir.rule">
-        <field name="name">See own Sale orders</field>
+    <record id="sale_quote_order_normal" model="ir.rule">
+        <field name="name">See own orders</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="domain_force">[('partner_id','=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal')), (4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="sale_order_rule_delegation" model="ir.rule">
+        <field name="name">See delegation Sale orders</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="domain_force">[('partner_id','child_of', [user.parent_id.id])]</field>
+        <field name="groups" eval="[(4, ref('website_base.group_sale_access_parent_id'))]"/>
+    </record>
+
+    <record id="sale_order_rule_all" model="ir.rule">
+        <field name="name">See all comercial partner Sale orders</field>
         <field name="model_id" ref="sale.model_sale_order"/>
         <field name="domain_force">[('partner_id','child_of', [user.commercial_partner_id.id])]</field>
-        <field name="groups" eval="[(4, ref('base.group_portal')), (4, ref('base.group_user'))]"/>
+        <field name="groups" eval="[(4, ref('website_base.group_sale_access_commercial_partner_id'))]"/>
     </record>
 
     <record id="customer_price_rule" model="ir.rule">
