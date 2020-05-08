@@ -42,7 +42,9 @@ class ResPartnerAccess(models.Model):
 
     order_validator = fields.Many2one('res.users', string='Orders Validator')
     global_order_validator = fields.Many2one('res.users', related='commercial_partner_id.order_validator', string='Global Orders Validator')
-    active_portal_user = fields.Boolean('Con usuario web', compute="_compute_active_portal_user", search="_search_active_portal_user")
+    active_portal_user = fields.Boolean(string='Con usuario web activo', compute="_compute_active_portal_user", search="_search_active_portal_user")
+    external_review = fields.Boolean('Need external review (UVigo)')
+    wholesaler = fields.Boolean('Mayorista')
 
     def _search_active_portal_user(self, operator, operand):
         users = self.env['res.users'].search([])

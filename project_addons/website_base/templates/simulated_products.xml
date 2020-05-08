@@ -182,6 +182,7 @@
                             <span t-if="combination_info['price']" t-esc="combination_info['price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
                             <span itemprop="price" style="display:none;" t-esc="combination_info['price']" />
                             <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name" />
+                            <span> + IVA</span>
                         </b>
                         <!-- Miniature buttons -->
                         <t t-set="product_variant_id" t-value="product._get_first_possible_variant_id()"/>
@@ -394,6 +395,7 @@
                                     </t>
                                 </t>
                                 <t t-call="website_sale.product_price" />
+                                
                                 <p t-if="True" class="css_not_available_msg alert alert-warning">Esta combinación no existe.</p>
                                 <a role="button" id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#"><span class="fa fa-shopping-cart" /></a>
                                 <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />

@@ -199,14 +199,21 @@ class WebsiteSale(WebsiteSale):
     @http.route()
     def payment_confirmation(self, **post):
         order = request.env['sale.order'].sudo().browse(request.session.get('sale_last_order_id'))
-        if order.need_validation:
-            # try to validate operation
-            reviews = order.request_validation()
-            order._validate_tier(reviews)
-            if order._calc_reviews_validated(reviews):
-                return super().payment_confirmation(**post)
+
+        if order.partner_id.external_review or order.commercial_partner_id.external_review:
+            # Para pedidos USC , se hace revisión exernal
+            request.website.get_new_cart()
+            order.write({'state': 'sent'})
+            return request.render("website_base.external_pending_validation", {'order': order})
+        else: 
+            if order.need_validation:
+                # try to validate operation
+                reviews = order.request_validation()
+                order._validate_tier(reviews)
+                if order._calc_reviews_validated(reviews):
+                    return super().payment_confirmation(**post)
+                else:
+                    request.website.get_new_cart()
+                    return request.render("website_base.pending_validation", {'order': order})
             else:
-                request.website.get_new_cart()
-                return request.render("website_base.pending_validation", {'order': order})
-        else:
-            return super().payment_confirmation(**post)
+                return super().payment_confirmation(**post)

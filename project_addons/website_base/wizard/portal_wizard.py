@@ -18,6 +18,7 @@ class PortalWizardUser(models.TransientModel):
     _inherit = 'portal.wizard.user'
 
     new_passwd = fields.Char(string='New Password', default='')
+    login = fields.Char(string='Login', default='')
 
     @api.multi
     def get_error_messages(self):
@@ -28,30 +29,30 @@ class PortalWizardUser(models.TransientModel):
             partners_error_user = self.env['res.partner']
 
             for wizard_user in self.with_context(active_test=False).filtered(lambda w: w.in_portal and not w.partner_id.user_ids):
-                email = wizard_user.email
-                if not email:
+                login = wizard_user.login
+                if not login:
                     partners_error_empty |= wizard_user.partner_id
-                elif email in emails:
+                elif login in emails:
                     partners_error_emails |= wizard_user.partner_id
-                user = self.env['res.users'].sudo().with_context(active_test=False).search([('login', '=ilike', email)])
+                user = self.env['res.users'].sudo().with_context(active_test=False).search([('login', '=ilike', login)])
                 if user:
                     partners_error_user |= wizard_user.partner_id
-                emails.append(email)
+                emails.append(login)
 
             error_msg = []
             if partners_error_empty:
-                error_msg.append("%s\n- %s" % (_("Some contacts don't have a valid email: "),
+                error_msg.append("%s\n- %s" % (_("Some contacts don't have a valid login: "),
                                     '\n- '.join(partners_error_empty.mapped('display_name'))))
             if partners_error_emails:
-                error_msg.append("%s\n- %s" % (_("Several contacts have the same email: "),
+                error_msg.append("%s\n- %s" % (_("Several contacts have the same login: "),
                                     '\n- '.join(partners_error_emails.mapped('email'))))
             if partners_error_user:
-                error_msg.append("%s\n- %s" % (_("Some contacts have the same email as an existing portal user:"),
+                error_msg.append("%s\n- %s" % (_("Some contacts have the same login as an existing portal user:"),
                                     '\n- '.join(['%s <%s>' % (p.display_name, p.email) for p in partners_error_user])))
             if error_msg:
                 error_msg.append(_("To resolve this error, you can: \n"
-                    "- Correct the emails of the relevant contacts\n"
-                    "- Grant access only to contacts with unique emails"))
+                    "- Correct the logins of the relevant contacts\n"
+                    "- Grant access only to contacts with unique logins"))
             return error_msg
         else:
             return super(PortalWizardUser, self).get_error_messages()
@@ -73,6 +74,7 @@ class PortalWizardUser(models.TransientModel):
                 #Checking if the partner has a linked user
                 user = wizard_user.partner_id.user_ids[0] if wizard_user.partner_id.user_ids else None
                 # update partner email, if a new one was introduced
+               
                 if wizard_user.partner_id.email != wizard_user.email:
                     wizard_user.partner_id.write({'email': wizard_user.email})
                 # add portal group to relative user of selected partners
@@ -84,6 +86,8 @@ class PortalWizardUser(models.TransientModel):
                             company_id = wizard_user.partner_id.company_id.id
                         else:
                             company_id = self.env['res.company']._company_default_get('res.users').id
+                        wizard_user.partner_id.wholesaler = True
+                        wizard_user.partner_id.skip_website_checkout_payment = True
                         user_portal = wizard_user.sudo().with_context(company_id=company_id)._create_user()
                     else:
                         user_portal = user
@@ -110,7 +114,7 @@ class PortalWizardUser(models.TransientModel):
             company_id = self.env.context.get('company_id')
             user = self.env['res.users'].with_context(no_reset_password=True)._create_user_from_template({
                 'email': self.email,
-                'login': self.email,
+                'login': self.login,
                 'partner_id': self.partner_id.id,
                 'company_id': company_id,
                 'company_ids': [(6, 0, [company_id])],
