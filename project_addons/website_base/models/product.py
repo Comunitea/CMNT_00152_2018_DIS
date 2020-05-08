@@ -172,3 +172,19 @@ class ProductTemplate(models.Model):
             customer_product_data = self.env['sale.report'].sudo().search_read(customer_domain, ['confirmation_date'], order="confirmation_date desc")
 
             template.partner_last_order = customer_product_data[0]['confirmation_date']
+
+    @api.multi
+    def _get_combination_info(self, combination=False, product_id=False, add_qty=1, pricelist=False, parent_combination=False, only_template=False):
+       
+        self.ensure_one()
+
+        combination_info = super(ProductTemplate, self)._get_combination_info(
+            combination=combination, product_id=product_id, add_qty=add_qty, pricelist=pricelist,
+            parent_combination=parent_combination, only_template=only_template)
+
+        tax_price = round(combination_info['price'] * (1 + self.sudo().taxes_id[0].amount / 100), 2)
+        combination_info.update(
+            tax_price=tax_price,
+        )
+
+        return combination_info

@@ -51,4 +51,18 @@
         </xpath>
     </template>
 
+    <template id="tax_price" name="Tax prices list view" inherit_id="website_sale.product_price">
+        <xpath expr="//b[hasclass('oe_price')]" position="after">
+            <br/>
+                <b class="oe_price_tax" style="white-space: nowrap;" t-esc="combination_info['tax_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/> con IVA
+        </xpath>
+    </template>
+
+    <template id="tax_price_list" name="Tax prices list view" inherit_id="website_sale.products_item">
+        <xpath expr="//span[@t-if=&quot;combination_info[&apos;price&apos;]&quot;]" position="after">
+             + IVA
+        </xpath>
+    </template>
+
+
 </odoo>

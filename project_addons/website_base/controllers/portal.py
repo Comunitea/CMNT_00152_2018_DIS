@@ -13,8 +13,9 @@ from odoo.osv.expression import OR
 
 from odoo.addons.website.controllers.main import QueryURL
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager, get_records_pager
-from odoo.addons.website_sale.controllers.main import WebsiteSale, TableCompute
+
 from werkzeug.exceptions import Unauthorized
+
 
 class CustomerPortal(CustomerPortal):
 
@@ -40,16 +41,18 @@ class CustomerPortal(CustomerPortal):
 
         if request.env.user.partner_id.show_history:
 
-            history_count = len(SaleReport.read_group([('product_id.type', 'in', ('consu', 'product')), ('order_partner_id', 'child_of', partner_id.id), ('state', 'in', ('sale', 'done'))],
-                                                    ['product_uom_qty'], ['product_id', 'order_partner_id']))
-
+            history_count = len(SaleReport.read_group([('product_id.type', 'in', ('consu', 'product')),
+                                                       ('order_partner_id', 'child_of', partner_id.id),
+                                                       ('state', 'in', ('sale', 'done'))],
+                                                      ['product_uom_qty'], ['product_id', 'order_partner_id']))
 
             updated_values['history_count'] = history_count
 
         if not request.env.user.partner_id.show_invoices:
             updated_values['invoice_count'] = 0.0
         
-        review_count = len(request.env.user.review_ids.filtered(lambda x: x.status == 'pending' and x.model == 'sale.order').ids)
+        review_count = len(request.env.user.review_ids.filtered(
+            lambda x: x.status == 'pending' and x.model == 'sale.order').ids)
         updated_values['review_count'] = review_count
 
         values.update(updated_values)
@@ -71,8 +74,8 @@ class CustomerPortal(CustomerPortal):
         if filterby:
             customer_domain += filterby
         
-        customer_products = request.env['sale.order.line'].read_group(customer_domain, ['product_id'],
-                                                                  ['product_id', 'order_partner_id'])
+        customer_products = request.env['sale.order.line'].read_group(
+            customer_domain, ['product_id'], ['product_id', 'order_partner_id'])
         
         if len(customer_products) > 0:
             product_ids = [x['product_id'][0] for x in customer_products] 
@@ -84,7 +87,8 @@ class CustomerPortal(CustomerPortal):
         return domain
 
     @http.route(['/my/history'], type='http', auth="user", website=True)
-    def portal_my_history(self, page=1, sortby=None, search=None, search_in='all', filterby=None, filterby_date=None, **kw):
+    def portal_my_history(self, page=1, sortby=None, search=None, search_in='all', filterby=None, filterby_date=None,
+                          **kw):
         values = self._prepare_portal_layout_values()
         if not request.env.user.partner_id.show_history:
             raise Unauthorized(_("You are not authorized to see purchase history."))
@@ -106,11 +110,16 @@ class CustomerPortal(CustomerPortal):
          
         searchbar_date_filters = {
             'all': {'label': _('All'), 'domain': []},
-            'last_year': {'label': _('Last 12 Months'), 'domain': [('create_date', '>=', (datetime.datetime.today() - relativedelta(years=1)).strftime('%Y-%m-%d'))]},
-            'six_months': {'label': _('Last 6 Months'), 'domain': [('create_date', '>=', (datetime.datetime.today() - relativedelta(months=6)).strftime('%Y-%m-%d'))]},
-            'three_months': {'label': _('Last 3 Months'), 'domain': [('create_date', '>=', (datetime.datetime.today() - relativedelta(months=3)).strftime('%Y-%m-%d'))]},
-            'last_month': {'label': _('Last 30 Days'), 'domain': [('create_date', '>=', (datetime.datetime.today() - relativedelta(days=30)).strftime('%Y-%m-%d'))]},
-            'last_week': {'label': _('This Week'), 'domain': [('create_date', '>=', (datetime.datetime.today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]},
+            'last_year': {'label': _('Last 12 Months'), 'domain': [
+                ('create_date', '>=', (datetime.datetime.today() - relativedelta(years=1)).strftime('%Y-%m-%d'))]},
+            'six_months': {'label': _('Last 6 Months'), 'domain': [
+                ('create_date', '>=', (datetime.datetime.today() - relativedelta(months=6)).strftime('%Y-%m-%d'))]},
+            'three_months': {'label': _('Last 3 Months'), 'domain': [
+                ('create_date', '>=', (datetime.datetime.today() - relativedelta(months=3)).strftime('%Y-%m-%d'))]},
+            'last_month': {'label': _('Last 30 Days'), 'domain': [
+                ('create_date', '>=', (datetime.datetime.today() - relativedelta(days=30)).strftime('%Y-%m-%d'))]},
+            'last_week': {'label': _('This Week'), 'domain': [
+                ('create_date', '>=', (datetime.datetime.today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]},
         }
 
         searchbar_inputs = {
@@ -123,7 +132,9 @@ class CustomerPortal(CustomerPortal):
         addresses = partner.child_ids
         for address in addresses:
             searchbar_filters.update({
-                str(address.id): {'label': address.name, 'domain': ['|', ('order_id.partner_shipping_id', 'child_of', address.id), ('order_id.partner_id', 'child_of', address.id)]}
+                str(address.id): {'label': address.name, 'domain': [
+                    '|', ('order_id.partner_shipping_id', 'child_of', address.id),
+                    ('order_id.partner_id', 'child_of', address.id)]}
             })
             if filterby == str(address.id):
                 ctx.update(selected_partner=address.id)
@@ -192,12 +203,15 @@ class CustomerPortal(CustomerPortal):
         return request.render("website_base.portal_my_history", values)
     
     @http.route(['/my/reviews', '/my/reviews/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_my_reviews(self, page=1, sortby=None, date_begin=None, date_end=None, search=None, search_in='all', filterby=None, **kw):
+    def portal_my_reviews(self, page=1, sortby=None, date_begin=None, date_end=None, search=None, search_in='all',
+                          filterby=None, **kw):
         values = self._prepare_portal_layout_values()
         partner = request.env.user.partner_id._get_domain_partner()
         reviews = request.env.user.review_ids
         
-        sale_order_ids = request.env['tier.review'].search([('status', '=', 'pending'), ('model', '=', 'sale.order'), ('id', 'in', reviews.ids)]).mapped('res_id')
+        sale_order_ids = request.env['tier.review'].search([('status', '=', 'pending'),
+                                                            ('model', '=', 'sale.order'),
+                                                            ('id', 'in', reviews.ids)]).mapped('res_id')
         SaleOrder = request.env['sale.order']
 
         domain = [
@@ -288,7 +302,8 @@ class CustomerPortal(CustomerPortal):
     def portal_review_validation(self, order_id, validation, **kw):
         partner = request.env.user.partner_id._get_domain_partner()
         reviews = request.env.user.review_ids
-        review = request.env['tier.review'].search([('model', '=', 'sale.order'), ('id', 'in', reviews.ids), ('res_id', '=', order_id)], limit=1)
+        review = request.env['tier.review'].search([('model', '=', 'sale.order'), ('id', 'in', reviews.ids),
+                                                    ('res_id', '=', order_id)], limit=1)
         order_id = request.env['sale.order'].browse(int(order_id))
         
         if not review:
@@ -304,7 +319,6 @@ class CustomerPortal(CustomerPortal):
             order_id._update_counter()
             order_id._calc_reviews_validated(review)
             return request.redirect('/my')     
-
 
     @http.route(['/my/reviews/<int:order_id>'], type='http', auth="public", website=True)
     def portal_review_page(self, order_id, report_type=None, access_token=None, message=False, download=False, **kw):
@@ -334,7 +348,8 @@ class CustomerPortal(CustomerPortal):
         addresses = partner.child_ids
         for address in addresses:
             searchbar_filters.update({
-                str(address.id): {'label': address.name, 'domain': ['|', ('partner_shipping_id', 'child_of', address.id), ('partner_id', 'child_of', address.id)]}
+                str(address.id): {'label': address.name, 'domain': [
+                    '|', ('partner_shipping_id', 'child_of', address.id), ('partner_id', 'child_of', address.id)]}
             })
 
         if not filterby:

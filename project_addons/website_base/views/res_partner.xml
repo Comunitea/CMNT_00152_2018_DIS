@@ -9,22 +9,29 @@
             <notebook position="inside">
                 <page string="Website">
                     <group>
-                        <separator string="Website Access Rights" colspan="4"/>
-                        <group>
-                            <field name="website_access_rights"/>
-                        </group>
-                        <separator string="Website Show Rights" colspan="4"/>
-                        <group>
-                            <field name="show_history"/>
-                            <field name="show_invoices"/>
-                            <field name="show_all_catalogue"/>
-                            <field name="show_customer_price"/>
-                        </group>
-                        <separator string="Website Options" colspan="4"/>
-                        <group>
-                            <field name="skip_website_checkout_payment"/>
-                            <field name="order_validator"/>
-                            <field name="global_order_validator"/>
+                    <separator string="Cliente con acceso?"/>
+                    <field name ="active_portal_user"/>
+                        <group attrs="{'invisible':[('active_portal_user', '=', False)]}" cols="4">
+                            
+                            <separator string="Website Access Rights" colspan="4"/>
+                            <group >
+                                <field name="website_access_rights"/>
+                            </group>
+                            <separator string="Website Show Rights" colspan="4"/>
+                            <group>
+                                <field name="show_history"/>
+                                <field name="show_invoices"/>
+                                <field name="show_all_catalogue"/>
+                                <field name="show_customer_price"/>
+                            </group>
+                            <separator string="Website Options" colspan="4"/>
+                            <group>
+                                <field name="wholesaler"/>
+                                <field name="skip_website_checkout_payment"/>
+                                <field name="order_validator"/>
+                                <field name="global_order_validator"/>
+                                <field name="external_review"/>
+                            </group>
                         </group>
                     </group>
                 </page>

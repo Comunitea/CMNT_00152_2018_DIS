@@ -7,12 +7,12 @@
              <div class="row">
                  <div class="cookie-message">
                      <p class="mt8">Esta página utiliza cookies y otras tecnologías para que podamos mejorar tu experiencia en nuestro sitio:
-                         <a href="http://www.dismac.es/politica-de-cookies" alt="Enlace política de cookies"
+                         <a href="https://www.dismac.es/politica-de-cookies" alt="Enlace política de cookies"
                             title="Política de Cookies" rel="nofollow" target="_blank">Más información.</a>
                      </p>
                  </div>
                  <div class="cookie-buttons">
-                    <button class="btn btn-primary mt8 ml4" href="http://www.dismac.es/#catapultCookieRechazar"
+                    <button class="btn btn-primary mt8 ml4" href="https://www.dismac.es/#catapultCookieRechazar"
                             rel="noindex,nofollow" title="Rechazar" alt="Rechazar">Rechazar</button>
                     <button class="btn btn-primary mt8" href="#" rel="noindex,nofollow" title="Aceptar" alt="Aceptar">Aceptar</button>
                  </div>
