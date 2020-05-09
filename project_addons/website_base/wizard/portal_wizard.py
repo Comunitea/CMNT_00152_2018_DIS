@@ -128,6 +128,12 @@ class PortalWizardUser(models.TransientModel):
         else:
             return super(PortalWizardUser, self)._create_user()
 
+
+class PortalWizard(models.TransientModel):
+    _inherit = 'portal.wizard'
+
+
+
     def _default_user_ids(self):
         # for each partner, determine corresponding portal.wizard.user records
         if self._context.get('no_check_email') == True:
@@ -154,4 +160,6 @@ class PortalWizardUser(models.TransientModel):
                 return user_changes
             else:
                 return super(PortalWizardUser, self)._default_user_ids()
+
+    user_ids = fields.One2many('portal.wizard.user', 'wizard_id', string='Users',default=_default_user_ids)
 
