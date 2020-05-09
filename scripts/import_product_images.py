@@ -10,7 +10,7 @@ script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
 #path = '/home/santi/Documentos/DISMAC/IMPORTACION/2019-12
 # -18_Fotos_Articulos_Dismac_Enviados_a_Comunitea'
-path = '/home/comunitea/FOTOS_CARGA'
+path = '/home/comunitea/documentos_import/WEB/A_Subir'
 not_found = []
 dir = os.scandir(path)
 for arch in dir:
