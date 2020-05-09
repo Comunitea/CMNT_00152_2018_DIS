@@ -49,9 +49,10 @@
         <field name="inherit_id" ref="base.view_res_partner_filter" />
         <field name="arch" type="xml">
             <field name="category_id" position="before">
-                <filter string="active_portal_user" name="active_portal_user" domain="[('active_portal_user','=',True)]"/>
-                <filter string="Portfolio" name="portfolio" domain="[('portfolio','=',True)]"/>
-                <filter string="Wholesaler" name="wholesaler" domain="[('wholesaler','=',True)]"/>
+                <filter string="Usuario de WEB" name="active_portal_user" domain="[('active_portal_user','=',True)]"/>
+                <separator/>
+                <filter string="Cartera" name="portfolio" domain="[('portfolio','=',True)]"/>
+                <filter string="Mayorista" name="wholesaler" domain="[('wholesaler','=',True)]"/>
             </field>
             
         </field>
