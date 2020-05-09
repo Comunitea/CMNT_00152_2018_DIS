@@ -45,6 +45,7 @@ class ResPartnerAccess(models.Model):
     active_portal_user = fields.Boolean(string='Con usuario web activo', compute="_compute_active_portal_user", search="_search_active_portal_user")
     external_review = fields.Boolean('Need external review (UVigo)')
     wholesaler = fields.Boolean('Mayorista')
+    portfolio = fields.Boolean('Cliente cartera')
 
     def _search_active_portal_user(self, operator, operand):
         users = self.env['res.users'].search([])
@@ -63,10 +64,9 @@ class ResPartnerAccess(models.Model):
         
 
     def _compute_active_portal_user(self):
-        users = self.env['res.users'].search([('partner_id', 'in', self.ids)])
-
+        group_portal = self.env.ref('base.group_portal')
         for partner in self:
-            if users.filtered(lambda x: x.partner_id.id == partner.id):
+            if partner.user_ids and group_portal  in wizard_user.user_ids.groups_id:
                 partner.active_portal_user =  True 
             else: 
                 partner.active_portal_user = False

@@ -26,6 +26,7 @@
                             </group>
                             <separator string="Website Options" colspan="4"/>
                             <group>
+                                <field name="portfolio"/>
                                 <field name="wholesaler"/>
                                 <field name="skip_website_checkout_payment"/>
                                 <field name="order_validator"/>
@@ -39,6 +40,20 @@
             <xpath expr="//field[@name='skip_website_checkout_payment']" position="replace">
                 <field name="skip_website_checkout_payment" invisible="1"/>
             </xpath>
+        </field>
+    </record>
+
+    <record id="view_res_partner_portal_filter" model="ir.ui.view">
+        <field name="name">res.partner.portal.select</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter" />
+        <field name="arch" type="xml">
+            <field name="category_id" position="before">
+                <filter string="active_portal_user" name="active_portal_user" domain="[('active_portal_user','=',True)]"/>
+                <filter string="Portfolio" name="portfolio" domain="[('portfolio','=',True)]"/>
+                <filter string="Wholesaler" name="wholesaler" domain="[('wholesaler','=',True)]"/>
+            </field>
+            
         </field>
     </record>
 
