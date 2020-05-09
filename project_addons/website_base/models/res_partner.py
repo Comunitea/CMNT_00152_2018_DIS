@@ -42,13 +42,14 @@ class ResPartnerAccess(models.Model):
 
     order_validator = fields.Many2one('res.users', string='Orders Validator')
     global_order_validator = fields.Many2one('res.users', related='commercial_partner_id.order_validator', string='Global Orders Validator')
-    active_portal_user = fields.Boolean(string='Con usuario web activo', compute="_compute_active_portal_user", search="_search_active_portal_user")
+    active_portal_user = fields.Boolean('Usuario web activo', compute_sudo=True, compute="_compute_active_portal_user", search="_search_active_portal_user")
     external_review = fields.Boolean('Need external review (UVigo)')
     wholesaler = fields.Boolean('Mayorista')
     portfolio = fields.Boolean('Cliente cartera')
 
     def _search_active_portal_user(self, operator, operand):
-        users = self.env['res.users'].search([])
+        group_portal = self.env.ref('base.group_portal')
+        users = self.env['res.users'].sudo().search([('group_ids', 'in', group_portal)])
         partners = users.mapped('partner_id').ids
         partner_operator = ""
         if (
@@ -66,7 +67,7 @@ class ResPartnerAccess(models.Model):
     def _compute_active_portal_user(self):
         group_portal = self.env.ref('base.group_portal')
         for partner in self:
-            if partner.user_ids and group_portal  in wizard_user.user_ids.groups_id:
+            if partner.user_ids and group_portal  in partner.user_ids.groups_id:
                 partner.active_portal_user =  True 
             else: 
                 partner.active_portal_user = False
