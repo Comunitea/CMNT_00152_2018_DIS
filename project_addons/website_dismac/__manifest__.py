@@ -35,6 +35,7 @@
     'depends': [
         'account',
         'partner_statement',
+        'sgeede_infinite_scroll',
         'web',
         # 'website',
         'website_base',
