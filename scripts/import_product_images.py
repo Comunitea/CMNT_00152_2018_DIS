@@ -5,12 +5,12 @@ from os.path import abspath
 from os.path import join
 import base64
 
-session.open(db='odoo_12_DIS_PREPROD')
+session.open(db='odoo_12_DISMAC_07_05')
 script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
 #path = '/home/santi/Documentos/DISMAC/IMPORTACION/2019-12
 # -18_Fotos_Articulos_Dismac_Enviados_a_Comunitea'
-path = '/home/santi/Documentos/DISMAC/IMPORTACION/FOTOS_PRUEBA'
+path = '/home/santi/Documentos/DISMAC/WEB/A_Subir'
 not_found = []
 dir = os.scandir(path)
 for arch in dir:
