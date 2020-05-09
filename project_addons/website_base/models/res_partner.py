@@ -42,12 +42,15 @@ class ResPartnerAccess(models.Model):
 
     order_validator = fields.Many2one('res.users', string='Orders Validator')
     global_order_validator = fields.Many2one('res.users', related='commercial_partner_id.order_validator', string='Global Orders Validator')
-    active_portal_user = fields.Boolean(string='Con usuario web activo', compute="_compute_active_portal_user", search="_search_active_portal_user")
+    active_portal_user = fields.Boolean('Usuario web activo', compute_sudo=True, compute="_compute_active_portal_user", search="_search_active_portal_user")
     external_review = fields.Boolean('Need external review (UVigo)')
     wholesaler = fields.Boolean('Mayorista')
+    portfolio = fields.Boolean('Cliente cartera')
 
     def _search_active_portal_user(self, operator, operand):
-        users = self.env['res.users'].search([])
+        group_portal = self.env.ref('base.group_portal')
+        users = self.env['res.groups'].sudo().search([('id', '=', group_portal.id)]).users
+        #users = self.env['res.users'].sudo().search([(group_portal.id'groups_ids', 'in', )])
         partners = users.mapped('partner_id').ids
         partner_operator = ""
         if (
@@ -63,10 +66,9 @@ class ResPartnerAccess(models.Model):
         
 
     def _compute_active_portal_user(self):
-        users = self.env['res.users'].search([('partner_id', 'in', self.ids)])
-
+        group_portal = self.env.ref('base.group_portal')
         for partner in self:
-            if users.filtered(lambda x: x.partner_id.id == partner.id):
+            if partner.user_ids and group_portal  in partner.user_ids.groups_id:
                 partner.active_portal_user =  True 
             else: 
                 partner.active_portal_user = False
@@ -80,6 +82,29 @@ class ResPartnerAccess(models.Model):
         elif self.website_access_rights == 'all':
             return self.env['res.partner'].browse(self.commercial_partner_id.id or self.id)
 
+    @api.multi
+    def write(self, vals):
+        res = super(ResPartnerAccess, self).write(vals)
+        for user in self:
+            user_ids = self.env['res.users'].search([('partner_id', '=', user.id)])
+            if 'website_access_rights' in vals:
+                for user_id in user_ids:
+                    group_sale_access_parent_id = self.env.ref('website_base.group_sale_access_parent_id')
+                    group_sale_access_commercial_partner_id = self.env.ref('website_base.group_sale_access_commercial_partner_id')
+                    if vals['website_access_rights'] == 'delegation':
+                        if group_sale_access_parent_id.id not in user_id.groups_id.ids:
+                            user_id.update({'groups_id': [(4, group_sale_access_parent_id.id)]})
+                        if group_sale_access_commercial_partner_id.id in user_id.groups_id.ids:
+                            user_id.update({'groups_id': [(3, group_sale_access_commercial_partner_id.id)]})
+                    elif vals['website_access_rights'] == 'all':
+                        if group_sale_access_commercial_partner_id.id not in user_id.groups_id.ids:
+                            user_id.update({'groups_id': [(4, group_sale_access_commercial_partner_id.id)]})
+                    else:
+                        if group_sale_access_commercial_partner_id.id in user_id.groups_id.ids:
+                            user_id.update({'groups_id': [(3, group_sale_access_commercial_partner_id.id)]})
+                        if group_sale_access_parent_id.id in user_id.groups_id.ids:
+                            user_id.update({'groups_id': [(3, group_sale_access_parent_id.id)]})
+        return res
 
     @api.onchange('order_validator')
     def _onchange_order_validator(self):

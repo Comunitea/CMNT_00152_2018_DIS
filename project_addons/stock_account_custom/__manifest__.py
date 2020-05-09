@@ -15,6 +15,7 @@
         "customer_price",
     ],
     "data": [
+        "data/ir_cron.xml",
         "security/groups.xml",
         "security/ir.model.access.csv",
         "views/purchase_order.xml",

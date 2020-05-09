@@ -86,7 +86,7 @@ class PortalWizardUser(models.TransientModel):
                             company_id = wizard_user.partner_id.company_id.id
                         else:
                             company_id = self.env['res.company']._company_default_get('res.users').id
-                        wizard_user.partner_id.wholesaler = True
+                        wizard_user.partner_id.portfolio = True
                         wizard_user.partner_id.skip_website_checkout_payment = True
                         user_portal = wizard_user.sudo().with_context(company_id=company_id)._create_user()
                     else:
@@ -127,3 +127,39 @@ class PortalWizardUser(models.TransientModel):
             return user
         else:
             return super(PortalWizardUser, self)._create_user()
+
+
+class PortalWizard(models.TransientModel):
+    _inherit = 'portal.wizard'
+
+
+
+    def _default_user_ids(self):
+        # for each partner, determine corresponding portal.wizard.user records
+        if self._context.get('no_check_email') == True:
+            partner_ids = self.env.context.get('active_ids', [])
+            contact_ids = set()
+            user_changes = []
+            for partner in self.env['res.partner'].sudo().browse(partner_ids):
+                contact_partners = partner.child_ids | partner
+                for contact in contact_partners:
+                    # make sure that each contact appears at most once in the list
+                    if contact.id not in contact_ids:
+                        contact_ids.add(contact.id)
+                        in_portal = False
+                        login = None
+                        if contact.user_ids:
+                            in_portal = self.env.ref('base.group_portal') in contact.user_ids[0].groups_id
+                            login = contact.user_ids[0].login
+                        user_changes.append((0, 0, {
+                            'partner_id': contact.id,
+                            'email': contact.email,
+                            'in_portal': in_portal,
+                            'login': login or contact.ref 
+                        }))
+                return user_changes
+            else:
+                return super(PortalWizardUser, self)._default_user_ids()
+
+    user_ids = fields.One2many('portal.wizard.user', 'wizard_id', string='Users',default=_default_user_ids)
+

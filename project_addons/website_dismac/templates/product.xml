@@ -6,6 +6,27 @@
         <xpath expr="//t[@t-call='website_sale.products_item']" position="inside">
             <t t-set="show_list" t-value="True" />
         </xpath>
+        <!-- Adapt infinity scroll to custom seo url slug for categories in list view -->
+        <xpath expr="//div[hasclass('sgeede-infinite-pagination')]" position="before">
+            <t t-set="url" t-value="'/category/%s' % category.slug if category.slug else '/shop/category/%s' % slug(category)"/>
+            <t t-set="page" t-value="pager['page_next']['num']"/>
+            <t t-set="page_url" t-value="url+'/page/'+str(page)"/>
+        </xpath>
+        <xpath expr="//div[hasclass('sgeede-infinite-pagination')]/t/a" position="attributes">
+            <attribute name="t-att-href">page_url</attribute>
+        </xpath>
+    </template>
+
+    <template id="sgeede_infinite_scroll_products_infinite_scroll" inherit_id="sgeede_infinite_scroll.products_infinite_scroll" name="SGEEDE Infinite Scroll Dismac">
+        <!-- Adapt infinity scroll to custom seo url slug for categories in table view -->
+        <xpath expr="//tr[hasclass('sgeede-infinite-pagination')]" position="before">
+            <t t-set="url" t-value="'/category/%s' % category.slug if category.slug else '/shop/category/%s' % slug(category)"/>
+            <t t-set="page" t-value="pager['page_next']['num']"/>
+            <t t-set="page_url" t-value="url+'/page/'+str(page)"/>
+        </xpath>
+        <xpath expr="//tr[hasclass('sgeede-infinite-pagination')]//t//td//a" position="attributes">
+            <attribute name="t-att-href">page_url</attribute>
+        </xpath>
     </template>
 
     <template id="website_sale_products_item" name="Products Item Dismac" inherit_id="website_sale.products_item">
@@ -72,7 +93,7 @@
 
     <template id="option_collapse_categories_recursive_columns" name="Collapse Category Recursive Columns">
         <t t-foreach="categ.child_id" t-as="categ" t-if="categ.website_published">
-            <a t-att-href="keep('/shop/category/' + slug(categ), category=0)" t-attf-class="nav-link#{' active' if categ.id == int(category or 0) else ''}" t-field="categ.name"/>
+            <a t-att-href="'/category/%s' % categ.slug if categ.slug else keep('/shop/category/' + slug(categ), category=0)" t-attf-class="nav-link#{' active' if categ.id == int(category or 0) else ''}" t-field="categ.name"/>
             <t t-if="not search or categ.id in search_categories_ids">
                 <t t-call="website_dismac.option_collapse_categories_recursive_columns" />
             </t>
@@ -92,7 +113,7 @@
                 <t t-foreach="categ.child_id" t-as="categ" t-if="categ.website_published">
                     <t t-if="not search or categ.id in search_categories_ids">
                         <div class="nav-item float-left col-sm-8 col-md-6 col-lg-4">
-                            <strong><a t-att-href="keep('/shop/category/' + slug(categ), category=0)" t-attf-class="text-uppercase nav-link#{' active' if categ.id == int(category or 0) else ''}" t-field="categ.name"/></strong>
+                            <strong><a t-att-href="'/category/%s' % categ.slug if categ.slug else keep('/shop/category/' + slug(categ), category=0)" t-attf-class="text-uppercase nav-link#{' active' if categ.id == int(category or 0) else ''}" t-field="categ.name"/></strong>
                             <span class="nav-item">
                                 <t t-call="website_dismac.option_collapse_categories_recursive_columns" />
                             </span>

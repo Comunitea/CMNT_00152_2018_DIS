@@ -240,9 +240,12 @@
                 </tr>
                 <!-- SGEEDE Infinite Scroll -->
                 <t t-if="category">
+                    <t t-set="url" t-value="'/category/%s' % category.slug if category.slug else '/shop/category/%s' % slug(category)"/>
+                    <t t-set="page" t-value="pager['page_next']['num']"/>
+                    <t t-set="page_url" t-value="url+'/page/'+str(page)"/>
                     <tr class="sgeede-infinite-pagination">
                         <t t-if="int(pager['page']['num']) + 1 &lt;= int(pager['page_count'])">
-                            <td><a t-att-href="pager['page_next']['url']" style="display: none">Page <span t-esc="int(pager['page']['num']) + 1"/>
+                            <td><a t-att-href="page_url" style="display: none">Page <span t-esc="int(pager['page']['num']) + 1"/>
                             </a></td>
                         </t>
                         <td><span class="max-page" t-esc="pager['page_count']" style="display: none"/></td>
@@ -285,23 +288,26 @@
         </t>
         <!-- SGEEDE Infinite Scroll -->
         <t t-if="category">
-                <div class="sgeede-infinite-pagination">
-                    <t t-if="int(pager['page']['num']) + 1 &lt;= int(pager['page_count'])">
-                        <a t-att-href="pager['page_next']['url']" style="display: none">Page <span t-esc="int(pager['page']['num']) + 1"/>
-                        </a>
-                    </t>
-                    <span class="max-page" t-esc="pager['page_count']" style="display: none"/>
-                </div>
-            </t>
-            <t t-if="not category">
-                <div class="sgeede-infinite-pagination">
-                    <t t-if="int(pager['page']['num']) + 1 &lt;= int(pager['page_count'])">
-                        <a t-att-href="pager['page_next']['url']" style="display: none">Page <span t-esc="int(pager['page']['num']) + 1"/>
-                        </a>
-                    </t>
-                    <span class="max-page" t-esc="pager['page_count']" style="display: none"/>
-                </div>
-            </t>
+            <t t-set="url" t-value="'/category/%s' % category.slug if category.slug else '/shop/category/%s' % slug(category)"/>
+            <t t-set="page" t-value="pager['page_next']['num']"/>
+            <t t-set="page_url" t-value="url+'/page/'+str(page)"/>
+            <div class="sgeede-infinite-pagination">
+                <t t-if="int(pager['page']['num']) + 1 &lt;= int(pager['page_count'])">
+                    <a t-att-href="page_url" style="display: none">Page <span t-esc="int(pager['page']['num']) + 1"/>
+                    </a>
+                </t>
+                <span class="max-page" t-esc="pager['page_count']" style="display: none"/>
+            </div>
+        </t>
+        <t t-if="not category">
+            <div class="sgeede-infinite-pagination">
+                <t t-if="int(pager['page']['num']) + 1 &lt;= int(pager['page_count'])">
+                    <a t-att-href="pager['page_next']['url']" style="display: none">Page <span t-esc="int(pager['page']['num']) + 1"/>
+                    </a>
+                </t>
+                <span class="max-page" t-esc="pager['page_count']" style="display: none"/>
+            </div>
+        </t>
     </template>
 
     <!-- Simulated product structure into simulated shop products -->
