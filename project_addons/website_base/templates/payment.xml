@@ -29,11 +29,6 @@
                         t-options='{"widget": "monetary", "display_currency": website_sale_order.pricelist_id.currency_id}'/>
                 </td>
             </tr>
-        </xpath>
-    </template>
-
-    <template id="cart_delivery_counters" name="Delivery Costs Counters" inherit_id="website_sale_delivery.cart_delivery">
-        <xpath expr="//tr[@id='order_delivery']" position="after">
             <tr id="needed_for_free_shipping" t-if="website_sale_order.needed_for_free_shipping &gt; 0.0">
                 <td class="text-right"><strong>For free delivery:</strong></td>
                 <td class="text-xl-right">
@@ -43,6 +38,12 @@
             </tr>
         </xpath>
     </template>
+
+    <!--template id="cart_delivery_counters" name="Delivery Costs Counters" inherit_id="website_sale_delivery.cart_delivery">
+        <xpath expr="//tr[@id='order_delivery']" position="after">
+            
+        </xpath>
+    </template-->
 
     <template id="payment_page_fix" inherit_id="payment.payment_process_page">
         <xpath expr="//script" position="replace">
