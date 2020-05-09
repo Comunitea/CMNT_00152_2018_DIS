@@ -49,7 +49,7 @@ class ResPartnerAccess(models.Model):
 
     def _search_active_portal_user(self, operator, operand):
         group_portal = self.env.ref('base.group_portal')
-        users = self.env['res.users'].sudo().search([('group_ids', 'in', group_portal)])
+        users = self.env['res.users'].sudo().search([('groups_ids', 'in', group_portal.id)])
         partners = users.mapped('partner_id').ids
         partner_operator = ""
         if (
