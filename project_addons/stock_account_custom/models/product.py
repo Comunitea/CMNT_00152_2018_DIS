@@ -54,6 +54,7 @@ class ProductProduct(models.Model):
         string="Last Purchase Price Fixed",
         compute="_compute_last_purchase_fixed",
         digits=dp.get_precision("Product Price"),
+        prefetch=False,
     )
     force_purchase_price_fixed = fields.Boolean(
         "Force Last Purchase Price Fixed", default=False
@@ -63,9 +64,17 @@ class ProductProduct(models.Model):
         digits=dp.get_precision("Product Price"),
     )
 
-    @api.model
+    @api.multi
+    def cron_update_pricelist_cost(self):
+        products = self.search([("type", "!=", "service")])
+        products.update_pricelist_cost()
+
+
+
+    @api.multi
     def update_pricelist_cost(self):
         for product in self:
+            print(product.name)
             if product.cost_method_calc == "last_cost":
                 product.pricelist_cost = product.last_purchase_price_fixed
             if product.cost_method_calc == "formula":
