@@ -134,23 +134,23 @@ class PortalWizardUser(models.TransientModel):
             partner_ids = self.env.context.get('active_ids', [])
             contact_ids = set()
             user_changes = []
-                for partner in self.env['res.partner'].sudo().browse(partner_ids):
-                    contact_partners = partner.child_ids | partner
-                    for contact in contact_partners:
-                        # make sure that each contact appears at most once in the list
-                        if contact.id not in contact_ids:
-                            contact_ids.add(contact.id)
-                            in_portal = False
-                            login = None
-                            if contact.user_ids:
-                                in_portal = self.env.ref('base.group_portal') in contact.user_ids[0].groups_id
-                                login = contact.user_ids[0].login
-                            user_changes.append((0, 0, {
-                                'partner_id': contact.id,
-                                'email': contact.email,
-                                'in_portal': in_portal,
-                                'login': login or contact.ref 
-                            }))
+            for partner in self.env['res.partner'].sudo().browse(partner_ids):
+                contact_partners = partner.child_ids | partner
+                for contact in contact_partners:
+                    # make sure that each contact appears at most once in the list
+                    if contact.id not in contact_ids:
+                        contact_ids.add(contact.id)
+                        in_portal = False
+                        login = None
+                        if contact.user_ids:
+                            in_portal = self.env.ref('base.group_portal') in contact.user_ids[0].groups_id
+                            login = contact.user_ids[0].login
+                        user_changes.append((0, 0, {
+                            'partner_id': contact.id,
+                            'email': contact.email,
+                            'in_portal': in_portal,
+                            'login': login or contact.ref 
+                        }))
                 return user_changes
             else:
                 return super(PortalWizardUser, self)._default_user_ids()
