@@ -49,15 +49,15 @@ class WebsiteSale(WebsiteSale):
 
         if order.locked or res_check:
             if order.risk_lock:
-                reason_list.append(_("Risk"))
+                reason_list.append(_("Por favor. Consulte con el personal de Dismac con la referencia de pedido: %s" % order.name))
             if order.unpaid_lock:
-                reason_list.append(_("Unpaid"))
+                reason_list.append(_("Por favor. Consulte con el personal de Dismac con la referencia de pedido: %s" % order.name))
             if order.margin_lock:
-                reason_list.append(_("Margin"))
+                reason_list.append(_("Por favor. Consulte con el personal de Dismac con la referencia de pedido: %s" % order.name))
             if order.shipping_lock:
-                reason_list.append(_("No matched shipping min of %s €" % order.partner_id.min_no_shipping))
+                reason_list.append(_("No alcanza el importe minimo para evitar gastos de envio de %s €" % order.partner_id.min_no_shipping))
             if order.amount_lock:
-                reason_list.append(_("No matched min amount order of %s €" % order.partner_id.min_amount_order))
+                reason_list.append(_("No alcanza el importe mínimo de %s €. Por favor complete el pedido hasta este importe" % order.partner_id.min_amount_order))
 
             reasons = ", ".join(reason_list)
             if not reason_list:

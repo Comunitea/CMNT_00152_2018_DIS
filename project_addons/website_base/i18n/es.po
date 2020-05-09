@@ -234,12 +234,12 @@ msgstr ""
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.website_sale_total_counters
 msgid "<strong>For Min. Amount:</strong>"
-msgstr "<strong>Para ped. mín.:</strong>"
+msgstr "<strong>Importe restante para pedido minimo.:</strong>"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.cart_delivery_counters
 msgid "<strong>For free delivery:</strong>"
-msgstr "<strong>Para env. gratuito:</strong>"
+msgstr "<strong>Importe restante para envío gratuito:</strong>"
 
 #. module: website_base
 #: model_terms:ir.ui.view,arch_db:website_base.quote_historical
