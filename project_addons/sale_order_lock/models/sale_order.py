@@ -42,14 +42,20 @@ class SaleOrder(models.Model):
         """
         self.ensure_one()
         res = False
-        if self.partner_id.avoid_locks:
+        avoid_locks = self.partner_id.avoid_locks or self.commercial_partner_id.avoid_locks
+        if avoid_locks:
             return False
 
+        risk_invoice_unpaid_include = self.partner_id.risk_invoice_unpaid_include or self.partner_id.commercial_partner_id.risk_invoice_unpaid_include
+        risk_invoice_unpaid = self.partner_id.risk_invoice_unpaid or self.partner_id.commercial_partner_id.risk_invoice_unpaid
+        risk_invoice_unpaid_limit = self.partner_id.risk_invoice_unpaid_limit or self.partner_id.commercial_partner_id.risk_invoice_unpaid_limit
+        risk_exception = self.partner_id.risk_exception or self.partner_id.commercial_partner_id.risk_exception
+
         if (
-            not self.partner_id.risk_invoice_unpaid_include
-            or self.partner_id.risk_invoice_unpaid
-            <= self.partner_id.risk_invoice_unpaid_limit
-        ) and self.partner_id.risk_exception:
+            not risk_invoice_unpaid_include
+            or risk_invoice_unpaid
+            <= risk_invoice_unpaid_limit
+        ) and risk_exception:
             res = True
         return res
 
@@ -60,13 +66,18 @@ class SaleOrder(models.Model):
         """
         self.ensure_one()
         res = False
-        if self.partner_id.avoid_locks:
+        avoid_locks = self.partner_id.avoid_locks or self.commercial_partner_id.avoid_locks
+        if avoid_locks:
             return False
-
+        
+        risk_invoice_unpaid_include = self.partner_id.risk_invoice_unpaid_include or self.partner_id.commercial_partner_id.risk_invoice_unpaid_include
+        risk_invoice_unpaid = self.partner_id.risk_invoice_unpaid or self.partner_id.commercial_partner_id.risk_invoice_unpaid
+        risk_invoice_unpaid_limit = self.partner_id.risk_invoice_unpaid_limit or self.partner_id.commercial_partner_id.risk_invoice_unpaid_limit
+     
         if (
-            self.partner_id.risk_invoice_unpaid_include
-            and self.partner_id.risk_invoice_unpaid
-            > self.partner_id.risk_invoice_unpaid_limit
+            risk_invoice_unpaid_include
+            and risk_invoice_unpaid
+            > risk_invoice_unpaid_limit
         ):
             res = True
         return res
@@ -75,7 +86,8 @@ class SaleOrder(models.Model):
     def check_margin_lock(self):
         self.ensure_one()
         res = False
-        if self.partner_id.avoid_locks:
+        avoid_locks = self.partner_id.avoid_locks or self.commercial_partner_id.avoid_locks
+        if avoid_locks:
             return False
 
         if self.type_id:
@@ -89,13 +101,15 @@ class SaleOrder(models.Model):
         self.ensure_one()
         res = False
         delivery_lines = self.order_line.filtered("is_delivery")
-        if self.partner_id.avoid_locks or delivery_lines:
+        avoid_locks = self.partner_id.avoid_locks or self.commercial_partner_id.avoid_locks
+        if avoid_locks or delivery_lines:
             return False
 
+        min_no_shipping = self.partner_id.min_no_shipping or self.partner_id.commercial_partner_id.min_no_shipping
         if (
-            self.partner_id.min_no_shipping
-            and self.amount_total < self.partner_id.min_no_shipping
-        ):
+            min_no_shipping
+            and self.amount_total < min_no_shipping
+            ):
             res = True
         return res
 
@@ -109,12 +123,14 @@ class SaleOrder(models.Model):
     def check_amount_lock(self):
         self.ensure_one()
         res = False
-        if self.partner_id.avoid_locks:
+        avoid_locks = self.partner_id.avoid_locks or self.commercial_partner_id.avoid_locks
+        if avoid_locks:
             return False
 
+        min_amount_order = self.partner_id.min_amount_order or self.commercial_partner_id.min_amount_order
         if (
-            self.partner_id.min_amount_order
-            and self.amount_total < self.partner_id.min_amount_order
+            min_amount_order
+            and self.amount_total < min_amount_order
         ):
             res = True
         return res
