@@ -364,7 +364,7 @@ msgstr "Añadir a lista de deseos"
 #: model_terms:ir.ui.view,arch_db:website_base.simulate_product
 #: model_terms:ir.ui.view,arch_db:website_base.simulate_products_item
 msgid "Add to request quote"
-msgstr ""
+msgstr "Añadir a solicitud de presupuesto"
 
 #. module: website_base
 #: code:addons/website_base/controllers/portal.py:108

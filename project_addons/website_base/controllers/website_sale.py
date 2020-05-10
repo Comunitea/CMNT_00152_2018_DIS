@@ -17,6 +17,18 @@ PPR = 4   # Products Per Row
 
 class WebsiteSale(WebsiteSale):
     
+    @http.route(['/shop/address'], type='http', methods=['GET', 'POST'], auth="public", website=True, sitemap=False)
+    def address(self, **kw):
+        # controlar el cambio de direcciones para cleintes de cartera
+        # para que no se pueda hacer (al menos de momento)
+        # Se puede plantear otra funcionalidad cambiando esta función
+        order = request.website.sale_get_order()
+        if order.partner_id.portfolio:
+            return request.redirect(kw.get('callback') or '/shop/confirm_order')
+        else:
+            return super(WebsiteSale, self).address(**kw)
+
+
     @http.route(['/shop/payment'], type='http', auth="public", website=True)
     def payment(self, **post):
 
@@ -48,16 +60,17 @@ class WebsiteSale(WebsiteSale):
                     )
 
         if order.locked or res_check:
+            min_amount_order = order.partner_id.min_amount_order or order.commercial_partner_id.min_amount_order
             if order.risk_lock:
-                reason_list.append(_("Por favor. Consulte con el personal de Dismac con la referencia de pedido: %s" % order.name))
+                reason_list.append(_("Por favor consulte con el personal de Dismac con la referencia de pedido: %s para cualquier aclaración" % order.name))
             if order.unpaid_lock:
-                reason_list.append(_("Por favor. Consulte con el personal de Dismac con la referencia de pedido: %s" % order.name))
+                reason_list.append(_("Por favor consulte con el personal de Dismac con la referencia de pedido: %s para cualquier aclaración" % order.name))
             if order.margin_lock:
-                reason_list.append(_("Por favor. Consulte con el personal de Dismac con la referencia de pedido: %s" % order.name))
+                reason_list.append(_("Por favor consulte con el personal de Dismac con la referencia de pedido: %s " % order.name))
             if order.shipping_lock:
-                reason_list.append(_("No alcanza el importe minimo para evitar gastos de envio de %s €" % order.partner_id.min_no_shipping))
+                reason_list.append(_("No alcanza el importe minimo para evitar gastos de envio de %s €" % order.partner_id.min_no_shipping or order.commercial_partner_id.min_no_shipping))
             if order.amount_lock:
-                reason_list.append(_("No alcanza el importe mínimo de %s €. Por favor complete el pedido hasta este importe" % order.partner_id.min_amount_order))
+                reason_list.append(_("No alcanza el importe mínimo de %s €. Por favor complete el pedido hasta este importe" % min_amount_order))
 
             reasons = ", ".join(reason_list)
             if not reason_list:

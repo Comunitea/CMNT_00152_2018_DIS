@@ -33,7 +33,10 @@ class QuoteController(http.Controller):
                 'state': 'current',
                 'product_ids': None,
             }
-            current_quote = Quote.create(vals)
+            try:
+                current_quote = Quote.create(vals)
+            except:
+                pass
         elif success and current_quote:
             current_quote.product_ids = None
 
