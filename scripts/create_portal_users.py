@@ -59,6 +59,8 @@ with open(path_csv, 'r') as file:
                         'password': password
                     })
                 print ("Creado usuario")
+            else:
+                print ("Usuario ya existe")
             if row[13] != '1':
                 # comprobar validador
                 # busca empresa principal
@@ -66,7 +68,7 @@ with open(path_csv, 'r') as file:
                     order_validator = None
                     print ("Ya tiene validador")
                 else:
-                    # elpartner padre no tiene validador
+                    # el partner padre no tiene validador
                     print ("No tiene validador")
                     user_val = partner.commercial_partner_id.user_ids.filtered(lambda x: x.login == partner_ref)
                     if user_val:
@@ -91,7 +93,7 @@ with open(path_csv, 'r') as file:
                 'portfolio': True
                 
             }
-            session.env['res.partner'].write(partner_data_dict)
+            partner.write(partner_data_dict)
             print("Partner actualizado. Correcto !!")
             
         else:
