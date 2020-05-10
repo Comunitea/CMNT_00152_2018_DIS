@@ -41,8 +41,9 @@ with open(path_csv, 'r') as file:
         skip_website_checkout_payment = True
         wholesaler = row[19] == '1' or False
 
-
-        domain = [('ref', '=', login)]
+        # buscamos indiferente mayusculas y minusculas y pasamos la _ a - 
+        # PENDIENTE el camiar -0* por -* pero no parece del todo fiable esta busqueda
+        domain = [('ref', '=', login.replace('_', '-').lower()), ('ref', '=', login.replace('_', '-').upper())]
         partner = session.env['res.partner'].search(domain, limit=1)
         if partner:
             
@@ -100,11 +101,11 @@ with open(path_csv, 'r') as file:
             print("ERROR: Partner no encontrado)")
             no_encontrados.append(row)
             
-with open('partner_not_found.csv', 'w') as partner_not_found:
+with open('partner_not_found.csv', 'a') as partner_not_found:
     for ne in no_encontrados:
         writer_pnf = csv.writer(partner_not_found)
         writer_pnf.writerow(ne)
-with open('partner_not_validator.csv', 'w') as partner_not_validator:
+with open('partner_not_validator.csv', 'a') as partner_not_validator:
     for nv in no_validador:
         writer_pnv = csv.writer(partner_not_validator)
         writer_pnv.writerow(row)     
