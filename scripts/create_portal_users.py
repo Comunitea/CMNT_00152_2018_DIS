@@ -6,14 +6,14 @@ from os.path import join
 import base64
 import csv
 
-session.open(db='odoo_12_DISMAC_07_05')
+session.open(db='DISMAC')
 script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
 #path = '/home/santi/Documentos/DISMAC/IMPORTACION/2019-12
 # -18_Fotos_Articulos_Dismac_Enviados_a_Comunitea'
-path = '/home/santi/Documentos/DISMAC/WEB/'
-path_csv = '/home/santi/Documentos/DISMAC/WEB/' \
-           'clientes_acceso_importa_1.csv'
+path = '/home/comunitea/documentos_import/WEB/'
+path_csv = '/home/comunitea/documentos_import/WEB/' \
+           'clientes_acceso_importa_3.csv'
 processed = 0
 
 no_encontrados = []
@@ -98,11 +98,11 @@ with open(path_csv, 'r') as file:
             print("ERROR: Partner no encontrado)")
             no_encontrados.append(row)
             
-with open('partner_not_found.csv', 'w') as partner_not_found:
+with open('partner_not_found_3.csv', 'w') as partner_not_found:
     for ne in no_encontrados:
         writer_pnf = csv.writer(partner_not_found)
         writer_pnf.writerow(ne)
-with open('partner_not_validator.csv', 'w') as partner_not_validator:
+with open('partner_not_validator_3.csv', 'w') as partner_not_validator:
     for nv in no_validador:
         writer_pnv = csv.writer(partner_not_validator)
         writer_pnv.writerow(row)     
