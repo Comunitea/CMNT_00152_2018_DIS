@@ -45,7 +45,7 @@ class ResPartnerAccess(models.Model):
     active_portal_user = fields.Boolean('Usuario web activo', compute_sudo=True, compute="_compute_active_portal_user", search="_search_active_portal_user")
     external_review = fields.Boolean('Need external review (UVigo)')
     wholesaler = fields.Boolean('Mayorista')
-    portfolio = fields.Boolean('Cliente cartera')
+    portfolio = fields.Boolean('Cliente cartera', default=True)
 
     def _search_active_portal_user(self, operator, operand):
         group_portal = self.env.ref('base.group_portal')

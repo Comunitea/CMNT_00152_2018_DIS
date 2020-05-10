@@ -13,8 +13,41 @@ class Website(models.Model):
 
     @api.multi
     def _prepare_sale_order_values(self, partner, pricelist):
+        # Adapta valores de pedido especialmente para los de cartera
         values = super()._prepare_sale_order_values(partner, pricelist)
-        if self.env.user.partner_id.skip_website_checkout_payment:
+        if partner.portfolio:
+            # Busca el comercial correcto 
+            user = partner.user_id
+            if not partner.is_company and not user:
+                user = partner.commercial_partner_id.user_id
+
+            if  partner.type == 'contact' and partner.parent_id and partner.company_type == 'person':
+                # Busca las direcciones de us "padre", sí si es de envñio , devuelve esta 
+                # Esto nos permite que funcione bien si el partner es un subcontacto de una "delegacion"
+                # o la propia "delegación"
+                addr = partner.parent_id.address_get(['delivery', 'invoice'])
+                invoice = addr['invoice']
+                if partner.parent_id.type == 'delivery':
+                    delivery = partner.parent_id.id
+                else:
+                    delivery = addr['delivery']
+            elif partner.type == 'delivery' and partner.parent_id:
+                addr = partner.parent_id.address_get(['invoice'])
+                delivery = partner.id
+                invoice = addr['invoice']
+            else:
+                
+                addr = partner.parent_id.address_get(['delivery', 'invoice'])
+                invoice = addr['invoice']
+                delivery = addr['delivery']
+
+            values.update({
+                'partner_invoice_id': invoice,
+                'partner_shipping_id': delivery,
+                'user_id': user.id,
+             })
+            
+        if partner.skip_website_checkout_payment:
             sale_type = self.env['sale.order.type'].sudo().search([('telesale', '=', True)])
         else:
             sale_type = self.env['sale.order.type'].sudo().search([('web', '=', True)])

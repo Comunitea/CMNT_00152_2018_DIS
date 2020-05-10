@@ -23,34 +23,66 @@ class SaleOrder(models.Model):
     @api.multi
     def _compute_needed_for_min_amount_order(self):
         for order in self:
-        
-            if order.partner_id.avoid_locks or not order.partner_id.min_amount_order:
+            avoid_locks = order.partner_id.avoid_locks or order.commercial_partner_id.avoid_locks
+            min_amount_order = order.partner_id.min_amount_order or order.commercial_partner_id.min_amount_order
+            if avoid_locks or not min_amount_order:
                 order.needed_for_min_amount_order = 0.0
 
-            if order.partner_id.min_amount_order and order.amount_total < order.partner_id.min_amount_order:
-                order.needed_for_min_amount_order = order.partner_id.min_amount_order - order.amount_total
+            if min_amount_order and order.amount_total < min_amount_order:
+                order.needed_for_min_amount_order = min_amount_order - order.amount_total
             else:
                 order.needed_for_min_amount_order = 0.0
+
+
+    def get_delivery_price(self):
+        super().get_delivery_price()
+
+        for order in self.filtered(lambda o: o.state in ('draft', 'sent') and len(o.order_line) > 0):
+            # We do not want to recompute the shipping price of an already validated/done SO
+            # # or on an SO that has no lines yet
+            
+            if order.partner_id.portfolio and order.delivery_rating_success:
+                # sobreescribo según las condicioens del partner
+                # TB podríamo cambiarlo para atender a tener trasnportistas personalizados
+                if order.needed_for_free_shipping == 0:
+                    order.delivery_price = 0
+                else:
+                    order.delivery_price = order.carrier_id.fixed_price
+
+                    
+
 
     @api.multi
     def _compute_needed_for_free_shipping(self):
         for order in self:
             amount_total_without_delivery = order._compute_amount_total_without_delivery()
-            if order.delivery_price:
-                if order.delivery_price == 0.0:
+            if order.partner_id.portfolio:
+                avoid_locks = order.partner_id.avoid_locks or order.commercial_partner_id.avoid_locks
+                min_no_shipping = order.partner_id.min_no_shipping or order.commercial_partner_id.min_no_shipping
+                if avoid_locks or not min_no_shipping:
                     order.needed_for_free_shipping = 0.0
-                elif order.carrier_id and order.carrier_id.price_rule_ids:
-                    rules = order.carrier_id.price_rule_ids.filtered(lambda x: x.variable == 'price' and x.list_base_price == 0.0)
-                    if rules[0].max_value > amount_total_without_delivery:
-                        order.needed_for_free_shipping = rules[0].max_value - amount_total_without_delivery
-                    else:
-                        order.needed_for_free_shipping = 0.0
+
+                if min_no_shipping and order.amount_total < min_no_shipping:
+                    order.needed_for_free_shipping = min_no_shipping - order.amount_total
                 else:
-                    if order.carrier_id and order.carrier_id.free_over:
-                        if order.carrier_id.amount > amount_total_without_delivery:
-                            order.needed_for_free_shipping = order.carrier_id.amount - amount_total_without_delivery
+                    order.needed_for_free_shipping = 0.0
+
+            else:
+                if order.delivery_price:
+                    if order.delivery_price == 0.0:
+                        order.needed_for_free_shipping = 0.0
+                    elif order.carrier_id and order.carrier_id.price_rule_ids:
+                        rules = order.carrier_id.price_rule_ids.filtered(lambda x: x.variable == 'price' and x.list_base_price == 0.0)
+                        if rules[0].max_value > amount_total_without_delivery:
+                            order.needed_for_free_shipping = rules[0].max_value - amount_total_without_delivery
                         else:
                             order.needed_for_free_shipping = 0.0
+                    else:
+                        if order.carrier_id and order.carrier_id.free_over:
+                            if order.carrier_id.amount > amount_total_without_delivery:
+                                order.needed_for_free_shipping = order.carrier_id.amount - amount_total_without_delivery
+                            else:
+                                order.needed_for_free_shipping = 0.0
 
     def send_lock_alerts(self, errors):        
         ctx = self._context.copy()
