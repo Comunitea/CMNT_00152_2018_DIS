@@ -28,8 +28,8 @@ class SaleOrder(models.Model):
             if avoid_locks or not min_amount_order:
                 order.needed_for_min_amount_order = 0.0
 
-            if min_amount_order and order.amount_total < min_amount_order:
-                order.needed_for_min_amount_order = min_amount_order - order.amount_total
+            if min_amount_order and order.amount_untaxed < min_amount_order:
+                order.needed_for_min_amount_order = min_amount_order - order.amount_untaxed
             else:
                 order.needed_for_min_amount_order = 0.0
 
@@ -50,20 +50,23 @@ class SaleOrder(models.Model):
                     order.delivery_price = order.carrier_id.fixed_price
 
                     
-
+    def _compute_amount_untaxed_without_delivery(self):
+        self.ensure_one()
+        delivery_cost = sum([l.price_subtotal for l in self.order_line if l.is_delivery])
+        return self.amount_untaxed - delivery_cost
 
     @api.multi
     def _compute_needed_for_free_shipping(self):
         for order in self:
-            amount_total_without_delivery = order._compute_amount_total_without_delivery()
+            amount_untaxed_without_delivery = order._compute_amount_untaxed_without_delivery()
             if order.partner_id.portfolio:
                 avoid_locks = order.partner_id.avoid_locks or order.commercial_partner_id.avoid_locks
                 min_no_shipping = order.partner_id.min_no_shipping or order.commercial_partner_id.min_no_shipping
                 if avoid_locks or not min_no_shipping:
                     order.needed_for_free_shipping = 0.0
 
-                if min_no_shipping and order.amount_total < min_no_shipping:
-                    order.needed_for_free_shipping = min_no_shipping - order.amount_total
+                if min_no_shipping and order.amount_untaxed < min_no_shipping:
+                    order.needed_for_free_shipping = min_no_shipping - order.amount_untaxed
                 else:
                     order.needed_for_free_shipping = 0.0
 
@@ -73,14 +76,14 @@ class SaleOrder(models.Model):
                         order.needed_for_free_shipping = 0.0
                     elif order.carrier_id and order.carrier_id.price_rule_ids:
                         rules = order.carrier_id.price_rule_ids.filtered(lambda x: x.variable == 'price' and x.list_base_price == 0.0)
-                        if rules[0].max_value > amount_total_without_delivery:
-                            order.needed_for_free_shipping = rules[0].max_value - amount_total_without_delivery
+                        if rules[0].max_value > amount_untaxed_without_delivery:
+                            order.needed_for_free_shipping = rules[0].max_value - amount_untaxed_without_delivery
                         else:
                             order.needed_for_free_shipping = 0.0
                     else:
                         if order.carrier_id and order.carrier_id.free_over:
-                            if order.carrier_id.amount > amount_total_without_delivery:
-                                order.needed_for_free_shipping = order.carrier_id.amount - amount_total_without_delivery
+                            if order.carrier_id.amount > amount_untaxed_without_delivery:
+                                order.needed_for_free_shipping = order.carrier_id.amount - amount_untaxed_without_delivery
                             else:
                                 order.needed_for_free_shipping = 0.0
 
