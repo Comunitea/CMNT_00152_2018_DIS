@@ -43,7 +43,7 @@ with open(path_csv, 'r') as file:
 
         # buscamos indiferente mayusculas y minusculas y pasamos la _ a - 
         # PENDIENTE el camiar -0* por -* pero no parece del todo fiable esta busqueda
-        domain = [('ref', '=', login.replace('_', '-').lower()), ('ref', '=', login.replace('_', '-').upper())]
+        domain = ['|', ('ref', '=', login.replace('_', '-').lower()), ('ref', '=', login.replace('_', '-').upper())]
         partner = session.env['res.partner'].search(domain, limit=1)
         if partner:
             
@@ -79,8 +79,8 @@ with open(path_csv, 'r') as file:
                     else:
                         # No hay usuario
                         # Lo crea para la empresa padre y se lo asigna como validador
-                        print("ERROR. El parner deberñia tener validador y no se ha encontrado")
-                        no_validador.appen(row)
+                        print("ERROR. El parner deberia tener validador y no se ha encontrado")
+                        no_validador.append(row)
                                         
 
 
@@ -89,7 +89,7 @@ with open(path_csv, 'r') as file:
                 'show_customer_price': show_customer_price,
                 'show_invoices': show_invoices,
                 'skip_website_checkout_payment': skip_website_checkout_payment,
-                'website_acces_rights': website_acces_rights,
+                'website_access_rights': website_acces_rights,
                 'wholesaler': wholesaler,
                 'portfolio': True
                 
