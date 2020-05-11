@@ -108,7 +108,7 @@ class SaleOrder(models.Model):
         min_no_shipping = self.partner_id.min_no_shipping or self.partner_id.commercial_partner_id.min_no_shipping
         if (
             min_no_shipping
-            and self.amount_total < min_no_shipping
+            and self.amount_untaxed < min_no_shipping
             ):
             res = True
         return res
@@ -118,6 +118,11 @@ class SaleOrder(models.Model):
         shipping_lock = self.check_shipping_lock()
         self.write({"shipping_lock": shipping_lock})
         return res
+
+    def _compute_amount_untaxed_without_delivery(self):
+        self.ensure_one()
+        delivery_cost = sum([l.price_subtotal for l in self.order_line if l.is_delivery])
+        return self.amount_untaxed - delivery_cost
 
     @api.multi
     def check_amount_lock(self):
@@ -130,7 +135,7 @@ class SaleOrder(models.Model):
         min_amount_order = self.partner_id.min_amount_order or self.commercial_partner_id.min_amount_order
         if (
             min_amount_order
-            and self.amount_total < min_amount_order
+            and self._compute_amount_untaxed_without_delivery < min_amount_order
         ):
             res = True
         return res
