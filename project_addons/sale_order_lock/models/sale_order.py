@@ -108,7 +108,7 @@ class SaleOrder(models.Model):
         min_no_shipping = self.partner_id.min_no_shipping or self.partner_id.commercial_partner_id.min_no_shipping
         if (
             min_no_shipping
-            and self.amount_untaxed < min_no_shipping
+            and self._compute_amount_untaxed_without_delivery() < min_no_shipping
             ):
             res = True
         return res
@@ -135,7 +135,7 @@ class SaleOrder(models.Model):
         min_amount_order = self.partner_id.min_amount_order or self.commercial_partner_id.min_amount_order
         if (
             min_amount_order
-            and self._compute_amount_untaxed_without_delivery < min_amount_order
+            and self._compute_amount_untaxed_without_delivery() < min_amount_order
         ):
             res = True
         return res
