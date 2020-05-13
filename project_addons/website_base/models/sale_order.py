@@ -50,10 +50,6 @@ class SaleOrder(models.Model):
                     order.delivery_price = order.carrier_id.fixed_price
 
                     
-    def _compute_amount_untaxed_without_delivery(self):
-        self.ensure_one()
-        delivery_cost = sum([l.price_subtotal for l in self.order_line if l.is_delivery])
-        return self.amount_untaxed - delivery_cost
 
     @api.multi
     def _compute_needed_for_free_shipping(self):

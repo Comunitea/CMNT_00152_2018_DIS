@@ -13,7 +13,7 @@ script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 # -18_Fotos_Articulos_Dismac_Enviados_a_Comunitea'
 path = '/home/comunitea/documentos_import/WEB/'
 path_csv = '/home/comunitea/documentos_import/WEB/' \
-           'clientes_acceso_importa_3.csv'
+           'partner_not_found_R.csv'
 processed = 0
 
 no_encontrados = []
@@ -41,9 +41,14 @@ with open(path_csv, 'r') as file:
         skip_website_checkout_payment = True
         wholesaler = row[19] == '1' or False
 
+        s_login = login.replace('_', '-')
+        s_logins = s_login.split('-')
+        if len(s_logins) > 1:
+            s_login = s_logins[0] + "-" + str(int(s_logins[1]))
+
         # buscamos indiferente mayusculas y minusculas y pasamos la _ a - 
         # PENDIENTE el camiar -0* por -* pero no parece del todo fiable esta busqueda
-        domain = ['|', ('ref', '=', login.replace('_', '-').lower()), ('ref', '=', login.replace('_', '-').upper())]
+        domain = ['|', ('ref', '=', s_login.lower()), ('ref', '=', s_login.upper())]
         partner = session.env['res.partner'].search(domain, limit=1)
         if partner:
             
@@ -101,7 +106,7 @@ with open(path_csv, 'r') as file:
             print("ERROR: Partner no encontrado)")
             no_encontrados.append(row)
             
-with open('partner_not_found.csv', 'a') as partner_not_found:
+with open('partner_not_found_RR.csv', 'a') as partner_not_found:
     for ne in no_encontrados:
         writer_pnf = csv.writer(partner_not_found)
         writer_pnf.writerow(ne)
