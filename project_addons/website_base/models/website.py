@@ -37,7 +37,7 @@ class Website(models.Model):
                 invoice = addr['invoice']
             else:
                 
-                addr = partner.parent_id.address_get(['delivery', 'invoice'])
+                addr = partner.address_get(['delivery', 'invoice'])
                 invoice = addr['invoice']
                 delivery = addr['delivery']
 
