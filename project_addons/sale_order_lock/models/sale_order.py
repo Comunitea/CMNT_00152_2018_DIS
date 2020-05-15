@@ -85,6 +85,9 @@ class SaleOrder(models.Model):
     @api.multi
     def check_margin_lock(self):
         self.ensure_one()
+        if self.team_id.team_type == 'website':
+            #Si  es una venta WEB no consideraso bloqueo
+            return False
         res = False
         avoid_locks = self.partner_id.avoid_locks or self.commercial_partner_id.avoid_locks
         if avoid_locks:

@@ -2,7 +2,7 @@
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 from odoo import fields, models
 from odoo.tools import pycompat
-
+from odoo.addons.website.models import ir_http
 
 class ProductProduct(models.Model):
     _inherit = "product.product"
@@ -14,14 +14,22 @@ class ProductProduct(models.Model):
 
 
     def _get_price_and_discount(self, qty, partner_id, date):
+      
         res = {
                 'price': 0,
                 'discount': 0,
                 'explanation': ''
                 }
         discount = 0
-        pricelist_price = pricelist_price_discount = self.price
+        pricelist_price = pricelist_price_discount = pricelist_price_web = self.price
         pricelist_explanation = "Precio de tarifa "
+        if (self.env.user.share == True):
+            # es usuario web
+            website = ir_http.get_request_website()
+            web_default_pricelist = website.get_pricelist_available()[0]
+            pricelist_price_web  = self.with_context({'pricelist':web_default_pricelist.id}).price
+           
+        
 
         # SE cpopia toda esta parte par mostrar el descuetno de forma explícita
         # PEro se necesita en esta parte para poder comprar precios incluido el descuento
@@ -95,6 +103,17 @@ class ProductProduct(models.Model):
                 price = promotion_price
                 explanation = "Aplicada promoción "
                 discount = 0
+            if (self.env.user.share == True
+                and pricelist_price_web < pricelist_price_discount
+                and pricelist_price_web < price
+                and pricelist_price_web != 0
+            ):
+                price = pricelist_price_web
+                explanation = "Aplicada precio web"
+                discount = 0
+                print("PRECIO WEB!!!!!")
+
+
                 
         res['price'] = price
         res['discount'] = discount
@@ -109,7 +128,6 @@ class ProductProduct(models.Model):
         res = super(ProductProduct, self)._compute_product_price()
 
         partner_id = self._context.get("partner", False)
-
         qty = self._context.get("quantity", 1.0)
         date = self._context.get("date") or fields.Date.context_today(self)
         if partner_id:
