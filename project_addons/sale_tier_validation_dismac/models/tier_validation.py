@@ -9,7 +9,7 @@ from odoo.tools.safe_eval import safe_eval
 class TierValidation(models.AbstractModel):
     _inherit = "tier.validation"
 
-    @api.multi
+"""     @api.multi
     def request_validation(self):
         created_trs = super().request_validation()
         td_obj = self.env["tier.definition"]
@@ -50,9 +50,9 @@ class TierValidation(models.AbstractModel):
         return created_trs
 
     # Evitamos notificaciones a petición de Jorge (16/01/2020)
-
-    def _notify_accepted_reviews(self):
-        return
+ """
+   """  def _notify_accepted_reviews(self):
+        return """
 
     def _notify_rejected_review(self):
         return
