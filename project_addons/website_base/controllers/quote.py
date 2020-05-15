@@ -3,7 +3,7 @@
 import datetime
 import shlex
 
-from odoo import http
+from odoo import http, fields
 from odoo.http import request
 
 from odoo.addons.website.controllers.main import QueryURL
@@ -25,7 +25,7 @@ class QuoteController(http.Controller):
         if not current_quote and not success:
             vals = {
                 'name': 'Solicitud de Presupuesto',
-                'date': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
+                'date': fields.Date.today(),
                 'website_id': request.website.id,
                 'user_id': request.env.user.id,
                 'contact_phone': request.env.user.phone,
