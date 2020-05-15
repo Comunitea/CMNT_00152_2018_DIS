@@ -4,7 +4,7 @@
 
 import time
 
-from odoo import http, _
+from odoo import http, _, fields
 from odoo.http import request
 
 from odoo.addons.website_sale.controllers.main import WebsiteSale, TableCompute
@@ -89,16 +89,19 @@ class WebsiteSale(WebsiteSale):
 
     def _get_customer_products_template_from_customer_prices(self):
         user = request.env.user
-        today = time.strftime('%Y-%m-%d')
+        today = fields.Date.today()
 
-        customer_domain = [('partner_id', '=', user.partner_id.id),
-                           '|', ('date_start', '=', False), ('date_start', '<=', today),
-                           '|', ('date_end', '=', False), ('date_end', '>=', today),
-                           '|', ('product_tmpl_id', '!=', False), ('product_id', '!=', False)]
-
+        customer_domain = [('partner_id', '=', user.partner_id.commercial_partner_id.id),
+                           '|',
+                            ('date_start', '=', False),
+                            ('date_start', '<=', today),
+                            '|',
+                            ('date_end', '=', False),
+                            ('date_end', '>=', today)]
+        all_prices = request.env['customer.price'].sudo().search(customer_domain)
         customer_products = []
         customer_products += request.env['customer.price'].sudo().search(customer_domain).filtered(
-            lambda x: x.product_tmpl_id is not False and x.product_id.website_published).mapped('product_tmpl_id').ids
+            lambda x: x.product_tmpl_id is not False and x.product_tmpl_id.website_published).mapped('product_tmpl_id').ids
         customer_products += request.env['customer.price'].sudo().search(customer_domain).filtered(
             lambda x: x.product_id is not False and x.product_id.website_published).mapped(
             'product_id').mapped('product_tmpl_id').ids
