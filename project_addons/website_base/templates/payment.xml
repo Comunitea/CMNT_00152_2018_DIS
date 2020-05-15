@@ -23,17 +23,18 @@
     <template id="website_sale_total_counters" name="Website Cart Total Counters" inherit_id="website_sale.total">
         <xpath expr="//tr[@id='order_total']" position="after">
             <tr id="needed_for_min_amount_order" t-if="website_sale_order.needed_for_min_amount_order &gt; 0.0">
-                <td class="text-right"><strong>For Min. Amount:</strong></td>
-                <td class="text-xl-right">
+                <td class="text-xl-righ">Faltan
                     <strong t-field="website_sale_order.needed_for_min_amount_order"
                         t-options='{"widget": "monetary", "display_currency": website_sale_order.pricelist_id.currency_id}'/>
+                    para completar el pedido mínimo
                 </td>
             </tr>
             <tr id="needed_for_free_shipping" t-if="website_sale_order.needed_for_free_shipping &gt; 0.0">
-                <td class="text-right"><strong>For free delivery:</strong></td>
-                <td class="text-xl-right">
-                    <strong t-field="website_sale_order.needed_for_free_shipping"
+                <td class="text-xl-right">Faltan:
+                <strong t-field="website_sale_order.needed_for_free_shipping"
                         t-options='{"widget": "monetary", "display_currency": website_sale_order.pricelist_id.currency_id}'/>
+                para envío gratuito
+                    
                 </td>
             </tr>
         </xpath>
