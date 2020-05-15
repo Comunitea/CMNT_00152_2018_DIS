@@ -80,6 +80,7 @@ with open(path_csv, 'r') as file:
                     if user_val:
                         # tiene usario con login = partner ref y se lo asignamos a l aempresa padre
                         partner.commercial_partner_id.order_validator = user_val.id
+                        partner.onchange_order_validator(:
                         print ("Encuentra usuario de commercial partner y se lo asigna como validador")
                     else:
                         # No hay usuario
