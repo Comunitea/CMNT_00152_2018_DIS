@@ -11,6 +11,36 @@ class Website(models.Model):
         domain = ['|', ('website_ids', '=', False), ('website_ids', 'in', self.id)]
         return self.env['product.public.category'].sudo().search(domain)
 
+    def get_current_pricelist(self):
+        """
+        :returns: The current pricelist record
+        """
+
+    #LA FORZAMOS PARA QUE SOLO MIRE LA DEL PARTNER SI ESTA"HABIITADA Y SI NO LA POR DEFECTO
+
+        # The list of available pricelists for this user.
+        # If the user is signed in, and has a pricelist set different than the public user pricelist
+        # then this pricelist will always be considered as available
+        available_pricelists = self.get_pricelist_available()
+        pl = None
+        partner = self.env.user.partner_id.commercial_partner_id
+        
+        print("PL DEL PARTNER %d !!!!! " % pl.id)
+        if available_pricelists and pl not in available_pricelists:
+            # If there is at least one pricelist in the available pricelists
+            # and the chosen pricelist is not within them
+            # it then choose the first available pricelist.
+            # This can only happen when the pricelist is the public user pricelist and this pricelist is not in the available pricelist for this localization
+            # If the user is signed in, and has a special pricelist (different than the public user pricelist),
+            # then this special pricelist is amongs these available pricelists, and therefore it won't fall in this case.
+            pl = available_pricelists[0]
+
+        if not pl:
+            _logger.error('Fail to find pricelist for partner "%s" (id %s)', partner.name, partner.id)
+        print("PL SELECIONADA %d !!!!! " % pl.id)
+        return pl
+
+
     @api.multi
     def _prepare_sale_order_values(self, partner, pricelist):
         # Adapta valores de pedido especialmente para los de cartera
