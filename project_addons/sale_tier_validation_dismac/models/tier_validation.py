@@ -51,8 +51,8 @@ class TierValidation(models.AbstractModel):
 
     # Evitamos notificaciones a petición de Jorge (16/01/2020)
     """
-    """  def _notify_accepted_reviews(self):
-        return """
+    def _notify_accepted_reviews(self):
+        return
 
     def _notify_rejected_review(self):
         return
