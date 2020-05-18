@@ -149,6 +149,7 @@ class ResPartnerAccess(models.Model):
         sale_model = self.env['ir.model'].search([('model', '=', 'sale.order')])
         if self._origin:
             partner_id = self.env['res.partner'].browse(self._origin.id)
+            definition_domain = '["&", ["team_id.team_type", "=", "website"], ["partner_id", "child_of", {}]]'.format(partner_id.id)
             prev_definitions = self.env['tier.definition'].search([('definition_domain', '=', definition_domain)])
         definition_domain = '["&", ["team_id.team_type", "=", "website"], ["partner_id", "child_of", {}]]'.format(self.id)
         
