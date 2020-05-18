@@ -16,7 +16,7 @@ class Website(models.Model):
         :returns: The current pricelist record
         """
 
-    #LA FORZAMOS PARA QUE SOLO MIRE LA DEL PARTNER SI ESTA"HABIITADA Y SI NO LA POR DEFECTO
+        #LA FORZAMOS PARA QUE SOLO MIRE LA DEL PARTNER SI ESTA"HABIITADA Y SI NO LA POR DEFECTO
 
         # The list of available pricelists for this user.
         # If the user is signed in, and has a pricelist set different than the public user pricelist
@@ -24,7 +24,7 @@ class Website(models.Model):
         available_pricelists = self.get_pricelist_available()
         pl = None
         partner = self.env.user.partner_id.commercial_partner_id
-        
+        pl = partner.property_product_pricelist
         print("PL DEL PARTNER %d !!!!! " % pl.id)
         if available_pricelists and pl not in available_pricelists:
             # If there is at least one pricelist in the available pricelists
