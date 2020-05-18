@@ -763,7 +763,7 @@ class SaleOrderLine(models.Model):
 
     deliveries = fields.One2many("sale.order.line.delivery", "line_id")
 
-  """   @api.multi
+    """   @api.multi
     def _prepare_invoice_line(self, qty):
         vals = super(SaleOrderLine, self)._prepare_invoice_line(qty)
         if self._context.get("invoice_until") and vals.get("move_line_ids"):
