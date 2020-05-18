@@ -678,25 +678,45 @@ class SaleOrderLine(models.Model):
     )
     deliveries = fields.One2many("sale.order.line.delivery", "line_id")
 
-    @api.multi
-    def invoice_line_create_vals(self, invoice_id, qty):
-        res = super().invoice_line_create_vals(invoice_id, qty)
+
+    def get_stock_moves_link_invoice(self):
         if self._context.get("invoice_until"):
             invoice_until = datetime.strptime(
-                self._context.get("invoice_until") + " 23:59:59",
-                "%Y-%m-%d %H:%M:%S",
+                 self._context.get("invoice_until") + " 23:59:59",
+                 "%Y-%m-%d %H:%M:%S",
+             )
+            return self.mapped('move_ids').filtered(
+                lambda x: (
+                    x.state == 'done' and not (any(
+                        inv.state != 'cancel' for inv in x.invoice_line_ids.mapped(
+                            'invoice_id'))) and not x.scrapped and (
+                        x.location_dest_id.usage == 'customer' or
+                        (x.location_id.usage == 'customer' and
+                        x.to_refund))
+                        and x.date <= invoice_until
+                )
             )
-            self.mapped("move_ids").filtered(
-                lambda x: x.state == "done"
-                and not x.invoice_line_id
-                and not x.location_dest_id.scrap_location
-                and x.location_dest_id.usage == "customer"
-                and x.date <= invoice_until
-            ).mapped("picking_id").write(
-                {"invoice_ids": [(6, 0, [invoice_id])]}
-            )
-        return res
+        else:
+            return super().get_stock_moves_link_invoice()
 
+    # @api.multi
+    # def invoice_line_create_vals(self, invoice_id, qty):
+    #     res = super().invoice_line_create_vals(invoice_id, qty)
+    #     if self._context.get("invoice_until"):
+    #         invoice_until = datetime.strptime(
+    #             self._context.get("invoice_until") + " 23:59:59",
+    #             "%Y-%m-%d %H:%M:%S",
+    #         )
+    #         self.mapped("move_ids").filtered(
+    #             lambda x: x.state == "done"
+    #             and not x.invoice_line_id
+    #             and not x.location_dest_id.scrap_location
+    #             and x.location_dest_id.usage == "customer"
+    #             and x.date <= invoice_until
+    #         ).mapped("picking_id").write(
+    #             {"invoice_ids": [(6, 0, [invoice_id])]}
+    #         )
+    #     return res
 
     def _compute_qty_delivery_on_date(self):
         for line in self:
@@ -743,7 +763,7 @@ class SaleOrderLine(models.Model):
 
     deliveries = fields.One2many("sale.order.line.delivery", "line_id")
 
-    @api.multi
+  """   @api.multi
     def _prepare_invoice_line(self, qty):
         vals = super(SaleOrderLine, self)._prepare_invoice_line(qty)
         if self._context.get("invoice_until") and vals.get("move_line_ids"):
@@ -752,14 +772,14 @@ class SaleOrderLine(models.Model):
                 "%Y-%m-%d %H:%M:%S",
             )
             moves = self.env["stock.move"].browse(
-                vals.get("move_line_ids")[0][2]
+                vals.get("move_line_ids")[0][1]
             )
             move_line_ids = []
             for move in moves:
                 if move.date <= invoice_until:
                     move_line_ids.append(move.id)
-            vals["move_line_ids"] = [(6, 0, move_line_ids)]
-        return vals
+            vals["move_line_ids"] = [(4, m.id) for m in stock_moves]
+        return vals """
 
 
 class SaleOrderLineDelivery(models.Model):
