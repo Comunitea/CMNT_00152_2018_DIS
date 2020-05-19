@@ -25,7 +25,7 @@ class Website(models.Model):
         pl = None
         partner = self.env.user.partner_id.commercial_partner_id
         pl = partner.property_product_pricelist
-        print("PL DEL PARTNER %d !!!!! " % pl.id)
+
         if available_pricelists and pl not in available_pricelists:
             # If there is at least one pricelist in the available pricelists
             # and the chosen pricelist is not within them
@@ -37,7 +37,7 @@ class Website(models.Model):
 
         if not pl:
             _logger.error('Fail to find pricelist for partner "%s" (id %s)', partner.name, partner.id)
-        print("PL SELECIONADA %d !!!!! " % pl.id)
+        #print("PL SELECIONADA %d !!!!! " % pl.id)
         return pl
 
 

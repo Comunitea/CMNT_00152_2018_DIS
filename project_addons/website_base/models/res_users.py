@@ -10,7 +10,6 @@ class ResUsers(models.Model):
     _inherit = "res.users"
 
     def _create_user_from_template(self, values):
-        print(values.get('partner_id', False))
         if not values.get('partner_id', False):
             website = self.env['website'].get_current_website()
             web_default_pricelist = website.get_pricelist_available()[0]

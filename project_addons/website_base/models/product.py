@@ -175,7 +175,9 @@ class ProductTemplate(models.Model):
 
     @api.multi
     def _get_combination_info(self, combination=False, product_id=False, add_qty=1, pricelist=False, parent_combination=False, only_template=False):
-       
+        #print("BUSCA combination")
+        #print(pricelist)
+        #print(self._context)
         self.ensure_one()
 
         combination_info = super(ProductTemplate, self)._get_combination_info(
@@ -186,5 +188,6 @@ class ProductTemplate(models.Model):
         combination_info.update(
             tax_price=tax_price,
         )
-
+        #print("Resultado de combination info personalizado")
+        #print(combination_info)
         return combination_info
