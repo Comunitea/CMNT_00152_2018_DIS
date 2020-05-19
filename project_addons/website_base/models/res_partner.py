@@ -115,7 +115,6 @@ class ResPartnerAccess(models.Model):
         sale_model = self.env['ir.model'].search([('model', '=', 'sale.order')])
         definition_domain = '["&", ["team_id.team_type", "=", "website"], ["partner_id", "child_of", {}]]'.format(self.id)
         if self.order_validator:
-            print(self.order_validator)
             values = {
                 'name': _("Validator for partner: {}".format(self.name)),
                 'model_id': sale_model.id,
@@ -150,11 +149,11 @@ class ResPartnerAccess(models.Model):
         if self._origin:
             partner_id = self.env['res.partner'].browse(self._origin.id)
             definition_domain = '["&", ["team_id.team_type", "=", "website"], ["partner_id", "child_of", {}]]'.format(partner_id.id)
-            prev_definitions = self.env['tier.definition'].search([('definition_domain', '=', definition_domain)])
-        definition_domain = '["&", ["team_id.team_type", "=", "website"], ["partner_id", "child_of", {}]]'.format(self.id)
-        
+            prev_definitions = self.env['tier.definition'].sudo().search([('definition_domain', '=', definition_domain)])
+        else:
+            definition_domain = '["&", ["team_id.team_type", "=", "website"], ["partner_id", "child_of", {}]]'.format(self.id)
+
         if self.order_validator:
-            print(self.order_validator)
             values = {
                 'name': _("Validator for partner: {}".format(self.name)),
                 'model_id': sale_model.id,
@@ -173,7 +172,7 @@ class ResPartnerAccess(models.Model):
                 for definition in prev_definitions:
                     definition.write(values)
             else:
-                tier_definition = self.env['tier.definition'].create(values)
+                tier_definition = self.env['tier.definition'].sudo().create(values)
         else:
             print ("sin validador")
             if prev_definitions:
