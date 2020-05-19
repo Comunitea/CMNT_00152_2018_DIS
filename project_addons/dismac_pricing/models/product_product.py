@@ -3,6 +3,8 @@
 from odoo import fields, models
 from odoo.tools import pycompat
 from odoo.addons.website.models import ir_http
+from decimal import Decimal
+
 
 class ProductProduct(models.Model):
     _inherit = "product.product"
@@ -14,7 +16,12 @@ class ProductProduct(models.Model):
 
 
     def _get_price_and_discount(self, qty, partner_id, date):
-      
+        website = ir_http.get_request_website()
+        if isinstance(partner_id, pycompat.integer_types):
+            partner = self.env["res.partner"].browse(partner_id)[0]
+        else:
+            partner = partner_id
+        #print ("CÁLCULO  DE PRECIOS PERSONALIZADO . Partner %s " % partner.name )
         res = {
                 'price': 0,
                 'discount': 0,
@@ -23,13 +30,16 @@ class ProductProduct(models.Model):
         discount = 0
         pricelist_price = pricelist_price_discount = pricelist_price_web = self.price
         pricelist_explanation = "Precio de tarifa "
-        if (self.env.user.share == True):
+        if website and website._uid:
+            web_request = self.env['res.users'].sudo().browse(website._uid)[0].share
+        else:
+            web_request = False
+        if (web_request):
             # es usuario web
-            website = ir_http.get_request_website()
             web_default_pricelist = website.get_pricelist_available()[0]
             pricelist_price_web  = self.with_context({'pricelist':web_default_pricelist.id}).price
+            #print ("Usuario WEB. Precio WEB %f" % pricelist_price_web)
            
-        
 
         # SE cpopia toda esta parte par mostrar el descuetno de forma explícita
         # PEro se necesita en esta parte para poder comprar precios incluido el descuento
@@ -67,10 +77,7 @@ class ProductProduct(models.Model):
             promotion_price = 0
 
         # Selecciona precio mínimo
-        if isinstance(partner_id, pycompat.integer_types):
-            partner = self.env["res.partner"].browse(partner_id)[0]
-        else:
-            partner = partner_id
+       
         if partner.fixed_prices:
             discount = 0
             if customer_price:
@@ -103,7 +110,7 @@ class ProductProduct(models.Model):
                 price = promotion_price
                 explanation = "Aplicada promoción "
                 discount = 0
-            if (self.env.user.share == True
+            if (web_request
                 and pricelist_price_web < pricelist_price_discount
                 and pricelist_price_web < price
                 and pricelist_price_web != 0
@@ -111,9 +118,11 @@ class ProductProduct(models.Model):
                 price = pricelist_price_web
                 explanation = "Aplicada precio web"
                 discount = 0
-                print("PRECIO WEB!!!!!")
+                #print("PRECIO WEB APLICADO!!!!!  %d" % price)
 
-
+        if (web_request):
+            # Si es web redondeo a dos decimales
+            price = float(round(Decimal(str(price)),2))
                 
         res['price'] = price
         res['discount'] = discount
@@ -125,9 +134,15 @@ class ProductProduct(models.Model):
         """
         When read price, search in customer prices first
         """
+        #print("Campo calculado de precio _compute_product_price")
+        #print(self._context)
         res = super(ProductProduct, self)._compute_product_price()
 
         partner_id = self._context.get("partner", False)
+        if not partner_id and self.env.user.share:
+            # no hay partner y el usuairo logueado es de WEB
+            # FORZAMOS EL COMMERCIAL PARTNER  DE ESE USUARIO
+            partner_id = self.env.user.commercial_partner_id.id
         qty = self._context.get("quantity", 1.0)
         date = self._context.get("date") or fields.Date.context_today(self)
         if partner_id:
