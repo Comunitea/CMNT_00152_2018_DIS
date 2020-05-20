@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+
+    <template id="website_base_checkout" name="Checkout addresses" inherit_id="website_sale.checkout">
+        <xpath expr="//t[@t-call='website_sale.address_kanban']//t[@t-value='order.partner_id']" position="replace">
+           <t t-set='contact' t-value="order.partner_invoice_id"/>
+            <t t-set='no_edit' t-value="order.partner_id.commercial_partner_id.portfolio"/>
+        </xpath>
+        <xpath expr="//form[@action='/shop/address']" position="replace">
+            <form t-if="not order.partner_id.commercial_partner_id.portfolio" action="/shop/address" method="post" class=''>
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                <a role="button" href="#" class='a-submit btn btn-secondary mb16 btn-block'>
+                    <i class="fa fa-plus-square"/>
+                    <span>Añadir una dirección</span>
+                </a>
+            </form>
+
+
+        </xpath>
+
+    </template>
+
+    <template id="website_base_address_kanban" name="Checkout addresses" inherit_id="website_sale.address_kanban">
+        <xpath expr="//t[@t-esc='contact']/../a" position="replace">
+            <a t-if="not no_edit and (not actual_partner or (ship.id in actual_partner.child_ids.ids))" href="#" class="btn btn-link float-right p-0 js_edit_address no-decoration" role="button" title="Edit this address" aria-label="Edit this address"><i class='fa fa-edit'/></a>
+        </xpath>
+    </template>
+
+</odoo>
