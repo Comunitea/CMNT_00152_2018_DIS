@@ -16,17 +16,21 @@ class ProductProduct(models.Model):
 
 
     def _get_price_and_discount(self, qty, partner_id, date):
+        res = {
+                'price': 0,
+                'discount': 0,
+                'explanation': ''
+                }
+        if self._context.get('only_pricelist', False):
+            res['price'] = self.price
+            return res
         website = ir_http.get_request_website()
         if isinstance(partner_id, pycompat.integer_types):
             partner = self.env["res.partner"].browse(partner_id)[0]
         else:
             partner = partner_id
         #print ("CÁLCULO  DE PRECIOS PERSONALIZADO . Partner %s " % partner.name )
-        res = {
-                'price': 0,
-                'discount': 0,
-                'explanation': ''
-                }
+        
         discount = 0
         pricelist_price = pricelist_price_discount = pricelist_price_web = self.price
         pricelist_explanation = "Precio de tarifa "
@@ -37,7 +41,7 @@ class ProductProduct(models.Model):
         if (web_request):
             # es usuario web
             web_default_pricelist = website.get_pricelist_available()[0]
-            pricelist_price_web  = self.with_context({'pricelist':web_default_pricelist.id}).price
+            pricelist_price_web  = self.with_context({'pricelist':web_default_pricelist.id, 'only_pricelist':True}).price
             #print ("Usuario WEB. Precio WEB %f" % pricelist_price_web)
            
 
