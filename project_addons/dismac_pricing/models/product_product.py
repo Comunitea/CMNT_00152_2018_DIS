@@ -45,7 +45,7 @@ class ProductProduct(models.Model):
         # PEro se necesita en esta parte para poder comprar precios incluido el descuento
         # Aplica descuento de categoría
         categ_dis = self.env["category.discount"].get_customer_discount(
-                partner_id, self.categ_id.id
+                partner.commercial_partner_id, self.categ_id.id
         )
 
         if categ_dis:
@@ -62,7 +62,7 @@ class ProductProduct(models.Model):
             # get customet price
         customer_price = (
             self.env["customer.price"].get_customer_price(
-                partner_id, self, qty
+                partner.commercial_partner_id, self, qty
             )
             or 0
         )
@@ -78,7 +78,7 @@ class ProductProduct(models.Model):
 
         # Selecciona precio mínimo
        
-        if partner.fixed_prices:
+        if partner.fixed_prices or partner.commercial_partner_id.fixed_prices:
             discount = 0
             if customer_price:
                 price = customer_price
@@ -122,8 +122,13 @@ class ProductProduct(models.Model):
 
         if (web_request):
             # Si es web redondeo a dos decimales
-            price = float(round(Decimal(str(price)),2))
-                
+            if discount:
+                price = float(round(Decimal(str(pricelist_price_discount)),2))
+            else:
+                price = float(round(Decimal(str(price)),2))
+            discount = 0
+            
+        
         res['price'] = price
         res['discount'] = discount
         res['explanation'] += explanation
