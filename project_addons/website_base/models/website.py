@@ -55,14 +55,14 @@ class Website(models.Model):
                 # Busca las direcciones de us "padre", sí si es de envñio , devuelve esta 
                 # Esto nos permite que funcione bien si el partner es un subcontacto de una "delegacion"
                 # o la propia "delegación"
-                addr = partner.parent_id.address_get(['delivery', 'invoice'])
-                invoice = addr['invoice']
+                addr = partner.parent_id.address_get(['delivery'])
+                invoice = partner.commercial_partner_id.address_get(['invoice'])['invoice']
                 if partner.parent_id.type == 'delivery':
                     delivery = partner.parent_id.id
                 else:
                     delivery = addr['delivery']
             elif partner.type == 'delivery' and partner.parent_id:
-                addr = partner.parent_id.address_get(['invoice'])
+                addr = partner.commercial_partner_id.address_get(['invoice'])
                 delivery = partner.id
                 invoice = addr['invoice']
             else:
