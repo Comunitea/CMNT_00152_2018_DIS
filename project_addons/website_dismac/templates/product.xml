@@ -367,6 +367,7 @@
                     <span class="text-uppercase" t-esc="category.parent_id.name if category and category.parent_id else 'Bienvenido a Dismac'"/>
                     <span t-esc="', {}'.format(request.env.user.name)" groups="base.group_portal, base.group_user"/>
                     <h1><span class="text-uppercase" t-esc="category.name if category else 'Tienda'"/></h1>
+                    <span  t-esc="category.parent_id.name if category and category.parent_id else 'Si es usted un profesional o empresa, póngase en contacto con nosotros y descubra las ventajas que ofrecen las tarifas personalizadas de Dismac.'"/>
                 </t>
             </div>
         </xpath>
