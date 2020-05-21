@@ -86,7 +86,7 @@ with open(path_csv, 'r') as file:
                     domain_mail = [('id', 'child_of', partner_parent.id, ),
                                      ('email', '=', email), 
                                      ('type', '=', 'contact'),
-                                     ('company_type', '=', 'person')]
+                                     ('is_company', '=', False)]
                     partner_mail = session.env['res.partner'].search(domain_mail, limit=1)
                     if partner_mail:
                         partner_id = partner
