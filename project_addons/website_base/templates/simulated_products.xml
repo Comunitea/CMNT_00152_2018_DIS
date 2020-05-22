@@ -229,7 +229,8 @@
                         <t t-if="td_product">
                             <t t-set="product" t-value="td_product['product']" />
                             <td t-att-colspan="td_product['x'] != 1 and td_product['x']" t-att-rowspan="td_product['y'] != 1 and td_product['y']" t-attf-class="oe_product oe_grid oe-height-#{td_product['y']*2} #{ td_product['class'] }">
-                                <div class="oe_product_cart" t-att-data-publish="product.website_published and 'on' or 'off'">
+                                <!--div class="oe_product_cart" t-att-data-publish="product.website_published and 'on' or 'off'"-->
+                                <div class="oe_product_cart" t-att-data-publish="on">
                                     <t t-set="product_image_big" t-value="td_product['x']+td_product['y'] &gt; 2" />
                                     <t t-call="website_base.simulate_products_item" />
                                 </div>
@@ -279,7 +280,8 @@
     <template id="simulate_products_list_view" name="Simulate Products Grid List Base">
         <t t-foreach="simulated_products" t-as="product" t-if="simulated_products">
             <!-- With or without SGEEDE Infinite Scroll -->
-            <div class="oe_product oe_list oe_product_cart sgeede-infinite-get" t-att-data-publish="product.website_published and 'on' or 'off'">
+            <!--div class="oe_product oe_list oe_product_cart sgeede-infinite-get" t-att-data-publish="product.website_published and 'on' or 'off'"-->
+            <div class="oe_product oe_list oe_product_cart sgeede-infinite-get" t-att-data-publish="on">
                 <t t-call="website_base.simulate_products_item">
                     <t t-set="show_publish" t-value="True" />
                     <t t-set="show_list" t-value="True" />

@@ -7,7 +7,7 @@
            <t t-set='contact' t-value="order.partner_invoice_id"/>
             <t t-set='no_edit' t-value="order.partner_id.commercial_partner_id.portfolio"/>
         </xpath>
-        <xpath expr="//form[@action='/shop/address']" position="replace">
+        <!--xpath expr="//form[@action='/shop/address']" position="replace">
             <form t-if="not order.partner_id.commercial_partner_id.portfolio" action="/shop/address" method="post" class=''>
                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                 <a role="button" href="#" class='a-submit btn btn-secondary mb16 btn-block'>
@@ -15,8 +15,35 @@
                     <span>Añadir una dirección</span>
                 </a>
             </form>
+        </xpath-->
 
-
+        <xpath expr="//div[@class='row all_shipping']" position="replace">
+           <div t-if="not (order.partner_id.commercial_partner_id.external_review or order.partner_id.external_review)" class="row all_shipping">
+                <div class="col-lg-12">
+                    <div class="row mt8">
+                        <div class="col-md-12 col-lg-12 one_kanban">
+                             <form t-if="not order.partner_id.commercial_partner_id.portfolio" action="/shop/address" method="post" class=''>
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                <a role="button" href="#" class='a-submit btn btn-secondary mb16 btn-block'>
+                                    <i class="fa fa-plus-square"/>
+                                    <span>Añadir una dirección</span>
+                                </a>
+                            </form>
+                        </div>
+                        <t t-foreach="shippings" t-as="ship">
+                            <div class="col-md-12 col-lg-6 one_kanban">
+                                <t t-call="website_sale.address_kanban">
+                                    <t t-set="actual_partner" t-value="order.partner_id" />
+                                    <t t-set='contact' t-value="ship"/>
+                                    <t t-set='selected' t-value="order.partner_shipping_id==ship"/>
+                                    <t t-set='readonly' t-value="bool(len(shippings)==1)"/>
+                                    <t t-set='edit_billing' t-value="bool(ship==order.partner_id)"/>
+                                </t>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
         </xpath>
 
     </template>

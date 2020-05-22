@@ -11,6 +11,13 @@ class Website(models.Model):
         domain = ['|', ('website_ids', '=', False), ('website_ids', 'in', self.id)]
         return self.env['product.public.category'].sudo().search(domain)
 
+    # DESHABILITAMOS LA REGLA DE ACCESO Y FILTRAMSO DE PORTAL  A PLANTAILLAS AQUI lOS PRODUCTOS
+    # EN _get_search_domain se añadirá que si hay precios presonalizado esto se muestren
+    # Solo estos en el menu de tarifas y los de la WEB más los dd tarifas (Según permisos)
+    @api.multi
+    def sale_product_domain(self):
+        return [("website_published", "=", True)] + super().sale_product_domain()
+
     def get_current_pricelist(self):
         """
         :returns: The current pricelist record
