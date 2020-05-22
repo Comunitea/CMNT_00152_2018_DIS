@@ -23,10 +23,10 @@ class WebsiteSale(WebsiteSale):
         # para que no se pueda hacer (al menos de momento)
         # Se puede plantear otra funcionalidad cambiando esta función
         order = request.website.sale_get_order()
-        if order.partner_id.portfolio:
-            return request.redirect(kw.get('callback') or '/shop/confirm_order')
-        else:
-            return super(WebsiteSale, self).address(**kw)
+        #if order.partner_id.portfolio:
+        #    return request.redirect(kw.get('callback') or '/shop/confirm_order')
+        #else:
+        return super(WebsiteSale, self).address(**kw)
 
 
     @http.route(['/shop/payment'], type='http', auth="public", website=True)
@@ -91,43 +91,65 @@ class WebsiteSale(WebsiteSale):
         user = request.env.user
         today = fields.Date.today()
 
-        customer_domain = [('partner_id', '=', user.partner_id.commercial_partner_id.id),
+        customer_domain_pr = [('partner_id', '=', user.partner_id.commercial_partner_id.id),
+                            ('product_id', '!=', False),
                            '|',
                             ('date_start', '=', False),
                             ('date_start', '<=', today),
                             '|',
                             ('date_end', '=', False),
                             ('date_end', '>=', today)]
-        all_prices = request.env['customer.price'].sudo().search(customer_domain)
+        customer_domain_tmp = [('partner_id', '=', user.partner_id.commercial_partner_id.id),
+                            ('product_tmpl_id', '!=', False),
+                           '|',
+                            ('date_start', '=', False),
+                            ('date_start', '<=', today),
+                            '|',
+                            ('date_end', '=', False),
+                            ('date_end', '>=', today)]
+        prices_pr = request.env['customer.price'].sudo().search(customer_domain_pr)
+        prices_tmp = request.env['customer.price'].sudo().search(customer_domain_tmp)
         customer_products = []
-        customer_products += request.env['customer.price'].sudo().search(customer_domain).filtered(
-            lambda x: x.product_tmpl_id is not False and x.product_tmpl_id.website_published).mapped('product_tmpl_id').ids
-        customer_products += request.env['customer.price'].sudo().search(customer_domain).filtered(
-            lambda x: x.product_id is not False and x.product_id.website_published).mapped(
+        customer_products += request.env['customer.price'].sudo().search(customer_domain_tmp).mapped('product_tmpl_id').ids
+        customer_products += request.env['customer.price'].sudo().search(customer_domain_pr).mapped(
             'product_id').mapped('product_tmpl_id').ids
         return customer_products
 
     def _get_search_domain(self, search, category, attrib_values):
         domain = super(WebsiteSale, self)._get_search_domain(
             search=search, category=category, attrib_values=attrib_values)
-        customer_products = False
+        customer_products = self._get_customer_products_template_from_customer_prices()
         if request.env.context.get('customer_prices', False) or not request.env.user.partner_id.show_all_catalogue:
+            # si estamos consultando la tarifa 
+            # O
+            # El usuario NO tine marcaddo mostrar todo el catálogo 
+            # SOLO ENSEÑA LOS DE TARIFA (ESPCÏFICOS), ESTÉN PUBLICADOS O NO
 
-            customer_products = self._get_customer_products_template_from_customer_prices()        
-
-            if len(customer_products) > 0:         
-                domain += [('id', 'in', customer_products)]
-            else:
-                domain += [('id', '=', None)]
-
-        if not request.env.context.get('customer_prices', False) \
-                and not request.env.user.partner_id.show_customer_price:
+                    
             
-            if not customer_products:
-                customer_products = self._get_customer_products_template_from_customer_prices()                
+            if len(customer_products) > 0: 
+                domain.pop(domain.index(('website_published', '=', True)))       
+                domain.insert(0, ('id', 'in', customer_products))
+            else:
+                domain.insert(0, ('id', '=', None))
+            
+        elif len(customer_products) > 0:
+            #TOdo lo que venga del con el website_published o que sea de tarifa
+            domain.insert(0, ('id', 'in', customer_products))
+            domain.insert(0, '|')
 
-            if len(customer_products) > 0:         
-                domain += [('id', 'not in', customer_products)]
+
+        # COMENTO ESTO PORQUE NO CREO QUE SEA ASÏ LO ENTIDNO MÁS ANIVE LD EPRECIO , NO DE PROEDTO 
+        # if not request.env.context.get('customer_prices', False) \
+        #         and not request.env.user.partner_id.show_customer_price:
+        #     # SI NO ESTAMOS CONSULTANDO LA TARIFA 
+        #     # Y
+        #     # el usario NO tiene MOSTRAR PRECIOS PERSONALIZADOS
+        #     if not customer_products:
+        #         customer_products = self._get_customer_products_template_from_customer_prices()                
+
+        #     if len(customer_products) > 0:         
+        #         domain += [('id', 'not in', customer_products)]
             
         return domain
 
@@ -185,7 +207,7 @@ class WebsiteSale(WebsiteSale):
         
         return res
 
-    @http.route(['/tarifas'], type='http', auth="public", website=True)
+    @http.route(['/tarifas', '/tarifas/page/<int:page>'], type='http', auth="public", website=True)
     def customer_prices_shop(self, page=0, category=None, search='', ppg=False, **post):
         return self.recalculate_product_list(list_type='pricelist', page=page, category=category, search=search,
                                              ppg=ppg, **post)
