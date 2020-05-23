@@ -51,10 +51,11 @@
         </xpath>
     </template>
 
-    <template id="tax_price" name="Tax prices list view" inherit_id="website_sale.product_price">
-        <xpath expr="//b[hasclass('oe_price')]" position="after">
-            <br/>
-                <b class="oe_price_tax" style="white-space: nowrap;" t-esc="combination_info['tax_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/> con IVA
+    <template id="tax_price" inherit_id="website_sale.product_price">
+        <xpath expr="//h4[hasclass('oe_price_h4')]" position="after">
+            <h6 class="oe_price_h4 css_editable_mode_hidden">
+              <b class="oe_price" style="white-space: nowrap;" t-esc="combination_info['tax_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/> con IVA
+          </h6>
         </xpath>
     </template>
 

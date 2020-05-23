@@ -133,8 +133,50 @@
         </xpath>
     </template>
 
-    <!-- Change product detail view to convert like a shop view and include ecommerce categories -->
     <template id="website_sale_product" name="Product Dismac" inherit_id="website_sale.product">
+        <xpath expr="//section[@id='product_detail']/div" position="before">
+            <div class="simulated-product-title mb4 text-uppercase">
+                <h6 t-esc="product.public_categ_ids[0].parent_id.name if product.public_categ_ids and product.public_categ_ids[0].parent_id else product.public_categ_ids[0].name if product.public_categ_ids and product.public_categ_ids[0] else 'Producto'"/>
+                <h4><span t-esc="product.public_categ_ids[0].name if product.public_categ_ids and product.public_categ_ids[0] else product.name"/></h4>
+            </div>
+        
+        </xpath>
+
+        <xpath expr="//h1[@itemprop='name']" position="replace">
+            <h2 itemprop="name" t-field="product.name">Product Name</h2>
+            <div class="product_details-sku" t-if="product.default_code">
+                <hr t-if="product.default_code"/>
+                <strong>SKU: </strong><span itemprop="sku" t-esc="product.default_code"/>
+            </div>
+            <div class="o_not_editable" t-if="product.description_sale">
+                <hr t-if="product.description_sale" />
+                <p t-field="product.description_sale" class="text-muted" />
+            </div>
+            <hr/>
+        </xpath>
+        <xpath expr="//a[@id='add_to_cart']" position="after">
+            <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
+            <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
+                t-attf-class="btn btn-secondary mt8 btn-lg o_website_form_send #{'disabled' if current_quote and product in current_quote.product_ids else 'a'}"
+                title="Add to request quote" aria-label="Add to request quote" rel="noindex, nofollow">
+                <span class="fa fa-file-text-o"/>
+            </a>
+        </xpath>
+        <xpath expr="//div[@id='product_details']/p[hasclass('text-muted')]"  position="before">
+            <!-- Send to quote form page -->
+            <div class="product-quote-request">
+                <label class="mt16 text-muted">
+                    <strong>Si desea añadir este producto a una petición de presupuesto especial, pulse
+                        <a t-att-href="'/presupuestos?add_product=%s' % product.id" class="o_website_form_send" rel="noindex, nofollow" title="Add to current quote" aria-label="Add to current quote">aquí</a>.</strong>
+                </label>
+            </div>
+        </xpath>
+    </template>
+
+    
+
+    <!-- Change product detail view to convert like a shop view and include ecommerce categories -->
+    <template id="website_sale_product_DEPRE" name="Product Dismac" inherit_id="">
         <xpath expr="//div[@id='wrap']" position="replace">
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
