@@ -11,6 +11,7 @@
             <script type="text/javascript" src="/website_base/static/js/my_portal_history.js" />
             <script type="text/javascript" src="/website_base/static/js/website_sale.js" />
             <script type="text/javascript" src="/website_base/static/js/website_sale_comparison.js" />
+            <script type="text/javascript" src="/website_base/static/js/website_sale_options.js" />
         </xpath>
     </template>
     
