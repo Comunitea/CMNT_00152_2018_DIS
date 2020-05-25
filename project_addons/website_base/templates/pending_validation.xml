@@ -69,7 +69,7 @@
                                 <div class="card-header bg-info mt-3">
                                     <span>
                                         <i class="fa fa-warning" style="margin-right:10px;" title="This order needs to be validated by a reviewer."/>
-                                        <i>Pendiente</i>Este pedido necesita ser validado por la plataforma de la Universidad de Vigo.
+                                        <i>Pendiente. </i>Este pedido necesita ser validado por la plataforma de la Universidad de Vigo.
                                         <i>Por favor, imprímalo y envíelo.</i>
                                     </span>
                                 </div>
