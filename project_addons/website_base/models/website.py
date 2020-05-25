@@ -105,12 +105,12 @@ class Website(models.Model):
 
         if sale_order:
             request.session['sale_order_id'] = sale_order.id
-            request.session['sale_last_order_id'] = sale_order.id
+            #request.session['sale_last_order_id'] = sale_order.id
             sale_order.partner_id.write({'last_website_so_id': sale_order.id})
             return sale_order
         else:
             request.session['sale_order_id'] = None
-            request.session['sale_last_order_id'] = None
+            #request.session['sale_last_order_id'] = None
             request.session['website_sale_current_pl'] = None
             partner.write({'last_website_so_id': None})
             return self.env['sale.order']
