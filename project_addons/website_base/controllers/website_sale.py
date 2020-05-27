@@ -115,9 +115,38 @@ class WebsiteSale(WebsiteSale):
             'product_id').mapped('product_tmpl_id').ids
         return customer_products
 
+
     def _get_search_domain(self, search, category, attrib_values):
-        domain = super(WebsiteSale, self)._get_search_domain(
-            search=search, category=category, attrib_values=attrib_values)
+        domain = request.website.sale_product_domain()
+        if search:
+            domain += [
+                '|', '|', '|', ('name', '%', search), ('description_short', '%', search), ('description_full', '%', search),
+                ('description_sale', 'ilike', search), ('product_variant_ids.default_code', 'ilike', search)]
+
+        if category:
+            domain += [('public_categ_ids', 'child_of', int(category))]
+
+        if attrib_values:
+            attrib = None
+            ids = []
+            for value in attrib_values:
+                if not attrib:
+                    attrib = value[0]
+                    ids.append(value[1])
+                elif value[0] == attrib:
+                    ids.append(value[1])
+                else:
+                    domain += [('attribute_line_ids.value_ids', 'in', ids)]
+                    attrib = value[0]
+                    ids = [value[1]]
+            if attrib:
+                domain += [('attribute_line_ids.value_ids', 'in', ids)]
+
+        tag_id = request.env.context.get('tag_id', False)
+        if tag_id:
+            domain += [('website_published', '=', True), ('tag_ids', 'in', (tag_id))] + \
+                      request.env['website'].website_domain()
+
         customer_products = self._get_customer_products_template_from_customer_prices()
         if request.env.context.get('customer_prices', False) or not request.env.user.partner_id.show_all_catalogue:
             # si estamos consultando la tarifa 
@@ -150,8 +179,21 @@ class WebsiteSale(WebsiteSale):
 
         #     if len(customer_products) > 0:         
         #         domain += [('id', 'not in', customer_products)]
-            
+        print(domain)
         return domain
+
+
+    def _get_search_order(self, post):
+        # OrderBy will be parsed in orm and so no direct sql injection
+        # id is added to be sure that order is a unique sort key
+        res = super(WebsiteSale, self)._get_search_order(post)
+        print(post)
+        search = post.get('search', False)
+        if search:
+            res = "similarity(product_template.description_short, '%s') DESC, similarity(product_template.name, '%s') DESC, website_sequence desc" % (search, search)
+            return res
+        print ("ORDEN NORMAL !!!!!!!!!!!!!!!!!!!!!")
+        return '%s ,description_short desc, id desc' % post.get('order', 'website_sequence desc')
 
     def recalculate_product_list(self, list_type=None, page=0, category=None, search='', ppg=False, **post):
         res = super(WebsiteSale, self).shop(page=page, category=category, search=search, ppg=ppg, **post)
@@ -186,12 +228,17 @@ class WebsiteSale(WebsiteSale):
         product = request.env['product.template']
         product_count = product.search_count(domain)
         pager = request.website.pager(url=url, total=product_count, page=page, step=ppg, scope=7, url_args=post)
-        products = product.sudo().search(domain, limit=ppg, offset=pager['offset'], order=self._get_search_order(post))
+
+        
+        order = self._get_search_order(post)
+        print("ORDERRRRRRRRR %s" % order)
+
+        products = product.sudo().search(domain, limit=ppg, offset=pager['offset'], order=order)
 
         productAttribute = request.env['product.attribute']
         if products:
             # get all products without limit
-            selected_products = product.search(domain, limit=False)
+            selected_products = product.search(domain, order, limit=False)
             attributes = productAttribute.search([('attribute_line_ids.product_tmpl_id', 'in', selected_products.ids)])
         else:
             attributes = productAttribute.browse(res.qcontext['attributes'].ids)

@@ -55,6 +55,7 @@
         'templates/pending_validation.xml',
         'templates/checkout.xml',
         'templates/portal.xml',
+        'templates/cart.xml',
         'views/product_views.xml',
         'views/quote_views.xml',
         'security/ir.model.access.csv',
