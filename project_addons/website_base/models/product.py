@@ -178,13 +178,21 @@ class ProductTemplate(models.Model):
     
         self.ensure_one()
 
-        combination_info = super(ProductTemplate, self)._get_combination_info(
+        combination_info = super(ProductTemplate, self.with_context(round=False))._get_combination_info(
             combination=combination, product_id=product_id, add_qty=add_qty, pricelist=pricelist,
             parent_combination=parent_combination, only_template=only_template)
 
         tax_price = round(combination_info['price'] * (1 + self.sudo().taxes_id[0].amount / 100), 2)
+        context = self._context
+        current_uid = context.get('uid')
+        partner = self.env['res.users'].browse(current_uid).partner_id
+        if partner.portfolio:
+            decimals = self.env['res.users'].browse(current_uid).partner_id.decimals
+        else:
+            decimals = 2
         combination_info.update(
             tax_price=tax_price,
+            decimals=decimals
         )
     
         return combination_info
