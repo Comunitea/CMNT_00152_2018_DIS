@@ -120,7 +120,7 @@ class WebsiteSale(WebsiteSale):
         domain = request.website.sale_product_domain()
         if search:
             domain += [
-                '|', '|', '|', ('name', '%', search), ('description_short', '%', search), ('description_full', '%', search),
+                '|', '|', '|', '|', ('name', '%', search), ('description_short', '%', search), ('description_full', 'ilike', search),
                 ('description_sale', 'ilike', search), ('product_variant_ids.default_code', 'ilike', search)]
 
         if category:
@@ -193,6 +193,7 @@ class WebsiteSale(WebsiteSale):
             res = "similarity(product_template.description_short, '%s') DESC, similarity(product_template.name, '%s') DESC, website_sequence desc" % (search, search)
             return res
         print ("ORDEN NORMAL !!!!!!!!!!!!!!!!!!!!!")
+        print(post)
         return '%s ,description_short desc, id desc' % post.get('order', 'website_sequence desc')
 
     def recalculate_product_list(self, list_type=None, page=0, category=None, search='', ppg=False, **post):
