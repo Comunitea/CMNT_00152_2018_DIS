@@ -23,6 +23,7 @@
         "views/crm_lead_view.xml",
         "wizard/wizard_settle_view.xml",
         "wizard/change_agent_wzd_view.xml",
+        "wizard/change_agent_wzd_invoice_view.xml",
     ],
     "installable": True,
 }
