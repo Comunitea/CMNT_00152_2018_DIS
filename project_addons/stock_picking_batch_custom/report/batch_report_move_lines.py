@@ -108,6 +108,38 @@ class BatchGroupedMoves(models.Model):
     product_qty_by_location = fields.Float('C. en la ubicación', compute="_compute_product_location")
     ref = fields.Char('Cant', compute="_get_move_lines")
 
+
+    def _compute_state(self, move_lines):
+        '''compiat de state de stock_picking, pero para group en vez de move_lines'''
+        ''' State of a picking depends on the state of its related stock.move
+        - Draft: only used for "planned pickings"
+        - Waiting: if the picking is not ready to be sent so if
+          - (a) no quantity could be reserved at all or if
+          - (b) some quantities could be reserved and the shipping policy is "deliver all at once"
+        - Waiting another move: if the picking is waiting for another move
+        - Ready: if the picking is ready to be sent so if:
+          - (a) all quantities are reserved or if
+          - (b) some quantities could be reserved and the shipping policy is "as soon as possible"
+        - Done: if the picking is done.
+        - Cancelled: if the picking is cancelled
+        '''
+
+        if not move_lines:
+            state = 'draft'
+        elif any(move.state == 'draft' for move in move_lines):  # TDE FIXME: should be all ?
+                state = 'draft'
+        elif all(move.state == 'cancel' for move in move_lines):
+            self.state = 'cancel'
+        elif all(move.state in ['cancel', 'done'] for move in move_lines):
+            self.state = 'done'
+        else:
+            relevant_move_state = move_lines._get_relevant_state_among_moves()
+            if relevant_move_state == 'partially_available':
+                state = 'assigned'
+            else:
+                state = relevant_move_state
+        return state
+
     @api.multi
     def _compute_product_location(self):
         for line in self:
