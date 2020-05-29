@@ -50,8 +50,6 @@
     </template>
 
     <template id="report_delivery_document" inherit_id="stock_picking_report_valued.valued_report_picking">
-
-
         <xpath expr="//span[@t-field='o.date_done']" position="attributes">
             <attribute name="t-options">{"widget": "date"}</attribute>
         </xpath>
