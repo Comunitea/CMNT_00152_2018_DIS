@@ -119,9 +119,10 @@ class WebsiteSale(WebsiteSale):
     def _get_search_domain(self, search, category, attrib_values):
         domain = request.website.sale_product_domain()
         if search:
-            domain += [
-                '|', '|', '|', '|', ('name', '%', search), ('description_short', '%', search), ('description_full', 'ilike', search),
-                ('description_sale', 'ilike', search), ('product_variant_ids.default_code', 'ilike', search)]
+            for srch in search.split(" "):
+                domain += [
+                    '|', '|', '|', ('catalogue_code', '%>', srch), ('name', '%>', srch),
+                    ('description_short', 'ilike', srch), ('default_code', '%>', srch)]
 
         if category:
             domain += [('public_categ_ids', 'child_of', int(category))]
@@ -190,8 +191,17 @@ class WebsiteSale(WebsiteSale):
         print(post)
         search = post.get('search', False)
         if search:
-            res = "similarity(product_template.description_short, '%s') DESC, similarity(product_template.name, '%s') DESC, website_sequence desc" % (search, search)
-            return res
+            order = "("
+            ini_str = True
+            for srch in search.split(" "):
+                if ini_str == False:
+                    order += " + "
+                order += "coalesce(word_similarity(product_template.catalogue_code, '%s'),0)  +coalesce(word_similarity(product_template.name, '%s'), 0) \
+                            + coalesce(word_similarity(product_template.description_short, '%s'), 0)  +coalesce(word_similarity(product_template.default_code, '%s'), 0)" % (srch, srch, srch, srch)
+                ini_str= False
+            order += ") DESC"
+            print(order)
+            return order
         print ("ORDEN NORMAL !!!!!!!!!!!!!!!!!!!!!")
         print(post)
         return '%s ,description_short desc, id desc' % post.get('order', 'website_sequence desc')
@@ -232,14 +242,13 @@ class WebsiteSale(WebsiteSale):
 
         
         order = self._get_search_order(post)
-        print("ORDERRRRRRRRR %s" % order)
 
         products = product.sudo().search(domain, limit=ppg, offset=pager['offset'], order=order)
 
         productAttribute = request.env['product.attribute']
         if products:
             # get all products without limit
-            selected_products = product.search(domain, order, limit=False)
+            selected_products = product.search(domain, limit=False)
             attributes = productAttribute.search([('attribute_line_ids.product_tmpl_id', 'in', selected_products.ids)])
         else:
             attributes = productAttribute.browse(res.qcontext['attributes'].ids)
