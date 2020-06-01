@@ -74,4 +74,17 @@
         </field>
     </record>
 
+    <record id="product_product_search_view_catalogue_code" model="ir.ui.view">
+        <field name="name">product.product.search.catalogue_code</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="filter_domain">
+                    ['|', '|', '|',('catalogue_code','ilike',self),('default_code','ilike',self),('name','ilike',self),('barcode','ilike',self)]
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>
