@@ -147,6 +147,8 @@
             <div class="product_details-sku" t-if="product.default_code">
                 <hr t-if="product.default_code"/>
                 <strong>SKU: </strong><span itemprop="sku" t-esc="product.default_code"/>
+                <hr t-if="product.catalogue_code"/>
+                <strong>Referencia: </strong><span itemprop="code" t-esc="product.catalogue_code"/>
             </div>
             <div class="o_not_editable" t-if="product.description_sale">
                 <hr t-if="product.description_sale" />
