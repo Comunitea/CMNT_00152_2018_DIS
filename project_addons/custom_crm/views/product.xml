@@ -8,11 +8,11 @@
                 <field name="default_code"/>
                 <field name="name"/>
                 <field name="catalogue_code"/>
-                <field name="qty_available"/>
-                <field name="virtual_available"/>
-                <field name="lst_price"/>
+                <field name="virtual_stock_conservative" string="Stock disponible"/>
+                <field name="virtual_available" string="Stock previsto"/>
+                <field name="price" string="Precio (tarifa)"/>
                 <field name="reference_cost"/>
-                <field name="last_purchase_date"/>
+                <field name="last_purchase_date" string="Últ. compra"/>
             </tree>
         </field>
     </record>

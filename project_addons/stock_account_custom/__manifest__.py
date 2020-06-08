@@ -3,7 +3,7 @@
 {
     "name": "Stock Cost Custom Dismac",
     "summary": "Custom costs for Dismac",
-    "version": "12.0.1.0.0",
+    "version": "12.0.3.0.0",
     "category": "Sales",
     "website": "comunitea.com",
     "author": "Comunitea",
