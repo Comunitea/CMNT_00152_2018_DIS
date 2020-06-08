@@ -10,7 +10,7 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def action_invoice_open(self):
-        res = super().action_invoice_open(force)
+        res = super().action_invoice_open()
         for rec in self:
             if rec.type in ['in_invoice', 'in_refund']:
                 rec.invoice_line_ids.mapped('product_id').set_product_last_purchase(
