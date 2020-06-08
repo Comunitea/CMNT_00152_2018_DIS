@@ -9,7 +9,7 @@ from odoo.tools.profiler import profile
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    margin_perc = fields.Float(compute="_product_margin_perc",
+    margin_perc = fields.Float(compute="_product_margin",
                                string='Margin %',
                                help="It gives profitability by calculating "
                                     "percentage.", store=True)
@@ -32,7 +32,7 @@ class SaleOrder(models.Model):
                 margin_perc = round((margin * 100) /
                                          order.amount_untaxed, 2)
             else:
-                margin_perc == 0
+                margin_perc = 0
            
             order.update({
                 'margin_perc': margin_perc,
