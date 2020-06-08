@@ -7,3 +7,4 @@ from . import purchase_order
 from . import product_pricelist
 #from . import sale_order
 from . import customer_price
+from . import account_invoice

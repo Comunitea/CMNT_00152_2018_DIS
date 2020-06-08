@@ -5,6 +5,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo import models, fields, api
 from odoo.addons import decimal_precision as dp
+from odoo.tools.profiler import profile
 
 
 class ProductPriceRatio(models.Model):
@@ -25,14 +26,14 @@ class ProductProduct(models.Model):
 
     real_stock_cost = fields.Float(
         "Real stock cost",
-        compute="_get_compute_custom_costs",
+        compute="_get_real_stock_cost",
         digits=dp.get_precision("Product Price"),
         groups="stock_account_custom.group_cost_manager",
         help="Stock value / Qty",
     )
     real_stock_cost_fixed = fields.Float(
         "Fixed real stock cost",
-        compute="_get_compute_custom_costs",
+        compute="_get_real_stock_cost",
         digits=dp.get_precision("Product Price"),
         groups="stock_account_custom.group_cost_manager",
         help="Stock value / Qty (without special purchases)",
@@ -52,7 +53,7 @@ class ProductProduct(models.Model):
     )
     last_purchase_price_fixed = fields.Float(
         string="Last Purchase Price Fixed",
-        compute="_compute_last_purchase_fixed",
+        #compute="_compute_last_purchase_fixed",
         digits=dp.get_precision("Product Price"),
         prefetch=False,
     )
@@ -113,27 +114,35 @@ class ProductProduct(models.Model):
         candidates = product._get_fifo_candidates_in_move()
         qty_remaining = sum(x.remaining_qty for x in candidates)
         qty = qty_at_date - qty_remaining
+        res = 0
         if qty:
             res = product.stock_value / qty
         else:
-            res = product.real_stock_cost
+            if product.qty_at_date:
+                res = (
+                    product.stock_value / product.qty_at_date
+                )
         return res
 
     @api.multi
-    def _get_compute_custom_costs(self):
-        # Real stock_cost: Todos los movimientos
+    def _get_real_stock_cost(self):
+        ctx = self._context.copy()
+        ctx.update(exclude_compute_cost=True)
         for product in self:
+            # Real stock_cost: Todos los movimientos
             if product.qty_at_date:
                 product.real_stock_cost = (
                     product.stock_value / product.qty_at_date
                 )
-        # Fixed real stock_cost: Solo los
-        #  movimientos con exclude_compute_cost = False
-        ctx = self._context.copy()
-        ctx.update(exclude_compute_cost=True)
-        for product in self:
+            # Fixed real stock_cost: Solo los
+            #  movimientos con exclude_compute_cost = False
             product.real_stock_cost_fixed = product.\
                 _get_compute_custom_costs_with_context(ctx)
+
+    #@profile
+    @api.multi
+    def _get_compute_custom_costs(self):
+        for product in self:
             if product.product_tmpl_id.cost_ratio_id:
                 product.reference_cost = (
                     product.last_purchase_price_fixed
@@ -184,8 +193,9 @@ class ProductProduct(models.Model):
 
         return prices
 
+    #@profile
     @api.multi
-    def _compute_last_purchase_fixed(self):
+    def _set_last_purchase_fixed(self):
         """ Get last purchase price, last purchase date and last supplier """
         PurchaseOrderLine = self.env["purchase.order.line"]
         for product in self:
@@ -198,9 +208,9 @@ class ProductProduct(models.Model):
                     [
                         ("product_id", "=", product.id),
                         ("state", "in", ["purchase", "done"]),
-                        ("order_id.exclude_compute_cost", "<>", True),
-                    ]
-                ).sorted(key=lambda l: l.order_id.date_order, reverse=True)
+                        ("exclude_compute_cost", "<>", True),
+                    ], order="date_order DESC", limit=1
+                )
                 inv_lines = lines[:1].invoice_lines.sorted(
                     key=lambda l: l.invoice_id.date_invoice, reverse=True
                 )
