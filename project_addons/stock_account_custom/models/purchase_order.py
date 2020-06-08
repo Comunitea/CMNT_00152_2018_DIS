@@ -18,8 +18,7 @@ class PurchaseOrder(models.Model):
     def button_approve(self, force=False):
         res = super().button_approve(force)
         for rec in self:
-            rec.order_line.mapped('product_id')._set_last_purchase_fixed(
-                rec.id)
+            rec.order_line.mapped('product_id')._set_last_purchase_fixed()
         return res
 
     @api.multi
