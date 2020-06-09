@@ -11,6 +11,43 @@ class Website(models.Model):
         domain = ['|', ('website_ids', '=', False), ('website_ids', 'in', self.id)]
         return self.env['product.public.category'].sudo().search(domain)
 
+    # DESHABILITAMOS LA REGLA DE ACCESO Y FILTRAMSO DE PORTAL  A PLANTAILLAS AQUI lOS PRODUCTOS
+    # EN _get_search_domain se añadirá que si hay precios presonalizado esto se muestren
+    # Solo estos en el menu de tarifas y los de la WEB más los dd tarifas (Según permisos)
+    @api.multi
+    def sale_product_domain(self):
+        return [("website_published", "=", True)] + super().sale_product_domain()
+
+    def get_current_pricelist(self):
+        """
+        :returns: The current pricelist record
+        """
+
+        #LA FORZAMOS PARA QUE SOLO MIRE LA DEL PARTNER SI ESTA"HABIITADA Y SI NO LA POR DEFECTO
+
+        # The list of available pricelists for this user.
+        # If the user is signed in, and has a pricelist set different than the public user pricelist
+        # then this pricelist will always be considered as available
+        available_pricelists = self.get_pricelist_available()
+        pl = None
+        partner = self.env.user.partner_id.commercial_partner_id
+        pl = partner.property_product_pricelist
+
+        if available_pricelists and pl not in available_pricelists:
+            # If there is at least one pricelist in the available pricelists
+            # and the chosen pricelist is not within them
+            # it then choose the first available pricelist.
+            # This can only happen when the pricelist is the public user pricelist and this pricelist is not in the available pricelist for this localization
+            # If the user is signed in, and has a special pricelist (different than the public user pricelist),
+            # then this special pricelist is amongs these available pricelists, and therefore it won't fall in this case.
+            pl = available_pricelists[0]
+
+        if not pl:
+            _logger.error('Fail to find pricelist for partner "%s" (id %s)', partner.name, partner.id)
+        #print("PL SELECIONADA %d !!!!! " % pl.id)
+        return pl
+
+
     @api.multi
     def _prepare_sale_order_values(self, partner, pricelist):
         # Adapta valores de pedido especialmente para los de cartera
@@ -25,14 +62,14 @@ class Website(models.Model):
                 # Busca las direcciones de us "padre", sí si es de envñio , devuelve esta 
                 # Esto nos permite que funcione bien si el partner es un subcontacto de una "delegacion"
                 # o la propia "delegación"
-                addr = partner.parent_id.address_get(['delivery', 'invoice'])
-                invoice = addr['invoice']
+                addr = partner.parent_id.address_get(['delivery'])
+                invoice = partner.commercial_partner_id.address_get(['invoice'])['invoice']
                 if partner.parent_id.type == 'delivery':
                     delivery = partner.parent_id.id
                 else:
                     delivery = addr['delivery']
             elif partner.type == 'delivery' and partner.parent_id:
-                addr = partner.parent_id.address_get(['invoice'])
+                addr = partner.commercial_partner_id.address_get(['invoice'])
                 delivery = partner.id
                 invoice = addr['invoice']
             else:
@@ -68,12 +105,12 @@ class Website(models.Model):
 
         if sale_order:
             request.session['sale_order_id'] = sale_order.id
-            request.session['sale_last_order_id'] = sale_order.id
+            #request.session['sale_last_order_id'] = sale_order.id
             sale_order.partner_id.write({'last_website_so_id': sale_order.id})
             return sale_order
         else:
             request.session['sale_order_id'] = None
-            request.session['sale_last_order_id'] = None
+            #request.session['sale_last_order_id'] = None
             request.session['website_sale_current_pl'] = None
             partner.write({'last_website_so_id': None})
             return self.env['sale.order']

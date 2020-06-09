@@ -3,12 +3,13 @@
 
 from odoo import models, fields, api
 from odoo.addons import decimal_precision as dp
+from odoo.tools.profiler import profile
 
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    margin_perc = fields.Float(compute="_product_margin_perc",
+    margin_perc = fields.Float(compute="_product_margin",
                                string='Margin %',
                                help="It gives profitability by calculating "
                                     "percentage.", store=True)
@@ -20,22 +21,24 @@ class SaleOrder(models.Model):
                              digits=dp.get_precision('Product Price'),
                              store=True)
 
+    #@profile
     @api.depends('order_line.margin')
     @api.multi
-    def _product_margin_perc(self):
-        for sale in self:
-            margin = 0.0
-            if sale.amount_untaxed:
-                for line in sale.order_line:
-                    margin += line.margin or 0.0
-                sale.margin_perc = round((margin * 100) /
-                                         sale.amount_untaxed, 2)
-
-    @api.depends('order_line.margin')
     def _product_margin(self):
         for order in self:
-            order.margin = sum(order.order_line.filtered(
+            margin = sum(order.order_line.filtered(
                 lambda r: r.state != 'cancel').mapped('margin'))
+            if order.amount_untaxed:
+                margin_perc = round((margin * 100) /
+                                         order.amount_untaxed, 2)
+            else:
+                margin_perc = 0
+           
+            order.update({
+                'margin_perc': margin_perc,
+                'margin': margin,
+            })
+
 
 
 class SaleOrderLine(models.Model):
@@ -49,6 +52,7 @@ class SaleOrderLine(models.Model):
                                   string="Cost",
                                   digits=dp.get_precision("Product Price"))
 
+    #@profile
     def _compute_cost_price(self):
         frm_cur = self.env.user.company_id.currency_id
         to_cur = self.order_id.pricelist_id.currency_id
@@ -63,6 +67,7 @@ class SaleOrderLine(models.Model):
             self.order_id.date_order or fields.Date.today(), round=False)
         return price
 
+    #@profile
     @api.depends('product_id', 'product_uom_qty',
                  'price_unit', 'price_subtotal')
     def _product_margin(self):

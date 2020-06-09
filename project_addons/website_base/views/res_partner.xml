@@ -9,8 +9,18 @@
             <notebook position="inside">
                 <page string="Website">
                     <group>
-                    <separator string="Cliente con acceso?"/>
-                    <field name ="active_portal_user"/>
+                        <group>
+                            <separator string="Cliente con acceso?"/>
+                            <field name ="active_portal_user"/>    
+                            <field name="portfolio"/>
+                            <field name="wholesaler"/>
+                        </group>
+                        <group>
+                            <separator string="Validaciones"/>
+                            <field name="order_validator"/>
+                            <field name="global_order_validator"/>
+                        </group>
+                        
                         <group attrs="{'invisible':[('active_portal_user', '=', False)]}" cols="4">
                             
                             <separator string="Website Access Rights" colspan="4"/>
@@ -26,11 +36,8 @@
                             </group>
                             <separator string="Website Options" colspan="4"/>
                             <group>
-                                <field name="portfolio"/>
-                                <field name="wholesaler"/>
                                 <field name="skip_website_checkout_payment"/>
-                                <field name="order_validator"/>
-                                <field name="global_order_validator"/>
+                                <field name="main_user"/>
                                 <field name="external_review"/>
                             </group>
                         </group>

@@ -51,10 +51,11 @@
         </xpath>
     </template>
 
-    <template id="tax_price" name="Tax prices list view" inherit_id="website_sale.product_price">
-        <xpath expr="//b[hasclass('oe_price')]" position="after">
-            <br/>
-                <b class="oe_price_tax" style="white-space: nowrap;" t-esc="combination_info['tax_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/> con IVA
+    <template id="tax_price" inherit_id="website_sale.product_price">
+        <xpath expr="//h4[hasclass('oe_price_h4')]" position="after">
+            <h6 class="oe_price_h4 css_editable_mode_hidden">
+              <b class="oe_price" style="white-space: nowrap;" t-esc="combination_info['tax_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/> con IVA
+          </h6>
         </xpath>
     </template>
 
@@ -64,5 +65,45 @@
         </xpath>
     </template>
 
+    <template id="website_sale.sort" inherit_id="website_sale.products" active="True" customize_show="True" name="Show Sort by">
+        <xpath expr="//div[hasclass('products_pager')]/t[@t-call][last()]" position="after">
+            <t t-set="name_asc_label">Name - A to Z</t>
+            <t t-set="name_desc_label">Name - Z to A</t>
+            <t t-set="website_sale_sortable" t-value="[
+                (name_asc_label, 'name asc'),
+                (name_desc_label, 'name desc')
+            ]"/>
+            <t t-set="website_sale_sortable_current" t-value="[sort for sort in website_sale_sortable if sort[1]==request.params.get('order', '')]"/>
+            <div class="dropdown ml-2 dropdown_sorty_by">
+                <a role="button" href="#" class="dropdown-toggle btn btn-secondary" data-toggle="dropdown">
+                    <t t-if='len(website_sale_sortable_current)'>
+                        <span>Sorting by : <t t-raw='website_sale_sortable_current[0][0]'/></span>
+                    </t>
+                    <t t-else='1'>
+                        <span>Sort by</span>
+                    </t>
+                </a>
+                <div class="dropdown-menu" role="menu">
+                    <t t-foreach="website_sale_sortable" t-as="sortby">
+                        <a role="menuitem" rel="noindex,nofollow" t-att-href="keep('/shop', order=sortby[1])" class="dropdown-item">
+                            <span t-raw="sortby[0]"/>
+                        </a>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="tax_price_list" name="Tax prices list view" inherit_id="website_sale.products_item">
+        <xpath expr="//span[@t-if=&quot;combination_info[&apos;price&apos;]&quot;]" position="after">
+             + IVA
+        </xpath>
+    </template>
+
+    <template id="product_list_data_publish_on" name="data_publish_on" inherit_id="website_sale.products_list_view">
+        <xpath expr="//t[@t-foreach='products']/div" position="attributes">
+            <attribute name="t-att-data-publish">on</attribute>
+        </xpath>
+    </template>
 
 </odoo>

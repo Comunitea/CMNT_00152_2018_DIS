@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+
+    <template id="website_base_checkout" name="Checkout addresses" inherit_id="website_sale.checkout">
+        <xpath expr="//t[@t-call='website_sale.address_kanban']//t[@t-value='order.partner_id']/../../.." position="replace">
+            <div class="row">
+                <div class="col-lg-12">
+                <t t-if="order.partner_id.portfolio">
+                    <h3 class="o_page_header mt8">Dirección de contacto</h3>
+                </t>
+                <t t-if="not order.partner_id.portfolio">
+                    <h3 class="o_page_header mt8">Dirección de facturación</h3>
+                </t>
+                </div>
+                <div class="col-lg-6 one_kanban">
+                    <t t-call="website_sale.address_kanban">
+                        <t t-set='contact' t-value="order.partner_id"/>
+                        <t t-set='no_edit' t-value="order.partner_id.commercial_partner_id.portfolio"/>
+                    </t>
+                </div>
+            </div>
+            <t t-if="not (order.partner_id.commercial_partner_id.external_review or order.partner_id.external_review) and order.partner_id.portfolio ">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="o_page_header mt8">Dirección de facturación</h3>
+                </div>
+                <div class="col-lg-6 one_kanban">
+                    <t t-call="website_sale.address_kanban">
+                        <t t-set='contact' t-value="order.partner_invoice_id"/>
+                        <t t-set='no_edit' t-value="order.partner_id.commercial_partner_id.portfolio"/>
+                    </t>
+                </div>
+            </div>
+            </t>
+
+        </xpath>
+
+        <!--xpath expr="//form[@action='/shop/address']" position="replace">
+            <form t-if="not order.partner_id.commercial_partner_id.portfolio" action="/shop/address" method="post" class=''>
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                <a role="button" href="#" class='a-submit btn btn-secondary mb16 btn-block'>
+                    <i class="fa fa-plus-square"/>
+                    <span>Añadir una dirección</span>
+                </a>
+            </form>
+        </xpath-->
+
+        <xpath expr="//div[@class='row all_shipping']" position="replace">
+           <div t-if="not (order.partner_id.commercial_partner_id.external_review or order.partner_id.external_review)" class="row all_shipping">
+                <div class="col-lg-12">
+                    <div class="row mt8">
+                        <div class="col-md-12 col-lg-12 one_kanban">
+                             <form t-if="not order.partner_id.commercial_partner_id.portfolio" action="/shop/address" method="post" class=''>
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                <a role="button" href="#" class='a-submit btn btn-secondary mb16 btn-block'>
+                                    <i class="fa fa-plus-square"/>
+                                    <span>Añadir una dirección</span>
+                                </a>
+                            </form>
+                        </div>
+                        <t t-foreach="shippings" t-as="ship">
+                            <div class="col-md-12 col-lg-6 one_kanban">
+                                <t t-call="website_sale.address_kanban">
+                                    <t t-set="actual_partner" t-value="order.partner_id" />
+                                    <t t-set='contact' t-value="ship"/>
+                                    <t t-set='selected' t-value="order.partner_shipping_id==ship"/>
+                                    <t t-set='readonly' t-value="bool(len(shippings)==1)"/>
+                                    <t t-set='edit_billing' t-value="bool(ship==order.partner_id)"/>
+                                </t>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+    </template>
+
+    <template id="website_base_address_kanban" name="Checkout addresses" inherit_id="website_sale.address_kanban">
+        <xpath expr="//t[@t-esc='contact']/../a" position="replace">
+            <a t-if="not no_edit and (not actual_partner or (ship.id in actual_partner.child_ids.ids))" href="#" class="btn btn-link float-right p-0 js_edit_address no-decoration" role="button" title="Edit this address" aria-label="Edit this address"><i class='fa fa-edit'/></a>
+        </xpath>
+    </template>
+
+</odoo>

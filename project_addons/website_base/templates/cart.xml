@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="cart_lines_decimals"  inherit_id="website_sale.cart_lines" name="Shopping Cart Lines Decimals">
+        <xpath expr="//td[@name='price']" position="replace">
+            <td class="text-center td-price" name="price">
+                <t t-set="combination" t-value="line.product_id.product_template_attribute_value_ids + line.product_no_variant_attribute_value_ids"/>
+                <t t-set="combination_info" t-value="line.product_id.product_tmpl_id._get_combination_info(combination)"/>
+
+                <t t-set="list_price_converted" t-value="website.currency_id._convert(combination_info['list_price'], website_sale_order.currency_id, website_sale_order.company_id, date)"/>
+                <t t-if="not website_sale_order.partner_id.portfolio">
+                    <t groups="account.group_show_line_subtotals_tax_excluded" t-if="(website_sale_order.pricelist_id.discount_policy == 'without_discount' and website_sale_order.currency_id.compare_amounts(list_price_converted, line.price_reduce_taxexcl) == 1) or website_sale_order.currency_id.compare_amounts(line.price_unit, line.price_reduce) == 1" name="order_line_discount">
+                        <del t-attf-class="#{'text-danger mr8'}" style="white-space: nowrap;" t-esc="list_price_converted" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}" />
+                    </t>
+                    <span t-field="line.price_reduce_taxexcl" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}" groups="account.group_show_line_subtotals_tax_excluded" />
+                    <t groups="account.group_show_line_subtotals_tax_included" t-if="(website_sale_order.pricelist_id.discount_policy == 'without_discount' and website_sale_order.currency_id.compare_amounts(list_price_converted, line.price_reduce_taxinc) == 1) or website_sale_order.currency_id.compare_amounts(line.price_unit, line.price_reduce) == 1" name="order_line_discount">
+                        <del t-attf-class="#{'text-danger mr8'}" style="white-space: nowrap;" t-esc="list_price_converted" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}" />
+                    </t>
+                    <span t-field="line.price_reduce_taxinc" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}" groups="account.group_show_line_subtotals_tax_included" />
+                </t>
+                <t t-if="website_sale_order.partner_id.portfolio">
+                    <t groups="account.group_show_line_subtotals_tax_excluded" t-if="(website_sale_order.pricelist_id.discount_policy == 'without_discount' and website_sale_order.currency_id.compare_amounts(list_price_converted, line.price_reduce_taxexcl) == 1) or website_sale_order.currency_id.compare_amounts(line.price_unit, line.price_reduce) == 1" name="order_line_discount">
+                        <del t-attf-class="#{'text-danger mr8'}" style="white-space: nowrap;" t-esc="list_price_converted"  t-options="{'widget': 'float', 'precision': 4}"/>
+                    </t>
+                
+                    <span t-field="line.price_unit" style="white-space: nowrap;" t-options="{'widget': 'float', 'precision': 4}"  groups="account.group_show_line_subtotals_tax_excluded" />
+                    
+                    <t groups="account.group_show_line_subtotals_tax_included" t-if="(website_sale_order.pricelist_id.discount_policy == 'without_discount' and website_sale_order.currency_id.compare_amounts(list_price_converted, line.price_reduce_taxinc) == 1) or website_sale_order.currency_id.compare_amounts(line.price_unit, line.price_reduce) == 1" name="order_line_discount">
+                        <del t-attf-class="#{'text-danger mr8'}" style="white-space: nowrap;" t-esc="list_price_converted"  t-options="{'widget': 'float', 'precision': 4}" />
+                    </t>
+                    <span t-field="line.price_reduce_taxinc" style="white-space: nowrap;"  groups="account.group_show_line_subtotals_tax_included" />
+                    <span t-field="website_sale_order.currency_id.symbol" style="white-space: nowrap;" />
+                </t>
+            </td>
+
+        </xpath>
+    </template>
+
+
+    <template id="product_configurator_configure_optional_products_decimals" inherit_id="sale.product_configurator_configure_optional_products">
+        <xpath expr="//td[@name='price']" position="replace">
+        <t t-set="n_decimals" t-value="combination_info['decimals']"/>
+        <t t-if="n_decimals==2">
+            <td class="text-center td-price" name="price">
+                <ul class="d-none js_add_cart_variants" t-att-data-attribute_exclusions="{'exclusions: []'}"></ul>
+                <div class="d-none oe_unchanged_value_ids" t-att-data-unchanged_value_ids="variant_values" ></div>
+                <div t-attf-class="text-danger oe_default_price oe_striked_price {{'' if combination_info['has_discounted_price'] else 'd-none'}}"
+                    t-esc="combination_info['list_price']"
+                    t-options='{
+                        "widget": "monetary",
+                        "display_currency": (pricelist or product).currency_id
+                    }'
+                />
+                <span class="oe_price product_id" style="white-space: nowrap;"
+                    t-att-data-product-id="product.id"
+                    t-esc="combination_info['price']"
+                    t-options='{
+                        "widget": "monetary",
+                        "display_currency": (pricelist or product).currency_id
+                    }'/>
+                <span class="js_raw_price d-none" t-esc="product.price"/>
+            </td>
+        </t>
+        <t t-if="n_decimals!=2">
+            <td class="text-center td-price" name="price">
+                <ul class="d-none js_add_cart_variants" t-att-data-attribute_exclusions="{'exclusions: []'}"></ul>
+                <div class="d-none oe_unchanged_value_ids" t-att-data-unchanged_value_ids="variant_values" ></div>
+                <div t-attf-class="text-danger oe_default_price oe_striked_price {{'' if combination_info['has_discounted_price'] else 'd-none'}}"
+                    t-esc="combination_info['list_price']"
+                    t-options='{
+                        "widget": "float",
+                        "precision": n_decimals
+                    }'
+                />
+                <span class="oe_price product_id" style="white-space: nowrap;"
+                    t-att-data-product-id="product.id"
+                    t-esc="combination_info['price']"
+                    t-options='{
+                        "widget": "float",
+                        "precision": n_decimals
+                    }'/>
+                <span class="js_raw_price d-none" t-esc="product.price"/> €
+            </td>
+
+        </t>
+        </xpath>
+
+        <!--xpath expr="//tr[hasclass('o_total_row')]" position="replace"> 
+            <t t-set="n_decimals" t-value="combination_info['decimals']"/>
+            <t t-if="n_decimals==2">
+                <tr class="o_total_row">
+                    <td colspan="4" class="text-right">
+                        <strong>Total:</strong>
+                        <span class="js_price_total font-weight-bold" style="white-space: nowrap;"
+                            t-att-data-product-id="product.id"
+                            t-esc="combination_info['price'] * (add_qty or 1)"
+                            t-options='{
+                                "widget": "monetary",
+                                "display_currency": (pricelist or product).currency_id
+                            }'/>
+                    </td>
+                </tr>
+            </t>
+            <t t-if="n_decimals!=2">
+                <tr class="o_total_row">
+                    <td colspan="4" class="text-right">
+                        <strong>Total:</strong>
+                        <span class="js_price_total font-weight-bold" style="white-space: nowrap;"
+                            t-att-data-product-id="product.id"
+                            t-esc="combination_info['price'] * (add_qty or 1)"
+                            t-options='{
+                                "widget": "float",
+                                "precision": n_decimals
+                            }'/>
+                    </td>
+                </tr>
+            </t>
+        </xpath--> 
+
+    </template>
+
+    <template id="cart_summary_decimals" inherit_id="website_sale.cart_summary">
+        <xpath expr="//td[hasclass('td-price')]" position="replace">
+        <t t-if="not website_sale_order.partner_id.portfolio">
+            <td class="text-center td-price">
+                <span t-field="line.price_reduce_taxexcl" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}" groups="account.group_show_line_subtotals_tax_excluded" />
+                <span t-field="line.price_reduce_taxinc" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}" groups="account.group_show_line_subtotals_tax_included" />
+            </td>
+
+        </t>
+        <t t-if="website_sale_order.partner_id.portfolio">
+            <t t-set="decimals" t-value="website_sale_order.partner_id.decimals"/>
+            <td class="text-center td-price">
+                <span t-field="line.price_unit" style="white-space: nowrap;" t-options="{'widget': 'float', 'precision': decimals}" groups="account.group_show_line_subtotals_tax_excluded" />
+                <span t-field="line.price_reduce_taxinc" style="white-space: nowrap;" t-options="{'widget': 'float', 'precision': decimals}" groups="account.group_show_line_subtotals_tax_included" />
+                 €
+            </td>
+
+        </t>
+
+
+        </xpath>
+    </template>
+
+</odoo>

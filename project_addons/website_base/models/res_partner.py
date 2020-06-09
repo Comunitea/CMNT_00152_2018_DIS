@@ -18,6 +18,11 @@ class ResPartnerAccess(models.Model):
         required=True
     )
 
+    main_user = fields.Boolean(
+        string='Principal',
+        default=False
+    )
+
     show_history = fields.Boolean(
         string='Show history',
         default=True
@@ -106,15 +111,10 @@ class ResPartnerAccess(models.Model):
                             user_id.update({'groups_id': [(3, group_sale_access_parent_id.id)]})
         return res
 
-    @api.onchange('order_validator')
-    def _onchange_order_validator(self):
-        
+    def create_tier_definition(self, prev_definitions=False):
         sale_model = self.env['ir.model'].search([('model', '=', 'sale.order')])
-        partner_id = self.env['res.partner'].browse(self._origin.id)
-        definition_domain = '["&", ["team_id.team_type", "=", "website"], ["partner_id", "child_of", {}]]'.format(partner_id.id)
-        prev_definitions = self.env['tier.definition'].search([('definition_domain', '=', definition_domain)])
+        definition_domain = '["&", ["team_id.team_type", "=", "website"], ["partner_id", "child_of", {}]]'.format(self.id)
         if self.order_validator:
-            print(self.order_validator)
             values = {
                 'name': _("Validator for partner: {}".format(self.name)),
                 'model_id': sale_model.id,
@@ -123,7 +123,7 @@ class ResPartnerAccess(models.Model):
                 'definition_type': 'domain',
                 'active': True,
                 'sequence': 30,
-                'company_id': self.env.user.partner_id.company_id.id,
+                'company_id': self.env.user.company_id.id,
                 'reviewer_id': self.order_validator.id,
                 'notify_on_create': True,
                 'definition_domain': definition_domain
@@ -134,6 +134,45 @@ class ResPartnerAccess(models.Model):
                     definition.write(values)
             else:
                 tier_definition = self.env['tier.definition'].create(values)
+        else:
+            print ("sin validador")
+            if prev_definitions:
+                print ("sin validador, con definicion encontrada")
+                for definition in prev_definitions:
+                    definition.unlink()
+
+
+    @api.onchange('order_validator')
+    def _onchange_order_validator(self):
+        prev_definitions = False
+        sale_model = self.env['ir.model'].search([('model', '=', 'sale.order')])
+        if self._origin:
+            partner_id = self.env['res.partner'].browse(self._origin.id)
+            definition_domain = '["&", ["team_id.team_type", "=", "website"], ["partner_id", "child_of", {}]]'.format(partner_id.id)
+            prev_definitions = self.env['tier.definition'].sudo().search([('definition_domain', '=', definition_domain)])
+        else:
+            definition_domain = '["&", ["team_id.team_type", "=", "website"], ["partner_id", "child_of", {}]]'.format(self.id)
+
+        if self.order_validator:
+            values = {
+                'name': _("Validator for partner: {}".format(self.name)),
+                'model_id': sale_model.id,
+                'model': 'sale.order',
+                'review_type': 'individual',
+                'definition_type': 'domain',
+                'active': True,
+                'sequence': 30,
+                'company_id': self.env.user.company_id.id,
+                'reviewer_id': self.order_validator.id,
+                'notify_on_create': True,
+                'definition_domain': definition_domain
+            }
+
+            if prev_definitions:
+                for definition in prev_definitions:
+                    definition.write(values)
+            else:
+                tier_definition = self.env['tier.definition'].sudo().create(values)
         else:
             print ("sin validador")
             if prev_definitions:

@@ -55,7 +55,7 @@
             <t t-set="additional_title">Shop - Pending External alidation</t>
             <div id="wrap">
                 <div class="container oe_website_sale py-2 mb48">
-                    <h1 class="mb32"><span>Order</span> <em t-field="order.name" /> <span>Pending External Validation</span></h1>
+                    <h1 class="mb32"><span>Pedido</span> <em t-field="order.name" /> <span> Realizado</span></h1>
                     <div class="row">
                         <div class="col-12 col-xl">
                             <div class="oe_cart">
@@ -69,8 +69,8 @@
                                 <div class="card-header bg-info mt-3">
                                     <span>
                                         <i class="fa fa-warning" style="margin-right:10px;" title="This order needs to be validated by a reviewer."/>
-                                        <i>Pending</i>... This order needs to be validated externally.
-                                        <i>Please, print an send the order to supervisor</i>
+                                        <i>Pendiente. </i>Este pedido necesita ser validado por la plataforma de la Universidad de Vigo.
+                                        <i>Por favor, imprímalo y envíelo.</i>
                                     </span>
                                 </div>
                                 <div class="card mt-3">
