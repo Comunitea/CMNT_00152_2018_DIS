@@ -105,7 +105,7 @@ class StockPicking(models.Model):
     autoradio_obs = fields.Char(string="Info about the shipping")
     autoradio_obs_extra = fields.Char(string="Extra info about the shipping")
     autoradio_send_today = fields.Boolean(string="Send today", default=True)
-    autoradio_close_shipping = fields.Boolean(string="Close shipping", default=True)
+    autoradio_close_shipping = fields.Boolean(string="Close shipping", default=False)
     autoradio_cash_on_delivery_payment = fields.Selection([
         (9, _('Cash')),
         (10, _('Check/Promissory Note')),
