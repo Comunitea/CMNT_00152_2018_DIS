@@ -197,6 +197,11 @@ msgid "Carrier Tracking Ref"
 msgstr "Código Tracking"
 
 #. module: autoradio_soap_connector
+#: model:ir.model.fields,field_description:autoradio_soap_connector.field_autoradio_picking_delivery__autoradio_picking_reference
+msgid "Reference"
+msgstr "Referencia"
+
+#. module: autoradio_soap_connector
 #: code:addons/autoradio_soap_connector/models/autoradio_picking_delivery.py:110
 #: selection:autoradio.picking.delivery,autoradio_cash_on_delivery_payment:0
 #, python-format

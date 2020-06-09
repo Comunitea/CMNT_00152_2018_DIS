@@ -73,6 +73,15 @@ class StockPicking(models.Model):
                 pick.carrier_id = self.carrier_id
                 pick.carrier_tracking_ref = self.carrier_tracking_ref
 
+    @api.multi
+    @api.depends('picking_ids')
+    def _compute_autoradio_picking_reference(self):
+        for delivery in self:
+            picking_reference = ""
+            for pick in delivery.picking_ids:
+                picking_reference += "{} ".format(pick.name)
+            delivery.autoradio_picking_reference = picking_reference
+                
     # Pickings info
     name = fields.Char('Name', required=True, index=True, copy=False, unique=True,
         default=lambda self: self.env['ir.sequence'].next_by_code(
@@ -84,6 +93,7 @@ class StockPicking(models.Model):
         string='Pickings',
         inverse_name='autoradio_picking_delivery_id'
     )
+    autoradio_picking_reference = fields.Char(string="Reference", compute="_compute_autoradio_picking_reference")
     shipping_weight = fields.Float(string='Shipping Weight')
     number_of_packages = fields.Integer(string='Number of packages')
     carrier_tracking_ref = fields.Char(string='Carrier Tracking Ref')

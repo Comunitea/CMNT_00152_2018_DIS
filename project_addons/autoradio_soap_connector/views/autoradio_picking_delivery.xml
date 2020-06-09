@@ -34,6 +34,7 @@
                             <field name="shipping_weight"/>
                             <field name="number_of_packages"/>
                             <field name="carrier_tracking_ref"/>
+                            <field name="autoradio_picking_reference"/>
                             <field name="delivery_date"/>
                         </group>
                     </group>
@@ -53,7 +54,8 @@
                         </group>
                         <group>
                             <field name="autoradio_send_today"/>
-                            <field name="autoradio_close_shipping"/>
+                            <!-- Comentado a petición de almacén -->
+                            <!-- <field name="autoradio_close_shipping"/> -->
                             <field name="autoradio_signed_picking"/>
                             <!-- Opciones no están disponibles en la api -->
                             <!-- <field name="autoradio_acknowledgement_receipt"/> -->
