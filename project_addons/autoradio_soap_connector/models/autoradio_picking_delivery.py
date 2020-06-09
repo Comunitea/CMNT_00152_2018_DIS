@@ -133,7 +133,7 @@ class StockPicking(models.Model):
     autoradio_payment = fields.Float(string="Payment", default=0.0)
     autoradio_declared_value = fields.Float(string="Declared Value", default=0.0)
     autoradio_hard_to_handle = fields.Boolean(string="Hard to handle", help="Hard to handle merchandise.", default=0)
-    autoradio_signed_picking = fields.Boolean(string="Return Signed", default=True)
+    autoradio_signed_picking = fields.Boolean(string="Return Signed", default=False)
     autoradio_acknowledgement_receipt = fields.Boolean(string="Acknowledgement of receipt", default=True)
     autoradio_return_goods = fields.Boolean(string="Return Goods", default=False)
     autoradio_delivery_with_return = fields.Boolean(string="Delivery with Return", default=False)
