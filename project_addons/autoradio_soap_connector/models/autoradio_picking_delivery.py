@@ -253,7 +253,7 @@ class StockPicking(models.Model):
                     'TipoComision': self.autoradio_refund_type, # P for paid, D for debt
                     'Obser': self.autoradio_obs if self.autoradio_obs else '', # Comments
                     'AmpliaObser': self.autoradio_obs_extra if self.autoradio_obs_extra else '',
-                    'RefCliente': self.partner_id.ref, # ref client
+                    'RefCliente': self.autoradio_picking_reference, # ref client - changed from picking.partner_id.ref 
                     'InstOp': self.autoradio_delivery_instructions,
                     'PersonaOrdena': config.soap_persona_ordena,
                     'FlagEnviarHoy': 1 if self.autoradio_close_shipping or self.autoradio_send_today else 0, # send today = 1.
@@ -338,7 +338,7 @@ class StockPicking(models.Model):
                     'TipoComision': self.autoradio_refund_type, # P for paid, D for debt
                     'Obser': self.autoradio_obs if self.autoradio_obs else '', # Comments
                     'AmpliaObser': self.autoradio_obs_extra if self.autoradio_obs_extra else '',
-                    'RefCliente': self.partner_id.ref, # ref client
+                    'RefCliente': self.autoradio_picking_reference, # ref client - changed from picking.partner_id.ref 
                     'InstOp': self.autoradio_delivery_instructions,
                     'PersonaOrdena': config.soap_persona_ordena,
                     'FlagEnviarHoy': 1 if self.autoradio_close_shipping or self.autoradio_send_today else 0, # send today = 1.
