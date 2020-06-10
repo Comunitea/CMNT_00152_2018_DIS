@@ -24,7 +24,11 @@ class ResPartner(models.Model):
         related="sale_type.days_without_order_or_quotation"
     )
     # user_id = fields.Many2one('res.users', default=lambda self: self.env.user)
-
+    commercial_partner_user_id = fields.Many2one('res.users', 
+                                                 related= 'commercial_partner_id.user_id', 
+                                                 store=True,
+                                                 string='Commercial partner Salesperson')
+    
     @api.multi
     def _get_partner_claim_date(self):
         for partner in self:
