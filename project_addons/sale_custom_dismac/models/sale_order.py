@@ -42,6 +42,10 @@ class SaleOrder(models.Model):
     order_line_count = fields.Integer(
         "# Líneas", compute="_get_sale_line_count", store=True
     )
+    commercial_partner_user_id = fields.Many2one('res.users', 
+        related= 'commercial_partner_id.user_id', 
+        store=True,
+        string='Commercial partner Salesperson')
 
     @api.multi
     @api.depends("order_line")
@@ -488,6 +492,18 @@ class SaleOrderLine(models.Model):
         help="Image of the product variant (Medium-sized image of product template if false).",
     )
     package_qty = fields.Float(related="product_id.package_qty", readonly=True)
+    commercial_partner_id = fields.Many2one('res.partner', 
+                related= 'order_id.commercial_partner_id', 
+                store=True,
+                string='Commercial partner Salesperson')
+    commercial_partner_user_id = fields.Many2one('res.users', 
+                related= 'commercial_partner_id.user_id', 
+                store=True,
+                string='Commercial partner Salesperson User')
+    user_id = fields.Many2one('res.users', 
+                related= 'order_id.user_id', 
+                store=True,
+                string='Salesperson User')
 
     @api.multi
     def write(self, values):

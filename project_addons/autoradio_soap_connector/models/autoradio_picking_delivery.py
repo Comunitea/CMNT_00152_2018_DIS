@@ -73,6 +73,15 @@ class StockPicking(models.Model):
                 pick.carrier_id = self.carrier_id
                 pick.carrier_tracking_ref = self.carrier_tracking_ref
 
+    @api.multi
+    @api.depends('picking_ids')
+    def _compute_autoradio_picking_reference(self):
+        for delivery in self:
+            picking_reference = ""
+            for pick in delivery.picking_ids:
+                picking_reference += "{} ".format(pick.name)
+            delivery.autoradio_picking_reference = picking_reference
+                
     # Pickings info
     name = fields.Char('Name', required=True, index=True, copy=False, unique=True,
         default=lambda self: self.env['ir.sequence'].next_by_code(
@@ -84,6 +93,7 @@ class StockPicking(models.Model):
         string='Pickings',
         inverse_name='autoradio_picking_delivery_id'
     )
+    autoradio_picking_reference = fields.Char(string="Reference", compute="_compute_autoradio_picking_reference")
     shipping_weight = fields.Float(string='Shipping Weight')
     number_of_packages = fields.Integer(string='Number of packages')
     carrier_tracking_ref = fields.Char(string='Carrier Tracking Ref')
@@ -105,7 +115,7 @@ class StockPicking(models.Model):
     autoradio_obs = fields.Char(string="Info about the shipping")
     autoradio_obs_extra = fields.Char(string="Extra info about the shipping")
     autoradio_send_today = fields.Boolean(string="Send today", default=True)
-    autoradio_close_shipping = fields.Boolean(string="Close shipping", default=True)
+    autoradio_close_shipping = fields.Boolean(string="Close shipping", default=False)
     autoradio_cash_on_delivery_payment = fields.Selection([
         (9, _('Cash')),
         (10, _('Check/Promissory Note')),
@@ -123,7 +133,7 @@ class StockPicking(models.Model):
     autoradio_payment = fields.Float(string="Payment", default=0.0)
     autoradio_declared_value = fields.Float(string="Declared Value", default=0.0)
     autoradio_hard_to_handle = fields.Boolean(string="Hard to handle", help="Hard to handle merchandise.", default=0)
-    autoradio_signed_picking = fields.Boolean(string="Return Signed", default=True)
+    autoradio_signed_picking = fields.Boolean(string="Return Signed", default=False)
     autoradio_acknowledgement_receipt = fields.Boolean(string="Acknowledgement of receipt", default=True)
     autoradio_return_goods = fields.Boolean(string="Return Goods", default=False)
     autoradio_delivery_with_return = fields.Boolean(string="Delivery with Return", default=False)
@@ -243,7 +253,7 @@ class StockPicking(models.Model):
                     'TipoComision': self.autoradio_refund_type, # P for paid, D for debt
                     'Obser': self.autoradio_obs if self.autoradio_obs else '', # Comments
                     'AmpliaObser': self.autoradio_obs_extra if self.autoradio_obs_extra else '',
-                    'RefCliente': self.partner_id.ref, # ref client
+                    'RefCliente': self.autoradio_picking_reference, # ref client - changed from picking.partner_id.ref 
                     'InstOp': self.autoradio_delivery_instructions,
                     'PersonaOrdena': config.soap_persona_ordena,
                     'FlagEnviarHoy': 1 if self.autoradio_close_shipping or self.autoradio_send_today else 0, # send today = 1.
@@ -328,7 +338,7 @@ class StockPicking(models.Model):
                     'TipoComision': self.autoradio_refund_type, # P for paid, D for debt
                     'Obser': self.autoradio_obs if self.autoradio_obs else '', # Comments
                     'AmpliaObser': self.autoradio_obs_extra if self.autoradio_obs_extra else '',
-                    'RefCliente': self.partner_id.ref, # ref client
+                    'RefCliente': self.autoradio_picking_reference, # ref client - changed from picking.partner_id.ref 
                     'InstOp': self.autoradio_delivery_instructions,
                     'PersonaOrdena': config.soap_persona_ordena,
                     'FlagEnviarHoy': 1 if self.autoradio_close_shipping or self.autoradio_send_today else 0, # send today = 1.

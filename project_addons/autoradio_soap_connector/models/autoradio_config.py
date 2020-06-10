@@ -357,7 +357,7 @@ class ConfigAutoradio(models.Model):
                     'TipoComision': picking.autoradio_refund_type, # P for paid, D for debt
                     'Obser': picking.autoradio_obs if picking.autoradio_obs else '', # Comments
                     'AmpliaObser': picking.autoradio_obs_extra if picking.autoradio_obs_extra else '',
-                    'RefCliente': picking.partner_id.ref, # ref client
+                    'RefCliente': picking.autoradio_picking_reference, # ref client - changed from picking.partner_id.ref 
                     'InstOp': picking.carrier_id.autoradio_delivery_instructions,
                     'PersonaOrdena': self.soap_persona_ordena,
                     'FlagEnviarHoy': 1 if picking.autoradio_close_shipping or picking.autoradio_send_today else 0, # send today = 1.
@@ -487,7 +487,7 @@ class ConfigAutoradio(models.Model):
                     'TipoComision': picking.autoradio_refund_type, # P for paid, D for debt
                     'Obser': picking.autoradio_obs if picking.autoradio_obs else '', # Comments
                     'AmpliaObser': picking.autoradio_obs_extra if picking.autoradio_obs_extra else '',
-                    'RefCliente': picking.partner_id.ref, # ref client
+                    'RefCliente': picking.autoradio_picking_reference, # ref client - changed from picking.partner_id.ref 
                     'InstOp': picking.carrier_id.autoradio_delivery_instructions,
                     'PersonaOrdena': self.soap_persona_ordena,
                     'FlagEnviarHoy': 1 if picking.autoradio_close_shipping or picking.autoradio_send_today else 0, # send today = 1.
