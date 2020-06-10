@@ -7,17 +7,22 @@
             <t t-set="pending" t-value="o.compute_pending()" />
             <t t-set="count_pending" t-value="len(pending)"/>
             <t t-if="count_pending>0">
-                <table class="table table-sm mt48">
+
+                <table class="table table-sm mt48" >
+
                     <thead>
                         <tr>
-                            <th width="20%"><strong>Cantidades pendientes</strong></th>
-                            <th ><strong>Producto</strong></th>
-                            <th><strong>Cantidad</strong></th>
+                            <th width="100%" colspan="2">Pendientes</th>
+                        </tr>
+                        <tr>
+
+                            <th width="85%"><strong>Producto</strong></th>
+                            <th width="15%"><strong>Cantidad</strong></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr t-foreach="pending" t-as="lp">
-                            <td></td>
+
                             <td>
                                 <span t-esc="lp['name']"/>
                             </td>
