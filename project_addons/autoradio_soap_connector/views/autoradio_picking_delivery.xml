@@ -76,7 +76,7 @@
                     </group>
                     <!-- <field name="picking_ids" domain="[('picking_type_code', '=', 'outgoing'), ('state', '=', 'assigned'),
                             ('autoradio_picking_delivery_id', '=', False)]"> -->
-                        <field name="picking_ids" widget="many2many" domain="[('autoradio_picking_delivery_id', '=', False), ('picking_type_code', '=', 'outgoing'), ('state', '=', 'assigned')]">
+                        <field name="picking_ids" widget="many2many" domain="[('autoradio_picking_delivery_id', '=', False), ('picking_type_code', '=', 'outgoing'), ('state', '=', 'done')]">
                         <tree string="Pickings list">
                             <field name="name" string="Name"/>
                             <field name="number_of_packages"/>
