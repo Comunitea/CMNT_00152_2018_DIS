@@ -53,7 +53,7 @@
                             <field name="autoradio_channelling" readonly="1" attrs="{'invisible': [('autoradio_channelling', '=', False)]}"/>
                         </group>
                         <group>
-                            <field name="autoradio_send_today"/>
+                            <field name="autoradio_send_today" readonly="1"/>
                             <!-- Comentado a petición de almacén -->
                             <!-- <field name="autoradio_close_shipping"/> -->
                             <field name="autoradio_signed_picking"/>
