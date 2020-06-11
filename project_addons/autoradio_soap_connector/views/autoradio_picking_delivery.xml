@@ -30,7 +30,7 @@
                     <group>
                         <group>
                             <field name="partner_id"/>
-                            <field name="carrier_id"/>
+                            <field name="carrier_id" required="1"/>
                             <field name="shipping_weight"/>
                             <field name="number_of_packages"/>
                             <field name="carrier_tracking_ref"/>
