@@ -92,3 +92,35 @@ ul.ui-autocomplete {
         color: @color-black;
     }  
 }
+
+/* Shop product grid custom styles */
+@media (min-width: 768px) and (max-width: 991px) {
+    #products_grid {
+        td.oe_product.oe_grid {
+            height: 200px;
+            & > div.oe_product_cart > form  > div > div.oe_product_image {
+                margin-bottom: 50px;
+            }
+        }
+    }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+    #products_grid {
+        td.oe_product.oe_grid {
+            height: 200px;
+            & > div.oe_product_cart > form  > div > div.oe_product_image {
+                margin-bottom: 50px;
+            }
+        }
+    }
+}
+@media (min-width: 1200px) {
+    #products_grid {
+        td.oe_product.oe_grid {
+            height: 250px;
+            & > div.oe_product_cart > form  > div > div.oe_product_image {
+                margin-bottom: 50px;
+            }
+        }
+    }
+}
