@@ -94,11 +94,19 @@
         </xpath>
     </template>
 
+<<<<<<< HEAD
     <!--template id="tax_price_list" name="Tax prices list view" inherit_id="website_sale.products_item">
         <xpath expr="//span[@t-if=&quot;combination_info[&apos;price&apos;]&quot;]" position="after">
              + IVA
         </xpath>
     </template-->
+=======
+    <template id="tax_price_list" name="Tax prices list view" inherit_id="website_sale.products_item">
+        <!--xpath expr="//span[@t-if=&quot;combination_info[&apos;price&apos;]&quot;]" position="after">
+             + IVA
+        </xpath-->
+    </template>
+>>>>>>> [IMP] erbsite_base. Eliminadas referencias + IVA
 
     <template id="product_list_data_publish_on" name="data_publish_on" inherit_id="website_sale.products_list_view">
         <xpath expr="//t[@t-foreach='products']/div" position="attributes">
