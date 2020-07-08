@@ -104,10 +104,11 @@ error = []
 sin_movimientos = []
 regeneradas = []
 domain = [
-    ('picking_ids', '=', False),
-    ('type', '=', 'out_invoice'),
-    ('state', 'in', ['open', 'paid']),
-    #('id', 'in',  [11018,])
+    #('picking_ids', '=', False),
+    #('type', '=', 'out_invoice'),
+    #('state', 'in', ['open', 'paid']),
+    ('id', 'in',  [11781,]),
+    #('commercial_partner_id', 'in',  [22880,])
 
 ]
 todas_facturas = session.env['account.invoice'].search(domain, order="date_invoice ASC")
