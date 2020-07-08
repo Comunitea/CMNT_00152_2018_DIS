@@ -99,16 +99,17 @@ def regenera(inv, fecha):
     })
 
 
-session.open(db='odoo_12_DISMAC_26_05')
+session.open(db='DISMAC')
 error = []
 sin_movimientos = []
 regeneradas = []
 domain = [
-    ('picking_ids', '=', False),
-    ('type', '=', 'out_invoice'),
-    ('state', 'in', ['open', 'paid']),
-    #('id', 'in',  [11018,])
-
+    #('picking_ids', '=', False),
+    #('type', '=', 'out_invoice'),
+    #('state', 'in', ['open', 'paid']),
+    #('id', 'in',  [9886]),
+    #('commercial_partner_id', 'in',  [17771])
+    ('invoice_number',  'in' , ['FP/2020/02766','FP/2020/04729'])
 ]
 todas_facturas = session.env['account.invoice'].search(domain, order="date_invoice ASC")
 total = len(todas_facturas)

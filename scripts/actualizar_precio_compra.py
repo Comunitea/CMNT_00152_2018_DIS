@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-session.open(db='odoo_12_DISMAC_26_05')
+session.open(db='DISMAC')
 
 
 products = session.env['product.product'].search([])
