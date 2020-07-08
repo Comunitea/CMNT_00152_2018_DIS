@@ -9,14 +9,14 @@
     "author": "Comunitea, ",
     "depends": [
         "base",
-        "sale_custom_dismac",
         "account",
         "account_due_dates_str",
         "partner_variable_decimals",
         "sale_order_report_product_image",
         "stock_picking_report_valued",
         "account_payment_partner",
-        "account_invoice_report_grouped_by_picking"
+        "account_invoice_report_grouped_by_picking",
+        "sale_custom_dismac",
     ],
     "data": [
         "views/list_reports.xml",

@@ -115,7 +115,6 @@ class StockMove(models.Model):
         #     for ml in move.move_line_ids:
         #         ml._push_apply(move)
         #auto_picks = self.mapped('move_dest_ids').filtered(lambda x: x.rule_id.model == 'move.line' and x.rule_id.auto == 'manual').mapped('picking_id')
-        import pdb; pdb.set_trace()
         res = super(StockMove, self)._action_done()
         #if auto_picks:
         #    auto_picks.action_done()
