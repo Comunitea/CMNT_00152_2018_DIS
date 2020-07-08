@@ -29,6 +29,29 @@ class ProductTemplate(models.Model):
         'stock.fixed.putaway.strat', string="Ubicaciones de traslado", compute="_compute_putaway_ids_ids", inverse="_set_putaway_ids",
         help="Gives the different ways to package the same product.")
 
+    @api.multi
+    def open_product_putaway_strat(self):
+        self.ensure_one()
+        domain = [('id', 'in', self.product_variant_ids.mapped('product_putaway_ids').ids)]
+        warehouse_id = self.env.user.company_id.warehouse_id
+        if not warehouse_id:
+            warehouse_id = self.env['stock.warehouse'].search([], limit=1)
+
+        location_id = warehouse_id.lot_stock_id
+
+        action = self.env.ref('product_putaway.action_stock_fixed_putaway_strat_tree_pp').read()[0]
+
+        action['view_mode'] = 'tree'
+
+        action['domain'] = domain
+        action['context'] = {
+                             'default_fixed_location_id': location_id.id,
+                             'default_putaway_id': location_id.putaway_strategy_id.id,
+                             'hide_product': True}
+        if len(self.product_variant_ids) == 1:
+            action['context'].update(default_product_id= self.prodcut_variant_ids.id)
+        return action
+
     @api.depends('product_variant_ids', 'product_variant_ids.product_putaway_ids')
     def _compute_putaway_ids_ids(self):
         for p in self:

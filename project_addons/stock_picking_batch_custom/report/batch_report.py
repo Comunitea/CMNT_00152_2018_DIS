@@ -66,34 +66,21 @@ class ReportPrintBatchPicking(models.AbstractModel):
             "operations": operation,
             "move_ordered_qty": operation.move_id.product_uom_qty,
             "other_moves": "*" * len(operation.move_id.move_line_ids),
-            "state": operation.move_id.state
+            "state": operation.move_id.state,
+            "moves": operation.move_id
         }
 
 
     @api.model
     def update_level_1(self, group_dict, operation):
-        def get_state(val, val1):
-
-            if val1 == 'partially_available':
-                return val1
-            if val1 == 'assigned':
-                return val
-            if val1 == 'confirmed':
-                if val == 'partially_available' or val == 'assigned':
-                    return val
-                else:
-                    return val1
-            if val1=='state':
-                if val != 'cancel' and val != 'draft':
-                    return val
-            return val1
-            raise ValueError('No encontrado para {} y {}'.format(val, val1))
-
 
         group_dict["product_qty"] += operation.product_uom_qty or operation.qty_done
         group_dict["product_uom_qty"] += operation.product_uom_qty
         group_dict["operations"] += operation
-        group_dict["state"] = get_state(group_dict["state"], operation.move_id.state)
+        group_dict["moves"] |= operation.move_id
+        group_dict["state"] = self.env['batch.group.move.line']._compute_state(group_dict["moves"])
+        #print (group_dict)
+        #get_state(group_dict["state"], operation.move_id.state)
 
     @api.model
     def sort_level_0(self, rec_list, location_field="location"):
@@ -127,7 +114,7 @@ class ReportPrintBatchPicking(models.AbstractModel):
 
     @api.model
     def _get_no_stock(self, batch):
-        moves = batch.move_lines.filtered(lambda x: x.product_uom_qty != x.reserved_availability)
+        moves = batch.move_lines.filtered(lambda x: x.product_uom_qty != x.reserved_availability and x.state not in ('cancel', 'draft', 'done'))
         #print (moves)
         return moves
 
@@ -156,6 +143,9 @@ class ReportPrintBatchPicking(models.AbstractModel):
         print(mlxp)
         return mlxp
 
+    def finish(self, gd):
+        return gd
+
     @api.model
     def _get_grouped_data(self, batch):
 
@@ -171,11 +161,14 @@ class ReportPrintBatchPicking(models.AbstractModel):
                 )
             else:
                 grouped_data[l0_key]["l1_items"][l1_key] = self.new_level_1(op)
+
         for l0_key in grouped_data.keys():
             grouped_data[l0_key]["l1_items"] = self.sort_level_1(
                 grouped_data[l0_key]["l1_items"].values()
             )
-        return self.sort_level_0(grouped_data.values())
+        res = self.sort_level_0(grouped_data.values())
+        res = self.finish(res)
+        return res
 
     @api.model
     def _get_report_values(self, docids, data=None):

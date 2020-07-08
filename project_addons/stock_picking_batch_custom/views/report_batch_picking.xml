@@ -74,7 +74,7 @@
                         </t>
 
                             <t t-if="moves">
-                            <table class="table table-condensed" string="ARTICULOS SIN STOCK" border="1">
+                            <table class="table table-condensed" string="ARTICULOS SIN STOCK" border="0">
                                     <thead string="ARTICULOS SIN STOCK">
                                         <th width="68%" style="padding: 3px">
                                             <b><u>
@@ -96,11 +96,32 @@
                                             <td style="padding: 3px" class="text-left">
                                                 <span t-field="move.product_id.putaways_str"/>
                                             </td>
+
                                             <td style="padding: 3px" class="text-right">
+
+
+                                                <t t-if="move.state == 'assigned'">
+                                                    <i class="fa fa-battery-full" role="img"/>
+                                                </t>
+                                                <t t-if="move.state == 'done'">
+                                                    <i class="fa fa-check-square" role="img"/>
+                                                </t>
+                                                <t t-if="move.state == 'partially_available'">
+                                                    <i class="fa fa-battery-half" role="img"/>
+                                                </t>
+                                                <t t-if="move.state == 'confirmed'">
+                                                    <i class="fa fa-battery-empty" role="img"/>
+                                                </t>
+                                                <t t-if="other_moves">
+                                                    <i class="fa fa-plus-square" role="img"/>
+                                                </t>
                                                <span t-field="move.product_uom_qty"/>
+
                                             </td>
                                             <td style="padding: 3px" class="text-right">
-                                            <span t-esc="move.product_uom_qty - move.quantity_done"/>
+
+
+                                                <span t-esc="move.product_uom_qty - move.quantity_done"/>
 
                                             </td>
                                         </tr>
@@ -125,8 +146,6 @@
                                         </th>
                                     </thead>
                             </table>
-
-
                                 <table class="table table-condensed">
                                     <tbody><t t-foreach="get_grouped_data(doc)" t-as="l0_data">
                                         <tr>
@@ -160,12 +179,23 @@
                                                         </t>
                                                     </td>
                                                     <td class="text-center" style="padding: 3px">
+
+                                                        <t t-if="state == 'assigned'">
+                                                            <i class="fa fa-battery-full" role="img"/>
+                                                        </t>
+                                                        <t t-if="state == 'done'">
+                                                            <i class="fa fa-check-square" role="img"/>
+                                                        </t>
+                                                        <t t-if="state == 'partially_available'">
+                                                            <i class="fa fa-battery-half" role="img"/>
+                                                        </t>
+                                                        <t t-if="state == 'confirmed'">
+                                                            <i class="fa fa-battery-empty" role="img"/>
+                                                        </t>
                                                         <span t-esc="ordered_qties[str(product.id)]"/>
                                                     </td>
                                                     <td class="text-right" style="padding: 3px">
-                                                        <t t-if="state!='assigned'">
-                                                            <i class="fa fa-exclamation-triangle" role="img"/>
-                                                        </t>
+
                                                         <t t-if="other_moves">
                                                             <i class="fa fa-plus-square" role="img"/>
                                                         </t>

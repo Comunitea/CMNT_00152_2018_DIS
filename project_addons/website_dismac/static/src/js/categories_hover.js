@@ -12,8 +12,8 @@ odoo.define('website_dismac.collapsable_categories_hover',
         read_events: {
             'click .fa-chevron-right': '_onOpenClick',
             'click .fa-chevron-down': '_onCloseClick',
-            'mouseenter li.nav-item': '_onHoverCategory',
-            'mouseleave li.nav-item': '_onHoverCategoryOut',
+            //'mouseenter li.nav-item': '_onHoverCategory',
+            //'mouseleave li.nav-item': '_onHoverCategoryOut',
         },
 
         //--------------------------------------------------------------------------

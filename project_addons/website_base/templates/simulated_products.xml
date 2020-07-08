@@ -182,7 +182,7 @@
                             <span t-if="combination_info['price']" t-esc="combination_info['price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
                             <span itemprop="price" style="display:none;" t-esc="combination_info['price']" />
                             <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name" />
-                            <span> + IVA</span>
+                            <!--span> + IVA</span-->
                         </b>
                         <!-- Miniature buttons -->
                         <t t-set="product_variant_id" t-value="product._get_first_possible_variant_id()"/>

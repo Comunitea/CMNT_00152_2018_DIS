@@ -59,11 +59,11 @@
         </xpath>
     </template>
 
-    <template id="tax_price_list" name="Tax prices list view" inherit_id="website_sale.products_item">
+    <!--template id="tax_price_list" name="Tax prices list view" inherit_id="website_sale.products_item">
         <xpath expr="//span[@t-if=&quot;combination_info[&apos;price&apos;]&quot;]" position="after">
              + IVA
         </xpath>
-    </template>
+    </template-->
 
     <template id="website_sale.sort" inherit_id="website_sale.products" active="True" customize_show="True" name="Show Sort by">
         <xpath expr="//div[hasclass('products_pager')]/t[@t-call][last()]" position="after">
@@ -95,9 +95,9 @@
     </template>
 
     <template id="tax_price_list" name="Tax prices list view" inherit_id="website_sale.products_item">
-        <xpath expr="//span[@t-if=&quot;combination_info[&apos;price&apos;]&quot;]" position="after">
+        <!--xpath expr="//span[@t-if=&quot;combination_info[&apos;price&apos;]&quot;]" position="after">
              + IVA
-        </xpath>
+        </xpath-->
     </template>
 
     <template id="product_list_data_publish_on" name="data_publish_on" inherit_id="website_sale.products_list_view">
