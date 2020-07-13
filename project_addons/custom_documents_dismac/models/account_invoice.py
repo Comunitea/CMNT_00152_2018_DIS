@@ -3,6 +3,8 @@
 from odoo import api, fields, models
 from functools import partial
 from odoo.tools.misc import formatLang
+from odoo.tools import float_is_zero
+from collections import OrderedDict
 
 
 class AccountInvoice(models.Model):
@@ -38,6 +40,23 @@ class AccountInvoice(models.Model):
             ) for r in res]
         return res
 
+    def lines_grouped_by_picking(self):
+        """This prepares a data structure for printing the invoice report
+        grouped by pickings."""
+        self.ensure_one()
+        if any([x for x in self.invoice_line_ids if x.display_type]):
+            return [
+                {'picking': False, 'line': x, 'quantity': x.quantity}
+                for x in self.invoice_line_ids
+            ]
+        return super().lines_grouped_by_picking()
+
+    def split_in_pickings(self):
+        self.ensure_one()
+        if any([x for x in self.invoice_line_ids if x.display_type]):
+            return False
+        return True
+
 
 class AccountInvoiceLine(models.Model):
 
@@ -55,3 +74,8 @@ class AccountInvoiceLine(models.Model):
         compute="_compute_price_signed",
         help="Total amount with taxes",
     )
+    picking_names = fields.Char(compute='_compute_picking_names')
+
+    def _compute_picking_names(self):
+        for line in self:
+            line.picking_names = ', '.join(line.mapped('move_line_ids.picking_id.name'))
