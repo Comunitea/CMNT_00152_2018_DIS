@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-
+    <data>
     <template id="report_picking"  inherit_id="stock.report_picking">
         <xpath expr="//span[@t-esc='ml.location_id.display_name']" position="replace">
             <span t-esc="ml.location_id.name"/>
-
             <t t-if="ml.product_id.import_location_str and o.picking_type_id.code != 'internal'">
                 (<span t-esc="ml.product_id.import_location_str"/>)
             </t>
-
         </xpath>
         <xpath expr="//span[@t-field='ml.location_dest_id']" position="replace">
             <span t-esc="ml.location_dest_id.name"/>
@@ -30,7 +27,7 @@
         </xpath>
     </template>
 
-    <template id="report_delivery_document" inherit_id="stock_picking_report_valued.valued_report_picking">
+    <template id="valued_report_picking_custom" inherit_id="stock_picking_report_valued.valued_report_picking">
         <xpath expr="//span[@t-field='o.date_done']" position="attributes">
             <attribute name="t-options">{"widget": "date"}</attribute>
         </xpath>
@@ -54,7 +51,7 @@
             <attribute name="t-if">o.state not in ('done', 'assigned')</attribute>
         </xpath>
         <xpath expr="//table[@t-if=&quot;o.move_line_ids and o.state==&apos;done&apos;&quot;]" position="attributes">
-            <attribute name="t-if">o.move_line_ids and o.state and o.state in ('done', 'assigned')</attribute>
+            <attribute name="t-if">o.move_line_ids and o.state in ('done', 'assigned')</attribute>
         </xpath>
         <xpath expr="//t[@t-if=&quot;o.state != &apos;done&apos;&quot;]/th" position="replace">
 
@@ -127,5 +124,6 @@
         file="custom_documents_dismac.report_deliveryslip_neutro"
         print_report_name="'Delivery Slip - %s - %s' % (object.partner_id.name or '', object.name)"
     />
+    </data>
 </odoo>
 
