@@ -48,16 +48,15 @@
         </xpath>
 
         <xpath expr="//table[@t-if=&quot;o.state!=&apos;done&apos;&quot;]" position="attributes">
-            <attribute name="t-if">o.state not in ('done', 'assigned')</attribute>
+            <attribute name="t-if">o.state not in ('done', 'assigned', 'waiting')</attribute>
         </xpath>
         <xpath expr="//table[@t-if=&quot;o.move_line_ids and o.state==&apos;done&apos;&quot;]" position="attributes">
-            <attribute name="t-if">o.move_line_ids and o.state in ('done', 'assigned')</attribute>
+            <attribute name="t-if">o.move_line_ids and o.state in ('done', 'assigned', 'waiting')</attribute>
         </xpath>
         <xpath expr="//t[@t-if=&quot;o.state != &apos;done&apos;&quot;]/th" position="replace">
 
         </xpath>
         <xpath expr="//t[@t-if=&quot;move_line.picking_id.state != &apos;done&apos;&quot;]/td" position="replace">
-
         </xpath>
 
     </template>
