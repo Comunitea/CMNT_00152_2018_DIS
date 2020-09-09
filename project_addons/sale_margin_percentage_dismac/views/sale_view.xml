@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='amount_total']" position="after">
                     <field name="margin_perc" groups="base.group_user"/>
-
+                    <field name="order_ref_coef" groups="base.group_user"/>
             </xpath>
         </field>
     </record>
