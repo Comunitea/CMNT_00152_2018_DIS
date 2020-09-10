@@ -88,9 +88,11 @@ class SaleOrderLine(models.Model):
     purchase_price = fields.Float(string="Cost",
                                   digits=dp.get_precision("Product Price"))
     line_ref_cost =fields.Float(compute='_product_coeff',string="Ref Cost",
-                                  digits=dp.get_precision("Product Price"))
+                                  digits=dp.get_precision("Product Price"),
+                                  store=True)
     line_cost =fields.Float(compute='_product_coeff',string="Product Cost",
-                                  digits=dp.get_precision("Product Price"))
+                                  digits=dp.get_precision("Product Price"),
+                                  store=True)
 
 
     #@profile
@@ -125,6 +127,9 @@ class SaleOrderLine(models.Model):
                 line.margin = line.price_subtotal - \
                               (price * line.product_uom_qty)
                 
+    
+    @api.depends('product_id', 'product_uom_qty',
+                 'price_unit', 'price_subtotal')
     def _product_coeff(self):
         for line in self:
             if line.product_id.type != 'product':
