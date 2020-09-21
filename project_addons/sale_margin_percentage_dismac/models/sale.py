@@ -20,6 +20,19 @@ class SaleOrder(models.Model):
                              currency_field='currency_id',
                              digits=dp.get_precision('Product Price'),
                              store=True)
+    order_coef = fields.Float(compute="_product_coef",
+                               string='Coeficiente',
+                               help="Coefciente de venta", store=True)
+    order_ref_coef = fields.Float(compute="_product_coef",
+                               string='Coeficiente ref.',
+                               help="Coefciente de venta (ref)", store=True)
+    order_cost = fields.Float(compute="_product_coef",
+                               string='Coste de venta',
+                               help="Coste de venta", store=True)
+    
+    order_ref_cost = fields.Float(compute="_product_coef",
+                               string='Coste de venta (ref)',
+                               help="Coste de venta (ref)", store=True)
 
     #@profile
     @api.depends('order_line.margin')
@@ -39,6 +52,30 @@ class SaleOrder(models.Model):
                 'margin': margin,
             })
 
+    @api.depends('order_line.line_ref_cost', 'order_line.line_cost',
+                'order_line.price_subtotal')
+    @api.multi
+    def _product_coef(self):
+        for order in self:
+            order_cost = sum(order.order_line.filtered(
+                lambda r: r.state != 'cancel').mapped('line_cost'))
+            order_ref_cost = sum(order.order_line.filtered(
+                lambda r: r.state != 'cancel').mapped('line_ref_cost'))
+            if order_cost:
+                order_coef = round(order.amount_untaxed / order_cost, 2)
+            else:
+                order_coef = 1
+            if order_ref_cost:
+                order_ref_coef = round(order.amount_untaxed / order_ref_cost, 2)
+            else:
+                order_ref_coef = 1
+           
+            order.update({
+                'order_coef': order_coef,
+                'order_ref_coef': order_ref_coef,
+                'order_cost': order_cost,
+                'order_ref_cost': order_ref_cost
+            })
 
 
 class SaleOrderLine(models.Model):
@@ -48,23 +85,29 @@ class SaleOrderLine(models.Model):
     margin = fields.Float(compute='_product_margin',
                           digits=dp.get_precision('Product Price'),
                           store=True)
-    purchase_price = fields.Float(compute='_product_margin',
-                                  string="Cost",
+    purchase_price = fields.Float(string="Cost",
                                   digits=dp.get_precision("Product Price"))
+    line_ref_cost =fields.Float(compute='_product_coeff',string="Ref Cost",
+                                  digits=dp.get_precision("Product Price"),
+                                  store=True)
+    line_cost =fields.Float(compute='_product_coeff',string="Product Cost",
+                                  digits=dp.get_precision("Product Price"),
+                                  store=True)
+
 
     #@profile
-    def _compute_cost_price(self):
+    def _compute_cost_price(self, price):
         frm_cur = self.env.user.company_id.currency_id
         to_cur = self.order_id.pricelist_id.currency_id
-        purchase_price = self.product_id.reference_cost or \
-                         self.product_id.standard_price
+        
         if self.product_uom != self.product_id.uom_id:
-            purchase_price = self.product_id.uom_id._compute_price(
-                purchase_price, self.product_uom)
-        price = frm_cur._convert(
-            purchase_price, to_cur,
-            self.order_id.company_id or self.env.user.company_id,
-            self.order_id.date_order or fields.Date.today(), round=False)
+            price = self.product_id.uom_id._compute_price(
+                price, self.product_uom)
+        if frm_cur != to_cur:
+            price = frm_cur._convert(
+                price, to_cur,
+                self.order_id.company_id or self.env.user.company_id,
+                self.order_id.date_order or fields.Date.today(), round=False)
         return price
 
     #@profile
@@ -76,7 +119,31 @@ class SaleOrderLine(models.Model):
                 line.margin = 0
             else:
                 # currency = line.order_id.pricelist_id.currency_id
-                price = line._compute_cost_price()
+                purchase_price = line.product_id.reference_cost or \
+                         line.product_id.standard_price
+                price = line._compute_cost_price(purchase_price)
+                
                 line.purchase_price = price
                 line.margin = line.price_subtotal - \
                               (price * line.product_uom_qty)
+                
+    
+    @api.depends('product_id', 'product_uom_qty',
+                 'price_unit', 'price_subtotal')
+    def _product_coeff(self):
+        for line in self:
+            if line.product_id.type != 'product':
+                line.line_ref_cost = 0
+                line.line_cost = 0
+            else:
+                # currency = line.order_id.pricelist_id.currency_id
+                ref_cost_price = line.product_id.reference_cost or \
+                         line.product_id.standard_price
+                ref_cost_price = line._compute_cost_price(ref_cost_price)
+                
+                cost_price = line.product_id.last_purchase_price_fixed or \
+                         line.product_id.standard_price
+                cost_price = line._compute_cost_price(cost_price)
+
+                line.line_ref_cost = ref_cost_price * line.product_uom_qty
+                line.line_cost = cost_price * line.product_uom_qty
