@@ -14,8 +14,8 @@
                 <field name="product_id"  readonly="True"/>
                 <field name="product_categ_id" readonly="True"/>
                 <field name="date_planned"  widget="date" readonly="True"/>
-                <field name="product_virtual_available"/>
-                <field name="product_stock_available"/>
+                <field name="product_virtual_available" string="Previsto"/>
+                <field name="product_stock_available" string="A Man"/>
                 <field name="to_deliver_qty"/>
                 <field name="last_60_days_sales"/>
                 <field name="min_max_reordering" />
@@ -72,7 +72,7 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="purchase_custom_tree"></field>  <!-- force empty -->
         <field name="search_view_id" ref="purchase_custom_search"/>
-        <field name="context">{'search_default_draft':1}</field>
+        <field name="context">{'search_default_draft':1, 'location_id' : 12}</field>
     </record>
 
     <record id="purchase_custom_order_form" model="ir.ui.view">

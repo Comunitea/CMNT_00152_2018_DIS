@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-
+         <record id="view_stock_picking_mass_action_form_cusotm" model="ir.ui.view">
+            <field name="name">stock.picking.mass.action form.custom</field>
+            <field name="model">stock.picking.mass.action</field>
+            <field name="inherit_id" ref="stock_picking_mass_action.view_stock_picking_mass_action_form"/>
+            <field name="arch" type="xml">
+                <field name="transfer" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </field>
+            </field>
+        </record>
         <record id="view_stock_rule_form" model="ir.ui.view">
             <field name="name">stock.rule.form</field>
             <field name="model">stock.rule</field>
