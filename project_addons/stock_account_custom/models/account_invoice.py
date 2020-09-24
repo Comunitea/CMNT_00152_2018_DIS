@@ -15,6 +15,7 @@ class AccountInvoice(models.Model):
             if rec.type in ['in_invoice', 'in_refund']:
                 rec.invoice_line_ids.mapped('product_id').set_product_last_purchase(
                     rec.id)
+                rec.invoice_line_ids.mapped('product_id')._set_last_purchase_fixed()
         return res
 
     @api.multi
@@ -22,5 +23,7 @@ class AccountInvoice(models.Model):
         res = super().action_invoice_cancel()
         for rec in self:
              if rec.type in ['in_invoice', 'in_refund']:
-                rec.invoice_line_ids.mapped('product_id').set_product_last_purchase()
+                rec.invoice_line_ids.mapped('product_id').set_product_last_purchase(
+                    rec.id)
+                rec.invoice_line_ids.mapped('product_id')._set_last_purchase_fixed()
         return res
