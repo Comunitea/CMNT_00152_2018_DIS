@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-15 13:01+0000\n"
-"PO-Revision-Date: 2019-03-15 13:01+0000\n"
+"POT-Creation-Date: 2020-09-28 16:52+0000\n"
+"PO-Revision-Date: 2020-09-28 16:52+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,42 +16,135 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: partner_custom_dismac
-#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__claimed_on
-#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_users__claimed_on
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_due_report__residual
+msgid "Amount"
+msgstr "Importe"
+
+#. module: partner_custom_dismac
+#: model_terms:ir.ui.view,arch_db:partner_custom_dismac.due_report_tree
+msgid "Amount total"
+msgstr "Importe total"
+
+#. module: partner_custom_dismac
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__claimed_on
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_users__claimed_on
 msgid "Claimed on"
 msgstr "Reclamado el"
 
 #. module: partner_custom_dismac
-#: model_terms:ir.model,name:partner_custom_dismac.model_res_partner
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__commercial_partner_user_id
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_users__commercial_partner_user_id
+msgid "Commercial partner Salesperson"
+msgstr ""
+
+#. module: partner_custom_dismac
+#: model:ir.model,name:partner_custom_dismac.model_res_partner
 msgid "Contact"
 msgstr "Contacto"
 
 #. module: partner_custom_dismac
-#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__unclaimable_for
-#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_users__unclaimable_for
-#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_sale_order_type__unclaimable_for
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_due_report__partner_id
+#: model_terms:ir.ui.view,arch_db:partner_custom_dismac.due_report_tree
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: partner_custom_dismac
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__unclaimable_for
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_users__unclaimable_for
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_sale_order_type__unclaimable_for
 msgid "Days to claim"
-msgstr "Días para reclamar"
+msgstr ""
 
 #. module: partner_custom_dismac
-#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__days_without_order_or_quotation
-#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_users__days_without_order_or_quotation
-#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_sale_order_type__days_without_order_or_quotation
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__days_without_order_or_quotation
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_users__days_without_order_or_quotation
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_sale_order_type__days_without_order_or_quotation
 msgid "Days without order"
-msgstr "Días sin pedidos"
+msgstr ""
 
 #. module: partner_custom_dismac
-#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__is_claimable
-#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_users__is_claimable
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_due_report__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: partner_custom_dismac
+#: model_terms:ir.ui.view,arch_db:partner_custom_dismac.due_report_filter
+msgid "Due Date"
+msgstr "Fecha vencimiento"
+
+#. module: partner_custom_dismac
+#: model:ir.model,name:partner_custom_dismac.model_due_report
+msgid "Due Report"
+msgstr "Informe de de vencimientos"
+
+#. module: partner_custom_dismac
+#: model:ir.actions.act_window,name:partner_custom_dismac.act_partner_credit_relation_relation
+msgid "Due report"
+msgstr "Informe de de vencimientos"
+
+#. module: partner_custom_dismac
+#: model_terms:ir.ui.view,arch_db:partner_custom_dismac.due_report_filter
+msgid "From invoices"
+msgstr "De facturas"
+
+#. module: partner_custom_dismac
+#: model_terms:ir.ui.view,arch_db:partner_custom_dismac.due_report_filter
+msgid "Group By"
+msgstr "Agrupar por"
+
+#. module: partner_custom_dismac
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_due_report__id
+msgid "ID"
+msgstr ""
+
+#. module: partner_custom_dismac
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_due_report__invoice_id
+#: model_terms:ir.ui.view,arch_db:partner_custom_dismac.due_report_filter
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: partner_custom_dismac
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_due_report__date_invoice
+msgid "Invoice Date"
+msgstr "Fecha factura"
+
+#. module: partner_custom_dismac
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__is_claimable
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_users__is_claimable
 msgid "Is the partner claimable?"
-msgstr "¿Es reclamable?"
+msgstr ""
 
 #. module: partner_custom_dismac
-#: model_terms:ir.model.fields,help:partner_custom_dismac.field_res_partner__days_without_order_or_quotation
-#: model_terms:ir.model.fields,help:partner_custom_dismac.field_res_users__days_without_order_or_quotation
-#: model_terms:ir.model.fields,help:partner_custom_dismac.field_sale_order_type__days_without_order_or_quotation
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_due_report____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: partner_custom_dismac
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_due_report__date_maturity
+msgid "Maturity Date"
+msgstr "Fecha vencimiento"
+
+#. module: partner_custom_dismac
+#: model_terms:ir.ui.view,arch_db:partner_custom_dismac.due_report_filter
+msgid "Month"
+msgstr "Mes"
+
+#. module: partner_custom_dismac
+#: model:ir.model.fields,help:partner_custom_dismac.field_res_partner__days_without_order_or_quotation
+#: model:ir.model.fields,help:partner_custom_dismac.field_res_users__days_without_order_or_quotation
+#: model:ir.model.fields,help:partner_custom_dismac.field_sale_order_type__days_without_order_or_quotation
 msgid "Number of days with no order or quotation before the partner becomes claimable"
-msgstr "Número de días sin pedidos ni presupuestos antes de que el cliente pueda ser reclamado"
+msgstr ""
+
+#. module: partner_custom_dismac
+#: model_terms:ir.ui.view,arch_db:partner_custom_dismac.due_report_filter
+msgid "Overdue"
+msgstr "Vencimiento"
+
+#. module: partner_custom_dismac
+#: model_terms:ir.ui.view,arch_db:partner_custom_dismac.due_report_filter
+msgid "Partner"
+msgstr "Empresa"
 
 #. module: partner_custom_dismac
 #: model_terms:ir.ui.view,arch_db:partner_custom_dismac.view_partner_form_agent
@@ -59,20 +152,63 @@ msgid "Partner release date"
 msgstr "Fecha de liberación"
 
 #. module: partner_custom_dismac
-#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__claimable_on
-#: model_terms:ir.model.fields,field_description:partner_custom_dismac.field_res_users__claimable_on
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_partner__claimable_on
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_res_users__claimable_on
 msgid "Partner will be claimable on this date"
-msgstr "El cliente podrá ser reclamado en esta fecha"
+msgstr ""
 
 #. module: partner_custom_dismac
-#: model_terms:ir.model.fields,help:partner_custom_dismac.field_res_partner__unclaimable_for
-#: model_terms:ir.model.fields,help:partner_custom_dismac.field_res_users__unclaimable_for
-#: model_terms:ir.model.fields,help:partner_custom_dismac.field_sale_order_type__unclaimable_for
+#: model:ir.model.fields,help:partner_custom_dismac.field_res_partner__unclaimable_for
+#: model:ir.model.fields,help:partner_custom_dismac.field_res_users__unclaimable_for
+#: model:ir.model.fields,help:partner_custom_dismac.field_sale_order_type__unclaimable_for
 msgid "Partner won't be claimable for this days after being claimed by another user"
-msgstr "El cliente no será reclamable durante estos días tras ser reclamado por otro comercial"
+msgstr ""
 
 #. module: partner_custom_dismac
-#: model_terms:ir.model,name:partner_custom_dismac.model_sale_order_type
+#: model:ir.ui.view,name:partner_custom_dismac.due_report_tree
+msgid "Payments"
+msgstr "Pagos"
+
+#. module: partner_custom_dismac
+#: model:ir.ui.view,name:partner_custom_dismac.due_report_filter
+msgid "Payments Selection"
+msgstr "Seleccionar pagos"
+
+#. module: partner_custom_dismac
+#: model:ir.actions.act_window,name:partner_custom_dismac.action_due_report
+#: model:ir.ui.menu,name:partner_custom_dismac.menu_action_due_report
+msgid "Payments and due list"
+msgstr "Efectos"
+
+#. module: partner_custom_dismac
+#: model:ir.model.fields,field_description:partner_custom_dismac.field_due_report__user_id
+#: model_terms:ir.ui.view,arch_db:partner_custom_dismac.due_report_filter
+msgid "Salesperson"
+msgstr "Comercial"
+
+#. module: partner_custom_dismac
+#: model_terms:ir.ui.view,arch_db:partner_custom_dismac.due_report_filter
+msgid "Search Payments"
+msgstr "Buscar efectos"
+
+#. module: partner_custom_dismac
+#: model:ir.model.fields,help:partner_custom_dismac.field_res_partner__commercial_partner_user_id
+#: model:ir.model.fields,help:partner_custom_dismac.field_res_users__commercial_partner_user_id
+msgid "The internal user in charge of this contact."
+msgstr "El usuario interno a cargo de este contacto."
+
+#. module: partner_custom_dismac
+#: model:ir.model,name:partner_custom_dismac.model_sale_order_type
 msgid "Type of sale order"
 msgstr "Tipo de pedido de venta"
+
+#. module: partner_custom_dismac
+#: model:ir.ui.view,name:partner_custom_dismac.partner_custom_sot_sale_order_type_form_view
+msgid "partner.custom.sale.order.type"
+msgstr ""
+
+#. module: partner_custom_dismac
+#: model:ir.ui.view,name:partner_custom_dismac.view_partner_form_agent
+msgid "res.partner.form.agent"
+msgstr ""
 

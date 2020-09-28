@@ -5,3 +5,4 @@ access_partner_custom_manager,partner_custom_manager,model_res_partner,sales_tea
 access_partner_order_type_custom,partner_custom_order_type,model_sale_order_type,base.group_user,1,0,0,0
 access_partner_order_type_custom_portal,partner_custom_order_type_portal,model_sale_order_type,base.group_portal,1,0,0,0
 access_partner_order_type_manager,partner_custom_order_type_manager,model_sale_order_type,sales_team.group_sale_manager,1,1,1,1
+access_due_report,due_report,model_due_report,base.group_user,1,0,0,0
