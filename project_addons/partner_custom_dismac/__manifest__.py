@@ -12,6 +12,7 @@
     "data": [
         "views/sale_order_view.xml",
         "views/res_partner_view.xml",
+        "views/due_report_view.xml",
         "security/ir.model.access.csv",
         'security/security.xml',
     ],
