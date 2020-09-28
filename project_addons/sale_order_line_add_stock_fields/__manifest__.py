@@ -11,6 +11,7 @@
     "installable": True,
     "depends": ["sale",
                 "sale_order_line_form_button",
+                "product_virtual_stock_conservative",
                 "web_tree_dynamic_colored_field"],
     "data": ["views/sale_order_view.xml"],
 }
