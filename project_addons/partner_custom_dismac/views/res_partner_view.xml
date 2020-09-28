@@ -17,12 +17,12 @@
                  <attribute name="groups">stock.group_stock_user</attribute>
             </xpath>
 
-
-
-
-
-
-
         </field>
     </record>
+
+    <act_window id="act_partner_credit_relation_relation"
+                name="Due report"
+                domain="[('partner_id', '=',  active_id)]"
+                res_model="due.report"
+                src_model="res.partner"/>
 </odoo>
