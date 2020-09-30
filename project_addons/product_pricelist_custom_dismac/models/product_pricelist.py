@@ -27,6 +27,9 @@ class Pricelist(models.Model):
         domain = [
             ("product_id", "=", product_id),
             ("pricelist_id.is_promotion", "=", True),
+            ("date_start", "<=", date),
+            ("date_end", ">=", date)
+            
         ]
         rules = self.env["product.pricelist.item"].search(
             domain, order="min_quantity asc"
