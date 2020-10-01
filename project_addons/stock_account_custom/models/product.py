@@ -147,7 +147,7 @@ class ProductProduct(models.Model):
                 product.reference_cost = (
                     product.last_purchase_price_fixed
                     * product.product_tmpl_id.cost_ratio_id.purchase_ratio
-                    or 1.0
+                    or 0.0
                 )
             else:
                 product.reference_cost = product.last_purchase_price_fixed

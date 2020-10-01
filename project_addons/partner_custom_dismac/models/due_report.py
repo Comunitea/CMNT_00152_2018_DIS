@@ -55,6 +55,5 @@ class DueReport(models.Model):
     def init(self):
         # self._table = sale_report
         tools.drop_view_if_exists(self.env.cr, self._table)
-        print(self._query())
         self.env.cr.execute("""CREATE or REPLACE VIEW %s as (%s)""" % (self._table, self._query()))
 

@@ -95,6 +95,32 @@ class SaleOrderLine(models.Model):
                                   store=True)
 
 
+    @api.multi
+    def cron_update_cost_line(self):
+        lines = self.search([("line_ref_cost", "=", 0)])
+        lines.update_line_cost()
+        
+        
+    @api.multi
+    def update_line_cost(self):
+        for line in self:
+            if line.product_id.type != 'product':
+                # 75 % del precio venta según correo de Juan el 29/09/20
+                line.line_ref_cost = line.price_subtotal * 0.75                    
+                line.line_cost = line.price_subtotal * 0.75
+            else:
+                if line.product_id.last_purchase_price_fixed:
+                    ref_cost_price = line.product_id.reference_cost 
+                    ref_cost_price = line._compute_cost_price(ref_cost_price)
+                    cost_price = line.product_id.last_purchase_price_fixed or \
+                         line.product_id.standard_price
+                    cost_price = line._compute_cost_price(cost_price)
+                    line.line_ref_cost = ref_cost_price * line.product_uom_qty
+                    line.line_cost = cost_price * line.product_uom_qty
+                    
+                
+
+
     #@profile
     def _compute_cost_price(self, price):
         frm_cur = self.env.user.company_id.currency_id
@@ -116,7 +142,7 @@ class SaleOrderLine(models.Model):
     def _product_margin(self):
         for line in self:
             if line.product_id.type != 'product':
-                line.margin = 0
+                line.margin = line.price_subtotal * 0.25
             else:
                 # currency = line.order_id.pricelist_id.currency_id
                 purchase_price = line.product_id.reference_cost or \
@@ -133,8 +159,9 @@ class SaleOrderLine(models.Model):
     def _product_coeff(self):
         for line in self:
             if line.product_id.type != 'product':
-                line.line_ref_cost = 0
-                line.line_cost = 0
+                # 75 % del precio venta según correo de Juan el 29/09/20
+                line.line_ref_cost = line.price_subtotal * 0.75                    
+                line.line_cost = line.price_subtotal * 0.75
             else:
                 # currency = line.order_id.pricelist_id.currency_id
                 ref_cost_price = line.product_id.reference_cost or \
