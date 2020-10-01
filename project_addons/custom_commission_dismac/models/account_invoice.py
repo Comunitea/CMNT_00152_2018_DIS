@@ -10,11 +10,16 @@ class AccountInvoiceLine(models.Model):
 
     # TODO Falta el calculo para cuando se crea factura manual?
     sale_purchase_price = fields.Float(
-        string="Sale Cost", digits=dp.get_precision("Product Price")
+        string="Sale Cost", digits=dp.get_precision("Product Price"),
+        readonly=True
+    )
+    sale_purchase_price_net = fields.Float(
+        string="Net Sale Cost", digits=dp.get_precision("Product Price"),
+        readonly=True
     )
 
 
-class AccountInvoicer(models.Model):
+class AccountInvoice(models.Model):
     _inherit = "account.invoice"
 
     coef = fields.Monetary(
