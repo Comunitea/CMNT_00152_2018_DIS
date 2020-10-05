@@ -9,7 +9,6 @@ class ProductProduct(models.Model):
 
     last_60_days_sales = fields.Float()
 
-
     ## Sobrescribe función para poder considerar los descuentos en las lineas de comopra
     @api.multi
     def set_product_last_purchase(self, order_id=False):
@@ -97,6 +96,6 @@ class ProductProduct(models.Model):
                 "type": "ir.actions.act_window",
                 "domain": domain,
                 "search_view_id": search_view and search_view[1] or False,
-                "context": {"search_default_draft": 1},
+                "context": {'search_default_in_1_stock': 1},
             }
         return value

@@ -83,6 +83,7 @@ class PurchaseOrderLine(models.Model):
     to_deliver_qty = fields.Float(compute="_compute_to_deliver_qty")
     last_60_days_sales = fields.Float(related="product_id.last_60_days_sales")
     min_max_reordering = fields.Char('Min/Max', compute="_compute_max_min")
+    location_id = fields.Many2one('stock.location', 'Ubicación de stock', store = False)
 
     @api.onchange('new_partner_id')
     def _onchange_new_partner(self):
@@ -103,6 +104,29 @@ class PurchaseOrderLine(models.Model):
                 line.min_max_reordering = "--/--"
 
     def _compute_to_deliver_qty(self):
+        ## Todo revisar con Jose Luis que movimientos se tienen en cuenta.
+        domain = [
+                  ('location_id.usage', '=', 'internal'),
+                  ('location_dest_id.usage', '!=', 'internal'),
+                  ('state', 'in', ('partially_available', 'assigned', 'confirmed')),
+                  ('product_id', 'in', self.mapped('product_id').ids)]
+
+        if self._context.get('location'):
+            domain += [('location_id', 'child_of', self._context.get('location'))]
+
+        res = self.env['stock.move'].read_group(domain, ['product_uom_qty'], ['product_id'])
+        qties = {}
+        for x in res:
+            qties[x['product_id'][0]] = x['product_uom_qty']
+
+        for line in self:
+            product_id = line.product_id.id
+            if product_id in qties.keys():
+                line.to_deliver_qty = qties[line.product_id.id]
+            else:
+                line.to_deliver_qty = 0
+        return
+
         for line in self:
             self.env.cr.execute(
                 """
