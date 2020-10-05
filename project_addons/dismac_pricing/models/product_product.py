@@ -94,19 +94,29 @@ class ProductProduct(models.Model):
         # Selecciona precio mínimo
        
         if partner.fixed_prices or partner.commercial_partner_id.fixed_prices:
-            discount = 0
+            
             if customer_price:
                 price = customer_price
+                discount = 0
                 explanation = (
                     "Cliente con precios fijos: Precio " "pactado "
                 )
             else:
-                price = pricelist_price
-                explanation = (
-                    "Cliente con precios fijos: Precio "
-                    "pactado no encontrado. Aplicado "
-                    "precio de tarifa: \n" + pricelist_explanation
-                )
+                if pricelist_price_discount and pricelist_price_discount < pricelist_price:
+                    price = pricelist_price
+                    explanation = (
+                        "Cliente con precios fijos: Precio "
+                        "pactado no encontrado. Aplicado "
+                        "precio de tarifa con descutno por categoría: \n" + pricelist_explanation
+                    )
+                else:
+                    discount = 0
+                    price = pricelist_price
+                    explanation = (
+                        "Cliente con precios fijos: Precio "
+                        "pactado no encontrado. Aplicado "
+                        "precio de tarifa: \n" + pricelist_explanation
+                    )
         else:
             price = pricelist_price
             explanation = pricelist_explanation

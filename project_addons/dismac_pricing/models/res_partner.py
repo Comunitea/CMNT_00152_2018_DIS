@@ -6,7 +6,7 @@ from odoo import fields, models, api
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    fixed_prices = fields.Boolean(defatul=False)
+    fixed_prices = fields.Boolean(default=False, help='Considera precios fijos establecidos a este cliente , si no lo sencontrase la tarifa de precios aplicando descuentos por categoría si los hubiese')
 
     @api.multi
     def show_partner_prices(self, context=None):

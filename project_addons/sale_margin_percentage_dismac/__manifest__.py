@@ -10,5 +10,6 @@
     'author': 'Comunitea',
     'depends': ['sale',
                 'stock_account_custom'],
-    'data': ["views/sale_view.xml"],
+    'data': ["views/sale_view.xml",
+             "data/ir_cron.xml"],
 }
