@@ -25,6 +25,7 @@
         'stock_picking_report_valued',
         'partner_company_group',
         "sale_order_line_form_button",
+        "sale_order_line_add_stock_fields"
     ],
     "data": [
         "security/ir.model.access.csv",

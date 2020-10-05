@@ -4,19 +4,6 @@ from odoo import models, fields, api
 from odoo.addons import decimal_precision as dp
 
 
-class SaleOrder(models.Model):
-
-    _inherit = "sale.order"
-
-
-    @api.multi
-    def _get_default_location_src_id(self):
-        return self.warehouse_id.lot_stock_id
-
-    default_location_src_id = fields.Many2one('stock.location', 'Ubicación de salida', default=_get_default_location_src_id,
-                                              readonly=True,
-                                              states={'draft': [('readonly', False)], 'sent': [('readonly', False)]})
-
 class SaleOrderLine(models.Model):
 
     _inherit = "sale.order.line"

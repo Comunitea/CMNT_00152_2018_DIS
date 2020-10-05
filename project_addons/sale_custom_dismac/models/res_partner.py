@@ -1,12 +1,20 @@
 # © 2018 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import models, fields
+from odoo import models, fields, api
 PROCUREMENT_PRIORITIES = [('0', 'Not urgent'), ('1', 'Normal'), ('2', 'Urgent'), ('3', 'Very Urgent')]
 
 class ResPartner(models.Model):
 
     _inherit = "res.partner"
+
+
+
+    @api.model
+    def _get_default_location_id(self):
+        company = self.env.user.company_id.id
+        warehouse_id = self.env['stock.warehouse'].search([('company_id', '=', company)], limit=1)
+        return warehouse_id.lot_stock_id
 
     whole_orders = fields.Boolean("Shipping Whole orders")
     no_valued_picking = fields.Boolean("No valued picking")
@@ -14,7 +22,7 @@ class ResPartner(models.Model):
     zone_id = fields.Many2one("partner.zone", "Zone")
     route_id = fields.Many2one("delivery.route", "Delivery Route")
     priority = fields.Selection(PROCUREMENT_PRIORITIES, 'Priority', default='1')
-
+    default_location_id = fields.Many2one('stock.location', 'Ubicación de abastecimiento', default =_get_default_location_id)
 
     def address_get(self, adr_pref=None):
         # Se cambia para ajustar a solicitud del cliente

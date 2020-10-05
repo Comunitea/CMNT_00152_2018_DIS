@@ -6,8 +6,7 @@ from .res_partner import PROCUREMENT_PRIORITIES
 from odoo.tools import float_is_zero
 from odoo.tools import float_compare, pycompat
 from datetime import datetime
-
-
+from odoo.addons import decimal_precision as dp
 
 class SaleOrder(models.Model):
 
@@ -46,6 +45,8 @@ class SaleOrder(models.Model):
         related= 'commercial_partner_id.user_id', 
         store=True,
         string='Commercial partner Salesperson')
+
+    default_location_id = fields.Many2one('stock.location', 'Ubicación de abastecimiento')
 
     @api.multi
     @api.depends("order_line")
@@ -112,6 +113,12 @@ class SaleOrder(models.Model):
             self.user_id = user
         else:
             self.user_id = self.env.uid
+
+    @api.onchange('partner_shipping_id')
+    def _onchange_partner_shipping_id(self):
+        res = super()._onchange_partner_shipping_id()
+        self.default_location_id = self.partner_id.default_location_id
+        return res
 
     @api.onchange("partner_id")
     def onchange_partner_id(self):
@@ -450,6 +457,15 @@ class SaleOrder(models.Model):
                 "move_lines"
             ).write({"priority": order.priority})
 
+    @api.onchange('default_location_id')
+    def _onchange_default_location_id(self):
+        print ("On change defaul_location_id")
+        location = self.default_location_id
+        ctx = self._context.copy()
+        ctx.update(location = location.id)
+        for line in self.order_line:
+            line.virtual_stock_conservative = line.product_id.with_context(ctx).virtual_stock_conservative
+
 
 class SaleOrderLine(models.Model):
 
@@ -505,6 +521,10 @@ class SaleOrderLine(models.Model):
                 store=True,
                 string='Salesperson User')
 
+    # Tengo que cambiar de related a esto para poder calcularlo, si no tengo que hacer un onchanege del product_id de la línea y resetea la línea
+    virtual_stock_conservative = fields.Float(string="Disponible", compute="compute_line_virtual_stock_conservative",
+                                              digits=dp.get_precision("Product Unit of Measure"))
+    default_location_id = fields.Many2one(related= 'order_id.default_location_id')
     @api.multi
     def write(self, values):
 
@@ -531,6 +551,15 @@ class SaleOrderLine(models.Model):
             self = self - rev_lines
         return super()._action_launch_stock_rule()
 
+
+    @api.multi
+    def compute_line_virtual_stock_conservative(self):
+
+        for line in self:
+            ctx = self._context.copy()
+            ctx.update(location = line.default_location_id.id)
+            line.virtual_stock_conservative = line.product_id.with_context(ctx).virtual_stock_conservative
+
     ####### PARTE TEMPORAL PARA ASUMIR LA PARTE NO ENTREGADA EN LOS PEDIDOS DE
     # VENTA IMPORTADOS
 
@@ -539,6 +568,7 @@ class SaleOrderLine(models.Model):
         if self.import_qty_delivered and self.picking_imported:
             qty += self.import_qty_delivered
         return qty
+
 
     @api.multi
     @api.depends(
