@@ -48,6 +48,19 @@
                         icon="fa-arrow-right"
                         type="action" attrs="{'invisible': [('review_order', '!=', True)]}"/>
             </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='product_id']" position="attributes">
+                <attribute name="context">{
+                                    'partner_id': parent.partner_id,
+                                    'quantity': product_uom_qty,
+                                    'pricelist': parent.pricelist_id,
+                                    'uom':product_uom,
+                                    'company_id': parent.company_id,
+                                    'default_lst_price': price_unit,
+                                    'default_description_sale': name,
+                                    'location': parent.default_location_id}
+
+                </attribute>
+             </xpath>
 
             <xpath expr="//field[@name='order_line']/form//field[@name='name']" position="after">
                 <label for="notes" string="Advanced Description"/>
@@ -80,6 +93,9 @@
                 <field name="project_reference"/>
                 <field name="pending_review"/>
             </field>
+            <field name="warehouse_id" position="after">
+                <field name="default_location_id"/>
+            </field>
         </field>
     </record>
 
@@ -100,7 +116,6 @@
         <field name="inherit_id" ref="sale_order_line_invoice_policy.view_order_form_ip"/>
         <field name="arch" type="xml">
             <field name="invoice_policy" position="replace"></field>
-
         </field>
     </record>
     <!-- model.name inherit form view -->

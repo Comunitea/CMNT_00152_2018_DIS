@@ -29,6 +29,6 @@ class SaleOrder(models.Model):
         tree_view = self.env.ref('sale_pending_qties.view_move_tree_pending_moves')
         action['view_move'] = 'tree'
         action['views'] = [(tree_view.id, 'tree')]
-        action['context'] = {'search_default_done': 0, 'search_default_groupby_location_id': 0}
+        action['context'] = {'search_default_done': 1, 'search_default_groupby_location_id': 1}
         action["domain"] = [("id", "in", self.pending_move_lines.ids)]
         return action

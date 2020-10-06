@@ -21,17 +21,16 @@ class ResPartner(models.Model):
             "purchase_custom_dismac", "purchase_custom_search"
         )
         domain = [("partner_id", "=", self.id)]
-        value = {}
-        for call in self:
-            value = {
-                "name": _("Purchase order lines"),
-                "view_type": "form",
-                "view_mode": "tree,form",
-                "res_model": "purchase.order.line",
-                "views": [(tree_view and tree_view[1] or False, "tree")],
-                "type": "ir.actions.act_window",
-                "domain": domain,
-                "search_view_id": search_view and search_view[1] or False,
-                "context": {"search_default_draft": 1},
-            }
+
+        value = {
+            "name": _("Purchase order lines"),
+            "view_type": "form",
+            "view_mode": "tree,form",
+            "res_model": "purchase.order.line",
+            "views": [(tree_view and tree_view[1] or False, "tree")],
+            "type": "ir.actions.act_window",
+            "domain": domain,
+            "search_view_id": search_view and search_view[1] or False,
+            "context": {"search_default_in_1_stock": 1},
+        }
         return value
