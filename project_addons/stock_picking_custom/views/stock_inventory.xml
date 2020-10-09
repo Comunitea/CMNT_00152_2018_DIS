@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_inventory_formspc" model="ir.ui.view">
+        <field name="name">stock.inventory.form.spc</field>
+        <field name="model">stock.inventory</field>
+        <field name="inherit_id" ref="stock.view_inventory_form"/>
+        <field name="arch" type="xml">
+            <field name="location_id" position="before">
+                <field name="validated_by" attrs="{'invisible': [('state', '!=', 'done')], 'readonly': [('state', '=', 'done')]}"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
