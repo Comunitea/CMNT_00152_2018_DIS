@@ -113,6 +113,9 @@ class SaleOrderLine(models.Model):
                 # 75 % del precio venta según correo de Juan el 29/09/20
                 line.line_ref_cost = line.price_subtotal * 0.75                    
                 line.line_cost = line.price_subtotal * 0.75
+                if line.product_uom_qty != 0:
+                    line.purchase_price = line.line_ref_cost / line.product_uom_qty
+                    line.purchase_price_net = line.line_cost / line.product_uom_qty
             else:
                 if line.product_id.last_purchase_price_fixed:
                     ref_cost_price = line.product_id.reference_cost 
@@ -122,6 +125,8 @@ class SaleOrderLine(models.Model):
                     cost_price = line._compute_cost_price(cost_price)
                     line.line_ref_cost = ref_cost_price * line.product_uom_qty
                     line.line_cost = cost_price * line.product_uom_qty
+                    line.purchase_price = ref_cost_price 
+                    line.purchase_price_net = cost_price 
                     
                 
 
@@ -178,5 +183,5 @@ class SaleOrderLine(models.Model):
 
                 line.line_ref_cost = ref_cost_price * line.product_uom_qty
                 line.line_cost = cost_price * line.product_uom_qty    
-            line.purchase_price = ref_cost_price
-            line.purchase_price_net = cost_price
+            line.purchase_price = line.line_ref_cost / line.product_uom_qty
+            line.purchase_price_net = line.line_cost / line.product_uom_qty
