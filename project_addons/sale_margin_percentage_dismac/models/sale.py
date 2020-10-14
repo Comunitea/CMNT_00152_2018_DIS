@@ -182,6 +182,7 @@ class SaleOrderLine(models.Model):
                 cost_price = line._compute_cost_price(cost_price)
 
                 line.line_ref_cost = ref_cost_price * line.product_uom_qty
-                line.line_cost = cost_price * line.product_uom_qty    
-            line.purchase_price = line.line_ref_cost / line.product_uom_qty
-            line.purchase_price_net = line.line_cost / line.product_uom_qty
+                line.line_cost = cost_price * line.product_uom_qty
+            if line.product_uom_qty != 0:
+                line.purchase_price = line.line_ref_cost / line.product_uom_qty
+                line.purchase_price_net = line.line_cost / line.product_uom_qty
