@@ -17,6 +17,7 @@
         "stock_account_custom",
         "product_catalogue_ref",
         "account_payment_sale",
+        "product_virtual_stock_conservative"
     ],
     "data": ["views/product.xml", "views/res_partner.xml"],
     "installable": True,
