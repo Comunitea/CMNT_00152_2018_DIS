@@ -9,7 +9,7 @@
 <!--                    <field name="default_location_src_id" ></field>-->
 <!--                </field>-->
                 <xpath expr="//tree/field[@name='product_uom_qty']" position="after">
-                    <field name="virtual_stock_conservative" context="{'location': self.parent_id.default_location_id}"/>
+                    <field name="virtual_stock_conservative"/>
                 </xpath>
             </field>
         </record>

@@ -116,8 +116,9 @@ class SaleOrder(models.Model):
 
     @api.onchange('partner_shipping_id')
     def _onchange_partner_shipping_id(self):
-        res = super()._onchange_partner_shipping_id()
         self.default_location_id = self.partner_id.default_location_id
+        res = super()._onchange_partner_shipping_id()
+
         return res
 
     @api.onchange("partner_id")
@@ -521,9 +522,6 @@ class SaleOrderLine(models.Model):
                 store=True,
                 string='Salesperson User')
 
-    # Tengo que cambiar de related a esto para poder calcularlo, si no tengo que hacer un onchanege del product_id de la línea y resetea la línea
-    virtual_stock_conservative = fields.Float(string="Disponible", compute="compute_line_virtual_stock_conservative",
-                                              digits=dp.get_precision("Product Unit of Measure"))
     default_location_id = fields.Many2one(related= 'order_id.default_location_id')
     @api.multi
     def write(self, values):
@@ -550,15 +548,6 @@ class SaleOrderLine(models.Model):
         if rev_lines:
             self = self - rev_lines
         return super()._action_launch_stock_rule()
-
-
-    @api.multi
-    def compute_line_virtual_stock_conservative(self):
-
-        for line in self:
-            ctx = self._context.copy()
-            ctx.update(location = line.default_location_id.id)
-            line.virtual_stock_conservative = line.product_id.with_context(ctx).virtual_stock_conservative
 
     ####### PARTE TEMPORAL PARA ASUMIR LA PARTE NO ENTREGADA EN LOS PEDIDOS DE
     # VENTA IMPORTADOS

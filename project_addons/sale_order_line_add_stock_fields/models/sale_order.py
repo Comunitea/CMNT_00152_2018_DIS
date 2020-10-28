@@ -65,10 +65,6 @@ class SaleOrderLine(models.Model):
             line.outgoing_qty = qties[product_id.id]["outgoing_qty"]
             line.virtual_available = qties[product_id.id]["virtual_available"]
 
-
-
-
-
     qty_enough = fields.Boolean('Qty enough', compute="get_line_qties")
 
     stock_str = fields.Char('Disponible/Total',
@@ -105,6 +101,11 @@ class SaleOrderLine(models.Model):
         digits=dp.get_precision("Product Unit of Measure"),
         help="Available quantity of product at order line create time.\n",
     )
+
+    @api.multi
+    def compute_line_virtual_stock_conservative(self):
+        for line in self:
+            line.virtual_stock_conservative = line.product_id.virtual_stock_conservative
 
 
 class SaleOrder(models.Model):
