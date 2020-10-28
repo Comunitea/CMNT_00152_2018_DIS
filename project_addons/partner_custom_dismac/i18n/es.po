@@ -139,7 +139,7 @@ msgstr ""
 #. module: partner_custom_dismac
 #: model_terms:ir.ui.view,arch_db:partner_custom_dismac.due_report_filter
 msgid "Overdue"
-msgstr "Vencimiento"
+msgstr "Vencidas"
 
 #. module: partner_custom_dismac
 #: model_terms:ir.ui.view,arch_db:partner_custom_dismac.due_report_filter

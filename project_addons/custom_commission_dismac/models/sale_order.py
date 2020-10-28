@@ -19,6 +19,7 @@ class SaleOrderLine(models.Model):
         res.update(
             {
                 "sale_purchase_price": self.purchase_price,
+                "sale_purchase_price_net": self.purchase_price_net,
                 "agents": [
                     (
                         0,
