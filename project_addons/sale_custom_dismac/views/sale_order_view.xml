@@ -36,7 +36,7 @@
                 <attribute name="attrs">{'column_invisible': True}</attribute>
             </xpath>
              <xpath expr="//field[@name='order_line']" position="attributes">
-                <attribute name="context">{'location': parent.default_location_id}</attribute>
+                <attribute name="context">{'location': default_location_id}</attribute>
             </xpath>
             <xpath expr="//field[@name='order_line']/tree//field[@name='product_uom_qty']" position="after">
                 <field name="package_qty"/>
