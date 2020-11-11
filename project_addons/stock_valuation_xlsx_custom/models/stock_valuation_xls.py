@@ -118,16 +118,15 @@ class StockValuationXlsx(models.TransientModel):
 
     def compute_product_data(
             self, company_id, in_stock_product_ids, standard_price_past_date=False):
-
         ##Lo heredo todo porque el campo de coste a utilizar es otro  standard_price = p['real_stock_cost']
         self.ensure_one()
-
         logger.debug('Start compute_product_data')
         ppo = self.env['product.product']
         ppho = self.env['product.price.history']
         fields_list = self._prepare_product_fields()
         if not standard_price_past_date:
             fields_list.append('real_stock_cost')
+            fields_list.append('standard_price')
         products = ppo.search_read([('id', 'in', in_stock_product_ids)], fields_list)
         product_id2data = {}
         for p in products:
@@ -142,7 +141,7 @@ class StockValuationXlsx(models.TransientModel):
                     ['cost'], order='datetime desc, id desc', limit=1)
                 standard_price = history and history[0]['cost'] or 0.0
             else:
-                standard_price = p['real_stock_cost']
+                standard_price = p['real_stock_cost'] or p['standard_price']
             product_id2data[p['id']] = {'standard_price': standard_price}
             for pfield in fields_list:
                 if pfield.endswith('_id'):
@@ -150,7 +149,6 @@ class StockValuationXlsx(models.TransientModel):
                 else:
                     product_id2data[p['id']][pfield] = p[pfield]
         logger.debug('End compute_product_data')
-
         return product_id2data
 
     def _prepare_product_fields(self):
