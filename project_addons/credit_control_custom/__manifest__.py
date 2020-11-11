@@ -10,6 +10,8 @@
     'depends': [
         'account_credit_control',
     ],
-    'data': [],
+    'data': [
+        'views/report_credit_control_summary.xml',
+    ],
     'installable': True,
 }

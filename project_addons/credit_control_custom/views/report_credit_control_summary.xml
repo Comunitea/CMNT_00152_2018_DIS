@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_credit_control_summary_document_custom" inherit_id="account_credit_control.report_credit_control_summary_document">
+
+        <xpath expr="//div[hasclass('page')]" position="attributes">
+            <attribute name="style">font-size: 20px;</attribute>
+        </xpath>
+        
+        <xpath expr="//address" position="before">
+            <p style="min-height: 10px;"/>
+        </xpath>
+        
+        <xpath expr="//address" position="attributes">
+            <attribute name="style">font-size: 20px;</attribute>
+        </xpath>
+
+        <xpath expr="//div[@id='informations']" position="replace">
+            <div id="informations" class="row mt32 mb32">
+                <div class="col-6 offset-6 mw-100 mb-2" name="date">
+                    <p class="m-0"><strong>Date</strong> <span t-field="doc.report_date"/></p>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
