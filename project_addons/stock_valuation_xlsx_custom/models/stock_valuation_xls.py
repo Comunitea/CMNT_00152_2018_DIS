@@ -141,7 +141,9 @@ class StockValuationXlsx(models.TransientModel):
                     ['cost'], order='datetime desc, id desc', limit=1)
                 standard_price = history and history[0]['cost'] or 0.0
             else:
-                standard_price = p['real_stock_cost'] or p['standard_price']
+                standard_price = p['real_stock_cost'] or 0.0
+            if not standard_price:
+                standard_price = p['standard_price']
             product_id2data[p['id']] = {'standard_price': standard_price}
             for pfield in fields_list:
                 if pfield.endswith('_id'):
