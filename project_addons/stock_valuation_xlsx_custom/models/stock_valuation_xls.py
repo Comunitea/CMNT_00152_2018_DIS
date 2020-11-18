@@ -126,7 +126,6 @@ class StockValuationXlsx(models.TransientModel):
         fields_list = self._prepare_product_fields()
         if not standard_price_past_date:
             fields_list.append('real_stock_cost')
-            fields_list.append('standard_price')
         products = ppo.search_read([('id', 'in', in_stock_product_ids)], fields_list)
         product_id2data = {}
         for p in products:
@@ -154,7 +153,7 @@ class StockValuationXlsx(models.TransientModel):
         return product_id2data
 
     def _prepare_product_fields(self):
-        return ['uom_id', 'name', 'default_code', 'categ_id', 'parent_categ_id']
+        return ['uom_id', 'name', 'default_code', 'categ_id', 'parent_categ_id', 'standard_price']
 
     def generate(self):
         self.ensure_one()
