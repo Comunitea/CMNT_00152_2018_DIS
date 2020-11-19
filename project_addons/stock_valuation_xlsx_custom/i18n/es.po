@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:40+0000\n"
-"PO-Revision-Date: 2020-10-05 16:40+0000\n"
+"POT-Creation-Date: 2020-11-19 18:11+0000\n"
+"PO-Revision-Date: 2020-11-19 18:11+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,14 +16,87 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: stock_valuation_xlsx_custom
+#: model:ir.model.fields,field_description:stock_valuation_xlsx_custom.field_stock_valuation_xlsx__cost_field
+msgid "Campo de coste a aplicar, a fecha actual o en caso de que el artículo no tenga un precio en la fecha seleccionada"
+msgstr ""
+
+#. module: stock_valuation_xlsx_custom
+#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:131
+#, python-format
+msgid "Categoría"
+msgstr ""
+
+#. module: stock_valuation_xlsx_custom
+#: model_terms:ir.ui.view,arch_db:stock_valuation_xlsx_custom.stock_valuation_xlsx_form_custom
+msgid "Clear"
+msgstr "Limpiar"
+
+#. module: stock_valuation_xlsx_custom
+#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:125
+#: selection:stock.valuation.xlsx,cost_field:0
+#, python-format
+msgid "Coste"
+msgstr ""
+
+#. module: stock_valuation_xlsx_custom
+#: selection:stock.valuation.xlsx,cost_field:0
+msgid "Coste de stock real"
+msgstr ""
+
+#. module: stock_valuation_xlsx_custom
+#: selection:stock.valuation.xlsx,cost_field:0
+msgid "Coste de tarifa"
+msgstr ""
+
+#. module: stock_valuation_xlsx_custom
+#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:120
+#, python-format
+msgid "Expiry Date"
+msgstr "Caducidad"
+
+#. module: stock_valuation_xlsx_custom
+#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:130
+#: model:ir.model.fields,field_description:stock_valuation_xlsx_custom.field_product_product__parent_categ_id
+#, python-format
+msgid "Familia"
+msgstr ""
+
+#. module: stock_valuation_xlsx_custom
+#: model:ir.model.fields,help:stock_valuation_xlsx_custom.field_stock_valuation_xlsx__ref_codes_filter
+msgid "Filtra por determinados códigos"
+msgstr ""
+
+#. module: stock_valuation_xlsx_custom
+#: model:ir.model.fields,field_description:stock_valuation_xlsx_custom.field_stock_valuation_xlsx__product_ids
+msgid "Filtro de artículos"
+msgstr ""
+
+#. module: stock_valuation_xlsx_custom
+#: model:ir.model.fields,field_description:stock_valuation_xlsx_custom.field_stock_valuation_xlsx__ref_codes_filter
+msgid "Filtro de códigos"
+msgstr ""
+
+#. module: stock_valuation_xlsx_custom
 #: model:ir.model,name:stock_valuation_xlsx_custom.model_stock_valuation_xlsx
 msgid "Generate XLSX report for stock valuation"
 msgstr "Generar informe XLSX para valoración de inventario"
 
 #. module: stock_valuation_xlsx_custom
-#: model:ir.model.fields,field_description:stock_valuation_xlsx_custom.field_product_product__parent_categ_id
-msgid "Parent Categ"
-msgstr "Familia"
+#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:118
+#, python-format
+msgid "Location Name"
+msgstr "Ubiación"
+
+#. module: stock_valuation_xlsx_custom
+#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:119
+#, python-format
+msgid "Lot"
+msgstr "Lote/serie"
+
+#. module: stock_valuation_xlsx_custom
+#: model:ir.model.fields,help:stock_valuation_xlsx_custom.field_stock_valuation_xlsx__product_ids
+msgid "Permite filtrar determinados artículos"
+msgstr ""
 
 #. module: stock_valuation_xlsx_custom
 #: model:ir.model,name:stock_valuation_xlsx_custom.model_product_product
@@ -31,9 +104,27 @@ msgid "Product"
 msgstr "Producto"
 
 #. module: stock_valuation_xlsx_custom
+#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:116
+#, python-format
+msgid "Product Code"
+msgstr "Ref. Interna"
+
+#. module: stock_valuation_xlsx_custom
+#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:117
+#, python-format
+msgid "Product Name"
+msgstr "Artículo"
+
+#. module: stock_valuation_xlsx_custom
 #: model:ir.model,name:stock_valuation_xlsx_custom.model_product_template
 msgid "Product Template"
 msgstr "Plantilla de producto"
+
+#. module: stock_valuation_xlsx_custom
+#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:122
+#, python-format
+msgid "Qty"
+msgstr "Cant."
 
 #. module: stock_valuation_xlsx_custom
 #: model:ir.ui.menu,name:stock_valuation_xlsx_custom.stock_valuation_xlsx_action
@@ -41,23 +132,39 @@ msgid "Stock Valuation XLSX"
 msgstr "Informe de valoración XLSX"
 
 #. module: stock_valuation_xlsx_custom
-#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:100
-#, python-format
-msgid "Categoría"
-msgstr ""
-
-#. module: stock_valuation_xlsx_custom
-#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:247
+#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:294
 #, python-format
 msgid "TOTAL:"
 msgstr ""
 
 #. module: stock_valuation_xlsx_custom
-#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:156
+#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:203
 #, python-format
 msgid "There are no products to analyse."
-msgstr "Sin artículos"
+msgstr "Sin artículos para mostrar"
 
+#. module: stock_valuation_xlsx_custom
+#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:123
+#, python-format
+msgid "UoM"
+msgstr ""
+
+#. module: stock_valuation_xlsx_custom
+#: model:ir.ui.view,name:stock_valuation_xlsx_custom.stock_valuation_xlsx_form_custom
+msgid "stock.valuation.xlsx.form.custom"
+msgstr ""
+
+#. module: stock_valuation_xlsx_custom
+#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:126
+#, python-format
+msgid "€ Artículo"
+msgstr ""
+
+#. module: stock_valuation_xlsx_custom
+#: code:addons/stock_valuation_xlsx_custom/models/stock_valuation_xls.py:128
+#, python-format
+msgid "€ Familia"
+msgstr ""
 
 #. module: stock_valuation_xlsx
 #: model_terms:ir.ui.view,arch_db:stock_valuation_xlsx.stock_valuation_xlsx_form
@@ -84,7 +191,7 @@ msgstr "Coste-Precio"
 #. module: stock_valuation_xlsx
 #: model:ir.model.fields,field_description:stock_valuation_xlsx.field_stock_valuation_xlsx__standard_price_date
 msgid "Cost Price Date"
-msgstr "PFecha de coste"
+msgstr "Fecha de coste"
 
 #. module: stock_valuation_xlsx
 #: model:ir.model.fields,field_description:stock_valuation_xlsx.field_stock_valuation_xlsx__create_uid
@@ -99,12 +206,12 @@ msgstr "Creado el"
 #. module: stock_valuation_xlsx
 #: selection:stock.valuation.xlsx,standard_price_date:0
 msgid "Current"
-msgstr ""
+msgstr "Ahora"
 
 #. module: stock_valuation_xlsx
 #: model:ir.model.fields,field_description:stock_valuation_xlsx.field_stock_valuation_xlsx__split_by_lot
 msgid "Display Lots"
-msgstr ""
+msgstr "Mostrar lotes/series"
 
 #. module: stock_valuation_xlsx
 #: model:ir.model.fields,field_description:stock_valuation_xlsx.field_stock_valuation_xlsx__display_name
@@ -197,7 +304,7 @@ msgstr "Fecha (o fecha de inventario)"
 #. module: stock_valuation_xlsx
 #: selection:stock.valuation.xlsx,source:0
 msgid "Physical Inventory"
-msgstr "Stock"
+msgstr "Ajuste de Inventario"
 
 #. module: stock_valuation_xlsx
 #: selection:stock.valuation.xlsx,stock_date_type:0
@@ -207,7 +314,7 @@ msgstr "Actual"
 #. module: stock_valuation_xlsx
 #: model:ir.model.fields,field_description:stock_valuation_xlsx.field_stock_valuation_xlsx__stock_date_type
 msgid "Present or Past"
-msgstr "Actual o pasado"
+msgstr "Datos de stock: Actual o pasado"
 
 #. module: stock_valuation_xlsx
 #: model:ir.model.fields,field_description:stock_valuation_xlsx.field_stock_valuation_xlsx__categ_ids
@@ -236,7 +343,7 @@ msgstr "Artículo"
 #: code:addons/stock_valuation_xlsx/wizard/stock_valuation_xlsx.py:527
 #, python-format
 msgid "Qty"
-msgstr "Cantidad"
+msgstr "Cant"
 
 #. module: stock_valuation_xlsx
 #: model_terms:ir.ui.view,arch_db:stock_valuation_xlsx.stock_valuation_xlsx_form
@@ -370,4 +477,3 @@ msgstr ""
 #: model:ir.ui.view,name:stock_valuation_xlsx.view_inventory_form
 msgid "xlsx.stock.inventory.form"
 msgstr ""
-
