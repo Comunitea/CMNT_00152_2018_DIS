@@ -28,6 +28,22 @@ class ProductProduct(models.Model):
 class StockValuationXlsx(models.TransientModel):
     _inherit = 'stock.valuation.xlsx'
 
+    ref_codes_filter = fields.Char("Filtro de códigos", help="Filtra por determinados códigos")
+    product_ids = fields.Many2many('product.product', string="Filtro de artículos", help="Permite filtrar determinados artículos")
+    cost_field = fields.Selection([('standard_price', 'Coste'),
+                                   ('real_stock_cost', 'Coste de stock real'),
+                                   ('price_list_cost', 'Coste de tarifa')
+                                   ], string="Campo de coste a aplicar", HELP="a fecha actual o en caso de que el artículo no tenga un precio en la fecha seleccionada", default='real_stock_cost')
+
+    def _prepare_product_domain(self):
+        domain = super()._prepare_product_domain()
+        if self.product_ids:
+            domain += [('id', 'in', self.product_ids.ids)]
+        if self.ref_codes_filter:
+            domain += [('default_code', 'ilike', '%{}%'.format(self.ref_codes_filter))]
+        return domain
+
+
     def stringify_and_sort_result(
             self, product_ids, product_id2data, data,
             prec_qty, prec_price, prec_cur_rounding, categ_id2name,
@@ -124,12 +140,12 @@ class StockValuationXlsx(models.TransientModel):
         ppo = self.env['product.product']
         ppho = self.env['product.price.history']
         fields_list = self._prepare_product_fields()
-        if not standard_price_past_date:
-            fields_list.append('real_stock_cost')
+        if self.cost_field != 'standard_price':
+            fields_list.append(self.cost_field)
         products = ppo.search_read([('id', 'in', in_stock_product_ids)], fields_list)
         product_id2data = {}
         for p in products:
-            logger.debug('p=%d', p['id'])
+            logger.info('p=%d', p['id'])
             # I don't call the native method get_history_price()
             # because it requires a browse record and it is too slow
             if standard_price_past_date:
@@ -140,22 +156,39 @@ class StockValuationXlsx(models.TransientModel):
                     ['cost'], order='datetime desc, id desc', limit=1)
                 standard_price = history and history[0]['cost'] or 0.0
             else:
-                standard_price = p['real_stock_cost'] or 0.0
+                standard_price = p[self.cost_field] or 0.0
             if not standard_price:
                 standard_price = p['standard_price']
-            product_id2data[p['id']] = {'standard_price': standard_price}
+            product_id2data[p['id']] = {}
             for pfield in fields_list:
+                if pfield == 'standard_price':
+                    continue
                 if pfield.endswith('_id'):
                     product_id2data[p['id']][pfield] = p[pfield][0]
                 else:
                     product_id2data[p['id']][pfield] = p[pfield]
+                product_id2data[p['id']]['standard_price'] = standard_price
         logger.debug('End compute_product_data')
         return product_id2data
 
     def _prepare_product_fields(self):
-        return ['uom_id', 'name', 'default_code', 'categ_id', 'parent_categ_id', 'standard_price']
+        fields = super()._prepare_product_fields()
+        fields += ['standard_price', 'parent_categ_id']
+        return fields
+
+    def clear(self):
+        self.write({
+            'state': 'setup',
+            'export_filename': '',
+            'export_file': False,
+        })
+        action = self.env['ir.actions.act_window'].for_xml_id(
+            'stock_valuation_xlsx', 'stock_valuation_xlsx_action')
+        action['res_id'] = self.id
+        return action
 
     def generate(self):
+
         self.ensure_one()
         logger.debug('Start generate XLSX stock valuation report')
         splo = self.env['stock.production.lot'].with_context(active_test=False)
@@ -165,7 +198,6 @@ class StockValuationXlsx(models.TransientModel):
         company_id = company.id
         prec_cur_rounding = company.currency_id.rounding
         self._check_config(company_id)
-
         product_ids = self.get_product_ids()
         if not product_ids:
             raise UserError(_("There are no products to analyse."))
