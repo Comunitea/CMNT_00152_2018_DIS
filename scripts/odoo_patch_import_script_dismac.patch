@@ -1,0 +1,60 @@
+diff --git a/addons/account/models/account_move.py b/addons/account/models/account_move.py
+index 1d808e3e..1b8f3d0c 100644
+--- a/addons/account/models/account_move.py
++++ b/addons/account/models/account_move.py
+@@ -302,7 +302,7 @@ class AccountMove(models.Model):
+     @api.model
+     def create(self, vals):
+         move = super(AccountMove, self.with_context(check_move_validity=False, partner_id=vals.get('partner_id'))).create(vals)
+-        move.assert_balanced()
++        #move.assert_balanced()
+ 
+         if 'line_ids' in vals:
+             move.update_lines_tax_exigibility()
+@@ -313,7 +313,7 @@ class AccountMove(models.Model):
+     def write(self, vals):
+         if 'line_ids' in vals:
+             res = super(AccountMove, self.with_context(check_move_validity=False)).write(vals)
+-            self.assert_balanced()
++            #self.assert_balanced()
+             self.update_lines_tax_exigibility()
+         else:
+             res = super(AccountMove, self).write(vals)
+@@ -406,7 +406,7 @@ class AccountMove(models.Model):
+             if move.line_ids:
+                 if not all([x.company_id.id == move.company_id.id for x in move.line_ids]):
+                     raise UserError(_("Cannot create moves for different companies."))
+-        self.assert_balanced()
++        #self.assert_balanced()
+         return self._check_lock_date()
+ 
+     @api.multi
+@@ -982,7 +982,7 @@ class AccountMoveLine(models.Model):
+                 # if the pair belongs to move being reverted, do not create CABA entry
+                 if cash_basis and not (new_rec.debit_move_id + new_rec.credit_move_id).mapped('move_id').mapped('reverse_entry_id'):
+                     new_rec.create_tax_cash_basis_entry(cash_basis_percentage_before_rec)
+-        self.recompute()
++        #self.recompute()
+ 
+         return debit_moves+credit_moves
+ 
+@@ -1306,8 +1306,8 @@ class AccountMoveLine(models.Model):
+             err_msg = _('Move name (id): %s (%s)') % (line.move_id.name, str(line.move_id.id))
+             if line.move_id.state != 'draft':
+                 raise UserError(_('You cannot do this modification on a posted journal entry, you can just change some non legal fields. You must revert the journal entry to cancel it.\n%s.') % err_msg)
+-            if line.reconciled and not (line.debit == 0 and line.credit == 0):
+-                raise UserError(_('You cannot do this modification on a reconciled entry. You can just change some non legal fields or you must unreconcile first.\n%s.') % err_msg)
++            #if line.reconciled and not (line.debit == 0 and line.credit == 0):
++            #    raise UserError(_('You cannot do this modification on a reconciled entry. You can just change some non legal fields or you must unreconcile first.\n%s.') % err_msg)
+             if line.move_id.id not in move_ids:
+                 move_ids.add(line.move_id.id)
+         self.env['account.move'].browse(list(move_ids))._check_lock_date()
+@@ -1792,7 +1792,7 @@ class AccountPartialReconcile(models.Model):
+                 if not newly_created_move:
+                     newly_created_move = self._create_tax_basis_move()
+                 self._create_tax_cash_basis_base_line(cash_basis_amount_dict, cash_basis_amount_currency_dict, newly_created_move)
+-        self.recompute()
++        #self.recompute()
+         if newly_created_move:
+             self._set_tax_cash_basis_entry_date(move_date, newly_created_move)
+             # post move

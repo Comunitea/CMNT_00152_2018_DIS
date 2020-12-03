@@ -22,3 +22,5 @@ devel_*
 devel-*
 .mr.developer.cfg
 .vscode/
+scripts/*xls*
+scripts/*csv
