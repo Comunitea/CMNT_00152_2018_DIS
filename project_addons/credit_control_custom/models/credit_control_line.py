@@ -1,6 +1,7 @@
 # © 2020 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import models, api
+from odoo import models, api, fields
+from datetime import timedelta
 
 class CreditControlLine(models.Model):
     _inherit = "credit.control.line"
@@ -8,7 +9,7 @@ class CreditControlLine(models.Model):
     @api.model
     def create_or_update_from_mv_lines(self, lines, level, controlling_date,
                                        check_tolerance=True, default_lines_vals=None):
-        new_lines = super(CreditControlLine, self).create_or_update_from_mv_lines(lines, level, controlling_date, check_tolerance=True, default_lines_vals=default_lines_vals)
+        new_lines = super(CreditControlLine, self).create_or_update_from_mv_lines(lines, level, controlling_date, check_tolerance=check_tolerance, default_lines_vals=default_lines_vals)
         
         if level.level == 1:
             currency_obj = self.env['res.currency']
@@ -43,3 +44,15 @@ class CreditControlLine(models.Model):
                     line = self.create(vals)
                     new_lines |= line
         return new_lines
+
+    def _recompute_state(self):
+        for line in self.env['credit.control.line'].search([
+                ('mail_message_id', '!=', False),
+                ('write_date', '>=', fields.Datetime.to_string(fields.datetime.now() - timedelta(days=1)))
+            ]):
+            if line.mail_message_id.state == 'outgoing':
+                line.update({'state': 'to_be_sent'})
+            elif line.mail_message_id.state in ('sent', 'received'):
+                line.update({'state': 'sent'})
+            elif line.mail_message_id.state in ('exception', 'cancel'):
+                line.update({'state': 'error'})
