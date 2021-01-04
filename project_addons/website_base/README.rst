@@ -1,6 +1,6 @@
-===================
-Base Module Website
-===================
+========================
+MultiWebsite Base Module
+========================
 
 .. |badge1| image:: https://img.shields.io/badge/maturity-Production-green.png
     :target: https://odoo-community.org/page/development-status
@@ -26,33 +26,31 @@ Base Module Website
 .. contents::
    :local:
 
-Customization for All Websites
--------------------------------
+Usage
+-----
+Nothing to do it. This is a technical module. Just install.
 
+How it works
+------------
 This module contains all common base configuration for all companies and their websites, including their Themes.
+
+    **Warning!**
+
+    All custom website modules have to depend of this one to get all common features
 
 Credits
 -------
 
 Author
 ~~~~~~
-
-.. image:: https://comunitea.com/wp-content/uploads/2016/01/logocomunitea3.png
-   :alt: Comunitea
-   :target: https://comunitea.com
-
 Comunitea Servicios Tecnológicos S.L.
-
-For support and more information, please visit `<https://comunitea.com>`_.
 
 Contributors
 ~~~~~~~~~~~~
-
 Rubén Seijas, ruben@comunitea.com
 
 Maintainer
 ~~~~~~~~~~
-
 This module is maintained by Comunitea.
 
 For support and more information, please visit https://comunitea.com.
@@ -73,11 +71,11 @@ Please, do not contact contributors directly about support or help with technica
 Disclaimer of Warranties
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-    **Attention!**
+    **Warning!**
 
     We provide this module as is, and we make no promises or guarantees about this correct working.
 
-Comunitea provides this application without warranty of any kind.
+    Comunitea provides this application without warranty of any kind.
 
-Comunitea does not warrant that the module will meet your requirements;
-that the current application will be uninterrupted, timely, secure, or error-free or that any defects or errors will be corrected.
+    Comunitea does not warrant that the module will meet your requirements;
+    that the current application will be uninterrupted, timely, secure, or error-free or that any defects or errors will be corrected.
