@@ -38,6 +38,9 @@
             <attribute name="style">font-size: 11px;</attribute>
             <attribute name="t-if">not neutro</attribute>
         </xpath>
+        <xpath expr="//div[hasclass('header')]//div[@name='company_address']" position="attributes">
+            <attribute name="style">font-size: 11px;</attribute>
+        </xpath>
         <xpath expr="//div[hasclass('o_report_layout_standard')]" position="attributes">
             <attribute name="style">font-size: 11px;</attribute>
         </xpath>

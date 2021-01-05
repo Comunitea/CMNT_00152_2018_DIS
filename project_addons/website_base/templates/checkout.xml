@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
-
     <template id="website_base_checkout" name="Checkout addresses" inherit_id="website_sale.checkout">
         <xpath expr="//t[@t-call='website_sale.address_kanban']//t[@t-value='order.partner_id']/../../.." position="replace">
             <div class="row">
@@ -46,7 +45,7 @@
             </form>
         </xpath-->
 
-        <xpath expr="//div[@class='row all_shipping']" position="replace">
+        <xpath expr="//div[hasclass('row', 'all_shipping')]" position="replace">
            <div t-if="not (order.partner_id.commercial_partner_id.external_review or order.partner_id.external_review)" class="row all_shipping">
                 <div class="col-lg-12">
                     <div class="row mt8">
