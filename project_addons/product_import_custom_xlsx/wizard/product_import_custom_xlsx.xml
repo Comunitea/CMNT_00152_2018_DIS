@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_import_wzd_form" model="ir.ui.view">
+        <field name="name">view.product.import.wzd.form</field>
+        <field name="model">product.import.custom.xlsx</field>
+        <field name="arch" type="xml">
+            <form string="Import Products">
+                <div name="help">
+                    <h2>Select file to import</h2>
+                </div>
+                <group>
+                    <field name="name"/>
+                    <field name="file" filename="filename"/>
+                </group>
+                <group>
+                    <group string="Comprobaciones"> 
+                        <field name="only_products"/>
+                        <field name="check_ean"/>
+                        <field name="check_qties"/>
+                        <field name="validate_inventory"/>
+                    </group>
+                    <group string ="Valores por defecto">
+                        <field name="location_id"/>
+                        <field name="supplier_id"/>
+                        <field name="cost_ratio_id"/>
+                        <field name="tag_id"/>
+                    </group>
+                
+                </group>
+                
+                <footer>
+                    <button name="import_products" type="object" class="btn-primary" string="Import Products"/>
+                    <!-- SOLO PARA DESARROLLO
+                    <button name="delete_products" confirm="Vas a borrar muchos datos. Estás seguro?" type="object" class="btn-primary" string="Delete Products"/-->
+                    <button special="cancel" string="Cancel" class="oe_link"/>
+                </footer> 
+            </form>
+        </field>
+    </record>
+
+   
+    <record id="action_import_products" model="ir.actions.act_window">
+        <field name="name">Importar Palets (Custom)</field>
+        <field name="res_model">product.import.custom.xlsx</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_import_product" name="Importar Palets (Custom)" action="action_import_products" parent="sale.product_menu_catalog" sequence="99"/>
+    
+    
+</odoo>
