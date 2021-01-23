@@ -2,7 +2,7 @@
 {
     'name': 'MultiWebsite Base Module',
     'version': '12.0.0.2.0',
-    'summary': 'Backend customization for all companies and their websites.',
+    'summary': 'Common customization for all companies and all their websites.',
     'description': '',
     'category': 'Website',
     'author': 'Comunitea',
@@ -40,6 +40,7 @@
         'sale_order_lock',
         'product_supplierinfo_for_customer',
         'website_sale_checkout_skip_payment',
+        'website_sale_wishlist',
         'base_tier_validation'
     ],
     'data': [
