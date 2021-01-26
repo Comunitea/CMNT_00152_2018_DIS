@@ -107,7 +107,7 @@ class ProductImportCustomXlsx(models.TransientModel):
         if self.check_ean and barcode and len(barcode) != 13:
             error_msg = 'Error en EAN en %s : %s' %(default_code, barcode)
             raise ValidationError (error_msg)
-
+        
         res = {
             'default_code': default_code,
             'categ_id': categ_dict[str(row[2])],
@@ -118,7 +118,7 @@ class ProductImportCustomXlsx(models.TransientModel):
             #'reaprovisionamiento_minimo': str(row[7]),
             'cost_ratio_id': self.cost_ratio_id.id,
             }
-        if len(barcode)>10:
+        if len(barcode)==13:
             res['barcode'] = barcode
         if not self.supplier_id:
             domain = [('name', '=', str(row[5]))]
@@ -141,9 +141,9 @@ class ProductImportCustomXlsx(models.TransientModel):
             }
         product_values.update(default_values)
         if product_id:
-            print ("%s: Encontrado %s" % (faltan, product_id.default_code))
+            _logger.info ("%s: Encontrado %s" % (faltan, product_id.default_code))
             if not product_id.active:
-                print ("    Desactivado > Actualizando %s" % product_id.default_code)
+                _logger.info ("    Desactivado > Actualizando %s" % product_id.default_code)
                 product_id.write(product_values)
             create=False
         else:
@@ -151,7 +151,7 @@ class ProductImportCustomXlsx(models.TransientModel):
                 product_values.update(tag_ids=[(4,self.tag_id.id)])
             product_id = product_id.create(product_values)
             #self._create_xml_id(product_id)
-            print ("%s: Producto creado: %s" % (faltan, product_id.default_code))
+            _logger.info ("%s: Producto creado: %s" % (faltan, product_id.default_code))
             self.add_suplier_info(product_id)
             create = True
         return product_id, create
@@ -208,9 +208,9 @@ class ProductImportCustomXlsx(models.TransientModel):
         book = xlrd.open_workbook(file_contents=file)
         sh = book.sheet_by_index(0)
         
-        print ("Calculando categorias %s" % CATEG_IDS)
+        _logger.info ("Calculando categorias %s" % CATEG_IDS)
         categ_dict = self.update_CATEG_IDS()
-        print ("                   >> %s" % categ_dict)
+        _logger.info ("                   >> %s" % categ_dict)
         idx = 2
         nrows = sh.nrows
         #StockInventory= self._get_stock_inventory()
@@ -229,7 +229,7 @@ class ProductImportCustomXlsx(models.TransientModel):
                     lineas += [line+3]
             if lineas:
                 raise ValidationError ('Error de EAN en las líneas %s' % lineas)
-            
+        
         for nline in range(idx, nrows):
             if idx > max_lines :
                 pass
@@ -249,7 +249,7 @@ class ProductImportCustomXlsx(models.TransientModel):
         if self.only_products:
             return
         palet_names = sh.row_values(1)[START_STOCK:]
-        print ("STOCK: Palets %s" % palet_names)
+        _logger.info ("STOCK: Palets %s" % palet_names)
         col_cont = START_STOCK
         
         for palet_name in palet_names:
@@ -266,7 +266,7 @@ class ProductImportCustomXlsx(models.TransientModel):
             
             col_values = sh.col_values(col_cont)
             col_qty = col_values[0]
-            print ("  >>  Palet %s: %s Uds" % (palet_id.name, col_qty))
+            _logger.info ("  >>  Palet %s: %s Uds" % (palet_id.name, col_qty))
             idx = 2
             for nline in range(idx, nrows):
                 if idx > max_lines :
@@ -285,7 +285,7 @@ class ProductImportCustomXlsx(models.TransientModel):
                         line_template.update(product_id=product_id, product_qty = qty)
                         line_id = self.env['stock.inventory.line'].create(line_template)
                         line_id._onchange_product()
-                    print ("         Producto %s. Cantidad %s" % (default_code[nline], qty))
+                    _logger.info ("         Producto %s. Cantidad %s" % (default_code[nline], qty))
             if self.check_qties and col_qty != 0:
                 raise ValidationError ('La cantidad no corresponde en el palet %s'% palet_id.name)
             col_cont += 1
@@ -297,13 +297,13 @@ class ProductImportCustomXlsx(models.TransientModel):
 
         if self.validate_inventory:
             faltan = len(inventory_ids)
-            print ("Validando %s inventarios"% faltan)
+            _logger.info ("Validando %s inventarios"% faltan)
             for inventory_id in inventory_ids:
                 if inventory_id.line_ids:
-                    print ("  %s Inventario: %s" % (faltan, inventory_id.name))
+                    _logger.info ("  %s Inventario: %s" % (faltan, inventory_id.name))
                     inventory_id.action_validate()
                 else:
-                    print ("  %s Inventario vacío: %s" % (faltan, inventory_id.name))
+                    _logger.info ("  %s Inventario vacío: %s" % (faltan, inventory_id.name))
                     inventory_id.unlink()
         return
     
@@ -311,29 +311,29 @@ class ProductImportCustomXlsx(models.TransientModel):
         
         #sql = "INSERT INTO ir_model_data (module, name, res_id, model) VALUES ('%s', '%s', %s, '%s'), ('%s', '%s', %s, '%s')" % ('PP', product_id.default_code, product_id.id, 'product.product', 'PT', product_id.default_code, product_id.product_tmpl_id.id, 'product.template')
         #self._cr.execute(sql)
-        print ("Borrado de ir_model_data")
+        _logger.info ("Borrado de ir_model_data")
         sql = "delete from ir_model_data where name ilike 'ADTD%' and model in ('product.product', 'product.template')"
         self._cr.execute(sql)
-        print ("Borrado de stock_inventory_line")
+        _logger.info ("Borrado de stock_inventory_line")
         sql = "delete from stock_inventory_line where inventory_id in (select id from stock_inventory where name ilike 'LOD_Paletd%')"
         self._cr.execute(sql)
-        print ("Borrado de stock_inventory")
+        _logger.info ("Borrado de stock_inventory")
         sql = "delete from stock_inventory where name ilike 'LOD_Paletd%'"
         self._cr.execute(sql)
-        print ("Borrado de ir_model_data")
+        _logger.info ("Borrado de ir_model_data")
         sql = "delete from ir_model_data where name ilike 'PD%' and model = 'stock.location'"
         self._cr.execute(sql)
         
-        print ("Borrado de product_ean13")
+        _logger.info ("Borrado de product_ean13")
         sql = "delete from product_ean13"
         self._cr.execute(sql)
-        print ("Borrado de product_template")
+        _logger.info ("Borrado de product_template")
         sql = "delete from product_template where id in (select product_tmpl_id from product_product where default_code ilike 'ADTD%')"
         self._cr.execute(sql)
-        print ("Borrado de product_product")
+        _logger.info ("Borrado de product_product")
         sql = "delete from product_product where default_code ilike 'ADTD%'"
         self._cr.execute(sql)
-        print ("Borrado de stock_location")
+        _logger.info ("Borrado de stock_location")
         sql = "delete from stock_location where name ilike 'PD%' and building = 10"
         self._cr.execute(sql)
     
