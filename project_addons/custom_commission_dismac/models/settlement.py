@@ -88,6 +88,7 @@ class Settlement(models.Model):
             invoices_by_global["reduced_amount"] += reduced_amount
 
         month = self.date_to.month
+        year = self.date_to.year
 
         global_goal_types = self.env["goal.type"]
         min_goal_types = self.env["goal.type"]  # special case
@@ -103,6 +104,7 @@ class Settlement(models.Model):
             # operacional
             domain = [
                 ("month", "=", month),
+                ("year", "=", year),
                 ("agent_id", "=", self.agent.id),
                 ("sale_type_id", "=", sale_type.id),
             ]
@@ -111,6 +113,7 @@ class Settlement(models.Model):
             # Busqueda objetivos globales
             domain = [
                 ("month", "=", month),
+                ("year", "=", year),
                 ("agent_id", "=", self.agent.id),
                 ("sale_type_id", "=", False),
                 ("id", "not in", visited_month_goal_ids),
@@ -199,7 +202,11 @@ class Settlement(models.Model):
         if gt.type == "min_customers":
             month_goal_obj = self.env["agent.month.goal"]
             month = self.date_to.month
-            domain = [("month", "=", month), ("agent_id", "=", self.agent.id)]
+            year = self.date_to.year
+            domain = [
+                ("month", "=", month),
+                ("year", "=", year),
+                ("agent_id", "=", self.agent.id)]
             month_goals = month_goal_obj.search(domain)
             if not month_goals:
                 return {}
@@ -285,10 +292,12 @@ class Settlement(models.Model):
 
         goal_line_vals = []
         month = self.date_to.month
+        year = self.date_to.year
         for gt in global_goal_types:
             # Calculo el objetivo total del mes
             domain = [
                 ("month", "=", month),
+                ("year", "=", year),
                 ("agent_id", "=", self.agent.id),
                 ("goal_type_id", "=", gt.id),
             ]

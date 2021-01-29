@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-29 08:16+0000\n"
-"PO-Revision-Date: 2020-05-29 08:16+0000\n"
+"POT-Creation-Date: 2021-01-29 11:28+0000\n"
+"PO-Revision-Date: 2021-01-29 11:28+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/settlement.py:221
-#: code:addons/custom_commission_dismac/models/settlement.py:232
+#: code:addons/custom_commission_dismac/models/settlement.py:229
+#: code:addons/custom_commission_dismac/models/settlement.py:240
 #, python-format
 msgid "\n"
 "Subtotal computed: %s"
@@ -25,8 +25,8 @@ msgstr "\n"
 "Subtotal calculado: %s"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/settlement.py:222
-#: code:addons/custom_commission_dismac/models/settlement.py:233
+#: code:addons/custom_commission_dismac/models/settlement.py:230
+#: code:addons/custom_commission_dismac/models/settlement.py:241
 #, python-format
 msgid "\n"
 "Subtotal reduced: %s"
@@ -317,13 +317,13 @@ msgid "Furniture Sale Type"
 msgstr "Tipo de venta mobiliario"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/settlement.py:256
+#: code:addons/custom_commission_dismac/models/settlement.py:264
 #, python-format
 msgid "Global settlement by min customers goal"
 msgstr "Liquidación global por objetivo de min clientes"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/settlement.py:282
+#: code:addons/custom_commission_dismac/models/settlement.py:290
 #, python-format
 msgid "Global settlement by sales"
 msgstr "Liquidación global por ventas"
@@ -566,6 +566,11 @@ msgid "Name"
 msgstr "Nombre"
 
 #. module: custom_commission_dismac
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_account_invoice_line__sale_purchase_price_net
+msgid "Net Sale Cost"
+msgstr ""
+
+#. module: custom_commission_dismac
 #: code:addons/custom_commission_dismac/models/goal_type.py:148
 #, python-format
 msgid "No Computing Commission"
@@ -757,7 +762,7 @@ msgid "Settlement by Sale Type"
 msgstr "Liquidación por tipo de venta"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/settlement.py:143
+#: code:addons/custom_commission_dismac/models/settlement.py:147
 #, python-format
 msgid "Settlement in %s"
 msgstr "Liquidación en %s"
@@ -783,7 +788,7 @@ msgid "Teleoperadora"
 msgstr ""
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/sale_order.py:50
+#: code:addons/custom_commission_dismac/models/sale_order.py:51
 #, python-format
 msgid "The partner related to commercial %s must be a                         partner"
 msgstr "El partner relacionado con el comercial %s debe estar marcado como agente"
@@ -809,6 +814,13 @@ msgid "Type"
 msgstr "Tipo"
 
 #. module: custom_commission_dismac
+#: model:ir.actions.server,name:custom_commission_dismac.ir_cron_update_line_cost_ir_actions_server
+#: model:ir.cron,cron_name:custom_commission_dismac.ir_cron_update_line_cost
+#: model:ir.cron,name:custom_commission_dismac.ir_cron_update_line_cost
+msgid "Update 0 Invoice Line Costs"
+msgstr ""
+
+#. module: custom_commission_dismac
 #: code:addons/custom_commission_dismac/models/goal_type.py:121
 #, python-format
 msgid "WEB SALE COMMISSION\n"
@@ -832,7 +844,13 @@ msgid "Wizard for settling commissions in invoices"
 msgstr "Asistente para liquidar comisiones en facturas"
 
 #. module: custom_commission_dismac
-#: code:addons/custom_commission_dismac/models/agent_month_goal.py:40
+#: model:ir.model.fields,field_description:custom_commission_dismac.field_agent_month_goal__year
+#: model_terms:ir.ui.view,arch_db:custom_commission_dismac.agent_month_goal_search_view
+msgid "Year"
+msgstr "Año"
+
+#. module: custom_commission_dismac
+#: code:addons/custom_commission_dismac/models/agent_month_goal.py:41
 #: sql_constraint:agent.month.goal:0
 #, python-format
 msgid "You can not define same, agent, month, sale order type,             and goal type"
