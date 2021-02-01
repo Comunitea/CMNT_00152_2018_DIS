@@ -28,6 +28,7 @@ class AgentMonthGoal(models.Model):
         string="Month",
         required=True,
     )
+    year = fields.Integer('Year')
     sale_type_id = fields.Many2one("sale.order.type", "Sale Order Type")
     amount_goal = fields.Float("Amount Goal")
     min_customers = fields.Integer("Min customers")
