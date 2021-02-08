@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_website_config_settings_bread_cum" model="ir.ui.view">
+        <field name="name">Website config breadcrumb setting</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='languages_setting']" position="after">
+                <div class="col-12 col-lg-offset-6 col-lg-6 o_setting_box" id="dismac_ecommerce_setting">
+                    <div class="o_setting_left_pane">
+                        <field name="is_breadcum" />
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="is_breadcum" />
+                        <div class="content-group" attrs="{'invisible': [('is_breadcum', '=', True)]}">
+                            <group>
+                                <field name="bread_cum_image" widget="image" class="oe_avatar oe_left" />
+                                <field name="breadcrumb_height" />
+                                <field name="breadcum_background_image" />
+                                <field name="breadcrumb_text_color" />
+                                <field name="breadcrumb_color" />
+                            </group>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

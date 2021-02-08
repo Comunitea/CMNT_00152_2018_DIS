@@ -1,0 +1,69 @@
+/*Font*/
+$as-font-alt: "Lato", serif;
+$as-font-main: "Lato", sans-serif;
+
+/*Color*/
+$as-theme: #006cb7;
+$as-light: #ffffff;
+$as-dark: #000;
+$body-color: #828282;
+$text-color: #7d7d7d;
+$body-text: #000;
+$bg-top-menu: #858A90;
+$home-slider-bg: #f4f4f4;
+$theme-color1: $as-theme;
+$theme-color2: #1c3481;
+$body-back: #000;
+$bg-light: $as-light;
+$bg-theme-color: $as-light;
+$light-border: #dddddd;
+$light-green1: rgba($theme-color2, 0.45);
+$footer-text: #777777;
+.bg-light {
+    background-color: $bg-light !important;
+}
+
+/* Big deal */
+$gray:#bfbfbf;
+$gray-1: #f1f1f1;
+$gray-2: #999999;
+$gray-3: #8d8d8d;
+$gray-4: #727272;
+$gray-5: #acacac;
+$gray-6: #8a8a8a;
+$gray-7: #939b9e;
+// dark layout //
+$dark-layout: #1b1b1b;
+$light-layout: #262626;
+$dark-border: #3c3c3c;
+$dark-link: #cbcbcb;
+$font-layout-1: #f1f3f5;
+$font-layout-2: #eaedef;
+$font-layout-3: #e7eaec;
+$font-layout-4: #dee2e6;
+$font-layout-5: #cfd4da;
+
+$white-1: #f1f3f5;
+$white-2: #eaedef;
+$white-3: #e7eaec;
+$white-4: #dee2e6;
+$white-5: #cfd4da;
+
+// Theme colors variables
+$primary-color: #006cb7;
+$secondary-color: #1c3481;
+$success-color: #006cb7;
+$info-color: #00a8ff;
+$warning-color: #ffa800;
+$danger-color: #771717;
+$light-color: #f8f8f9;
+$semi-dark: #aaaaaa;
+$light-semi-gray: #eff0f1;
+$light-gray: #e8ebf2;
+$dark-gray: #898989;
+$dark-color: #2a3142;
+$gray-60: #999999;
+$transparent-color: transparent;
+$auth-bg-color: #fafafa;
+$light: #f6f6f6;
+$light-text: #999;

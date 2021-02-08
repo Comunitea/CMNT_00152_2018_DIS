@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- New Home Pages -->
+    <!-- Home Banner -->
+    <template name="Dismac Home Banner" id="as_home_banner">
+        <section class="theme-slider b-g-white " id="theme-slider">
+            <div class="custom-container">
+                <div class="row">
+                    <div class="col">
+                        <div class="slide-1 no-arrow">
+                            <div>
+                                <div class="slider-banner p-center slide-banner-1">
+                                    <div class="slider-img">
+                                        <ul class="layout1-slide-1">
+                                            <li id="img-1">
+                                                <img src="/dismac_ecommerce/static/src/img/slider/cuadernos.png" class="img-fluid" alt="slider" />
+                                            </li>
+                                            <li id="img-2" class="slide-center">
+                                                <img src="/dismac_ecommerce/static/src/img/slider/dequa.png" class="img-fluid" alt="slider" />
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="slider-banner-contain">
+                                        <div>
+                                            <h2>Cuadernos Dequa</h2>
+                                            <h3>CUADERNO CUADRICULADO DEQUA 80H FOLIO COLORES SURTIDOS</h3>
+                                            <a class="btn btn-normal">
+                              Comprar ahora
+                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <!-- End -->
+
+    <!-- collections Promo -->
+    <template name="Collections Promo Dismac" id="theme-slider">
+        <!--collection banner start-->
+        <section class="collection-banner section-pt-space b-g-white ">
+            <div class="custom-container">
+                <div class="row collection2">
+                    <div class="col-md-4">
+                        <div class="collection-banner-main banner-1 p-left">
+                            <div class="collection-img">
+                                <img src="/dismac_ecommerce/static/src/img/collection-banner/1.jpg" class="img-fluid bg-img" alt="banner" />
+                            </div>
+                            <div class="collection-banner-contain">
+                                <div>
+                                    <h3>material de oficina</h3>
+                                    <div class="shop">
+                                        <a>ver ofertas</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="collection-banner-main banner-1 p-left">
+                            <div class="collection-img">
+                                <img src="/dismac_ecommerce/static/src/img/collection-banner/2.jpg" class="img-fluid bg-img" alt="banner" />
+                            </div>
+                            <div class="collection-banner-contain">
+                                <div>
+                                    <h3>material de oficina</h3>
+                                    <div class="shop">
+                                        <a>ver ofertas</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="collection-banner-main banner-1 p-left">
+                            <div class="collection-img">
+                                <img src="/dismac_ecommerce/static/src/img/collection-banner/3.jpg" class="img-fluid bg-img" alt="banner" />
+                            </div>
+                            <div class="collection-banner-contain">
+                                <div>
+                                    <h3>entorno informático</h3>
+                                    <div class="shop">
+                                        <a>ver ofertas</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--collection banner end-->
+    </template>
+    <!-- End -->
+
+    <!-- Custom H1 Title -->
+    <template name="Custom Title Dismac" id="section_h1_head">
+        <section class="h1-banner">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="h1-banner-contain">
+                            <h1>
+                                <strong>H1 intro</strong>
+                                con palabras clave para la tienda
+                            </h1>
+                            <p>
+                        Nam hendrerit pulvinar rutrum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus sodales est ante, eget efficitur diam pulvinar id.
+                      </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <!-- End -->
+
+
+    <template name="Home footer banners" id="dismac_footer_banners">
+        <section class="banners-home b-g-white">
+            <div class="custom-container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        <a href="#" class="banner-blue">
+                            <img src="/dismac_ecommerce/static/src/img/banners-footer/bg-catalogos.jpg" />
+                            <div>
+                                <h3>
+                                    Descarga nuestros
+                                    <strong>catálogos</strong>
+                                </h3>
+                                <p>Lorem ipsum dolor sit amet consecutur</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <a href="#" class="banner-blue">
+                            <img src="/dismac_ecommerce/static/src/img/banners-footer/bg-blog.jpg" />
+                            <div>
+                                <h3>
+                                    Visita nuestro
+                                    <strong>blog</strong>
+                                </h3>
+                                <p>Lorem ipsum dolor sit amet consecutur</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <!-- end -->
+    <!-- / -->
+
+
+    <template id="add_snippets" inherit_id="website.snippets" name="Add Custom snippet">
+        <xpath expr="//div[@id='snippet_structure']//div[hasclass('o_panel_body')]" position="inside">
+            <t t-snippet="dismac_ecommerce.as_home_banner" t-thumbnail="/dismac_ecommerce/static/src/icon/as_home_banner.png" />
+            <t t-snippet="dismac_ecommerce.theme-slider" t-thumbnail="/dismac_ecommerce/static/src/icon/ads-two.png" />
+            <t t-snippet="dismac_ecommerce.section_h1_head" t-thumbnail="/dismac_ecommerce/static/src/icon/as-desc-head.png" />
+            <t t-snippet="dismac_ecommerce.dismac_footer_banners" t-thumbnail="/dismac_ecommerce/static/src/icon/dis_footer_banners.jpg" />
+        </xpath>
+    </template>
+
+    <template id="website_s_Well_options" inherit_id="website.snippet_options" name="Twitter Options">
+        <xpath expr="//div" position="after">
+            <div data-selector=".s_well_content" data-drop-near="p, h1, h2, h3, blockquote, .well, .panel, .row, .as-custom-col"></div>
+        </xpath>
+    </template>
+</odoo>

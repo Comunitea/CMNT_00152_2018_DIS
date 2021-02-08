@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ===================== Header OPTIONS ======================== -->
+    <template id="header_layout_css" name="header_layout_scss" inherit_id="website.assets_frontend" active="True">
+        <xpath expr="." position="inside">
+            <link href="/dismac_ecommerce/static/src/scss/options/header-option/header_style.scss" rel="stylesheet" type="text/scss" />
+        </xpath>
+    </template>
+
+
+    <!-- ===================== Footer OPTIONS ======================== -->
+    <template id="footer_layout_css" name="footer_layout_scss" inherit_id="website.assets_frontend" active="True">
+        <xpath expr="." position="inside">
+            <link href="/dismac_ecommerce/static/src/scss/options/footer-option/footer_style.scss" rel="stylesheet" type="text/scss" />
+        </xpath>
+    </template>
+
+    <!-- ===================== Header OPTIONS ======================== -->
+
+    <template id="header_layout" active="True" inherit_id="website.layout">
+        <xpath expr="//header/nav[hasclass('navbar-expand-md')]" position="before">
+            <div class="top-header">
+                <div class="header-top-bar">
+                    <div class="custom-container">
+                        <div class="row">
+                            <div class="col-xl-5 col-md-7 col-sm-6">
+                                <div class="top-header-left logo">
+                                    <a href="/">
+                                        <span t-field="website.logo" t-options="{'widget': 'image'}" t-attf-aria-label="Logo of {{website.name}}" t-att-title="website.name" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-xl-7 col-md-5 col-sm-6">
+                                <div class="top-header-right">
+                                    <div class="top-menu-block">
+                                        <ul>
+                                            <t t-foreach="website.menu_id.child_id" t-as="submenu">
+                                                <t t-if="submenu.is_top_menu" t-call="dismac_ecommerce.submenu">
+                                                    <t t-set="item_class" t-value="'o_dismac_top_nav_item'" />
+                                                    <t t-set="link_class" t-value="'o_dismac_top_nav_link'" />
+                                                </t>
+                                            </t>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div id="o_dismac_top_menu" class="o_dismac_top_menu_sidenav">
+                                    <ul>
+                                        <li class="o_dismac_top_menu_closebtn">
+                                            <a href="javascript:void(0)" onclick="o_dismac_top_menu_closeNav()">X</a>
+                                        </li>
+                                        <t t-foreach="website.menu_id.child_id" t-as="submenu">
+                                            <t t-if="submenu.is_top_menu" t-call="dismac_ecommerce.submenu"></t>
+                                        </t>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="middle-header-bar layout-header2">
+                <div class="custom-container">
+                    <div class="row align-items-center">
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <div class="h-col h-search">
+                                <div class="as-search">
+                                    <form action='/shop' method="get" class="o_dismac_search_form">
+                                        <div class="input-group ">
+                                            <div class="input-group-prepend">
+                                                <span class="search">
+                                                    <i class="fa fa-search"></i>
+                                                </span>
+                                            </div>
+                                            <input type="text" name="search" class="form-control" placeholder="Buscar producto" t-att-value="search" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div> <!-- .h-col h-search -->
+                        </div> <!-- col -->
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <div class="ht-right">
+                                <t t-set="website_sale_order" t-value="website.sale_get_order()" />
+                                <div id="my_cart" class="h-col h-cart">
+                                    <div class="my_cart_btn hc-icon">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <sup t-attf-class="my_cart_quantity label badge-primary" t-esc="website_sale_order and website_sale_order.cart_quantity or 0" />
+                                    </div>
+                                    <div class="h-cart-text">Carrito</div>
+                                </div>
+                            </div> <!-- .ht-right -->
+                        </div> <!-- col -->
+                    </div> <!-- row -->
+                    <div class="mobile-menu-block">
+                        <div class="mobile-toggle">
+                            <button class="mobile_toggle_menu">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </button>
+                            <button class="mobile_toggle_menu close-menu"></button>
+                        </div>
+                        <div class="menu-nav">
+                            <span onclick="o_dismac_top_menu_openNav()" class="toggle-nav">
+                                <i class="fa fa-plus-circle"></i>
+                            </span>
+                            <button id="o_dismac_top_menu_close-menu" onclick="o_dismac_top_menu_closeNav()" class="o_dismac_top_menu_close-menu"></button>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="cart_lines_popup" />
+
+        </xpath>
+    </template>
+    <!-- hace petar el movil? -->
+    <template id="dismac_second_menu" inherit_id="website.layout" name="Secondary Dismac Menu">
+        <xpath expr="//header//nav" position="replace">
+            <t t-set="is_connected" t-value="not user_id._is_public()" />
+            <nav class="navbar navbar-expand-md navbar-light bg-light o_dismac_menu_bg">
+                <div id="top_menu_container" class="container">
+                    <div id="top_menu_collapse" class="collapse navbar-collapse order-last order-lg-0">
+                        <ul>
+                            <li class="o_dismac_middle_menu_closebtn">
+                                <a href="javascript:void(0)" onclick="o_dismac_top_menu_closeNav()">X</a>
+                            </li>
+                            <t t-foreach="website.menu_id.child_id" t-as="submenu">
+                                <t t-if="submenu.is_middle_menu" t-call="dismac_ecommerce.submenu">
+                                    <t t-set="item_class" t-value="'o_dismac_item'" />
+                                    <t t-set="link_class" t-value="'nav-link'" />
+                                </t>
+                            </t>
+                        </ul>
+                    </div>
+                    <div class="icon-block">
+                        <ul>
+                            <li class="mobile-user onhover-dropdown">
+                                <a onclick="openAccount()">
+                                    <i class="fa fa-user"></i>
+                                </a>
+                            </li>
+                            <t t-if="request.env.ref('dismac_ecommerce.add_to_wishlist').active">
+                                <t t-set='wishcount' t-value="len(request.env['product.wishlist'].current())" />
+                                <li class="mobile-wishlist">
+                                    <a href="/shop/wishlist">
+                                        <i class="fa fa-heart"></i>
+                                        <div class="cart-item">
+                                            <div>
+                                                <t t-esc='wishcount' />
+                                                productos
+                                                <span>favoritos</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+                    <div class="contact-block">
+                        <div>
+                            <i class="fa fa-volume-control-phone"></i>
+                            <span>986 46 98 98</span>
+                        </div>
+                    </div>
+                    <div class="tablet-toggle">
+                        <button class="mobile_toggle_menu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                        <button class="mobile_toggle_menu close-menu"></button>
+                    </div>
+                </div>
+                <div class="oe_structure oe_structure_solo" id="oe_structure_header_default_1" />
+            </nav>
+        </xpath>
+    </template>
+
+    <template id="footer_layout" active="True" inherit_id="website.layout">
+        <xpath expr="//footer/div[@id='footer']" position="replace">
+            <!-- My account bar start-->
+            <div class="o_dismac_footer_menu">
+                <div class="row">
+                    <div class="col o_dismac_footer_item">
+                        <a onclick="openSearch()">
+                            <i class="fa fa-search"></i>
+                        </a>
+                        <div id="search-overlay" class="search-overlay" style="display: none;">
+                            <div>
+                                <a onclick="closeSearch()">
+                                    <span class="close-mobile-search">×</span>
+                                </a>
+                                <div class="overlay-content">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <form action='/shop' method="get">
+                                                    <div class="form-group">
+                                                        <input type="text" name="search" class="form-control" placeholder="Buscar producto" t-att-value="search" />
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="fa fa-search"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col o_dismac_footer_item">
+                        <t t-if="request.env.ref('dismac_ecommerce.add_to_wishlist').active">
+                            <t t-set='wishcount' t-value="len(request.env['product.wishlist'].current())" />
+                            <div id="footer_my_wish" class="h-col h-wishlist">
+                                <a class="hc-icon" href="/shop/wishlist">
+                                    <i class="fa fa-heart" />
+                                    <sup t-attf-class="my_wish_quantity o_animate_blink badge badge-primary">
+                                        <t t-esc='wishcount' />
+                                    </sup>
+                                </a>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="col o_dismac_footer_item">
+                        <t t-set="website_sale_order" t-value="website.sale_get_order()" />
+                        <div id="footer_cart" class="h-col h-cart">
+                            <div class="my_cart_btn hc-icon">
+                                <i class="fa fa-shopping-cart"></i>
+                                <sup t-attf-class="my_cart_quantity label badge-primary" t-esc="website_sale_order and website_sale_order.cart_quantity or 0" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col o_dismac_footer_item">
+                        <a onclick="openAccount()">
+                            <i class="fa fa-user"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <footer id="footer">
+                <div class="middle-footer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="footer-main-contian">
+                                    <div class="row ">
+                                        <div class="col-lg-4 col-md-12 ">
+                                            <div class="footer-left">
+                                                <div class="footer-logo">
+                                                    <img src="/dismac_ecommerce/static/src/img/logo-dismac-b.png" class="img-fluid" t-att-alt="'Logo of %s' % res_company.name" t-att-title="res_company.name" />
+                                                </div>
+                                                <div class="footer-detail">
+                                                    <p>Fusce nec lorem ac risus interdum efficitur. Morbi nisl felis, molestie ut tellus at, finibus pharetra leo. Morbi arcu mi, laoreet eget eros vel, tempus hendrerit lacus. Suspendisse at felis eleifend.</p>
+                                                    <ul class="paymant-bottom">
+                                                        <li>
+                                                            <a href="#">
+                                                                <img src="/dismac_ecommerce/static/src/img/pay/1.png" class="img-fluid" alt="Visa" />
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <img src="/dismac_ecommerce/static/src/img/pay/2.png" class="img-fluid" alt="MasterCard" />
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <img src="/dismac_ecommerce/static/src/img/pay/3.png" class="img-fluid" alt="Paypal" />
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <img src="/dismac_ecommerce/static/src/img/pay/4.png" class="img-fluid" alt="American Expres" />
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <img src="/dismac_ecommerce/static/src/img/pay/5.png" class="img-fluid" alt="Discover" />
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-8 col-md-12 ">
+                                            <div class="footer-right">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="account-right">
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="footer-box">
+                                                                        <div class="footer-title">
+                                                                            <h5>productos</h5>
+                                                                        </div>
+                                                                        <div class="footer-contant">
+                                                                            <ul>
+                                                                                <li>
+                                                                                    <a href="#">home office</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="#">material de oficina</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="#">material escolar</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="#">entorno informático</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="#">otros</a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="footer-box">
+                                                                        <div class="footer-title">
+                                                                            <h5>sobre dismac</h5>
+                                                                        </div>
+                                                                        <div class="footer-contant">
+                                                                            <ul>
+                                                                                <li>
+                                                                                    <a href="#">nosotros</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="#">marcas</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="#">ofertas</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="#">blog</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="#">contacto</a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-5">
+                                                                    <div class="footer-box">
+                                                                        <div class="footer-title">
+                                                                            <h5>info legal</h5>
+                                                                        </div>
+                                                                        <div class="footer-contant">
+                                                                            <ul>
+                                                                                <li>
+                                                                                    <a href="#">aviso legal</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="#">política de privacidad</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="#">cookies</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="#">diseño web</a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- container -->
+                </div> <!-- middle-footer -->
+
+                <div class="footer-bottom">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-6 text-center text-md-left md-m-15px-b">
+                                <p class="copyright">Copyright ©2021 Dismac.</p>
+                            </div>
+                            <div class="col-12 col-md-6 text-center text-md-right">
+                                <div class="link-follow">
+                                    <ul>
+                                        <li t-if="website.social_facebook">
+                                            <a t-att-href="website.social_facebook" t-if="website.social_facebook">
+                                                <i class="fa fa-facebook" />
+                                            </a>
+                                        </li>
+                                        <li t-if="website.social_twitter">
+                                            <a t-att-href="website.social_twitter" t-if="website.social_twitter">
+                                                <i class="fa fa-twitter" />
+                                            </a>
+                                        </li>
+                                        <li t-if="website.social_googleplus">
+                                            <a t-att-href="website.social_googleplus" t-if="website.social_googleplus" rel="publisher">
+                                                <i class="fa fa-google-plus" />
+                                            </a>
+                                        </li>
+                                        <li t-if="website.social_youtube">
+                                            <a t-att-href="website.social_youtube" t-if="website.social_youtube">
+                                                <i class="fa fa-youtube-play" />
+                                            </a>
+                                        </li>
+                                        <li t-if="website.social_linkedin">
+                                            <a t-att-href="website.social_linkedin" t-if="website.social_linkedin">
+                                                <i class="fa fa-linkedin" />
+                                            </a>
+                                        </li>
+                                        <li t-if="website.social_github">
+                                            <a t-att-href="website.social_github" t-if="website.social_github">
+                                                <i class="fa fa-github" />
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- .bottom-footer -->
+            </footer> <!-- footer -->
+        </xpath>
+    </template>
+    <template id="account_modal_dismac" active="True" inherit_id="website.layout">
+        <xpath expr="//footer" position="before">
+            <div id="myaccount-overlay" class="account-overlay"></div>
+            <div id="myAccount" class="account-sidebar ">
+                <a href="javascript:void(0)" class="overlay" onclick="closeAccount()"></a>
+
+                <div class="account-inner">
+                    <div class="account-top">
+                        <h3>My account</h3>
+                        <div class="close-account">
+                            <a href="javascript:void(0)" onclick="closeAccount()">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <form t-if="website.user_id == user_id" class="theme-form" role="form" method="post" onsubmit="this.action = '/web/login' + location.hash" action="/web/login">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                        <div class="form-group">
+                            <label for="login">Email</label>
+                            <input type="text" name="login" class="form-control" id="login" placeholder="Email" required="required" />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password" required="required" />
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" value="accepted" id="privacy_policy" name="privacy_policy" class="o_website_form_input form-check-input" required="required"/>
+                            <label class="form-check-label" for="privacy_policy">
+                                <span class="acceptance_full">
+                                    Acepto los <a href="https://www.dismac.es/avisos-legales" alt="Enlace avisos legales" title="Avisos Legales" rel="noindex, nofollow" target="_blank">avisos legales</a>
+                                    , la <a href="https://www.dismac.es/politica-de-cookies" alt="Enlace política de cookies" title="Política de Cookies" rel="noindex, nofollow" target="_blank">política de cookies</a>
+                                    , y la <a href="https://www.dismac.es/politica-de-privacidad" alt="Enlace política de privacidad" title="Política de Privacidad" rel="noindex, nofollow" target="_blank">política de privacidad</a>
+                                    de este sitio web.
+                                </span>
+                            </label>
+                        </div>
+                        <input type="hidden" name="redirect" t-att-value="redirect" />
+                        <input type="hidden" name="token" t-att-value="token" />
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-rounded btn-block" value="Login" />
+                        </div>
+                        <div>
+                            <h5 class="forget-class">
+                                <a t-attf-href="/web/reset_password" class="d-block">Have you forgotten your password?</a>
+                            </h5>
+                            <h6 class="forget-class">
+                                <a href="/web/signup?redirect=/" class="d-block">You are new? Sign up </a>
+                            </h6>
+                        </div>
+                    </form>
+                    <div t-if="website.user_id != user_id" class="account-body">
+                        <ul>
+                            <li><a role="menuitem" href="/my/orders">Sale Order</a></li>
+                            <li><a role="menuitem" href="/my/home">My Account</a></li>
+                        </ul>
+                        <p>
+                            <a href="/web/session/logout?redirect=/" class="btn btn-primary btn-logout">Logout</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Add to account bar end-->
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,25 @@
+<odoo>
+    <template id="assets_editors_dismac_note" inherit_id="website.assets_editor" name="Embeded Snippet Js">
+        <xpath expr="link[last()]" position="after">
+            <script src="/dismac_ecommerce/static/src/js/summernote_custom.js"></script>
+        </xpath>
+    </template>
+
+    <template name="dismac Builder" id="website_dismac_note">
+        <section class="dismac_note"></section>
+    </template>
+
+    <template name="Snippets" id="snippet_embeded" inherit_id="website.snippets">
+        <xpath expr="//div[@id='snippet_structure']//div[hasclass('o_panel_body')]" position="inside">
+            <t t-snippet="dismac_ecommerce.website_dismac_note" t-thumbnail="/dismac_ecommerce/static/src/icon/html_builder-icon.png" />
+        </xpath>
+    </template>
+
+    <template id="options_embeded" inherit_id="website.snippets" name="Customize Options">
+        <xpath expr="//div[@id='snippet_options']" position="inside">
+            <div data-js='summernote_embeded' data-selector=".dismac_note">
+                <a tabindex="-1" href="#" class="dropdown-item modify_embeded" data-modify_note="">Modify</a>
+            </div>
+        </xpath>
+    </template>
+</odoo>
