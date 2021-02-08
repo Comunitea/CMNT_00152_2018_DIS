@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Open website on install -->
     <record id="action_website" model="ir.actions.act_url">
         <field name="name">Website Dismac</field>
         <field name="url">/shop</field>

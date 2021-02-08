@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
-    <template id="website_sale_header" name="Header Shop My Cart Link Base" inherit_id="website_sale.header">
-        <!-- Add to cart show without text -->
-        <xpath expr="//li[@id='my_cart']/a" position="replace">
-            <a href="/shop/cart" class="nav-link">
-                    <i class="fa fa-shopping-cart"/>
-                    <sup t-attf-class="my_cart_quantity badge badge-primary" t-esc="website_sale_order and website_sale_order.cart_quantity or ''" />
-                </a>
-        </xpath>
-    </template>
+<!--    <template id="website_sale_header" name="Header Shop My Cart Link Base" inherit_id="website_sale.header">-->
+<!--        &lt;!&ndash; Add to cart show without text &ndash;&gt;-->
+<!--        <xpath expr="//li[@id='my_cart']/a" position="replace">-->
+<!--            <a href="/shop/cart" class="nav-link">-->
+<!--                    <i class="fa fa-shopping-cart"/>-->
+<!--                    <sup t-attf-class="my_cart_quantity badge badge-primary" t-esc="website_sale_order and website_sale_order.cart_quantity or ''" />-->
+<!--                </a>-->
+<!--        </xpath>-->
+<!--    </template>-->
 
-    <template id="website_sale_wishlist_header" inherit_id="website_sale_wishlist.header" name="Header Shop Wishlist Link Base">
+<!--    <template id="website_sale_wishlist_header" inherit_id="website_sale_wishlist.header" name="Header Shop Wishlist Link Base">-->
         <!-- Add to wishlist show without text -->
-        <xpath expr="//li[@id='my_wish']/a" position="replace">
-            <a href="/shop/wishlist" class="nav-link">
-                <i class="fa fa-heart"/>
-                <sup t-attf-class="my_wish_quantity o_animate_blink badge badge-primary"><t t-esc='wishcount'/></sup>
-            </a>
-        </xpath>
-    </template>
+<!--        <xpath expr="//li[@id='my_wish']/a" position="replace">-->
+<!--            <a href="/shop/wishlist" class="nav-link">-->
+<!--                <i class="fa fa-heart"/>-->
+<!--                <sup t-attf-class="my_wish_quantity o_animate_blink badge badge-primary"><t t-esc='wishcount'/></sup>-->
+<!--            </a>-->
+<!--        </xpath>-->
+<!--    </template>-->
 
     <!-- Dynamic category menu  -->
     <template id="website_submenu" inherit_id="website.submenu">

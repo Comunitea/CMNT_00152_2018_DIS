@@ -35,17 +35,19 @@
     'depends': [
         'account',
         'partner_statement',
-        'sgeede_infinite_scroll',
         'web',
         'website',
-        'website_base',
         'website_canonical_url',
         'website_cookie_notice',
         'website_form',
         'website_legal_page',
-        'website_logo',
         'website_menu_by_user_status',
         'website_sale',
+        # Custom
+        'website_base',
+        'website_seo_settings',
+        # Licences
+        # 'sgeede_infinite_scroll',
     ],
     'data': [
         'data/website_data.xml',
@@ -57,7 +59,7 @@
         'templates/cookies.xml',
         'templates/footer.xml',
         'templates/product.xml',
-        'templates/simulated_product.xml',
+        # 'templates/simulated_product.xml',
         'views/customize_views.xml',
         'templates/sale_order_portal.xml',
         'security/ir.model.access.csv'

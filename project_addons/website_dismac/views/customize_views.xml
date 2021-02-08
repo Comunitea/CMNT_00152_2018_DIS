@@ -28,15 +28,20 @@
         <field name="active">True</field>
     </record>
 
-    <!-- Shop - Product List View -->
-    <record id="website_sale.products_list_view" model="ir.ui.view">
+    <!-- Add to Wishlist -->
+    <record id="website_sale_wishlist.add_to_wishlist" model="ir.ui.view">
         <field name="active">True</field>
     </record>
 
-    <!-- Shop - Scroll-->
-    <record id="sgeede_infinite_scroll.products_infinite_scroll" model="ir.ui.view">
-        <field name="active">True</field>
+    <!-- Shop - Product List View -->
+    <record id="website_sale.products_list_view" model="ir.ui.view">
+        <field name="active">False</field>
     </record>
+
+    <!-- Shop - Scroll-->
+<!--    <record id="sgeede_infinite_scroll.products_infinite_scroll" model="ir.ui.view">-->
+<!--        <field name="active">True</field>-->
+<!--    </record>-->
 
     <!-- Search Box - Show # found -->
     <record id="website_sale.search count" model="ir.ui.view">

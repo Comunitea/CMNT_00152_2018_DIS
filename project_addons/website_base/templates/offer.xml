@@ -31,8 +31,29 @@
                 <a role="button" t-att-href="keep('/ofertas/category/%s' % offer_cat.slug if offer_cat.slug else '/ofertas/category/%s' % slug(offer_cat), category=0)" t-attf-class="btn btn-secondary #{'active' if category and int(category) == offer_cat.id else ''}"><span t-esc="offer_cat.name"/></a>
             </t>
         </p>
-        <t t-call="website_base.simulate_products_list_view" t-if="request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_list_view'), ('website_id', '=', request.website.id)]).active"/>
-        <t t-call="website_base.simulate_products_table_view" t-else=""/>
+        <t t-set="has_responsive_view" t-value="request.website.viewref('website_seo_settings.website_sale_products_responsive').active"/>
+        <t t-set="has_list_view" t-value="request.website.viewref('website_sale.products_list_view').active"/>
+        <t t-if="has_responsive_view and not has_list_view">
+            <div t-attf-class="col-lg-12 col-md-12 products_grid_responsive" id="products_grid_simulated">
+                <div class="row">
+                    <t t-foreach="products" t-as="product">
+                        <t t-if="product">
+                            <div t-attf-class="col-lg-4 col-md-6 oe_product oe_grid oe-height#{height} #{ product.website_style_ids and product.website_style_ids[0].html_class}">
+                                <div class="oe_product_cart" id="product_item" t-att-data-publish="product.website_published and 'on' or 'off'">
+                                    <t t-call="website_seo_settings.website_sale_products_item"/>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </t>
+        <t t-elif="has_list_view">
+            <t t-call="website_base.simulate_products_list_view"/>
+        </t>
+        <t t-else="">
+            <t t-call="website_base.simulate_products_table_view"/>
+        </t>
     </template>
 
     <!-- Offer Detail -->

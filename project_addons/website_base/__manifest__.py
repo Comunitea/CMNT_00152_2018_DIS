@@ -33,15 +33,15 @@
     },
     'depends': [
         'base',
-        'website_sale',
-        'ecommerce_base',
-        'website_seo_settings',
-        'breadcrumbs_base_tmp',
+        'base_tier_validation',
         'sale_order_lock',
         'product_supplierinfo_for_customer',
+        'website',
+        'website_sale',
         'website_sale_checkout_skip_payment',
-        'website_sale_wishlist',
-        'base_tier_validation'
+        # Custom
+        'website_seo_settings',
+        # Website Dismac
     ],
     'data': [
         'templates/head.xml',

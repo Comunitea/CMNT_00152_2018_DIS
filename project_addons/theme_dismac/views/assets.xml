@@ -16,6 +16,8 @@
             <link href="/theme_dismac/static/css/quote.less" rel="stylesheet" type="text/less"/>
             <link href="/theme_dismac/static/css/shop.less" rel="stylesheet" type="text/less"/>
 
+            <link href="/theme_dismac/static/scss/shop.scss" rel="stylesheet" type="text/scss"/>
+
             <!-- Theme Common -->
 <!--            <link rel="stylesheet" type="text/scss" href="/theme_common/static/src/scss/s_discount.scss"/>-->
         </xpath>

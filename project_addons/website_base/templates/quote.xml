@@ -199,7 +199,7 @@
             <t t-set="additional_title" t-else="">Presupuesto <t t-esc="current_quote.id"/></t>
             <div id="wrap" class="js_sale">
                 <div class="oe_structure" id="oe_structure_website_sale_products_1"/>
-                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.layout_website').active else 'py-4'}">
+                <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('website_breadcrumb_extend.layout_website').active else 'py-4'}">
                     <div class="products_pager form-inline justify-content-center">
                         <form t-attf-action="/presupuestos" role="search" method="get">
                             <t t-call="website.website_search_box" />

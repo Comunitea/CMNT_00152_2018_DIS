@@ -1,0 +1,26 @@
+// Responsive product grid
+#products_grid.products_grid_responsive {
+    // Product container
+    & .oe_product {
+        // Product Item
+        & .oe_product_cart {
+            & .oe_product_image {
+                bottom: 3rem !important;
+                & img {
+                    margin: auto !important;
+                    max-height: 85% !important;
+                }
+            }
+        }
+    }
+}
+
+#products_grid {
+    & .products_grid_responsive {
+        @extend #products_grid.products_grid_responsive;
+    }
+}
+
+#product_detail .css_quantity {
+    margin-top: 16px;
+}

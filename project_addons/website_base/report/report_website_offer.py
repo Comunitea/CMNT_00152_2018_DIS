@@ -62,8 +62,8 @@ class WebsiteOffer(models.Model):
 
                     select pt.id as model_id, 
                     pt.name as name, 
-                    pt.description_short as description_short, 
-                    pt.description_full as description_full, 
+                    pt.website_description_short as description_short, 
+                    pt.website_description as description_full, 
                     pt.website_id as website_id,
                     ppcpt.product_public_category_id as product_public_category_id,
                     'product.template' AS odoo_model,

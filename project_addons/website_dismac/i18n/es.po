@@ -306,11 +306,6 @@ msgid "Sales Order Portal Content Website Dismac"
 msgstr ""
 
 #. module: website_dismac
-#: model:ir.ui.view,name:website_dismac.website_logo_add_logo_to_website
-msgid "Show website Logo Base"
-msgstr ""
-
-#. module: website_dismac
 #: model_terms:ir.ui.view,arch_db:website_dismac.website_sale_product
 msgid "Si desea añadir este producto a una petición de presupuesto especial, pulse"
 msgstr ""
@@ -414,11 +409,6 @@ msgstr ""
 #. module: website_dismac
 #: model_terms:ir.ui.view,arch_db:website_dismac.acceptance_full_legal_terms_with_check
 msgid "política de privacidad"
-msgstr ""
-
-#. module: website_dismac
-#: model_terms:ir.ui.view,arch_db:website_dismac.website_logo_add_logo_to_website
-msgid "website.name"
 msgstr ""
 
 #. module: website_dismac

@@ -12,19 +12,6 @@
         </field>
     </record>
 
-
-    <!-- Create new product ribbon for novelties-->
-    <record id="image_novel" model="product.style">
-        <field name="name">Novedad</field>
-        <field name="html_class">oe_ribbon_novel</field>
-    </record>
-
-    <!-- Override product ribbon for offers-->
-    <record id="website_sale.image_promo" model="product.style">
-        <field name="name">Oferta</field>
-        <field name="html_class">oe_ribbon_promo</field>
-    </record>
-
     <!-- Product Public Categories -->
     <record id="website_public_category_tree" model="ir.ui.view">
         <field name="name">Website category tree</field>

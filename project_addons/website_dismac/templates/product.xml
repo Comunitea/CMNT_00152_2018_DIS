@@ -7,27 +7,27 @@
             <t t-set="show_list" t-value="True" />
         </xpath>
         <!-- Adapt infinity scroll to custom seo url slug for categories in list view -->
-        <xpath expr="//div[hasclass('sgeede-infinite-pagination')]" position="before">
-            <t t-set="url" t-value="'/category/%s' % category.slug if category.slug else '/shop/category/%s' % slug(category)"/>
-            <t t-set="page" t-value="pager['page_next']['num']"/>
-            <t t-set="page_url" t-value="url+'/page/'+str(page)"/>
-        </xpath>
-        <xpath expr="//div[hasclass('sgeede-infinite-pagination')]/t/a" position="attributes">
-            <attribute name="t-att-href">page_url</attribute>
-        </xpath>
+<!--        <xpath expr="//div[hasclass('sgeede-infinite-pagination')]" position="before">-->
+<!--            <t t-set="url" t-value="'/category/%s' % category.slug if category.slug else '/shop/category/%s' % slug(category)"/>-->
+<!--            <t t-set="page" t-value="pager['page_next']['num']"/>-->
+<!--            <t t-set="page_url" t-value="url+'/page/'+str(page)"/>-->
+<!--        </xpath>-->
+<!--        <xpath expr="//div[hasclass('sgeede-infinite-pagination')]/t/a" position="attributes">-->
+<!--            <attribute name="t-att-href">page_url</attribute>-->
+<!--        </xpath>-->
     </template>
 
-    <template id="sgeede_infinite_scroll_products_infinite_scroll" inherit_id="sgeede_infinite_scroll.products_infinite_scroll" name="SGEEDE Infinite Scroll Dismac">
-        <!-- Adapt infinity scroll to custom seo url slug for categories in table view -->
-        <xpath expr="//tr[hasclass('sgeede-infinite-pagination')]" position="before">
-            <t t-set="url" t-value="'/category/%s' % category.slug if category.slug else '/shop/category/%s' % slug(category)"/>
-            <t t-set="page" t-value="pager['page_next']['num']"/>
-            <t t-set="page_url" t-value="url+'/page/'+str(page)"/>
-        </xpath>
-        <xpath expr="//tr[hasclass('sgeede-infinite-pagination')]//t//td//a" position="attributes">
-            <attribute name="t-att-href">page_url</attribute>
-        </xpath>
-    </template>
+<!--    <template id="sgeede_infinite_scroll_products_infinite_scroll" inherit_id="sgeede_infinite_scroll.products_infinite_scroll" name="SGEEDE Infinite Scroll Dismac">-->
+<!--        &lt;!&ndash; Adapt infinity scroll to custom seo url slug for categories in table view &ndash;&gt;-->
+<!--        <xpath expr="//tr[hasclass('sgeede-infinite-pagination')]" position="before">-->
+<!--            <t t-set="url" t-value="'/category/%s' % category.slug if category.slug else '/shop/category/%s' % slug(category)"/>-->
+<!--            <t t-set="page" t-value="pager['page_next']['num']"/>-->
+<!--            <t t-set="page_url" t-value="url+'/page/'+str(page)"/>-->
+<!--        </xpath>-->
+<!--        <xpath expr="//tr[hasclass('sgeede-infinite-pagination')]//t//td//a" position="attributes">-->
+<!--            <attribute name="t-att-href">page_url</attribute>-->
+<!--        </xpath>-->
+<!--    </template>-->
 
     <template id="website_sale_products_item" name="Products Item Dismac" inherit_id="website_sale.products_item">
         <!-- Set price not by product template -->
@@ -74,20 +74,20 @@
     </template>
 
     <template id="website_sale_products_categories" inherit_id="website_sale.products_categories" name="eCommerce Categories Dismac">
+        <!-- Add Categories Title -->
+        <xpath expr="//ul" position="before">
+            <h5 class="text-uppercase grid-before-categ"><strong>Categorías</strong></h5>
+        </xpath>
         <xpath expr="//ul" position="attributes">
             <attribute name="class" add="menu-category" separator=" "/>
         </xpath>
         <xpath expr="//ul//li//a" position="replace">
             <a t-att-href="keep('/shop', category=0)"
                t-attf-class="pt8 text-uppercase nav-link#{'' if category or product_category and product_category.category_id else ' active mb4 pl-2 pr-2'} o_not_editable">Todos los productos</a>
-
         </xpath>
-    </template>
-
-    <template id="website_seo_settings_website_sale_products_categories" inherit_id="website_seo_settings.website_sale_products_categories" name="eCommerce Categories Seo">
-        <!-- Add Categories Title -->
-        <xpath expr="//h5" position="replace">
-            <h5 class="text-uppercase grid-before-categ"><strong>Categorías</strong></h5>
+        <!-- Avoid external responsive categories -->
+        <xpath expr="//div[@id='products_grid_before_responsive_content']" position="attributes">
+            <attribute name="class">d-none</attribute>
         </xpath>
     </template>
 
@@ -123,6 +123,7 @@
     <template id="website_sale_option_collapse_products_categories" name="Collapsible Category List Dismac" inherit_id="website_sale.option_collapse_products_categories">
         <xpath expr="//ul" position="attributes">
             <attribute name="id">o_shop_collapse_category_custom</attribute>
+            <attribute name="class">nav nav-pills flex-column menu-category</attribute>
         </xpath>
         <xpath expr="//t[@t-call='website_sale.option_collapse_categories_recursive']" position="attributes">
             <attribute name="t-if">categ.website_published</attribute>
@@ -135,23 +136,42 @@
                 <h6 t-esc="product.public_categ_ids[0].parent_id.name if product.public_categ_ids and product.public_categ_ids[0].parent_id else product.public_categ_ids[0].name if product.public_categ_ids and product.public_categ_ids[0] else 'Producto'"/>
                 <h4><span t-esc="product.public_categ_ids[0].name if product.public_categ_ids and product.public_categ_ids[0] else product.name"/></h4>
             </div>
-        
+            <!-- Make work seo responsive view -->
+            <t t-set="has_responsive_view" t-value="request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active"/>
         </xpath>
 
         <xpath expr="//h1[@itemprop='name']" position="replace">
-            <h2 itemprop="name" t-field="product.name">Product Name</h2>
-            <div class="product_details-sku" t-if="product.default_code">
-                <hr t-if="product.default_code"/>
-                <strong>SKU: </strong><span itemprop="sku" t-esc="product.default_code"/>
-                <hr t-if="product.catalogue_code"/>
-                <strong>Referencia: </strong><span itemprop="code" t-esc="product.catalogue_code"/>
-            </div>
-            <div class="o_not_editable" t-if="product.description_sale">
-                <hr t-if="product.description_sale" />
-                <p t-field="product.description_sale" class="text-muted" />
-            </div>
-            <hr/>
+            <!-- Make work seo responsive view -->
+            <t t-if="not has_responsive_view">
+                <h2 itemprop="name" t-field="product.name">Product Name</h2>
+                <div class="product_details-sku" t-if="product.default_code">
+                    <hr t-if="product.default_code"/>
+                    <strong>SKU: </strong><span itemprop="sku" t-esc="product.default_code"/>
+                    <hr t-if="product.catalogue_code"/>
+                    <strong>Referencia: </strong><span itemprop="code" t-esc="product.catalogue_code"/>
+                </div>
+                <div class="o_not_editable" t-if="product.description_sale">
+                    <hr t-if="product.description_sale" />
+                    <p t-field="product.description_sale" class="text-muted" />
+                </div>
+                <hr/>
+            </t>
         </xpath>
+
+        <!-- Add product name on seo responsive view -->
+        <xpath expr="//div[@id='product_details']/preceding-sibling::div" position="before">
+            <div class="row" t-if="has_responsive_view">
+                <div class="col-12 text-center mt-4 mb-4">
+                    <h2 itemprop="name" t-field="product.name">Product Name</h2>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- Add catalogue_code on seo responsive view -->
+        <xpath expr="//div[@id='product_details']//t[@t-call='website_sale.product_price']" position="after" t-if="has_responsive_view">
+            <h4 itemprop="code" class="oe_price_h4 mt-3"><span><strong contenteditable="false">Referencia: </strong></span><span t-field="product.catalogue_code"/></h4>
+        </xpath>
+
         <xpath expr="//a[@id='add_to_cart']" position="after">
             <t t-set="current_quote" t-value="request.env['sale.quote'].get_current_quote()" />
             <a type="button" role="button" t-att-href="'/presupuestos?add_product=%s' % product.id"
@@ -192,7 +212,7 @@
     <template id="website_sale_products" name="Products Dismac" inherit_id="website_sale.products">
         <!-- Set padding by breadcrumbs bar -->
         <xpath expr="//div[hasclass('container', 'py-2', 'oe_website_sale')]" position="attributes">
-            <attribute name="t-attf-class">container oe_website_sale #{'py-2' if request.website.viewref('breadcrumbs_base_tmp.layout_website').active else 'py-4'}</attribute>
+            <attribute name="t-attf-class">container oe_website_sale #{'py-2' if request.website.viewref('website_breadcrumb_extend.layout_website').active else 'py-4'}</attribute>
         </xpath>
 
         <!-- Toggler button -->
@@ -205,11 +225,11 @@
         </xpath>
         
         <xpath expr="//div[@id='products_grid_before']" position="attributes">
-            <attribute name="t-attf-class">#{'col-lg-3 d-md-block collapse' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'd-none'}</attribute>
+            <attribute name="t-attf-class">#{'col-lg-3 d-md-block collapse' if request.website.viewref('website_sale.products_categories').active else 'd-none'}</attribute>
         </xpath>
 
         <!-- Set dynamic title by content -->
-        <xpath expr="//div[@id='products_grid']/table" position="before">
+        <xpath expr="//div[@id='products_grid']/child::*" position="before">
             <!-- Product list head -->
             <div class="simulated-product-title mt16 mb32">
                 <t t-if="list_type and list_type == 'pricelist'">

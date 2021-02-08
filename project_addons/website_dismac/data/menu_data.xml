@@ -23,15 +23,15 @@
             <field name="user_not_logged">False</field>
         </record>
 
-        <record id="website_sale.menu_shop" model="website.menu">
-            <field name="name">Shop</field>
-            <field name="url">/shop</field>
-            <field name="parent_id" ref="website.main_menu"/>
-            <field name="sequence" type="int">20</field>
-            <field name="website_id" ref="website.default_website"/>
-            <field name="user_logged">True</field>
-            <field name="user_not_logged">True</field>
-        </record>
+<!--        <record id="website_sale.menu_shop" model="website.menu">-->
+<!--            <field name="name">Shop</field>-->
+<!--            <field name="url">/shop</field>-->
+<!--            <field name="parent_id" ref="website.main_menu"/>-->
+<!--            <field name="sequence" type="int">20</field>-->
+<!--            <field name="website_id" ref="website.default_website"/>-->
+<!--            <field name="user_logged">True</field>-->
+<!--            <field name="user_not_logged">True</field>-->
+<!--        </record>-->
 
         <record id="menu_pricelist" model="website.menu">
             <field name="name">Tarifas</field>

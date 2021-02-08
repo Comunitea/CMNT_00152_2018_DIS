@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Dismac Theme',
-    'version': '1.0',
+    'version': '12.0.0.0.0',
     'summary': 'Frontend customization for Dismac Website',
     'description': '',
     'category': 'Theme/Ecommerce',
@@ -12,9 +12,11 @@
         'Rubén Seijas <ruben@comunitea.com>',
     ],
     'depends': [
+        'web',
+        'website',
+        'website_theme_install',
         'theme_common',
         'website_animate',
-        'breadcrumbs_base_tmp',
         'muk_website_scroll_up',
     ],
     'data': [

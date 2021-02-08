@@ -122,6 +122,7 @@ class SimulateProductController(http.Controller):
                   'categories': all_categories,
                   'category': public_category,
                   'offer_categories': offer_categories,
+                  'products': bins_table,
                   'search': search,
                   'search_count': search_count,
                   'pager': pager,

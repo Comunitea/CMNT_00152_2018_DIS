@@ -122,7 +122,7 @@ class WebsiteSale(WebsiteSale):
             for srch in search.split(" "):
                 domain += [
                     '|', '|', '|', ('catalogue_code', '%>', srch), ('name', '%>', srch),
-                    ('description_short', 'ilike', srch), ('default_code', '%>', srch)]
+                    ('website_description_short', 'ilike', srch), ('default_code', '%>', srch)]
 
         if category:
             domain += [('public_categ_ids', 'child_of', int(category))]
@@ -197,14 +197,14 @@ class WebsiteSale(WebsiteSale):
                 if ini_str == False:
                     order += " + "
                 order += "coalesce(word_similarity(product_template.catalogue_code, '%s'),0)  +coalesce(word_similarity(product_template.name, '%s'), 0) \
-                            + coalesce(word_similarity(product_template.description_short, '%s'), 0)  +coalesce(word_similarity(product_template.default_code, '%s'), 0)" % (srch, srch, srch, srch)
+                            + coalesce(word_similarity(product_template.website_description_short, '%s'), 0)  +coalesce(word_similarity(product_template.default_code, '%s'), 0)" % (srch, srch, srch, srch)
                 ini_str= False
             order += ") DESC"
             print(order)
             return order
         print ("ORDEN NORMAL !!!!!!!!!!!!!!!!!!!!!")
         print(post)
-        return '%s ,description_short desc, id desc' % post.get('order', 'website_sequence desc')
+        return '%s ,website_description_short desc, id desc' % post.get('order', 'website_sequence desc')
 
     def recalculate_product_list(self, list_type=None, page=0, category=None, search='', ppg=False, **post):
         res = super(WebsiteSale, self).shop(page=page, category=category, search=search, ppg=ppg, **post)
