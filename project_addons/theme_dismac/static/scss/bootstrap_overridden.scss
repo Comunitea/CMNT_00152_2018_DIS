@@ -1,0 +1,21 @@
+// ------------------------------------------------------------------------
+// Variables to access via bootstrap_overriden file
+// ------------------------------------------------------------------------
+
+// Colors
+$primary: #006bb6;
+$body-bg: #fff;
+
+// Tables
+$table-head-color: $body-bg;
+$table-head-bg: $primary;
+$table-border-color: $primary;
+
+// Breadcrumb wrap container
+$breadcrumbs-wrap-color-bg: $body-bg;
+$breadcrumb-active-color: #777777;
+$breadcrumbs-wrap-margin-bottom: 0.5rem;
+
+// Header Top Menu
+$header-nav-link-text-transform: unset;
+$header-nav-link-affixed-text-transform: unset;

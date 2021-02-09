@@ -1,0 +1,39 @@
+// Portal content
+#wrapwrap.o_portal {
+    color: $primary !important;
+    background-color: $body-bg !important;
+    & .text-muted {
+        color: $body-bg !important;
+    }
+}
+
+.o_portal_wrap {
+    // Table header
+    & .table.bg-white > thead > tr, .card-header {
+        color: $body-bg !important;
+        background-color: $primary !important;
+    }
+    // Document header
+    & .o_portal_navbar {
+        & .navbar-brand {
+            color: $primary;
+            font-size: $h2-font-size;
+        }
+    }
+}
+
+// Side bar on documents
+.o_portal_sidebar {
+    #sidebar_content.card {
+        > div.card-body {
+            border-top: $border-width solid $border-color;
+            border-right: $border-width solid $border-color;
+        }
+        > ul > li {
+            border: $border-width solid $border-color; // border-left: $border-width solid $border-color;
+        }
+        > div.card-footer {
+            border-left: unset; // $$border-width solid $border-color;
+        }
+    }
+}
