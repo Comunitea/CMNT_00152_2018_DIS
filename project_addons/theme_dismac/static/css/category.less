@@ -24,6 +24,23 @@ div#products_grid_before {
     }
     // Content
     ul#o_shop_collapse_category_custom {
+        width: 100%;
+        & .category-menu-img {
+            margin: 0.5rem;
+        }
+        & .category-menu-name {
+            margin-top: 0.8rem;
+            margin-left: 0.3rem
+        }
+        & li.nav-item > ul.parent-category {
+            border: unset;
+            border-left: unset;
+            margin-left: 0;
+            & li.nav-item {
+                border: unset;
+                min-height: 0px;
+            }
+        }
         // All categories
         font-size: 0.700rem;
         font-weight: lighter;

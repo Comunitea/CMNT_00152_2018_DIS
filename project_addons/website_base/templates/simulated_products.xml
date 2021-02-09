@@ -11,14 +11,14 @@
                 <div t-attf-class="container oe_website_sale #{'py-2' if request.website.viewref('website_breadcrumb_extend.layout_website').active else 'py-4'}">
                     <!-- Searchbox and related buttons -->
                     <div class="products_pager form-inline justify-content-center">
-                        <form t-attf-action="#{url_simulated_products}" role="search" method="get" class="o_website_sale_search">
-                            <t t-call="website.website_search_box" />
+                        <form t-attf-action="#{url_simulated_products}" role="search" method="get" class="o_website_sale_search mt-2">
+                            <t t-call="website.website_search_box"/>
                         </form>
                         <t t-call="website_sale.pricelist_list">
                             <t t-set="_classes">ml-2</t>
                         </t>
                         <t t-call="website.pager">
-                            <t t-set="_classes">ml-2</t>
+                            <t t-set="_classes">ml-2 mt-2</t>
                         </t>
                         <div type="button" id="products_grid_before_toggle" data-toggle="collapse" data-target="#products_grid_before" class="dropdown ml-2 d-block d-md-none ml8 full collapsed">
                             <button class="btn btn-secondary">
@@ -32,7 +32,7 @@
                         <!-- Set lateral categories menu for products grid -->
                         <t t-set="menu_categories" t-value="'col-lg-9 mt16 mb32' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'col-lg-12 mb32'"/>
                         <!-- Categories lateral menu -->
-                        <div t-att-class="'col-lg-3 d-md-block collapse' if request.env['ir.ui.view'].search([('key', '=', 'website_sale.products_categories'), ('website_id', '=', request.website.id)]).active else 'd-none'"
+                        <div t-att-class="'col-lg-3 d-md-block collapse' if request.website.viewref('website_sale.products_categories').active else 'd-none'"
                              id="products_grid_before"/>
                         <!-- Products with or without SGEEDE Infinite Scroll and lateral categories menu-->
 <!--                        <div t-attf-class="#{menu_categories} #{infinity_scroll}" id="products_grid"/>-->
@@ -51,27 +51,27 @@
     <!-- Show collapsed categories and Catch not published categories if their child are published -->
     <template id="simulate_option_collapse_categories_recursive" name="Simulate Collapse Category Recursive Base">
         <li class="nav-item">
-            <div class="category-menu-img float-left">
-                <img class="img img-responsive" t-attf-src="/website/image/product.public.category/{{c.id}}/image/45x45" t-att-alt="c.name"/>
-            </div>
-            <div class="category-menu-name float-left ml-2">
+<!--            <div class="category-menu-img ">-->
+                <img class="img img-responsive category-menu-img" t-attf-src="/website/image/product.public.category/{{c.id}}/image/45x45" t-att-alt="c.name"/>
+<!--            </div>-->
+            <div class="category-menu-name">
                 <i t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))"
                    t-attf-class="text-primary fa #{'fa-chevron-down' if c.id in parent_category_ids else 'fa-chevron-right'}"
                    t-attf-title="#{'Unfold' if c.id in parent_category_ids else 'Fold'}"
                    t-attf-aria-label="#{'Unfold' if c.id in parent_category_ids else 'Fold'}" role="img"/>
                 <a t-att-href="keep('/category/%s' % c.slug if c.slug else '/shop/category/%s' % slug(c), category=0)" t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))"
-                   t-attf-class="pt4 pb0 text-uppercase nav-link#{' active mb4 pl-2' if c.id == int(category or 0) or (product and product.public_categ_ids and c.id in product.public_categ_ids.mapped('id')) else ''}">
+                   t-attf-class="text-uppercase nav-link#{' active pt4 pb4 pl-2 pr-2' if c.id == int(category or 0) or (product and product.public_categ_ids and c.id in product.public_categ_ids.mapped('id')) else ''}">
                     <strong t-esc="c.name"/>
                 </a>
                 <a t-att-href="keep('/category/%s' % c.slug if c.slug else '/shop/category/%s' % slug(c), category=0)" t-else=""
-                   t-attf-class="pt4 pb0 text-uppercase nav-link#{' active mb4 pl-2' if c.id == int(category or 0) or (product and product.public_categ_ids and c.id in product.public_categ_ids.mapped('id')) else ''}"
+                   t-attf-class="text-uppercase nav-link#{' active pt4 pb4 pl-2 pr-2' if c.id == int(category or 0) or (product and product.public_categ_ids and c.id in product.public_categ_ids.mapped('id')) else ''}"
                    t-esc="c.name"/>
             </div>
             <ul t-if="c.child_id and (c.child_id.filtered(lambda x: x.website_published if x.website_published is True else False))"
-                class="nav nav-pills flex-column nav-hierarchy parent-category"
+                class="nav nav-pills nav-hierarchy flex-row parent-category"
                 t-att-style="'display:block;' if c.id in parent_category_ids or product_category and product_category.category_id in parent_category_ids else 'display:none;'">
-                <t t-foreach="c.child_id" t-as="c">
-                    <t t-call="website_base.simulate_option_collapse_categories_recursive" t-if="c.website_published"/>
+                <t t-foreach="c.child_id" t-as="categ">
+                    <t t-call="website_sale.option_collapse_categories_recursive" t-if="categ.website_published"/>
                 </t>
             </ul>
         </li>
@@ -118,7 +118,7 @@
                 (name_desc_label, 'name desc')
             ]"/>
             <t t-set="sortable_current" t-value="[sort for sort in website_sale_sortable if sort[1]==request.params.get('order', '')]"/>
-            <div class="dropdown ml-2 dropdown_sorty_by">
+            <div class="dropdown ml-2 mt-2 dropdown_sorty_by">
                 <a role="button" href="#" class="dropdown-toggle btn btn-secondary" data-toggle="dropdown">
                     <t t-if='len(sortable_current)'>
                         <span>Ordenado por: <t t-raw='sortable_current[0][0]'/></span>

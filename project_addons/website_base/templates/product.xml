@@ -46,8 +46,14 @@
     <template id="website_sale_products_pricelist" name="Product Dismac Pricelist" inherit_id="website_sale.products">
         <xpath expr="//t[@t-call='website_sale.search']" position="after">
             <t t-if="list_type and list_type == 'pricelist'" t-call="website_base.website_sale_search_pricelist">
-                <t t-set="_classes">o_website_sale_search</t>
+                <t t-set="_classes">o_website_sale_search ml-2 mt-2</t>
             </t>
+        </xpath>
+    </template>
+
+    <template id="website_sale_search" inherit_id="website_sale.search" name="Search Box Seo">
+        <xpath expr="//form" position="attributes">
+            <attribute name="t-att-class">'o_website_sale_search mt-2'</attribute>
         </xpath>
     </template>
 
@@ -74,7 +80,7 @@
                 (name_desc_label, 'name desc')
             ]"/>
             <t t-set="website_sale_sortable_current" t-value="[sort for sort in website_sale_sortable if sort[1]==request.params.get('order', '')]"/>
-            <div class="dropdown ml-2 dropdown_sorty_by">
+            <div class="dropdown ml-2 mt-2 dropdown_sorty_by">
                 <a role="button" href="#" class="dropdown-toggle btn btn-secondary" data-toggle="dropdown">
                     <t t-if='len(website_sale_sortable_current)'>
                         <span>Sorting by : <t t-raw='website_sale_sortable_current[0][0]'/></span>
