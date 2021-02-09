@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Demo Tab Configurations: Start -->
+        <record id="marca_1" model="product.brand">
+            <field name="name">Bic</field>
+            <field type="base64" file="dismac_ecommerce/static/src/img/marcas/marca1.gif" />
+            <field name="active" eval="True" />
+        </record>
+        <record id="marca_2" model="product.brand">
+            <field name="name">Pergamy</field>
+            <field type="base64" file="dismac_ecommerce/static/src/img/marcas/marca2.gif" />
+            <field name="active" eval="True" />
+        </record>
+        <record id="marca_3" model="product.brand">
+            <field name="name">Aply</field>
+            <field type="base64" file="dismac_ecommerce/static/src/img/marcas/marca3.gif" />
+            <field name="active" eval="True" />
+        </record>
+        <record id="marca_4" model="product.brand">
+            <field name="name">Horse</field>
+            <field type="base64" file="dismac_ecommerce/static/src/img/marcas/marca4.gif" />
+            <field name="active" eval="True" />
+        </record>
+
+        <!-- Website products per page  -->
+        <record id="product_qty_per_page_1" model="product.qty_per_page">
+            <field name="name">12</field>
+        </record>
+
+        <record id="product_qty_per_page_2" model="product.qty_per_page">
+            <field name="name">15</field>
+        </record>
+
+        <record id="product_qty_per_page_3" model="product.qty_per_page">
+            <field name="name">18</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Delete default menus -->
+        <delete id="website.menu_home" model="website.menu"/>
+        <delete id="website.menu_shop" model="website.menu"/>
+        <delete id="website.menu_contactus" model="website.menu"/>
+        <delete id="website.main_menu" model="website.menu"/>
+
+        <!-- Delete default Pages -->
+        <delete id="website.homepage_page" model="website.page"/>
+        <delete id="website.aboutus_page" model="website.page"/>
+        <delete id="website.contactus_page" model="website.page"/>
+        <delete id="website_crm.contactus_thanks" model="website.page"/>
+        <!-- Delete Legal Pages -->
+        <delete id="website_legal_page.advise_page" model="website.page"/>
+        <delete id="website_legal_page.privacy_page" model="website.page"/>
+        <delete id="website_legal_page.terms_page" model="website.page"/>
+
+        <!--Delete default website-->
+        <delete id="website.default_website" model="website"/>
+
+    </data>
+</odoo>

@@ -284,6 +284,9 @@
     }
     .o_dismac_middle_menu_closebtn {
         display: block !important;
+        ul li a {
+            color: $dark;
+        }
     }
     .middle-header-bar {
         .h-search {

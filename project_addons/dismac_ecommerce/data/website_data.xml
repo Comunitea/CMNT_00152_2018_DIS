@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!--Create Website Dismac -->
+        <record id="dismac_ecommerce" model="website">
+            <field name="name">Ecommerce Dismac</field>
+            <field name="domain">dismac.es</field>
+            <field name="canonical_domain">https://dismac.es</field>
+            <field name="favicon" type="base64" file="dismac_ecommerce/static/src/img/favicon/favicon.ico" />
+            <field name="logo" type="base64" file="dismac_ecommerce/static/src/img/logo-dismac.png" />
+            <field name="social_youtube">https://www.youtube.com/channel/UCUtHfBLaOOs1f1nFtCKVr5g/</field>
+            <field name="social_facebook">https://www.facebook.com/DISMACMOBILIARIO</field>
+            <field name="social_linkedin">https://www.linkedin.com/company/dismac</field>
+            <field name="social_default_image" type="base64" file="dismac_ecommerce/static/src/img/logo-dismac-b.png" />
+            <field name="base_url">https://dismac.es</field>
+            <field name="specific_user_account">True</field>
+            <field name="is_breadcum">True</field>
+            <field name="auth_signup_uninvited">b2c</field>
+            <field name="show_line_subtotals_tax_selection">tax_included</field>
+            <field name="group_activity_statement">True</field>
+            <field name="default_aging_type">days</field>
+            <field name="email">info@dismac.es</field>
+            <field name="website_form_enable_metadata">True</field>
+        </record>
+    </data>
+</odoo>

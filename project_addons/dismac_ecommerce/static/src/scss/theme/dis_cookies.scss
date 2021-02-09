@@ -7,6 +7,16 @@
     z-index: 9999;
     border: none;
     a {
+        color: $white;
+    }
+}
+.acceptance_full {
+    font-size: small;
+    a {
         color: $as-theme;
+        padding: none;
+        text-decoration: none;
+        display: inline;
+        transition: 0.3s;
     }
 }

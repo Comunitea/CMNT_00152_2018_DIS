@@ -8,8 +8,7 @@ from odoo.addons.website_sale.controllers.main import WebsiteSale
 from odoo.addons.website_sale.controllers.main import TableCompute
 from odoo.addons.website_sale.controllers.main import QueryURL
 from odoo.addons.website_sale.controllers import main
-from odoo.addons.website.controllers.main import Website
-from odoo.addons.web_editor.controllers.main import Web_Editor
+
 import math
 import os
 import base64
@@ -20,130 +19,6 @@ main.PPG = 18
 PPG=main.PPG
 import logging
 _logger = logging.getLogger(__name__)
-
-
-class Web_Editor(Web_Editor):
-
-    @http.route("/web_editor/save_scss", type="json", auth="user", website=True)
-    def save_scss(self, url, bundle_xmlid, content):
-        IrAttachment = request.env["ir.attachment"]
-
-        if url != '/dismac_ecommerce/static/src/scss/options/colors/color_picker.scss':
-            return super(Web_Editor, self).save_scss(url,bundle_xmlid,content)
-
-
-
-        # Check if the file to save had already been modified
-
-        datas = base64.b64encode((content or "\n").encode("utf-8"))
-        custom_url = '/dismac_ecommerce/static/src/scss/options/colors/color_picker'+str(request.website.id)+'.scss'
-
-
-        custom_attachment = self.get_custom_attachment(custom_url)
-
-        if custom_attachment:
-            # If it was already modified, simply override the corresponding attachment content
-            custom_attachment.write({"datas": datas})
-        else:
-            # If not, create a new attachment to copy the original scss file content, with its modifications
-            new_attach = {
-                'name': custom_url,
-                'type': "binary",
-                'mimetype': "text/scss",
-                'datas': datas,
-                'datas_fname': url.split("/")[-1],
-                'url': custom_url,
-            }
-            new_attach.update(self.save_scss_attachment_hook())
-            IrAttachment.create(new_attach)
-
-            # Create a view to extend the template which adds the original file to link the new modified version instead
-            IrUiView = request.env["ir.ui.view"]
-
-            def views_linking_url(view):
-                """
-                Returns whether the view arch has some html link tag linked to the url.
-
-                (note: searching for the URL string is not enough as it could appear in a comment or an xpath expression.)
-                """
-                return bool(etree.XML(view.arch).xpath("//link[@href='{}']".format(url)))
-
-            view_to_xpath = IrUiView.get_related_views(bundle_xmlid, bundles=True).filtered(views_linking_url)
-
-            new_view = {
-                'name': custom_url,
-                'key': 'web_editor.scss_%s' % str(uuid.uuid4())[:6],
-                'mode': "extension",
-                'inherit_id': view_to_xpath.id,
-                'arch': """
-                    <data inherit_id="%(inherit_xml_id)s" name="%(name)s">
-                        <xpath expr="//link[@href='%(url_to_replace)s']" position="attributes">
-                            <attribute name="href">%(new_url)s</attribute>
-                        </xpath>
-                    </data>
-                """ % {
-                    'inherit_xml_id': view_to_xpath.xml_id,
-                    'name': custom_url,
-                    'url_to_replace': url,
-                    'new_url': custom_url,
-                }
-            }
-            new_view.update(self.save_scss_view_hook())
-            IrUiView.create(new_view)
-
-        request.env["ir.qweb"].clear_caches()
-
-class Website(Website):
-
-    @http.route('/update_scss_file', type='json', auth='public', website=True)
-    def update_file(self, **kw):
-        context = dict(request.context)
-        if kw['write_str']:
-            module_str = '/'.join((os.path.realpath(__file__)).split('/')[:-2])
-            file_url = module_str + '/static/src/scss/options/colors/website_'+str(request.website.id)+'_color_picker.scss'
-            f = open(module_str + '/static/src/scss/options/colors/website_'+str(request.website.id)+'_color_picker.scss', 'w+')
-            f.write(kw['write_str'])
-            f.close();
-            _logger.info("Color scss updated")
-        return request.env["ir.qweb"]._get_asset('website.assets_frontend',options=context,css=True)
-
-    @http.route()
-    def theme_customize(self, enable, disable, get_bundle=True):
-        """ enable or Disable lists of ``xml_id`` of the inherit templates """
-        def set_active(ids, active):
-            if ids:
-                real_ids = self.get_view_ids(ids)
-                request.env['ir.ui.view'].browse(real_ids).write({'active': active})
-
-        set_active(disable, False)
-        set_active(enable, True)
-        template = ''
-        context = dict(request.context)
-        if enable:
-            for i in enable:
-                if i.startswith('dismac_ecommerce.header_layout_'):
-                     if  not i.endswith('_css'):
-                         templ = i+'_css'
-                         views = request.env['ir.ui.view'].search([('key','ilike','dismac_ecommerce.header_layout_')])
-                         for v in views:
-                            if v.key.endswith('_css'):
-                                set_active([v.key], False)
-                         set_active([templ], True)
-
-                if i.startswith('dismac_ecommerce.footer_layout_'):
-                     if  not i.endswith('_css'):
-                         templ = i+'_css'
-                         views = request.env['ir.ui.view'].search([('key','ilike','dismac_ecommerce.footer_layout_')])
-                         for v in views:
-                            if v.key.endswith('_css'):
-                                set_active([v.key], False)
-                         set_active([templ], True)
-
-        if get_bundle:
-            context = dict(request.context)
-            return request.env["ir.qweb"]._get_asset('web.assets_frontend', options=context)
-
-        return True
 
 
 class WebsiteSale(WebsiteSale):

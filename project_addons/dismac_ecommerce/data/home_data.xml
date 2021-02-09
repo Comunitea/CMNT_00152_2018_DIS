@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="home_page_view" model="ir.ui.view">
+            <field name="name">Home  Page</field>
+            <field name="type">qweb</field>
+            <field name="key">website.homepage</field>
+            <field name="mode">primary</field>
+            <field name="active">True</field>
+
+            <field name="arch" type="xml">
+                <t name="Homepage" t-name="website.homepage">
+                    <t t-call="website.layout">
+                        <t t-set="pageName" t-value="'homepage'" />
+                        <div id="wrap" class="oe_structure oe_empty">
+                            <section class="theme-slider b-g-white" id="theme-slider">
+                                <div class="custom-container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="slide-1 no-arrow">
+                                                <div>
+                                                    <div class="slider-banner p-center slide-banner-1">
+                                                        <div class="slider-img">
+                                                            <ul class="layout1-slide-1">
+                                                                <li id="img-1">
+                                                                    <img src="/dismac_ecommerce/static/src/img/slider/cuadernos.png" class="img-fluid" alt="slider" />
+                                                                </li>
+                                                                <li id="img-2" class="slide-center">
+                                                                    <img src="/dismac_ecommerce/static/src/img/slider/dequa.png" class="img-fluid" alt="slider" />
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="slider-banner-contain">
+                                                            <div>
+                                                                <h2 class="o_default_snippet_text">Cuadernos Dequa</h2>
+                                                                <h3 class="o_default_snippet_text">CUADERNO CUADRICULADO DEQUA 80H FOLIO COLORES SURTIDOS</h3>
+                                                                <a class="btn btn-normal o_default_snippet_text">
+                                      Comprar ahora
+                                    </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="collection-banner section-pt-space b-g-white">
+                                <div class="custom-container">
+                                    <div class="row collection2">
+                                        <div class="col-md-4">
+                                            <div class="collection-banner-main banner-1 p-left">
+                                                <div class="collection-img">
+                                                    <img src="/dismac_ecommerce/static/src/img/collection-banner/1.jpg" class="img-fluid bg-img" alt="banner" />
+                                                </div>
+                                                <div class="collection-banner-contain">
+                                                    <div>
+                                                        <h3 class="o_default_snippet_text">material de oficina</h3>
+                                                        <div class="shop">
+                                                            <a class="o_default_snippet_text">ver ofertas</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="collection-banner-main banner-1 p-left">
+                                                <div class="collection-img">
+                                                    <img src="/dismac_ecommerce/static/src/img/collection-banner/2.jpg" class="img-fluid bg-img" alt="banner" />
+                                                </div>
+                                                <div class="collection-banner-contain">
+                                                    <div>
+                                                        <h3 class="o_default_snippet_text">material de oficina</h3>
+                                                        <div class="shop">
+                                                            <a class="o_default_snippet_text">ver ofertas</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="collection-banner-main banner-1 p-left">
+                                                <div class="collection-img">
+                                                    <img src="/dismac_ecommerce/static/src/img/collection-banner/3.jpg" class="img-fluid bg-img" alt="banner" />
+                                                </div>
+                                                <div class="collection-banner-contain">
+                                                    <div>
+                                                        <h3 class="o_default_snippet_text">entorno informático</h3>
+                                                        <div class="shop">
+                                                            <a class="o_default_snippet_text">ver ofertas</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="h1-banner">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="h1-banner-contain">
+                                                <h1 class="o_default_snippet_text">
+                                                    <strong class="o_default_snippet_text">H1 intro</strong>
+                                                    con palabras clave para la tienda
+                                                </h1>
+                                                <p class="o_default_snippet_text">
+                                Nam hendrerit pulvinar rutrum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus sodales est ante, eget efficitur diam pulvinar id.
+                              </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="s_product_slider section-pt-space o_default_snippet_text" data-snippet_type="multi" data-collection_id="1" data-collection_name="Home tabs" data-snippet_layout="horiz_tab" style="">
+                                <div class="container">
+                                    <div class="seaction-head">
+                                        <h2>Home tabs</h2>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="tqt-product-brand-slider">
+                                <div class="tqt_product_brand_slider" data-brand-count="5" data-brand-label="Nuestras marcas">
+                                    <div class="container">
+                                        <div class="shopper_brand_slider">
+                                            <div class="col-md-12">
+                                                <div class="seaction-head">
+                                                    <h2 class="o_default_snippet_text">Brands</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="banners-home b-g-white">
+                                <div class="custom-container">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-12">
+                                            <a href="#" class="banner-blue">
+                                                <img src="/dismac_ecommerce/static/src/img/banners-footer/bg-catalogos.jpg" />
+                                                <div>
+                                                    <h3 class="o_default_snippet_text">
+                                                        Descarga nuestros
+                                                        <strong class="o_default_snippet_text">catálogos</strong>
+                                                    </h3>
+                                                    <p class="o_default_snippet_text">Lorem ipsum dolor sit amet consecutur</p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12">
+                                            <a href="#" class="banner-blue">
+                                                <img src="/dismac_ecommerce/static/src/img/banners-footer/bg-blog.jpg" />
+                                                <div>
+                                                    <h3 class="o_default_snippet_text">
+                                                        Visita nuestro
+                                                        <strong class="o_default_snippet_text">blog</strong>
+                                                    </h3>
+                                                    <p class="o_default_snippet_text">Lorem ipsum dolor sit amet consecutur</p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </t>
+                </t>
+            </field>
+        </record>
+    </data>
+</odoo>

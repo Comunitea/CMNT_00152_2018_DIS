@@ -828,12 +828,15 @@ h1 {
         list-style-type: none;
     }
     .btn-logout {
-        margin-top: 2rem;
+        // margin-top: 2rem;
         border-radius: 100px !important;
         font-size: 16px;
         letter-spacing: 1px;
         font-weight: 700;
         color: $white;
+        text-align: center;
+        margin: 2rem auto;
+        width: 50%;
     }
 }
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */

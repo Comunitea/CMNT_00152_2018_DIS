@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="1">
+        <!-- Open website on install -->
+        <record id="action_website" model="ir.actions.act_url">
+            <field name="name">Website</field>
+            <field name="url">/</field>
+            <field name="target">self</field>
+        </record>
+        <record id="base.open_menu" model="ir.actions.todo">
+            <field name="action_id" ref="action_website"/>
+            <field name="state">open</field>
+        </record>
+
+        <!-- Default Menu to store module menus for new website -->
+        <record id="main_menu" model="website.menu">
+            <field name="name">Ecommerce Dismac Main Menu</field>
+            <field name="url">/ecommerce-dismac-main-menu</field>
+            <field name="sequence" type="int">0</field>
+            <field name="website_id" ref="dismac_ecommerce.dismac_ecommerce"/>
+            <field name="user_logged">False</field>
+            <field name="user_not_logged">False</field>
+        </record>
+
+        <!-- Menus -->
+        <record id="menu_shop" model="website.menu">
+            <field name="name">Inicio</field>
+            <field name="url">/</field>
+            <field name="parent_id" ref="dismac_ecommerce.main_menu"/>
+            <field name="sequence" type="int">10</field>
+            <field name="website_id" ref="dismac_ecommerce.dismac_ecommerce"/>
+            <field name="user_logged">True</field>
+            <field name="user_not_logged">True</field>
+            <field name="is_top_menu">True</field>
+            <field name="is_middle_menu">False</field>
+        </record>
+        <record id="menu_quote" model="website.menu">
+            <field name="name">Presupuestos</field>
+            <field name="url">/presupuestos</field>
+            <field name="parent_id" ref="dismac_ecommerce.main_menu"/>
+            <field name="sequence" type="int">70</field>
+            <field name="website_id" ref="dismac_ecommerce.dismac_ecommerce"/>
+            <field name="user_logged">True</field>
+            <field name="user_not_logged">False</field>
+            <field name="is_top_menu">True</field>
+            <field name="is_middle_menu">False</field>
+        </record>
+        <record id="menu_catalog" model="website.menu">
+            <field name="name">Catálogos</field>
+            <field name="url">/catalogos</field>
+            <field name="parent_id" ref="dismac_ecommerce.main_menu"/>
+            <field name="sequence" type="int">50</field>
+            <field name="website_id" ref="dismac_ecommerce.dismac_ecommerce"/>
+            <field name="user_logged">True</field>
+            <field name="user_not_logged">False</field>
+            <field name="is_top_menu">True</field>
+            <field name="is_middle_menu">False</field>
+        </record>
+        <record id="menu_contactus" model="website.menu">
+            <field name="name">Contacto</field>
+            <field name="url">/contacto</field>
+            <field name="parent_id" ref="dismac_ecommerce.main_menu"/>
+            <field name="sequence" type="int">80</field>
+            <field name="website_id" ref="dismac_ecommerce.dismac_ecommerce"/>
+            <field name="user_logged">True</field>
+            <field name="user_not_logged">True</field>
+            <field name="is_top_menu">True</field>
+            <field name="is_middle_menu">False</field>
+        </record>
+
+        <record id="menu_home_office" model="website.menu">
+            <field name="name">Home office</field>
+            <field name="url">/shop</field>
+            <field name="parent_id" ref="dismac_ecommerce.main_menu"/>
+            <field name="sequence" type="int">110</field>
+            <field name="website_id" ref="dismac_ecommerce.dismac_ecommerce"/>
+            <field name="user_logged">True</field>
+            <field name="user_not_logged">True</field>
+            <field name="is_top_menu">False</field>
+            <field name="is_middle_menu">True</field>
+        </record>
+
+        <record id="megamenu_category_listing_1" model="megamenu.content">
+            <field name="name">material_list</field>
+            <field name="active" eval="True"/>
+            <field name="main_content_type">category_list</field>
+            <field name="no_of_columns">4</field>
+            <field name="category_ids" eval="[(43, 164, 165, 166, 167, 56, 238, 240, 242, 243, 58, 247, 248, 47, 185,)]"/>
+          </record>
+
+          <record id="megamenu_demo" model="website.menu">
+            <field name="name">Material oficina</field>
+            <field name="url">#</field>
+            <field name="sequence" type="int">120</field>
+            <field name="parent_id" ref="dismac_ecommerce.main_menu"/>
+            <field name="sequence" type="int">110</field>
+            <field name="website_id" ref="dismac_ecommerce.dismac_ecommerce"/>
+            <field name="user_logged">True</field>
+            <field name="user_not_logged">True</field>
+            <field name="is_top_menu">False</field>
+            <field name="is_middle_menu">True</field>
+            <field name="is_mega_menu">True</field>
+            <field name="content_id" ref="dismac_ecommerce.megamenu_category_listing_1"/>
+          </record>
+    </data>
+</odoo>

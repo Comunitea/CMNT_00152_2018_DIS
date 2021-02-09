@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Demo Tab Configurations: Start -->
+        <record id="tab_config_1" model="multitab.configure">
+            <field name="name">Home Office</field>
+            <field name="active" eval="True" />
+        </record>
+
+        <record id="tab_config_2" model="multitab.configure">
+            <field name="name">Material de oficina</field>
+            <field name="active" eval="True" />
+        </record>
+
+        <record id="tab_config_3" model="multitab.configure">
+            <field name="name">Material escolar</field>
+            <field name="active" eval="True" />
+        </record>
+
+        <record id="tab_config_4" model="multitab.configure">
+            <field name="name">Entorno informático</field>
+            <field name="active" eval="True" />
+        </record>
+
+        <record id="tab_config_5" model="multitab.configure">
+            <field name="name">Otros</field>
+            <field name="active" eval="True" />
+        </record>
+        <!-- Demo Tab Configurations: End -->
+
+        <!-- Demo Tab Products: Start
+        <record id="tab_products_1" model="tab.products">
+            <field name="product_id" ref="64289" />
+            <field name="sequence">0</field>
+            <field name="tab_id" ref="tab_config_1" />
+        </record>
+
+        <record id="tab_products_2" model="tab.products">
+            <field name="product_id" ref="58340" />
+            <field name="sequence">0</field>
+            <field name="tab_id" ref="tab_config_1" />
+        </record>
+
+        <record id="tab_products_3" model="tab.products">
+            <field name="product_id" ref="44392" />
+            <field name="sequence">0</field>
+            <field name="tab_id" ref="tab_config_2" />
+        </record>
+
+        <record id="tab_products_4" model="tab.products">
+            <field name="product_id" ref="44393" />
+            <field name="sequence">0</field>
+            <field name="tab_id" ref="tab_config_2" />
+        </record>
+
+        <record id="tab_products_5" model="tab.products">
+            <field name="product_id" ref="55433" />
+            <field name="sequence">0</field>
+            <field name="tab_id" ref="tab_config_2" />
+        </record>
+
+        <record id="tab_products_6" model="tab.products">
+            <field name="product_id" ref="44393" />
+            <field name="sequence">0</field>
+            <field name="tab_id" ref="tab_config_3" />
+        </record>
+
+        <record id="tab_products_7" model="tab.products">
+            <field name="product_id" ref="58340" />
+            <field name="sequence">0</field>
+            <field name="tab_id" ref="tab_config_4" />
+        </record>
+        <record id="tab_products_7" model="tab.products">
+            <field name="product_id" ref="64289" />
+            <field name="sequence">0</field>
+            <field name="tab_id" ref="tab_config_5" />
+        </record>
+        <record id="tab_products_7" model="tab.products">
+            <field name="product_id" ref="55433" />
+            <field name="sequence">0</field>
+            <field name="tab_id" ref="tab_config_5" />
+        </record>
+         -->
+        <record id="home_tab_conf" model="collection.configure">
+            <field name="name">Home tabs</field>
+            <field name="active" eval="True"/>
+            <field name="tab_collection_ids" eval="[(6, 0, [ref('tab_config_1'), ref('tab_config_2'), ref('tab_config_3'), ref('tab_config_4'), ref('tab_config_5')])]"/>
+          </record>
+    </data>
+</odoo>

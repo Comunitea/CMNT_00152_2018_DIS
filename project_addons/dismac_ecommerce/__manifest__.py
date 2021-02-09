@@ -29,6 +29,12 @@
     ],
     'data': [
 		# data
+        'data/website_data.xml',
+        'data/menu_data.xml',
+        'data/tab_data.xml',
+        # 'data/brands_data.xml',
+        'data/home_data.xml',
+        # 'data/default_data.xml',
 		# views
 		'views/custom_shop.xml',
         'views/website_setting.xml',
@@ -39,8 +45,6 @@
         'views/product_category.xml',
         # 'views/product_tabs.xml',
         'views/snippet_embeded.xml',
-        
-        
         # security
         'security/ir.model.access.csv',
         # Templates

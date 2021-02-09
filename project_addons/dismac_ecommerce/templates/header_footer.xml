@@ -116,7 +116,7 @@
 
         </xpath>
     </template>
-    <!-- hace petar el movil? -->
+
     <template id="dismac_second_menu" inherit_id="website.layout" name="Secondary Dismac Menu">
         <xpath expr="//header//nav" position="replace">
             <t t-set="is_connected" t-value="not user_id._is_public()" />
@@ -427,6 +427,7 @@
             </footer> <!-- footer -->
         </xpath>
     </template>
+    <!-- MODAL LOGIN -->
     <template id="account_modal_dismac" active="True" inherit_id="website.layout">
         <xpath expr="//footer" position="before">
             <div id="myaccount-overlay" class="account-overlay"></div>
@@ -456,10 +457,7 @@
                             <input type="checkbox" value="accepted" id="privacy_policy" name="privacy_policy" class="o_website_form_input form-check-input" required="required"/>
                             <label class="form-check-label" for="privacy_policy">
                                 <span class="acceptance_full">
-                                    Acepto los <a href="https://www.dismac.es/avisos-legales" alt="Enlace avisos legales" title="Avisos Legales" rel="noindex, nofollow" target="_blank">avisos legales</a>
-                                    , la <a href="https://www.dismac.es/politica-de-cookies" alt="Enlace política de cookies" title="Política de Cookies" rel="noindex, nofollow" target="_blank">política de cookies</a>
-                                    , y la <a href="https://www.dismac.es/politica-de-privacidad" alt="Enlace política de privacidad" title="Política de Privacidad" rel="noindex, nofollow" target="_blank">política de privacidad</a>
-                                    de este sitio web.
+                                    Acepto los <a href="https://www.dismac.es/avisos-legales" alt="Enlace avisos legales" title="Avisos Legales" rel="noindex, nofollow" target="_blank">avisos legales</a>, la <a href="https://www.dismac.es/politica-de-cookies" alt="Enlace política de cookies" title="Política de Cookies" rel="noindex, nofollow" target="_blank">política de cookies</a>, y la <a href="https://www.dismac.es/politica-de-privacidad" alt="Enlace política de privacidad" title="Política de Privacidad" rel="noindex, nofollow" target="_blank">política de privacidad</a> de este sitio web.
                                 </span>
                             </label>
                         </div>
