@@ -13,10 +13,14 @@ class SaleOrderLineHistoryAddToOrder(models.TransientModel):
     def add_to_order(self):
         original_line_id = self._context.get("active_id")
         original_line = self.env["sale.order.line"].browse(original_line_id)
+        order_id = self._context.get("order_id")
+        sequence = max(self.env["sale.order"].browse(order_id).order_line.mapped('sequence'))
+        new_sequence = sequence + 10
         line_values = {
             "product_id": original_line.product_id.id,
             "order_id": self._context.get("order_id"),
             "product_uom_qty": self.qty,
+            "sequence": new_sequence
         }
         vals = self.env["sale.order.line"].play_onchanges(
             line_values, ["product_id", "product_uom_qty"]
