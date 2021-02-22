@@ -245,7 +245,7 @@ class ProductImportCustomXlsx(models.TransientModel):
         
         for product_id in product_obj_ids:
             self._create_xml_id(product_id)
-
+            product_id.generate_warehouse_order()
         if self.only_products:
             return
         palet_names = sh.row_values(1)[START_STOCK:]
@@ -337,3 +337,38 @@ class ProductImportCustomXlsx(models.TransientModel):
         sql = "delete from stock_location where name ilike 'PD%' and building = 10"
         self._cr.execute(sql)
     
+
+
+
+
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    @api.multi
+    def generate_warehouse_order(self):
+        swo = self.env['stock.warehouse.orderpoint']
+        company_id = self.env.user.company_id
+        warehouse_id = self.env.user.company_id.warehouse_id
+        location_id = warehouse_id.lot_stock_id
+        if not warehouse_id:
+            warehouse_id = self.env['stock.warehouse'].search([], limit=1)
+        vals = {
+            'warehouse_id': warehouse_id.id, 
+            'location_id': warehouse_id.lot_stock_id.id, 
+            'company_id': company_id.id,
+            'product_min_qty': 0,
+            'product_max_qty': 0, 
+            'qty_multiple': 1}
+
+        for product in self:
+            domain = [('product_id', '=', product.id)]
+            swo_id = swo.search(domain)
+            if not swo_id:
+                vals.update(product_id = product.id)
+                print ("creando regla para %s con %s"%(product.display_name, vals))
+                swo |= swo_id.create(vals)
+        
+        action = self.env.ref("stock.action_orderpoint_form").read()[0]
+        action['context'] = {'active_ids': swo.ids}
+        return action
