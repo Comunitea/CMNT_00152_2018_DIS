@@ -133,7 +133,7 @@ class ProductImportCustomXlsx(models.TransientModel):
                 'active': True,
                 'type': 'product',
                 'sale_ok': True,
-                'purchase_ok': False,
+                'purchase_ok': True,
                 #'sale_line_warn': 'warning',
                 #'sale_line_warn_msg': 'Este articulo debería actualizarse',
                 'description_pickingin': 'Archivo: %s' % self.name
