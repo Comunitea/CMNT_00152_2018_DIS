@@ -37,7 +37,7 @@ class AgentMonthGoal(models.Model):
     _sql_constraints = [
         (
             "unique_partner_month",
-            "unique(agent_id, month, sale_type_id, goal_type_id)",
+            "unique(agent_id, month, sale_type_id, goal_type_id, year)",
             _(
                 "You can not define same, agent, month, sale order type, \
             and goal type"
