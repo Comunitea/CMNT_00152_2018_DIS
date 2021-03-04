@@ -21,11 +21,12 @@ class ProductProduct(models.Model):
                 'discount': 0,
                 'explanation': '',
                 'decimals': 2,
-                'customer_price': False
+                'customer_price': False,
+                'promotion': False
                 }
-        if self._context.get('only_pricelist', False):
-            res['price'] = self.price
-            return res
+        # if self._context.get('only_pricelist', False):
+        #     res['price'] = self.price
+        #     return res
         website = ir_http.get_request_website()
         if isinstance(partner_id, pycompat.integer_types):
             partner = self.env["res.partner"].browse(partner_id)[0]
@@ -36,8 +37,9 @@ class ProductProduct(models.Model):
             decimals = max([partner.decimals, partner.commercial_partner_id.decimals])
         else:
             decimals = 2
-        print("DECIMALS: %d" % decimals)
+        #print("DECIMALS: %d" % decimals)
         discount = 0
+        promotion = False
         pricelist_price = pricelist_price_discount = pricelist_price_web = self.price
         pricelist_explanation = "Precio de tarifa "
         if website and website._uid:
@@ -50,9 +52,11 @@ class ProductProduct(models.Model):
         if (web_request):
             # es usuario web
             web_default_pricelist = website.get_pricelist_available()[0]
-            pricelist_price_web  = self.with_context({'pricelist':web_default_pricelist.id, 'only_pricelist':True}).price
+            web_prices = web_default_pricelist.get_products_price(self, [qty], [partner.id], date)
+            pricelist_price_web = web_prices[self.id]
+            #pricelist_price_web  = self.with_context({'pricelist':web_default_pricelist.id, 'only_pricelist':True}).price
             #print ("Usuario WEB. Precio WEB %f" % pricelist_price_web)
-           
+
 
         # SE cpopia toda esta parte par mostrar el descuetno de forma explícita
         # PEro se necesita en esta parte para poder comprar precios incluido el descuento
@@ -67,7 +71,7 @@ class ProductProduct(models.Model):
                 1 - categ_dis[0].discount / 100
             )
             pricelist_explanation += (
-                " . Encontraro descuento de "
+                " . Encontrado descuento de "
                     "categoría  " + str(categ_dis[0].discount)
             )
             discount = categ_dis[0].discount
@@ -92,9 +96,9 @@ class ProductProduct(models.Model):
             promotion_price = 0
 
         # Selecciona precio mínimo
-       
+
         if partner.fixed_prices or partner.commercial_partner_id.fixed_prices:
-            
+
             if customer_price:
                 price = customer_price
                 discount = 0
@@ -107,7 +111,7 @@ class ProductProduct(models.Model):
                     explanation = (
                         "Cliente con precios fijos: Precio "
                         "pactado no encontrado. Aplicado "
-                        "precio de tarifa con descutno por categoría: \n" + pricelist_explanation
+                        "precio de tarifa con descuento por categoría: \n" + pricelist_explanation
                     )
                 else:
                     discount = 0
@@ -135,6 +139,7 @@ class ProductProduct(models.Model):
                 price = promotion_price
                 explanation = "Aplicada promoción "
                 discount = 0
+                promotion = True
             if (web_request
                 and pricelist_price_web < pricelist_price_discount
                 and pricelist_price_web < price
@@ -146,7 +151,7 @@ class ProductProduct(models.Model):
                 #print("PRECIO WEB APLICADO!!!!!  %d" % price)
 
         if (web_request and not portfolio):
-            print("REDONDEA PRECIOS sies web y no cartera")
+            #print("REDONDEA PRECIOS sies web y no cartera")
             decimals = 2
             # Si es web y no es cliete de  cartera redondeo a dos decimales
             if discount:
@@ -154,12 +159,13 @@ class ProductProduct(models.Model):
             else:
                 price = float(round(Decimal(str(price)),2))
             discount = 0
-            
-        print("Precio: %f" % price)
+
+        print("Producto %d , Precio: %f" % (self.id, price))
         res['price'] = price
         res['discount'] = discount
         res['decimals'] = decimals
         res['explanation'] += explanation
+        res['promotion'] =  promotion
         return res
 
 
@@ -179,7 +185,7 @@ class ProductProduct(models.Model):
         qty = self._context.get("quantity", 1.0)
         date = self._context.get("date") or fields.Date.context_today(self)
         if partner_id:
-            
+
             for product in self:
                 price_and_discount = product._get_price_and_discount (qty, partner_id, date)
                 product.price = price_and_discount['price']
