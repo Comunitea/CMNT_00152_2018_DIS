@@ -9,14 +9,14 @@ from odoo.exceptions import UserError
 from datetime import datetime
 import pandas
 
-session.open(db='odoo_12_DISMAC_IMPORT')
+session.open(db='DISMAC')
 script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
 
 excel_file = 'Balance_sumas_y_saldos_a_31-Dic-2019.xls' 
 journal_id = 3
 company_id = 1
-fecha = '31/12/2019'
+fecha = '2019-12-31'
 nombre = "Saldos 2019"
 asiento_cartera_clientes = 7817
 asiento_cartera_proveedores = 7818

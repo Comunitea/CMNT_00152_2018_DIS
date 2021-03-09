@@ -109,7 +109,7 @@ domain = [
     #('state', 'in', ['open', 'paid']),
     #('id', 'in',  [9886]),
     #('commercial_partner_id', 'in',  [17771])
-    ('invoice_number',  'in' , ['FP/2020/02766','FP/2020/04729'])
+    ('invoice_number',  'in' , ['FP/2020/03941'])
 ]
 todas_facturas = session.env['account.invoice'].search(domain, order="date_invoice ASC")
 total = len(todas_facturas)

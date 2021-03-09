@@ -193,6 +193,14 @@ class ProductProduct(models.Model):
 
         return prices
 
+    @api.multi
+    def _update_price_fixed_from_standar_cost(self):
+        for product in self:
+            if product.force_purchase_price_fixed and not product.last_purchase_price_fixed:
+                product.last_purchase_price_fixed_alternative = product.standard_price
+                product.force_purchase_price_fixed = product.last_purchase_price_fixed_alternative
+
+
     #@profile
     @api.multi
     def _set_last_purchase_fixed(self):

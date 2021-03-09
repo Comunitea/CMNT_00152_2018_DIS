@@ -113,6 +113,8 @@ class ProductImportCustomXlsx(models.TransientModel):
             'categ_id': categ_dict[str(row[2])],
             'name': str(row[3]).strip(),
             'standard_price': str(row[4]),
+            'last_purchase_price_fixed': str(row[4]),
+            'last_purchase_price_fixed_alternative': str(row[4]), 
             #'supplier_id': str(row[5]),
             #'reaprovisionamiento_max': str(row[6]),
             #'reaprovisionamiento_minimo': str(row[7]),
@@ -136,7 +138,8 @@ class ProductImportCustomXlsx(models.TransientModel):
                 'purchase_ok': True,
                 #'sale_line_warn': 'warning',
                 #'sale_line_warn_msg': 'Este articulo debería actualizarse',
-                'description_pickingin': 'Archivo: %s' % self.name
+                'description_pickingin': 'Archivo: %s' % self.name,
+                'force_purchase_price_fixed': True
 
             }
         product_values.update(default_values)

@@ -7,7 +7,7 @@ import base64
 import csv
 import re
 
-session.open(db='odoo_DISMAC_18_01')
+session.open(db='DISMAC')
 
 
 

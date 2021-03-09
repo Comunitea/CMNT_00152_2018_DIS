@@ -5,12 +5,12 @@ from os.path import abspath
 from os.path import join
 import base64
 from odoo.exceptions import UserError
-
+from odoo import fields
 from datetime import datetime
 import pandas
 from time import time
 
-session.open(db='odoo_12_DISMAC_IMPORT_2')
+session.open(db='DISMAC')
 script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -21,7 +21,7 @@ company_id = 1
 asiento_cartera_saldos = 7817
 
 processed = 0
-saldos_ini_id = 31804
+saldos_ini_id = 42025
 
 
 account_43 =session.env['account.account'].search([('code', '=', '43000000'),
@@ -105,7 +105,9 @@ for row in df.index:
         if journal_id == journal_move_id:
             journal_id = False
         
-    fecha_move = fecha
+    date = datetime.strptime(fecha, '%d/%m/%Y')
+    date_str = datetime.strftime(date, '%Y-%m-%d')
+    fecha_move = date_str
     ref_move = ref
     journal_move_id = journal_id
     lines.append(
