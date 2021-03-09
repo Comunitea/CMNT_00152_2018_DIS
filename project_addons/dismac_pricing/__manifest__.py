@@ -7,12 +7,11 @@
     "license": "AGPL-3",
     "author": "Comunitea",
     "depends": [
+        "sale",
         "partner_category_discount",
         "customer_price",
         "product_pricelist_custom_dismac",
         "stock_account_custom",
     ],
-    "data": ["views/res_partner_view.xml",
-            "views/sale.xml",
-            "views/product_view.xml"],
+    "data": ["views/res_partner_view.xml", "views/sale.xml", "views/product_view.xml"],
 }

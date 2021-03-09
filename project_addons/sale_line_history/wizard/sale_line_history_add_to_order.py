@@ -1,6 +1,7 @@
 # © 2018 Comunitea
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 from odoo import fields, models
+
 import odoo.addons.decimal_precision as dp
 
 
@@ -14,21 +15,25 @@ class SaleOrderLineHistoryAddToOrder(models.TransientModel):
         original_line_id = self._context.get("active_id")
         original_line = self.env["sale.order.line"].browse(original_line_id)
         order_id = self._context.get("order_id")
+        order = self.env["sale.order"].browse(order_id)
         if self.env["sale.order"].browse(order_id).order_line:
-            sequence = max(self.env["sale.order"].browse(order_id).order_line.mapped('sequence'))
+            sequence = max(
+                self.env["sale.order"].browse(order_id).order_line.mapped("sequence")
+            )
         else:
             sequence = 0
         new_sequence = sequence + 10
         line_values = {
             "product_id": original_line.product_id.id,
+            "partner_id": order.partner_id.commercial_partner_id.id,
             "order_id": self._context.get("order_id"),
             "product_uom_qty": self.qty,
-            "sequence": new_sequence
+            "sequence": new_sequence,
         }
         vals = self.env["sale.order.line"].play_onchanges(
             line_values, ["product_id", "product_uom_qty"]
         )
-        if vals.get('product_image', False):
-            del vals['product_image']
+        if vals.get("product_image", False):
+            del vals["product_image"]
 
         self.env["sale.order.line"].create(vals)

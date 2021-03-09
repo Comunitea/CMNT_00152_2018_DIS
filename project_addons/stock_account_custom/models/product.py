@@ -217,8 +217,9 @@ class ProductProduct(models.Model):
                         ("product_id", "=", product.id),
                         ("state", "in", ["purchase", "done"]),
                         ("exclude_compute_cost", "<>", True),
-                    ], order="date_order DESC", limit=1
+                    ]
                 )
+                lines = lines.sorted(key=lambda l: l.date_order, reverse=True)
                 inv_lines = lines[:1].invoice_lines.sorted(
                     key=lambda l: l.invoice_id.date_invoice, reverse=True
                 )
