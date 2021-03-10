@@ -41,7 +41,6 @@ class SaleOrderLine(models.Model):
             pricelist=self.order_id.pricelist_id.id,
             uom=self.product_uom.id,
         )
-
         price_and_discount = product._get_price_and_discount(
             self.product_uom_qty, self.partner_id, date
         )

@@ -41,7 +41,20 @@ class ProductProduct(models.Model):
         # print("DECIMALS: %d" % decimals)
         discount = 0
         promotion = False
-        pricelist_price = pricelist_price_discount = pricelist_price_web = self.price
+        # Precio de tarifa
+        if self._context.get('pricelist', False):
+            pricelist = self.env["product.pricelist"].browse(self._context['pricelist'])[0]
+        else:
+            pricelist = partner.commercial_partner_id.property_product_pricelist
+
+        pricelist_prices = pricelist.get_products_price(
+            self, [qty], [partner.id], date
+        )
+        if self.id:
+            pricelist_price = pricelist_prices[self.id]
+        else:
+            pricelist_price = 0
+        pricelist_price_discount = pricelist_price_web = pricelist_price
         pricelist_explanation = "Precio de tarifa "
         if website and website._uid:
             uid = self.env["res.users"].sudo().browse(website._uid)[0]
@@ -72,7 +85,7 @@ class ProductProduct(models.Model):
             pricelist_price_discount = pricelist_price * (
                 1 - categ_dis[0].discount / 100
             )
-            pricelist_explanation += " .Encontrado descuento de categoría  " + str(
+            pricelist_explanation += " . Encontrado descuento de " "categoría  " + str(
                 categ_dis[0].discount
             )
             discount = categ_dis[0].discount
@@ -101,7 +114,7 @@ class ProductProduct(models.Model):
             if customer_price:
                 price = customer_price
                 discount = 0
-                explanation = "Cliente con precios fijos: Precio pactado "
+                explanation = "Cliente con precios fijos: Precio " "pactado "
             else:
                 if (
                     pricelist_price_discount
@@ -131,7 +144,7 @@ class ProductProduct(models.Model):
                 and pricelist_price_discount != 0
             ):
                 price = customer_price
-                explanation = "Encontrado precio pactado por debajo de tarifa "
+                explanation = "Encontrado precio pactado por debajo " "de tarifa "
                 discount = 0
             if (
                 promotion_price
